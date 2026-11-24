@@ -126,6 +126,7 @@ The scripts run TypeScript directly with Node, so imports in `scripts/` use `.ts
 
 ## Gotchas
 
+- The deploy's build job runs on `ubuntu-24.04`, not `ubuntu-latest`: the newer runner kernel (7.0) gives 32-bit programs no sockets, so in the i386 build apt can't resolve hosts and `groupadd` aborts ("Cannot open audit interface"). Local builds on Apple silicon never show this, since 32-bit code runs emulated there.
 - Docker bind-mounts `/etc/hosts` and `/etc/hostname` during `RUN`, so the Dockerfile can't write them; `le-init` does.
 - Debian's default `MODULES=most` makes a 25 MB initrd, and unpacking it panics the 128 MB guest ("System is deadlocked on memory"). The Dockerfile sets `MODULES=list`, so only the 9p/virtio modules go in.
 - agetty must run in its own session, detached from `/dev/console` (`setsid -w … < /dev/null`). Otherwise bash gets no controlling terminal, and Ctrl+C never reaches the program.

@@ -16,7 +16,9 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Not ubuntu-latest: its kernel (7.0) gives 32-bit programs no sockets, so the
+    # i386 guest build fails (apt can't resolve hosts, groupadd can't reach audit).
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
