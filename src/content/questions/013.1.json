@@ -7,6 +7,7 @@
     "terms": ["013.1.t2"],
     "stem": "Mira received `assets-0.9.tar.gz` and wants to see which files are inside before unpacking it. Which `tar` option lists an archive’s contents? Type the option with its dash, short or long form.",
     "accept": ["-t", "--list"],
+    "verify": { "command": "tar {answer} -zf assets-0.9.tar.gz", "fixture": "assets" },
     "caseSensitive": true,
     "explanation": "`-t` (long form `--list`) lists an archive’s members without extracting them. With `-f` naming the file and `-z` for gzip, the full command is `tar -ztf assets-0.9.tar.gz`; `-x` would extract instead."
   }

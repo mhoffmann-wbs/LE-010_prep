@@ -119,15 +119,15 @@ Notes on v2.0 content that is new or easy to get wrong. Check each one against c
   - The fallback stays Alpine i386 with GNU `coreutils`, `bash`, `grep`, `findutils` and `tar` replacing the BusyBox applets.
 
 ### 5b. Runtime
-- `src/vm/`: a worker-free client around v86 with a queue of commands, a serial-console protocol (a sentinel line marks command end and exit status), per-run **fixture resets** and a timeout that restores the snapshot. xterm.js renders the interactive terminal.
-- **Fixtures** (`src/content/fixtures/<name>.json`): declarative TuxPixel file trees (homes for `mira`, `jonas` and `ada`, `/srv/assets`, build logs, CSV play-test data, scripts) with owners, modes and symlinks. They're applied by a small shell script inside the VM, so the same file seeds the browser VM and the verifier.
-- Lesson code fences (```` ```bash ````) become runnable cells. An ```` ```output ```` fence right after one states what it prints. `<Predict>` blocks make the learner guess first, as in PCEP.
+- `src/vm/`: a worker-free client around v86. `VmRunner` queues jobs over a root control channel on the second serial port (le-init answers each with its exit status and base64 output). Every run after the first restores the snapshot, which is a **per-run reset**, and a run that never answers times out. xterm.js renders the interactive terminal.
+- **Fixtures** (`src/content/fixtures/<name>.json`): declarative TuxPixel file trees (homes for `mira`, `jonas` and `ada`, `/srv/assets`, build logs, CSV play-test data, scripts) with owners, modes, symlinks, groups and setup steps. `src/vm/job.ts` turns a fixture and a command into one shell script, so the browser and the verifier run exactly the same thing. Commands run as their user under a pty 80 columns wide, as in the terminal.
+- Lesson code fences (```` ```bash ````) become runnable, editable cells; fence options set the fixture and user, or `static` for commands the guest can't run. An ```` ```output ```` fence right after one states what it prints. `<Predict>` blocks make the learner guess first, as in PCEP.
 - The VM, emulator and xterm stay out of the initial bundle. They load on the first terminal use.
 
 ### 5c. Verification: never trust a hand-written output
-- Running v86 inside Vitest would be slow. Instead, `npm run content:verify` runs every lesson snippet, `output` item, runnable `fill` answer, exercise and flashcard command in the **same rootfs as a Docker container** (`--platform linux/386`), with the fixture applied. It records the results in `src/content/verified.json`, keyed by a hash of command, user, fixture and image version.
-- `npm test` stays offline and fast: it fails when any claimed output differs from its verified record, or when a record is missing or stale. CI runs `content:verify` first, so a stale cache can't pass.
-- A spot-check test boots the real v86 image in Node for a handful of commands, to catch drift between Docker and v86 (kernel version, `/proc` and `/dev` contents).
+- Running v86 inside Vitest would be slow. Instead, `npm run content:verify` runs every lesson snippet, `output` item and runnable `fill` answer (later also exercises and flashcard commands) **in the learner's own guest**: v86 in Node, on a few worker threads, through the same runner as lesson cells, with the fixture applied. It records the results in `src/content/verified.json`, keyed by a hash of the job script (command, user, fixture) and the guest recipe.
+- `npm test` stays offline and fast: it fails when any claimed output differs from its verified record, or when a record is missing or stale. CI rebuilds the guest and runs `content:verify --all`, so a changed image can't pass.
+- The plan was to verify in Docker and spot-check v86 against it. The first spot check found real drift: v86's 9p filesystem lists directories in creation order, Docker's overlay in hash order, so `tar` printed different member orders. Verification therefore runs in v86 itself, and `vm:smoke` checks the runner instead.
 
 ## 6. Do / Explore
 
@@ -192,7 +192,7 @@ Pages:
 Scripts:
 - `content:status`
 - `content:quality`
-- `content:verify` (Docker)
+- `content:verify` (v86 in Node)
 - `content:links`
 - `vm:build` (Docker)
 - `transcripts:capture`
@@ -210,7 +210,12 @@ Scripts:
    - Content tests, and the `content:status`, `content:quality` and `content:links` scripts.
    - Practice, the question bank browser, the mock exam (40 in 60, one per weight point, with short objectives filled from their topic), and the progress store (v1) and page. Ported from AIF-C01.
    - 9 seed items covering every kind. Every claimed output, and every command in an accepted answer, was run in the guest. That caught a `fill` item whose accepted answers didn't work with its prefix.
-2. **Terminal runtime**: `src/vm/` with xterm.js, fixtures, runnable lesson cells, `<Predict>`, `content:verify` with the verified cache, and the Node v86 spot check.
+2. **Terminal runtime** (done 2026-11-24):
+   - Fixtures (schema, the first `assets` tree) and `src/vm/job.ts`, the one job script shared by the browser, the verifier and the tests.
+   - le-init's `job` command on the control channel, and `VmRunner` with a snapshot restore before every run, timeouts and fixture errors.
+   - `content:verify` runs every claim in v86 under Node and writes `verified.json`; `verify.test.ts` checks claims against it offline, and CI reruns everything after rebuilding the guest. `fill` items gained `verify`, and output items `fixture` and `user`.
+   - Lesson cells (`bash` cells you can edit and run, `static` fences, `output` blocks and `<Predict>`), tested through the real MDX pipeline and checked in Chrome: about 1 s per run.
+   - `vm:smoke` checks the runner. The Docker-vs-v86 spot check was dropped once verification moved into v86 (§5c).
 3. **Lessons**: 19 lessons (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`). Each cites its sources and links to the LPI lesson. The per-lesson URL pattern on learning.lpi.org is checked, not guessed.
 4. **Question bank**: 600 items, every objective at target, every area at 5 or more, and every term covered.
 5. **Exercises**: terminal exercises with checks, plus the `/terminal` playground.

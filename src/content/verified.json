@@ -1,0 +1,32 @@
+{
+  "74cffdb7bbdb4234": {
+    "id": "012.1-001",
+    "command": "x=Pixel; echo \"$x and '$x'\"",
+    "exit": 0,
+    "output": "Pixel and 'Pixel'"
+  },
+  "0d419861f6dcbfec": {
+    "id": "012.1-002#1",
+    "command": "type cd",
+    "exit": 0,
+    "output": "cd is a shell builtin"
+  },
+  "90a6cdb9970cccc9": {
+    "id": "013.1-001#1",
+    "command": "tar -t -zf assets-0.9.tar.gz",
+    "exit": 0,
+    "output": "assets/\nassets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png\nassets/sounds/\nassets/sounds/jump.ogg\nassets/levels/\nassets/levels/level1.txt\nassets/README.md"
+  },
+  "fe6ba6db78461d3d": {
+    "id": "013.1-001#2",
+    "command": "tar --list -zf assets-0.9.tar.gz",
+    "exit": 0,
+    "output": "assets/\nassets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png\nassets/sounds/\nassets/sounds/jump.ogg\nassets/levels/\nassets/levels/level1.txt\nassets/README.md"
+  },
+  "d7f248cad1b30564": {
+    "id": "013.2-001",
+    "command": "printf 'boss\\nlevel\\nboss\\n' | sort | uniq",
+    "exit": 0,
+    "output": "boss\nlevel"
+  }
+}

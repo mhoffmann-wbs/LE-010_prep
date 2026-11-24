@@ -1,11 +1,9 @@
 // Restores the saved state in v86 (headless, in Node) the way the browser does,
-// runs a few commands and checks what they print. Run after vm:state.
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
-import { V86 } from 'v86'
-import { VM_MEMORY_MB, stripAnsi } from '../../src/vm/config.ts'
-
-const OUT = path.resolve(import.meta.dirname, '../../public/vm')
+// types a few commands into mira's terminal and checks what they print, then
+// checks the job runner behind lesson cells and content:verify. Run after vm:state.
+import { stripAnsi } from '../../src/vm/config.ts'
+import type { Job } from '../../src/vm/job.ts'
+import { restoreGuest } from './guest.ts'
 
 /** Each command's output must match its pattern. */
 const CHECKS: { command: string; expect: RegExp }[] = [
@@ -21,24 +19,13 @@ const CHECKS: { command: string; expect: RegExp }[] = [
 ]
 
 const started = performance.now()
-const emulator = new V86({
-  wasm_path: path.join(OUT, 'v86.wasm'),
-  memory_size: VM_MEMORY_MB * 1024 * 1024,
-  vga_memory_size: 2 * 1024 * 1024,
-  initial_state: { buffer: decompress(path.join(OUT, 'state.bin.zst')) },
-  filesystem: { baseurl: path.join(OUT, 'rootfs') + '/' },
-  uart1: true,
-  autostart: true,
-})
+const { emulator, runner } = await restoreGuest()
+console.log(`Restored in ${((performance.now() - started) / 1000).toFixed(1)} s`)
 
 let output = ''
 emulator.add_listener('serial0-output-byte', (byte: number) => {
   output += String.fromCharCode(byte)
 })
-
-await new Promise<void>((resolve) => emulator.add_listener('emulator-started', () => resolve()))
-console.log(`Restored in ${((performance.now() - started) / 1000).toFixed(1)} s`)
-emulator.serial_send_bytes(1, new TextEncoder().encode(`clock ${Math.floor(Date.now() / 1000)}\n`))
 
 let failed = 0
 for (const { command, expect } of CHECKS) {
@@ -55,15 +42,28 @@ for (const { command, expect } of CHECKS) {
   if (!ok) failed++
 }
 
+// The job runner: each run starts from the snapshot, fixtures apply, statuses come back.
+const RUNNER_CHECKS: { name: string; job: Job; expect: { exit: number; output: RegExp } }[] = [
+  { name: 'a run as mira', job: { command: 'touch /tmp/left-behind; whoami; pwd; tty' }, expect: { exit: 0, output: /^mira\n\/home\/mira\n\/dev\/pts\/\d+$/ } },
+  { name: 'the next run starts clean', job: { command: 'ls /tmp/left-behind' }, expect: { exit: 2, output: /No such file/ } },
+  {
+    name: 'a fixture, as jonas',
+    job: { command: 'ls -l /srv/x', user: 'jonas', fixture: { description: 'smoke', groups: [], entries: [{ path: '/srv/x/a.txt', type: 'file', content: 'a\n', owner: 'jonas', mode: '640' }] } },
+    expect: { exit: 0, output: /^total \d+\n-rw-r----- 1 jonas jonas 2 Nov  2 09:30 a\.txt$/ },
+  },
+  { name: 'exit status', job: { command: 'false' }, expect: { exit: 1, output: /^$/ } },
+  { name: 'a command that hangs is killed', job: { command: 'sleep 60' }, expect: { exit: 124, output: /^$/ } },
+]
+for (const { name, job, expect } of RUNNER_CHECKS) {
+  const t = performance.now()
+  const r = await runner.run(job)
+  const ok = r.exit === expect.exit && expect.output.test(r.output)
+  console.log(`${ok ? 'ok  ' : 'FAIL'} runner: ${name} (${(performance.now() - t).toFixed(0)} ms)${ok ? '' : `\n${JSON.stringify(r)}`}`)
+  if (!ok) failed++
+}
+
 await emulator.destroy()
 process.exit(failed ? 1 : 0)
-
-function decompress(file: string): ArrayBuffer {
-  // Node 22+ ships zstd in zlib.
-  const { zstdDecompressSync } = process.getBuiltinModule('node:zlib') as typeof import('node:zlib')
-  const bytes = zstdDecompressSync(readFileSync(file))
-  return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer
-}
 
 async function waitFor(condition: () => boolean, timeoutMs: number): Promise<boolean> {
   const end = performance.now() + timeoutMs

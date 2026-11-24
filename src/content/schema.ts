@@ -3,6 +3,8 @@
 // Cross-checks against the blueprint (objective, area and term ids) live in the
 // content tests, so this file stays independent of that data.
 import { z } from 'zod'
+import { USERS } from '../vm/job.ts'
+import { FIXTURE_NAME } from './fixture.ts'
 
 const nonEmpty = z.string().trim().min(1)
 
@@ -60,17 +62,32 @@ const fill = z.object({
   caseSensitive: z.boolean().default(true),
   /** Text shown in front of the input, e.g. "$ tar" for "complete the command". */
   prefix: z.string().optional(),
+  /**
+   * Proves every accepted answer works: `command` with `{answer}` replaced by
+   * each answer must exit 0 in the guest. Required with a `prefix`.
+   */
+  verify: z
+    .object({
+      command: z.string().includes('{answer}'),
+      fixture: z.string().regex(FIXTURE_NAME).optional(),
+      user: z.enum(USERS).optional(),
+    })
+    .optional(),
 })
 
 /**
- * Predict the output: `command` runs as mira in her home directory, and
- * `output` is what it prints. The output must come from running the command in
- * the guest, never from memory (PLAN.md §5c).
+ * Predict the output: `command` runs as `user` (default mira) in their home
+ * directory, after `fixture` is applied, and `output` is what it prints. The
+ * output must come from running the command in the guest, never from memory
+ * (PLAN.md §5c); content:verify records it.
  */
 const output = z.object({
   ...base,
   kind: z.literal('output'),
   command: nonEmpty,
+  /** A file tree from src/content/fixtures/, by name. */
+  fixture: z.string().regex(FIXTURE_NAME).optional(),
+  user: z.enum(USERS).optional(),
   /** Exactly what the command prints, without the final newline. */
   output: z.string(),
   /** Pick from four outputs, or type the output. */
@@ -102,6 +119,8 @@ export const itemSchema = z.discriminatedUnion('kind', [single, multi, fill, out
     case 'fill':
       if (new Set(item.accept.map((a) => normaliseAnswer(a, item.caseSensitive))).size !== item.accept.length)
         ctx.addIssue({ code: 'custom', path: ['accept'], message: 'has duplicate answers' })
+      if (item.prefix !== undefined && !item.verify)
+        ctx.addIssue({ code: 'custom', path: ['verify'], message: 'an item with a prefix needs `verify`, to prove each answer works with it' })
       break
     case 'output':
       if (item.mode === 'choice') {

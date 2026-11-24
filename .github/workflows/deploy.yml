@@ -31,6 +31,8 @@ jobs:
       - run: npm run vm:build
       - run: npm run vm:state
       - run: npm run vm:smoke
+      # Rerun every claimed output in the fresh guest: package updates can change them.
+      - run: npm run content:verify -- --all
       - run: npm run build
         env:
           BASE_PATH: /LE-010_prep/

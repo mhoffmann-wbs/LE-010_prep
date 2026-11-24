@@ -28,6 +28,18 @@ describe('item schema', () => {
     expect(errors({ ...FILL, accept: ['-t', ' -t '] })).toContain('has duplicate answers')
   })
 
+  it('requires a fill item with a prefix to prove its answers work', () => {
+    expect(errors({ ...FILL, prefix: '$ tar' })).toContain('an item with a prefix needs `verify`, to prove each answer works with it')
+    expect(errors({ ...FILL, prefix: '$ tar', verify: { command: 'tar {answer} -zf a.tar.gz', fixture: 'assets' } })).toEqual([])
+    expect(errors({ ...FILL, verify: { command: 'tar -t' } })).toHaveLength(1)
+  })
+
+  it('names fixtures and users in output items', () => {
+    expect(errors({ ...OUTPUT_TYPE, fixture: 'assets', user: 'jonas' })).toEqual([])
+    expect(errors({ ...OUTPUT_TYPE, fixture: 'My Assets' })).toHaveLength(1)
+    expect(errors({ ...OUTPUT_TYPE, user: 'eve' })).toHaveLength(1)
+  })
+
   it('ties output options to the verified output', () => {
     const wrongKey = { ...OUTPUT_CHOICE, output: 'level\nboss' }
     expect(errors(wrongKey)).toContain('the correct option must equal `output`')

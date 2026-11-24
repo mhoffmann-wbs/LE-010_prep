@@ -42,7 +42,7 @@ export default function Terminal() {
     }
 
     startVm()
-      .then((vm) => {
+      .then(({ emulator: vm }) => {
         if (disposed) {
           void vm.destroy()
           return

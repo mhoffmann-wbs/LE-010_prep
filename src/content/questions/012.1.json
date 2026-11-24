@@ -19,6 +19,7 @@
     "terms": ["012.1.t6"],
     "stem": "Jonas wonders whether `cd` is a program in `/usr/bin` or part of Bash itself. Which command, followed by `cd`, answers that? Type the command name.",
     "accept": ["type"],
+    "verify": { "command": "{answer} cd" },
     "caseSensitive": true,
     "explanation": "`type cd` prints `cd is a shell builtin`, while `type tar` prints the path of the executable, such as `/usr/bin/tar`. Builtins like `cd` have to live inside the shell, because a separate program can’t change the shell’s working directory."
   }

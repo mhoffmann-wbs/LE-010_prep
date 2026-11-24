@@ -1,7 +1,7 @@
 import { OBJECTIVE_BY_ID } from '../content/blueprint'
 import { COUNT_WORDS, type Item } from '../content/schema'
 import { Inline } from '../components/Inline'
-import { VM_PROMPT } from '../vm/config'
+import { ShellCommand } from '../components/ShellCommand'
 import { type Response, grade } from './grade'
 import { type ShortcutMap, useShortcuts } from './shortcuts'
 
@@ -38,7 +38,7 @@ export function ItemView({ item, response, onChange, revealed = false, keyboard 
       <p className="whitespace-pre-line text-lg leading-relaxed">
         <Inline text={item.stem} />
       </p>
-      {item.kind === 'output' && <Command command={item.command} />}
+      {item.kind === 'output' && <ShellCommand command={item.command} user={item.user} />}
       {item.kind === 'fill' ? (
         <FillAnswer item={item} response={response} onChange={onChange} revealed={revealed} onEnter={onEnter} />
       ) : item.kind === 'output' && item.mode === 'type' ? (
@@ -48,16 +48,6 @@ export function ItemView({ item, response, onChange, revealed = false, keyboard 
       )}
       {revealed && <Explanation text={item.explanation} />}
     </article>
-  )
-}
-
-/** The command as it would appear in mira's terminal. */
-function Command({ command }: { command: string }) {
-  return (
-    <pre className="rounded-lg bg-code p-3 font-mono text-sm text-[#e6edf3]">
-      <span className="text-[#8fd9ad]">{VM_PROMPT}</span>
-      {command}
-    </pre>
   )
 }
 

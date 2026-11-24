@@ -2,6 +2,7 @@
 # PID 1 in the v86 guest. Mounts the pseudo filesystems, then logs mira in on the
 # serial console forever. There is no systemd: booting it in v86 is slow, and
 # systemctl/journalctl are taught with recorded transcripts (PLAN.md §6a).
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 mount -t devtmpfs devtmpfs /dev
@@ -24,14 +25,23 @@ sync
 echo 3 > /proc/sys/vm/drop_caches
 
 # Control channel on the second serial port (v86 uart1), read as root and never
-# shown to the learner. A restored snapshot keeps the clock of the moment it was
-# saved, so the app sends "clock <epoch seconds>" after every restore.
+# shown to the learner. One command per line:
+#   clock <epoch seconds>   a restored snapshot keeps the clock of the moment it
+#                           was saved, so the app sends this after every restore
+#   job <id> <base64>       runs a script from src/vm/job.ts as root and answers
+#                           "le-done <id> <exit status> <base64 output>"
 stty -F /dev/ttyS1 raw -echo 115200
 (
   while true; do
-    while read -r cmd arg; do
+    while read -r cmd id data; do
       case $cmd in
-        clock) date -s "@$arg" > /dev/null ;;
+        clock) date -s "@$id" > /dev/null ;;
+        job)
+          printf '%s' "$data" | base64 -d > /run/le-job
+          bash /run/le-job < /dev/null > /run/le-out 2>&1
+          status=$?
+          printf 'le-done %s %s %s\n' "$id" "$status" "$(base64 -w 0 /run/le-out)" > /dev/ttyS1
+          ;;
       esac
     done < /dev/ttyS1
   done

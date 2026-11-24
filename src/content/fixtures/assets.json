@@ -1,0 +1,11 @@
+{
+  "description": "Mira's copy of the studio's game assets, for the 0.9 release: sprites, sounds and level files, plus assets-0.9.tar.gz packed from them.",
+  "entries": [
+    { "path": "/home/mira/assets/sprites/hero.png", "content": "placeholder sprite: hero\n" },
+    { "path": "/home/mira/assets/sprites/slime.png", "content": "placeholder sprite: slime\n" },
+    { "path": "/home/mira/assets/sounds/jump.ogg", "content": "placeholder sound: jump\n" },
+    { "path": "/home/mira/assets/levels/level1.txt", "content": "##########\n#@  ..  E#\n##########\n" },
+    { "path": "/home/mira/assets/README.md", "content": "# Pixel Raiders assets\n\nRelease 0.9. Sprites are 32x32.\n" }
+  ],
+  "setup": [{ "run": "tar -czf assets-0.9.tar.gz assets" }]
+}

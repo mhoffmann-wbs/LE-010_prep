@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Phases 0 (scaffold and VM spike) and 1 (blueprint and quiz engine) are done: the tooling, the Pages deploy, the in-browser Debian guest, the `/terminal` page, the verbatim blueprint, the item schema, the content tests and scripts, practice, the question bank browser, the mock exam, the progress store and page, and 9 seed items. **`PLAN.md` is the build plan and sets the order of work.** It records the decisions made, the blueprint → content map, the item kinds, the terminal design, the Explore pillar and the phases. As parts get built, describe them here (commands, file layout, gotchas), and mark phases done in `PLAN.md` §8 with the date.
+Phases 0 (scaffold and VM spike), 1 (blueprint and quiz engine) and 2 (terminal runtime) are done: the tooling, the Pages deploy, the in-browser Debian guest, the `/terminal` page, the verbatim blueprint, the item schema, the content tests and scripts, practice, the question bank browser, the mock exam, the progress store and page, 9 seed items, fixtures, the job runner, `content:verify` with its verified cache, and the lesson cell components (`bash` cells, `output` blocks, `<Predict>`). **`PLAN.md` is the build plan and sets the order of work.** It records the decisions made, the blueprint → content map, the item kinds, the terminal design, the Explore pillar and the phases. As parts get built, describe them here (commands, file layout, gotchas), and mark phases done in `PLAN.md` §8 with the date.
 
 The sibling apps `../AIF-C01` (newest; follow its structure, conventions and styling) and `../PCEP_prep` (in-browser runner, verified outputs, `<Predict>` blocks) are the reference implementations. Port their code rather than reinventing it.
 
@@ -41,8 +41,8 @@ Every scenario uses one invented company, **TuxPixel Studio**, an indie game stu
   |---|---|
   | `single` | 4 options |
   | `multi` | 5–6 options; the stem must contain "(Choose TWO.)" etc. |
-  | `fill` | short input: `accept[]` (every accepted answer, the first shown as the key), `caseSensitive` (default true), optional `prefix` shown before the input |
-  | `output` | `command` (run as mira in her home directory), `output` (exactly what it prints), and `mode`. In `choice` mode there are 4 `options`, and the correct one must equal `output`; in `type` mode there are no options |
+  | `fill` | short input: `accept[]` (every accepted answer, the first shown as the key), `caseSensitive` (default true), optional `prefix` shown before the input, and optional `verify` (`command` with `{answer}`, optional `fixture` and `user`): every answer substituted must exit 0. A `prefix` requires `verify` |
+  | `output` | `command` (run as `user`, default mira, in their home directory, after the optional `fixture`), `output` (exactly what it prints, as recorded by `content:verify`), and `mode`. In `choice` mode there are 4 `options`, and the correct one must equal `output`; in `type` mode there are no options |
 
   - Ids are `<objectiveId>-NNN`. Every item has `areas[]` and may have `terms[]` and `sourceLinks[]`, all from its own objective.
   - Option text is trimmed, but output options keep their exact whitespace (`outputOption`), because leading spaces are part of the output.
@@ -70,22 +70,33 @@ Every scenario uses one invented company, **TuxPixel Studio**, an indie game stu
   - Per-item stats with a `streak`, mock results (with `scaled` and topic rows), `lessonsRead`, and the toggles `outputInPractice` (default on) and `outputInMock` (default off).
   - Export and import, with `app: 'le-010-prep'`.
   - `readiness.ts`: objective readiness (coverage × accuracy, weighted by objective weight), the weak-spot drill and `masteryOf()`.
+- **Fixtures** (`src/content/fixtures/<name>.json`, schema in `fixture.ts`, loaded by `fixtureBank.ts`, kept apart from `bank.ts` so lesson cells don't pull in the bank): `description`, `groups` (created first, with `members`), `entries` (absolute `path`, `type` file/dir/symlink, `content` with its exact final newline, `target`, `owner` (default: whose home the path is in, else root), `group`, octal `mode`), and `setup` steps run as a user (default mira) in their home, e.g. `tar -czf …`. `assets.json` is the first. Every file the fixture touches gets the time `FIXTURE_TIME` (2026-11-02 09:30), so `ls -l` is stable.
+- **Jobs** (`src/vm/job.ts`, shared by the browser, the scripts and the tests): `jobScript({ command, user, fixture })` is one bash script, run as root. It applies the fixture (a failure exits `FIXTURE_FAILED` 125 with "le-job: fixture failed…"), then runs the command as the user in their home with `runuser`, a clean environment (Debian's `login.defs` PATH, `LANG=en_US.UTF-8`), and `script` for a pty 80 columns wide, so `ls` prints columns and stderr is mixed in, as in the terminal. `timeout` kills the command's process group after `JOB_TIMEOUT_S` (10) with exit 124. `cleanOutput` strips colours, carriage returns and the final newline.
 - **The guest** (`scripts/vm/`):
   - The `Dockerfile` builds Debian 12 bookworm i386 (digest-pinned; Debian 13 has no i386 kernel, and v86 runs only 32-bit guests) with the users mira (in `sudo`), jonas and ada. Every password is `tuxpixel`.
-  - `le-init` is PID 1. There is no systemd. It mounts the pseudo filesystems, writes `/etc/hostname` and `/etc/hosts`, runs a root **control channel** on `/dev/ttyS1` (v86 uart1; it understands `clock <epoch>`), and loops `agetty --autologin mira` on `ttyS0` under `setsid`.
+  - `le-init` is PID 1. There is no systemd. It mounts the pseudo filesystems, writes `/etc/hostname` and `/etc/hosts`, runs a root **control channel** on `/dev/ttyS1` (v86 uart1; it understands `clock <epoch>` and `job <id> <base64 script>`, which it answers with `le-done <id> <status> <base64 output>`), and loops `agetty --autologin mira` on `ttyS0` under `setsid`.
   - `build-image.sh` (`npm run vm:build`) exports the container to v86's 9p format in `public/vm/` (git-ignored): `rootfs.json`, the hashed `rootfs/` files, the BIOS images and `v86.wasm`. It uses v86's `fs2json.py` and `copy-to-sha256.py`, vendored in `scripts/vm/v86/`, which need Python `zstandard`.
   - `build-state.ts` (`npm run vm:state`) boots the guest in Node, waits for `VM_PROMPT` and saves `state.bin.zst`. It fails if the shell reports "no job control".
-  - `smoke.ts` (`npm run vm:smoke`) restores the state in Node like the browser does and checks the output of a few commands. Add a check whenever the guest changes.
+  - `guest.ts` `restoreGuest()` restores the state in Node like the browser does and returns the emulator and a `VmRunner`.
+  - `smoke.ts` (`npm run vm:smoke`) types a few commands into mira's terminal and checks their output, then checks the runner (a reset between runs, a fixture as jonas, exit statuses, the timeout). Add a check whenever the guest changes.
 - **Runtime** (`src/vm/`):
   - `config.ts` is shared with the scripts: `VM_MEMORY_MB` (128; the state holds all of RAM), `VM_PROMPT` and `stripAnsi`.
-  - `emulator.ts`: `vmAvailable()` (a HEAD request for the state) and `startVm()`, which imports v86 dynamically, restores the state, fetches `rootfs/` files on demand and syncs the clock over the control channel.
+  - `emulator.ts`: `vmAvailable()` (a HEAD request for the state), `startVm()`, which downloads the state, imports v86 dynamically, restores it, fetches `rootfs/` files on demand and syncs the clock, and returns `{ emulator, snapshot }`, and `sharedRunner()`, the one guest behind every lesson cell, started on first use.
+  - `runner.ts` `VmRunner`: queues jobs over the control channel. Every run after the first restores the snapshot (`restore_state` takes the zstd file as downloaded) and resyncs the clock, so each run starts clean. It rejects with `RunError` (`timeout` or `fixture`). No Vite imports, so the scripts use it too.
   - `Terminal.tsx` wires xterm.js to serial port 0, batching output once per frame. It's lazy, so v86 and xterm stay out of every other bundle. `/terminal` (`TerminalPage`) explains how to build the image when it's missing.
+  - `ShellCommand` (`src/components/`) shows commands after the user's prompt (`promptFor(user)`), with `> ` on continuation lines (after a trailing `\` or `|`, indented, or inside `do`/`then`).
+- **Verification** (never trust a hand-written output):
+  - `runnables.ts` `collectRunnables()` lists every claim: each `output` item, each accepted answer of a `fill` item with `verify` (ids `013.1-001#2`), and each `bash` snippet in lesson MDX (ids `lesson 013.2:41`, the fence's line). A snippet with an `output` fence right after it must print exactly that; one without must exit 0. `checkClaim()` compares.
+  - `npm run content:verify` (`scripts/content-verify.ts`) runs the new or stale claims in the learner's own guest (v86 in Node, up to 4 worker threads via `scripts/vm/verify-worker.ts`) and writes `src/content/verified.json`, keyed by a hash of the job script and the guest recipe (`Dockerfile` + `le-init`) and sorted by id. `-- --all` reruns everything; CI does that after rebuilding the guest. It drops records nothing uses.
+  - `verify.test.ts` (offline) fails when a claim has no current record, contradicts its record, or a record is unused.
+  - Verification runs in v86, not Docker, because the two differ: v86's 9p filesystem lists directories in creation order (Docker's overlay in hash order, which changes `tar` and `find` output), and the kernels differ.
+- **Lesson cells** (`src/lessons/components.tsx`, `lessonComponents` for MDX): a ```` ```bash ```` fence is a `ShellCell` (Run, Edit, Reset; it runs in `sharedRunner()`), ```` ```bash static ```` is shown with a prompt but never run (systemctl, apt …), ```` ```bash fixture=assets user=jonas ```` sets how it runs, an ```` ```output ```` fence is a labelled block, and `<Predict>` wraps one bash fence and its output fence and asks for a guess first. Fence options reach `<code>` as `data-meta` through `remarkFenceMeta` in `vite.config.ts`; `snippets.ts` `parseMeta` reads them, and unknown options are errors. `src/test/cells.mdx` exercises the real MDX pipeline in `components.test.tsx`.
 - **Tests**: tests run in Node, and component tests start with `// @vitest-environment jsdom`. Vitest runs without globals, so `src/test/setup.ts` registers `cleanup` itself. `src/test/fixtures.ts` has one valid item per kind, with output in both modes. `src/pages/pages.test.tsx` renders the real routes with `createMemoryRouter` and an async `renderAt()` over the real bank, so keep those tests independent of item order and pool size. The VM is not exercised by `npm test`; that is `vm:smoke`'s job.
 
 ## Rules that span the codebase
 
 - **Content is data.** Lessons, questions, exercises, fixtures, transcripts, drills and flashcards are files under `src/content/`, validated with Zod and rendered generically. Only the simulators' interactive parts are components.
-- **Never trust a hand-written output.** Every claimed command output, and every command an item presents as working (including each `fill` answer together with its `prefix`), must come from running it in the guest, never from memory. Until `content:verify` exists (phase 2), run it by hand: `docker run --rm --platform linux/386 -u mira -w /home/mira le010/vm bash -c '…'`.
+- **Never trust a hand-written output.** Every claimed command output, and every command an item presents as working (including each `fill` answer together with its `prefix`, through `verify`), must come from running it in the guest, never from memory: write the claim, run `npm run content:verify`, and commit `verified.json` with it. For quick exploration, `docker run --rm --platform linux/386 -u mira -w /home/mira le010/vm bash -c '…'` is fine, but only `content:verify` counts, since Docker's directory order differs from the guest's.
 - Question ids are stored in progress, so never renumber or reuse an item id.
 - Outputs of systemd, journalctl, ssh, ip/ss, useradd and other tools the guest doesn't run come from **captured transcripts** of a real Debian 13 system, never invented.
 - Distro-specific facts (package tools, release models, new v2.0 terms such as `wtmpdb last`, `resolvectl`, passkeys and digital sovereignty) are checked against current docs, never written from memory, and cited.
@@ -105,6 +116,7 @@ npx vitest run -t "mock exam"               # tests by name
 npm run content:status    # items per objective vs. target, areas below 5, terms no item tests, kind mix
 npm run content:quality [-- <file.json> ...]  # anti-giveaway checks, whole bank or given files
 npm run content:links     # fetch every cited URL (needs network; not part of npm test)
+npm run content:verify    # run new or stale claimed outputs in the guest (needs vm:build + vm:state); -- --all reruns all
 npm run vm:build          # Docker: build the i386 guest and export it to public/vm/
 npm run vm:state          # boot it in v86 (Node) and save public/vm/state.bin.zst
 npm run vm:smoke          # restore the state and check a few commands
@@ -120,5 +132,7 @@ The scripts run TypeScript directly with Node, so imports in `scripts/` use `.ts
 - On Apple silicon the i386 image builds under emulation (`vm:build` takes about 2 minutes once apt's layers are cached, and about 10 the first time). Docker Desktop updating itself mid-build kills the build with "error reading from server: EOF"; just rerun it.
 - The ANSI-coloured prompt (TERM is `xterm-256color`, so Debian's `.bashrc` colours it): match prompts with `stripAnsi`.
 - When driving the terminal from Chrome DevTools in a test, send real key events (`Input.dispatchKeyEvent`). `Input.insertText` doesn't reach xterm's `onData`.
+- In the guest, `ls -l` shows directories with size 0 (9p), not ext4's 4096. Don't write items whose answer depends on a directory's size or `total` line.
+- Node's type stripping (the scripts) rejects TypeScript-only syntax such as constructor parameter properties and enums, in any `src/` module a script imports.
 - Zod's `.trim()` transforms values, so the schema's `nonEmpty` changes text. Never use it for text whose whitespace matters (outputs).
 - To check phone layout, emulate the viewport over DevTools (`Emulation.setDeviceMetricsOverride`, width 360). `--window-size=360` gives a wider layout viewport, because headless Chrome has a minimum window width.

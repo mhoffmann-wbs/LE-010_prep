@@ -6,6 +6,9 @@ export const VM_MEMORY_MB = 128
 /** mira's bash prompt (Debian's default PS1) once colour codes are stripped. */
 export const VM_PROMPT = 'mira@tuxpixel:~$ '
 
+/** The prompt a user sees in their home directory. */
+export const promptFor = (user = 'mira') => `${user}@tuxpixel:~${user === 'root' ? '#' : '$'} `
+
 /** Removes ANSI escape sequences (colours, cursor moves) from terminal output. */
 export function stripAnsi(text: string): string {
   // eslint-disable-next-line no-control-regex
