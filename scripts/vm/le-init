@@ -1,0 +1,44 @@
+#!/bin/bash
+# PID 1 in the v86 guest. Mounts the pseudo filesystems, then logs mira in on the
+# serial console forever. There is no systemd: booting it in v86 is slow, and
+# systemctl/journalctl are taught with recorded transcripts (PLAN.md §6a).
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev
+mkdir -p /dev/pts
+mount -t devpts devpts /dev/pts
+mount -t tmpfs -o mode=755 tmpfs /run
+mount -t tmpfs -o mode=1777 tmpfs /tmp
+mkdir -p /run/lock
+: > /run/utmp
+# Docker owns these two files while the image is built, so they are set here.
+echo tuxpixel > /etc/hostname
+printf '127.0.0.1\tlocalhost\n127.0.1.1\ttuxpixel\n::1\tlocalhost ip6-localhost ip6-loopback\n' > /etc/hosts
+hostname -F /etc/hostname
+ip link set lo up
+
+# Keep kernel messages off the learner's console, and drop the page cache so the
+# saved state compresses well.
+dmesg -n 1
+sync
+echo 3 > /proc/sys/vm/drop_caches
+
+# Control channel on the second serial port (v86 uart1), read as root and never
+# shown to the learner. A restored snapshot keeps the clock of the moment it was
+# saved, so the app sends "clock <epoch seconds>" after every restore.
+stty -F /dev/ttyS1 raw -echo 115200
+(
+  while true; do
+    while read -r cmd arg; do
+      case $cmd in
+        clock) date -s "@$arg" > /dev/null ;;
+      esac
+    done < /dev/ttyS1
+  done
+) &
+
+# agetty runs in a new session, detached from /dev/console, so it can make ttyS0
+# the shell's controlling terminal (job control, and Ctrl+C reaching the program).
+while true; do
+  setsid -w /sbin/agetty --autologin mira --noissue --noclear -L ttyS0 115200 xterm-256color < /dev/null > /dev/null 2>&1
+done
