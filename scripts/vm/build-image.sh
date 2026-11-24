@@ -15,9 +15,7 @@ CONTAINER=le010-vm-export
 
 mkdir -p "$OUT" "$WORK"
 
-# Host networking: on GitHub's runners the build containers can't resolve
-# deb.debian.org through Docker's own DNS, while the host can.
-docker build "$DIR" --platform linux/386 --network host --tag "$IMAGE"
+docker build "$DIR" --platform linux/386 --tag "$IMAGE"
 
 docker rm "$CONTAINER" >/dev/null 2>&1 || true
 docker create --platform linux/386 --name "$CONTAINER" "$IMAGE" >/dev/null

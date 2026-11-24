@@ -28,16 +28,6 @@ jobs:
       - run: npm test
       # The learner's Linux: build the i386 guest and boot it once to save its state.
       - run: sudo apt-get install -y python3-zstandard zstd
-      # Temporary: why can't apt resolve deb.debian.org inside the image build?
-      - name: Diagnose DNS in docker build
-        run: |
-          for arch in 386 amd64; do
-            img=$([ $arch = 386 ] && echo i386/debian:bookworm || echo debian:bookworm)
-            printf '%s\n' "FROM $img" \
-              'RUN set -x; ls -l /etc/resolv.conf /etc/hosts; cat /etc/resolv.conf; id _apt; getent hosts deb.debian.org; echo root=$?; setpriv --reuid=_apt --regid=nogroup --clear-groups getent hosts deb.debian.org; echo apt_user=$?' \
-              | docker build --no-cache --progress plain --platform linux/$arch --network host - 2>&1 | grep -v '^#[0-9]* sha256' || true
-          done
-          uname -a; cat /proc/sys/abi/vsyscall32 2>/dev/null || true
       - run: npm run vm:build
       - run: npm run vm:state
       - run: npm run vm:smoke
