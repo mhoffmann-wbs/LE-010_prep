@@ -1,0 +1,17 @@
+[
+  {
+    "id": "014.2-001",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": ["014.2.2"],
+    "terms": ["014.2.t7"],
+    "stem": "A nightly build script at TuxPixel prints progress messages nobody reads. Where should the script send that output so it is thrown away?",
+    "options": [
+      { "text": "`/dev/zero`", "correct": false, "rationale": "/dev/zero is used for reading: it returns an endless stream of zero bytes." },
+      { "text": "`/dev/urandom`", "correct": false, "rationale": "/dev/urandom is a source of random bytes to read, not a place to discard output." },
+      { "text": "`/dev/null`", "correct": true, "rationale": "Anything written to /dev/null is accepted and discarded, and reading from it returns end-of-file at once." },
+      { "text": "`/tmp`", "correct": false, "rationale": "/tmp is a directory for temporary files; the output would be stored, not thrown away." }
+    ],
+    "explanation": "/dev/null, /dev/zero and /dev/urandom are pseudo-devices: the kernel provides them, and no hardware sits behind them. Redirecting output with `> /dev/null` is the usual way to silence a command."
+  }
+]

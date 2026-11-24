@@ -1,0 +1,25 @@
+[
+  {
+    "id": "012.1-001",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.3", "012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "Mira stores the studio’s name in a variable and prints it. Type what the command prints.",
+    "command": "x=Pixel; echo \"$x and '$x'\"",
+    "output": "Pixel and 'Pixel'",
+    "mode": "type",
+    "explanation": "Inside double quotes the shell still expands variables, and single quotes are ordinary characters there. So both `$x` become `Pixel`, and the single quotes are printed as they are. Only single quotes on the outside would stop the expansion."
+  },
+  {
+    "id": "012.1-002",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t6"],
+    "stem": "Jonas wonders whether `cd` is a program in `/usr/bin` or part of Bash itself. Which command, followed by `cd`, answers that? Type the command name.",
+    "accept": ["type"],
+    "caseSensitive": true,
+    "explanation": "`type cd` prints `cd is a shell builtin`, while `type tar` prints the path of the executable, such as `/usr/bin/tar`. Builtins like `cd` have to live inside the shell, because a separate program can’t change the shell’s working directory."
+  }
+]

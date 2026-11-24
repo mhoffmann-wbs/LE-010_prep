@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Phase 0 (scaffold and VM spike) is done: the tooling, the Pages deploy, the theme and layout, the in-browser Debian guest with its build and smoke scripts, the `/terminal` page and `EXAM_FORMAT`. **`PLAN.md` is the build plan and sets the order of work.** It records the decisions made, the blueprint → content map, the item kinds, the terminal design, the Explore pillar and the phases. As parts get built, describe them here (commands, file layout, gotchas), and mark phases done in `PLAN.md` §8 with the date.
+Phases 0 (scaffold and VM spike) and 1 (blueprint and quiz engine) are done: the tooling, the Pages deploy, the in-browser Debian guest, the `/terminal` page, the verbatim blueprint, the item schema, the content tests and scripts, practice, the question bank browser, the mock exam, the progress store and page, and 9 seed items. **`PLAN.md` is the build plan and sets the order of work.** It records the decisions made, the blueprint → content map, the item kinds, the terminal design, the Explore pillar and the phases. As parts get built, describe them here (commands, file layout, gotchas), and mark phases done in `PLAN.md` §8 with the date.
 
 The sibling apps `../AIF-C01` (newest; follow its structure, conventions and styling) and `../PCEP_prep` (in-browser runner, verified outputs, `<Predict>` blocks) are the reference implementations. Port their code rather than reinventing it.
 
@@ -30,6 +30,46 @@ Every scenario uses one invented company, **TuxPixel Studio**, an indie game stu
 - **Deploy**: `.github/workflows/deploy.yml` lints, tests, builds the VM (`vm:build`, `vm:state`, `vm:smoke`), builds with `BASE_PATH=/LE-010_prep/`, copies `index.html` to `404.html` for deep links, and publishes to GitHub Pages on every push to `main`. The router takes `basename={import.meta.env.BASE_URL}`, so use router `Link`s and never root-relative `<a href="/…">`.
 - **Pages** are lazy-loaded in `src/app/routes.tsx`. Keep content imports out of `routes.tsx`, `Layout.tsx` and `main.tsx`. Add each pillar's nav entry to `NAV` in `Layout.tsx` when its pages exist. Every page needs an `h1`, which the page tests wait for.
 - **Theme**: colour tokens (`brand` green, `brand-dark`, `accent` Tux yellow, `chalk`, `page`, `header`, `code`) are set in `src/index.css` via `@theme`. Dark mode follows the OS by remapping the tokens and the slate scale once, so components don't use `dark:` variants.
+- **`src/content/blueprint.ts`**:
+  - Verbatim from objectives v2.0, typos included: `TOPICS` (011–015) and `OBJECTIVES` (19). Each objective has its `weight`, `description`, `areas` (Key Knowledge Areas, ids `<objectiveId>.<n>`) and `terms` (one per line of the "files, terms and utilities" list, ids `<objectiveId>.t<n>`).
+  - `SOURCES` and `EXAM_FORMAT`, which cites the source of each fact.
+  - `MOCK`, `mockQuota()` (one question per weight point), `questionTarget()` (15 per weight point; `BANK_TARGET` 600) and `MIN_ITEMS_PER_AREA` (5).
+  - `estimateScaledScore()`: piecewise linear on 200–800, with 500 at `ASSUMED_PASS_FRACTION` (2/3). This is the app's own assumption, since LPI publishes no percentage, so always label the score an estimate.
+- **`src/content/schema.ts`**: a Zod union of four item kinds:
+
+  | Kind | Shape |
+  |---|---|
+  | `single` | 4 options |
+  | `multi` | 5–6 options; the stem must contain "(Choose TWO.)" etc. |
+  | `fill` | short input: `accept[]` (every accepted answer, the first shown as the key), `caseSensitive` (default true), optional `prefix` shown before the input |
+  | `output` | `command` (run as mira in her home directory), `output` (exactly what it prints), and `mode`. In `choice` mode there are 4 `options`, and the correct one must equal `output`; in `type` mode there are no options |
+
+  - Ids are `<objectiveId>-NNN`. Every item has `areas[]` and may have `terms[]` and `sourceLinks[]`, all from its own objective.
+  - Option text is trimmed, but output options keep their exact whitespace (`outputOption`), because leading spaces are part of the output.
+  - Other helpers: `normaliseAnswer` (fill) and `normaliseOutput` (typed outputs: trailing spaces and blank lines don't count).
+- **Questions**: `src/content/questions/<objectiveId>.json`, one array per objective, loaded through `import.meta.glob` in `bank.ts`. `bank.test.ts` checks that the file matches the objective, ids are unique, and areas and terms exist, and runs the quality checks.
+- **`src/content/quality.ts`**: the anti-giveaway checks over `single` items and `output` items in choice mode:
+  - no key letter in more than 40% of them
+  - the key is the longest option in 15–40% of them
+  - no duplicate stems (output items are compared by stem plus command)
+  - no option letters in explanations or rationales
+
+  It uses type-only imports, because the content scripts run it with Node.
+- **Quiz engine** (`src/quiz/`), ported from AIF:
+  - `grade.ts`: `Response` per kind, `emptyResponse`, `isAnswered` and all-or-nothing `grade`.
+  - `pools.ts`: `practicePool(bank, includeOutput)` and `objectiveWeights()`.
+  - `sampler.ts`, with `seededRng(n)` from `random.ts` in tests:
+    - `buildMockExam` takes `mockQuota` items per objective and prefers unseen ones. A short objective borrows from the rest of its topic, and when the bank is short the time scales to the real pace.
+    - `buildMixedSet` samples by objective weight.
+    - `buildFocusSet` and `orderLeastMastered` put the lowest streak first.
+  - `results.ts` `scoreMock`: rows by topic and objective.
+  - `ItemView` renders all four kinds. Output items show the command after mira's prompt, and their options are `<pre>`. The `keyboard` prop binds 1–6 and A–F; `onEnter` lets Enter in a text answer check it, since the window shortcuts ignore keys typed into fields.
+  - `SessionReview`, `ScoreTable`, `ShortcutHint` and `shortcuts.ts` are as in AIF.
+- **Pages** (all lazy): `/` (format and objectives), `/practice` (`?objective=013.2`, `?topic=013` or `?mix=n`, each optionally with `&focus=1`, or `?weak=1`), `/questions` and `/questions/:itemId`, `/mock`, `/terminal` and `/progress`. The output-items toggle lives in `components/OutputItemsToggle.tsx`.
+- **Progress** (`src/progress/store.ts`, key `le010:progress`, version 1):
+  - Per-item stats with a `streak`, mock results (with `scaled` and topic rows), `lessonsRead`, and the toggles `outputInPractice` (default on) and `outputInMock` (default off).
+  - Export and import, with `app: 'le-010-prep'`.
+  - `readiness.ts`: objective readiness (coverage × accuracy, weighted by objective weight), the weak-spot drill and `masteryOf()`.
 - **The guest** (`scripts/vm/`):
   - The `Dockerfile` builds Debian 12 bookworm i386 (digest-pinned; Debian 13 has no i386 kernel, and v86 runs only 32-bit guests) with the users mira (in `sudo`), jonas and ada. Every password is `tuxpixel`.
   - `le-init` is PID 1. There is no systemd. It mounts the pseudo filesystems, writes `/etc/hostname` and `/etc/hosts`, runs a root **control channel** on `/dev/ttyS1` (v86 uart1; it understands `clock <epoch>`), and loops `agetty --autologin mira` on `ttyS0` under `setsid`.
@@ -40,16 +80,17 @@ Every scenario uses one invented company, **TuxPixel Studio**, an indie game stu
   - `config.ts` is shared with the scripts: `VM_MEMORY_MB` (128; the state holds all of RAM), `VM_PROMPT` and `stripAnsi`.
   - `emulator.ts`: `vmAvailable()` (a HEAD request for the state) and `startVm()`, which imports v86 dynamically, restores the state, fetches `rootfs/` files on demand and syncs the clock over the control channel.
   - `Terminal.tsx` wires xterm.js to serial port 0, batching output once per frame. It's lazy, so v86 and xterm stay out of every other bundle. `/terminal` (`TerminalPage`) explains how to build the image when it's missing.
-- **Tests**: tests run in Node, and component tests start with `// @vitest-environment jsdom`. Vitest runs without globals, so `src/test/setup.ts` registers `cleanup` itself. `src/pages/pages.test.tsx` renders the real routes with `createMemoryRouter` and an async `renderAt()`. The VM is not exercised by `npm test`; that is `vm:smoke`'s job.
+- **Tests**: tests run in Node, and component tests start with `// @vitest-environment jsdom`. Vitest runs without globals, so `src/test/setup.ts` registers `cleanup` itself. `src/test/fixtures.ts` has one valid item per kind, with output in both modes. `src/pages/pages.test.tsx` renders the real routes with `createMemoryRouter` and an async `renderAt()` over the real bank, so keep those tests independent of item order and pool size. The VM is not exercised by `npm test`; that is `vm:smoke`'s job.
 
 ## Rules that span the codebase
 
 - **Content is data.** Lessons, questions, exercises, fixtures, transcripts, drills and flashcards are files under `src/content/`, validated with Zod and rendered generically. Only the simulators' interactive parts are components.
-- **Never trust a hand-written output.** Every claimed command output must come from running it in the guest (PLAN.md §5c, `content:verify`, phase 2), never from memory.
+- **Never trust a hand-written output.** Every claimed command output, and every command an item presents as working (including each `fill` answer together with its `prefix`), must come from running it in the guest, never from memory. Until `content:verify` exists (phase 2), run it by hand: `docker run --rm --platform linux/386 -u mira -w /home/mira le010/vm bash -c '…'`.
+- Question ids are stored in progress, so never renumber or reuse an item id.
 - Outputs of systemd, journalctl, ssh, ip/ss, useradd and other tools the guest doesn't run come from **captured transcripts** of a real Debian 13 system, never invented.
 - Distro-specific facts (package tools, release models, new v2.0 terms such as `wtmpdb last`, `resolvectl`, passkeys and digital sovereignty) are checked against current docs, never written from memory, and cited.
 - Write every question for this app. Never reproduce live exam content (candidates are under NDA), third-party dumps or the LPI learning materials' exercises. Explanations never name option letters.
-- `src/progress/store.ts` (from phase 1) will be the only module that touches `localStorage`. Bump `VERSION` and add a migration when the shape changes, and never renumber item, card or exercise ids, because they're stored in progress.
+- `src/progress/store.ts` is the only module that touches `localStorage`. On an unknown version it discards stored data, so when the shape changes, bump `VERSION`, add a migration in `load()` and `importProgress()`, and keep the Zod `ProgressSchema` in step. Never renumber item, card or exercise ids, because they're stored in progress.
 
 ## Commands
 
@@ -59,14 +100,17 @@ npm run build             # tsc -b + production build (BASE_PATH=/LE-010_prep/ f
 npm run lint              # oxlint
 npm run typecheck         # tsc -b
 npm test                  # Vitest, run once; npm run test:watch for watch mode
-npx vitest run src/vm/config.test.ts   # single file
-npx vitest run -t "not-found"          # single test by name
+npx vitest run src/content/schema.test.ts   # single file
+npx vitest run -t "mock exam"               # tests by name
+npm run content:status    # items per objective vs. target, areas below 5, terms no item tests, kind mix
+npm run content:quality [-- <file.json> ...]  # anti-giveaway checks, whole bank or given files
+npm run content:links     # fetch every cited URL (needs network; not part of npm test)
 npm run vm:build          # Docker: build the i386 guest and export it to public/vm/
 npm run vm:state          # boot it in v86 (Node) and save public/vm/state.bin.zst
 npm run vm:smoke          # restore the state and check a few commands
 ```
 
-The scripts run TypeScript directly with Node, so imports in `scripts/` use `.ts` extensions.
+The scripts run TypeScript directly with Node, so imports in `scripts/` use `.ts` extensions, and the app modules they import may only import types from extensionless paths. Vitest caches `import.meta.glob` results: if a new question file doesn't show up in tests, run `npx vitest --clearCache`.
 
 ## Gotchas
 
@@ -76,3 +120,5 @@ The scripts run TypeScript directly with Node, so imports in `scripts/` use `.ts
 - On Apple silicon the i386 image builds under emulation (`vm:build` takes about 2 minutes once apt's layers are cached, and about 10 the first time). Docker Desktop updating itself mid-build kills the build with "error reading from server: EOF"; just rerun it.
 - The ANSI-coloured prompt (TERM is `xterm-256color`, so Debian's `.bashrc` colours it): match prompts with `stripAnsi`.
 - When driving the terminal from Chrome DevTools in a test, send real key events (`Input.dispatchKeyEvent`). `Input.insertText` doesn't reach xterm's `onData`.
+- Zod's `.trim()` transforms values, so the schema's `nonEmpty` changes text. Never use it for text whose whitespace matters (outputs).
+- To check phone layout, emulate the viewport over DevTools (`Emulation.setDeviceMetricsOverride`, width 360). `--window-size=360` gives a wider layout viewport, because headless Chrome has a minimum window width.

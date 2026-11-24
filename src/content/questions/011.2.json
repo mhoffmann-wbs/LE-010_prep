@@ -1,0 +1,19 @@
+[
+  {
+    "id": "011.2-001",
+    "objectiveId": "011.2",
+    "kind": "multi",
+    "areas": ["011.2.6"],
+    "terms": ["011.2.t5"],
+    "stem": "TuxPixel’s new build server runs Rocky Linux, an Enterprise Linux-based distribution. Which tools manage software packages on it? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`dnf`", "correct": true, "rationale": "dnf installs, updates and removes packages from repositories on Enterprise Linux and Fedora, and resolves dependencies." },
+      { "text": "`rpm`", "correct": true, "rationale": "rpm is the low-level tool for the RPM package format that Enterprise Linux uses; it works on single package files." },
+      { "text": "`apt`", "correct": false, "rationale": "apt belongs to the Debian family (Debian, Ubuntu, Raspberry Pi OS)." },
+      { "text": "`zypper`", "correct": false, "rationale": "zypper is the package manager of the SUSE family." },
+      { "text": "`apk`", "correct": false, "rationale": "apk is Alpine Linux’s package manager." }
+    ],
+    "explanation": "Each distribution family has its own package tools: dpkg and apt for Debian, rpm and dnf for Enterprise Linux, rpm and zypper for SUSE, and apk for Alpine."
+  }
+]

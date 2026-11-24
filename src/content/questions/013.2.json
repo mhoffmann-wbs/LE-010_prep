@@ -1,0 +1,20 @@
+[
+  {
+    "id": "013.2-001",
+    "objectiveId": "013.2",
+    "kind": "output",
+    "areas": ["013.2.1"],
+    "terms": ["013.2.t4", "013.2.t5"],
+    "stem": "Jonas pipes a short list of enemy types through two filters. What does the command print?",
+    "command": "printf 'boss\\nlevel\\nboss\\n' | sort | uniq",
+    "output": "boss\nlevel",
+    "mode": "choice",
+    "options": [
+      { "text": "boss\nlevel\nboss", "correct": false, "rationale": "This is the input unchanged. sort reorders it and uniq removes the repeat, so it can’t come out like this." },
+      { "text": "      2 boss\n      1 level", "correct": false, "rationale": "Counts like these appear only with `uniq -c`." },
+      { "text": "boss\nlevel", "correct": true, "rationale": "sort puts both `boss` lines next to each other, and uniq keeps one line of each run of identical lines." },
+      { "text": "level\nboss", "correct": false, "rationale": "sort orders lines alphabetically, so `boss` comes before `level`." }
+    ],
+    "explanation": "uniq only removes repeated lines that are next to each other, which is why it usually follows sort. The pipe `|` passes each command’s output to the next command’s input."
+  }
+]

@@ -38,7 +38,7 @@ The previous exam, 010-160 (objectives v1.6), can be booked until April 2027. Th
 |---|---|---|---|
 | Items | 40 | overview page | The mock has 40 items, one per weight point (§3). |
 | Time | 60 min | overview page | Countdown, flag for review and a review screen. |
-| Score | Scaled 200–800, pass at 500 | LPI FAQ | The scaled score is a linear estimate from percent correct, always labelled "estimate". The report shows pass/fail and percent by topic and objective. |
+| Score | Scaled 200–800, pass at 500 | LPI FAQ | LPI doesn't publish the cut as a percentage. The estimate is piecewise linear, with 500 at an **assumed** two thirds correct (`ASSUMED_PASS_FRACTION`), so that a plain 200–800 line doesn't put the pass mark at a lenient 50%. It is always labelled "estimate". The report shows pass/fail and percent by topic and objective. |
 | Item kinds | Multiple choice, multiple response and "short input" | **No official LPI page lists them.** The only LPI-hosted statement is a trainer's blog post about 010-160 (link in `EXAM_FORMAT`). | `fill` items mirror short input. `output` items are practice-only by default (§4). The exam-day guide says the formats come from a candidate report. |
 | Weights | 19 objectives, weights 1–4, total 40 | objectives page | Weights drive the bank targets, the mock allocation and readiness. |
 | Price | Region-tiered: USD 120 / 100 / 80 and EUR 110 (2026-11-24) | https://www.lpi.org/exam-pricing/ | The page maps countries to tiers only in its country picker, so check it in a browser for the exam-day guide. |
@@ -91,7 +91,7 @@ Notes on v2.0 content that is new or easy to get wrong. Check each one against c
 |---|---|---|
 | `single` | Pick 1 of 4. | exact |
 | `multi` | Pick N of 5–6. The stem says "(Choose TWO.)". | all-or-nothing |
-| `fill` | Type a command, option, path or value. `accept[]` lists every accepted answer; `normalise` collapses whitespace, and leading `./` or a trailing `/` are optional where the item allows it. | match any `accept` |
+| `fill` | Type a command, option, path or value. `accept[]` lists every accepted answer explicitly; `normaliseAnswer` trims and collapses whitespace. Answers are case-sensitive unless `caseSensitive: false`. An optional `prefix` is shown before the input, but every accepted answer must still form a working command with it. | match any `accept` |
 | `output` | Shows a `command` run as a given user in a given `fixture` state. The learner picks from 4 outputs or types the output (`mode: choice / type`). The key comes from **real bash** (§5c), never from memory. | exact (type mode: trailing whitespace ignored) |
 
 `output` items are on in practice and off in the mock by default. One toggle per mode controls them, as with AIF's extended kinds.
@@ -204,7 +204,12 @@ Scripts:
    - The bookworm i386 guest: PID 1 is `le-init` with autologin for mira, plus jonas and ada, and a root control channel on the second serial port that sets the clock after a restore.
    - `vm:build`, `vm:state` and `vm:smoke` (restore in Node; checks the tty, the clock, man pages, GNU tar, `/tmp`'s sticky bit, groups and Ctrl+C), and a `/terminal` page with xterm.js. The spike is a go (numbers in §5a).
    - `EXAM_FORMAT`: 40 items, 60 minutes, and 200–800 with a pass at 500 come from LPI's FAQ. No official page lists the item formats (§2).
-1. **Blueprint and quiz engine**: `blueprint.ts` verbatim from v2.0 (19 objectives, knowledge areas and terms), the schema with all four kinds, content tests and scripts, practice, the bank browser, the mock (40 in 60, scaled estimate against 500/800), the progress store and page, and seed items of every kind.
+1. **Blueprint and quiz engine** (done 2026-11-24):
+   - `blueprint.ts` is verbatim from v2.0: 19 objectives, 63 key knowledge areas and 102 term lines, typos included.
+   - The schema has all four kinds.
+   - Content tests, and the `content:status`, `content:quality` and `content:links` scripts.
+   - Practice, the question bank browser, the mock exam (40 in 60, one per weight point, with short objectives filled from their topic), and the progress store (v1) and page. Ported from AIF-C01.
+   - 9 seed items covering every kind. Every claimed output, and every command in an accepted answer, was run in the guest. That caught a `fill` item whose accepted answers didn't work with its prefix.
 2. **Terminal runtime**: `src/vm/` with xterm.js, fixtures, runnable lesson cells, `<Predict>`, `content:verify` with the verified cache, and the Node v86 spot check.
 3. **Lessons**: 19 lessons (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`). Each cites its sources and links to the LPI lesson. The per-lesson URL pattern on learning.lpi.org is checked, not guessed.
 4. **Question bank**: 600 items, every objective at target, every area at 5 or more, and every term covered.

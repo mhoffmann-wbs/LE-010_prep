@@ -2,7 +2,13 @@ import { Suspense, useState } from 'react'
 import { Link, NavLink, Outlet } from 'react-router'
 
 // Pillar pages are added here as they get built (PLAN.md §8).
-const NAV = [{ to: '/terminal', label: 'Terminal' }]
+const NAV = [
+  { to: '/practice', label: 'Practice' },
+  { to: '/questions', label: 'Questions' },
+  { to: '/mock', label: 'Mock exam' },
+  { to: '/terminal', label: 'Terminal' },
+  { to: '/progress', label: 'Progress' },
+]
 
 export function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)

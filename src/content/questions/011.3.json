@@ -1,0 +1,17 @@
+[
+  {
+    "id": "011.3-001",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": ["011.3.2"],
+    "terms": ["011.3.t1", "011.3.t2"],
+    "stem": "TuxPixel releases its level editor as open source. The studio wants anyone who distributes a modified version to publish their changes under the same terms. Which license fits?",
+    "options": [
+      { "text": "The GNU General Public License (GPL)", "correct": true, "rationale": "The GPL is a copyleft license: distributed modified versions must stay under the GPL, with their source code available." },
+      { "text": "The BSD 3-Clause License", "correct": false, "rationale": "BSD licenses are permissive: others may distribute modified versions under other terms, even closed source." },
+      { "text": "The MIT License", "correct": false, "rationale": "MIT is permissive too; it only asks that the copyright notice is kept." },
+      { "text": "A proprietary end-user license", "correct": false, "rationale": "A proprietary license usually forbids modifying and redistributing the software at all, so it isn’t open source." }
+    ],
+    "explanation": "Copyleft licenses such as the GPL pass their terms on to every distributed derivative. Permissive licenses such as BSD and MIT allow derivatives under any terms, as long as the notices are kept."
+  }
+]

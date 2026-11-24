@@ -1,0 +1,19 @@
+[
+  {
+    "id": "015.3-001",
+    "objectiveId": "015.3",
+    "kind": "multi",
+    "areas": ["015.3.1"],
+    "terms": ["015.3.t2"],
+    "stem": "Ada’s script `deploy.sh` must be readable, writable and executable by her, readable and executable by her group, and inaccessible to everyone else. Which commands set exactly these permissions? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`chmod 750 deploy.sh`", "correct": true, "rationale": "7 = rwx for the owner, 5 = r-x for the group, 0 = no permissions for others: `-rwxr-x---`." },
+      { "text": "`chmod u=rwx,g=rx,o= deploy.sh`", "correct": true, "rationale": "Symbolic mode sets each class explicitly; an empty `o=` removes every permission for others." },
+      { "text": "`chmod 705 deploy.sh`", "correct": false, "rationale": "This gives the group nothing and others r-x: `-rwx---r-x`." },
+      { "text": "`chmod u=rwx,g=rx,o=r deploy.sh`", "correct": false, "rationale": "`o=r` leaves others able to read the file: `-rwxr-xr--`." },
+      { "text": "`chmod 570 deploy.sh`", "correct": false, "rationale": "The digits are in the wrong order: the owner gets r-x and the group rwx." }
+    ],
+    "explanation": "Octal modes give one digit each to owner, group and others, adding read (4), write (2) and execute (1). Symbolic modes name the classes (u, g, o) and set, add or remove permissions."
+  }
+]

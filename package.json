@@ -12,6 +12,9 @@
     "test:watch": "vitest",
     "typecheck": "tsc -b",
     "lint": "oxlint",
+    "content:status": "node scripts/content-status.ts",
+    "content:quality": "node scripts/content-quality.ts",
+    "content:links": "node scripts/content-links.ts",
     "vm:build": "bash scripts/vm/build-image.sh",
     "vm:state": "node scripts/vm/build-state.ts",
     "vm:smoke": "node scripts/vm/smoke.ts"

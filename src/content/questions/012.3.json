@@ -1,0 +1,17 @@
+[
+  {
+    "id": "012.3-001",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.5"],
+    "terms": ["012.3.t7"],
+    "stem": "Ada needs a list of every PNG file under `/srv/assets`, including the files in its subdirectories. Which command does this?",
+    "options": [
+      { "text": "`find /srv/assets -name \"*.png\"`", "correct": true, "rationale": "find searches the directory tree below `/srv/assets`, and `-name` matches the file name against the quoted pattern." },
+      { "text": "`ls /srv/assets *.png`", "correct": false, "rationale": "The shell expands `*.png` in the current directory, not under `/srv/assets`, and ls doesn’t descend into subdirectories without `-R`." },
+      { "text": "`grep -r png /srv/assets`", "correct": false, "rationale": "grep searches the contents of files for the text \"png\", not their names." },
+      { "text": "`find *.png /srv/assets`", "correct": false, "rationale": "find takes the starting directories first and the tests after them; here `*.png` is treated as a starting point, not a name test." }
+    ],
+    "explanation": "To search by file name through a whole directory tree, give find the starting directory and a `-name` test. Quote the pattern so the shell passes it to find instead of expanding it in the current directory."
+  }
+]
