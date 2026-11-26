@@ -1,4 +1,46 @@
 {
+  "961331a00e836d04": {
+    "id": "011.1-005#1",
+    "command": "test \"$(uname -s)\" = Linux",
+    "exit": 0,
+    "output": ""
+  },
+  "e4540497f7769884": {
+    "id": "011.1-005#2",
+    "command": "test \"$(uname --kernel-name)\" = Linux",
+    "exit": 0,
+    "output": ""
+  },
+  "73b700391158dc42": {
+    "id": "011.2-027",
+    "command": "perl -e 'print \"Pixel Raiders\\n\"'",
+    "exit": 0,
+    "output": "Pixel Raiders"
+  },
+  "ce2946bc84683245": {
+    "id": "011.2-036#1",
+    "command": "dpkg -l >/dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "466cc8313a3ce4ed": {
+    "id": "011.2-036#2",
+    "command": "dpkg --list >/dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "a6fb19b41c11196d": {
+    "id": "011.2-037#2",
+    "command": "dpkg --search /bin/ls",
+    "exit": 0,
+    "output": "coreutils: /bin/ls"
+  },
+  "4579fad27e398185": {
+    "id": "011.4-041#1",
+    "command": "tty >/dev/null",
+    "exit": 0,
+    "output": ""
+  },
   "74cffdb7bbdb4234": {
     "id": "012.1-001",
     "command": "x=Pixel; echo \"$x and '$x'\"",
@@ -10,6 +52,480 @@
     "command": "type cd",
     "exit": 0,
     "output": "cd is a shell builtin"
+  },
+  "054fe78eb5c6632f": {
+    "id": "012.1-031#1",
+    "command": "history",
+    "exit": 0,
+    "output": ""
+  },
+  "f6a519465c375fdb": {
+    "id": "012.1-032#1",
+    "command": "export GAME=pixel",
+    "exit": 0,
+    "output": ""
+  },
+  "238a59066e7f8bcb": {
+    "id": "012.1-032#2",
+    "command": "export GAME=\"pixel\"",
+    "exit": 0,
+    "output": ""
+  },
+  "371aebe497026289": {
+    "id": "012.1-032#3",
+    "command": "export GAME='pixel'",
+    "exit": 0,
+    "output": ""
+  },
+  "249fd6ef3266caec": {
+    "id": "012.1-033#2",
+    "command": "echo \"$PATH\"",
+    "exit": 0,
+    "output": "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+  },
+  "5e992e656406814c": {
+    "id": "012.1-034#1",
+    "command": "echo '$HOME'",
+    "exit": 0,
+    "output": "$HOME"
+  },
+  "5074a36ae6f58e02": {
+    "id": "012.1-035#1",
+    "command": "test -d /usr/sbin",
+    "exit": 0,
+    "output": ""
+  },
+  "3b23792512b9c6d4": {
+    "id": "012.1-035#2",
+    "command": "test -d /usr/sbin/",
+    "exit": 0,
+    "output": ""
+  },
+  "e0e269e8785f15cc": {
+    "id": "012.1-036#1",
+    "command": "export LEVEL=3",
+    "exit": 0,
+    "output": ""
+  },
+  "ee1957605c555976": {
+    "id": "012.1-036#2",
+    "command": "export LEVEL=\"3\"",
+    "exit": 0,
+    "output": ""
+  },
+  "02a093b738f95eb4": {
+    "id": "012.1-037#1",
+    "command": "printenv PATH",
+    "exit": 0,
+    "output": "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+  },
+  "52a575ced7c513a9": {
+    "id": "012.1-038#1",
+    "command": "printenv HOME",
+    "exit": 0,
+    "output": "/home/mira"
+  },
+  "cab1a2a70a37fac0": {
+    "id": "012.1-039#1",
+    "command": "echo -n Raiders",
+    "exit": 0,
+    "output": "Raiders"
+  },
+  "35469fb7c4c9d123": {
+    "id": "012.1-039#2",
+    "command": "echo -n \"Raiders\"",
+    "exit": 0,
+    "output": "Raiders"
+  },
+  "de6500afea916cd9": {
+    "id": "012.1-039#3",
+    "command": "echo -n 'Raiders'",
+    "exit": 0,
+    "output": "Raiders"
+  },
+  "46b1e9432b938b4d": {
+    "id": "012.1-040",
+    "command": "name=Mira; echo \"Hello, $name\"",
+    "exit": 0,
+    "output": "Hello, Mira"
+  },
+  "9e91dddc4a510c4e": {
+    "id": "012.1-041",
+    "command": "name=Mira; echo 'Hello, $name'",
+    "exit": 0,
+    "output": "Hello, $name"
+  },
+  "2907c863ea281669": {
+    "id": "012.1-042",
+    "command": "echo Hello      Pixel     Raiders",
+    "exit": 0,
+    "output": "Hello Pixel Raiders"
+  },
+  "d6b35a15807ede0b": {
+    "id": "012.1-043",
+    "command": "echo \"Hello      Pixel\"",
+    "exit": 0,
+    "output": "Hello      Pixel"
+  },
+  "7df3a8e86a844734": {
+    "id": "012.1-044",
+    "command": "x=5; bash -c 'echo \"[$x]\"'",
+    "exit": 0,
+    "output": "[]"
+  },
+  "eb89685da25287b6": {
+    "id": "012.1-045",
+    "command": "export x=5; bash -c 'echo \"[$x]\"'",
+    "exit": 0,
+    "output": "[5]"
+  },
+  "74c0d956b07cf3be": {
+    "id": "012.1-046",
+    "command": "echo \"Cost: \\$5\"",
+    "exit": 0,
+    "output": "Cost: $5"
+  },
+  "cbc43f85d509c1a4": {
+    "id": "012.1-047",
+    "command": "type echo",
+    "exit": 0,
+    "output": "echo is a shell builtin"
+  },
+  "82d506e4f18f1ebb": {
+    "id": "012.1-048",
+    "command": "echo -n Pixel; echo Raiders",
+    "exit": 0,
+    "output": "PixelRaiders"
+  },
+  "367d2fa6b81e3cbb": {
+    "id": "012.1-049",
+    "command": "x=1; echo \"$x\" '$x' $x",
+    "exit": 0,
+    "output": "1 $x 1"
+  },
+  "d8030a27d6539c2a": {
+    "id": "012.2-028#1",
+    "command": "man mkdir > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "01136eeba8f3b490": {
+    "id": "012.2-029#1",
+    "command": "man -k copy",
+    "exit": 0,
+    "output": "cp (1)               - copy files and directories\ncpgr (8)             - copy with locking the given file to the password or gr...\ncpio (1)             - copy files to and from archives\ncppw (8)             - copy with locking the given file to the password or gr...\ndd (1)               - convert and copy a file\ndebconf-copydb (1)   - copy a debconf database\ninstall (1)          - copy files and set attributes\nstpecpy (3)          - copying strings and character sequences\nstpecpyx (3)         - copying strings and character sequences\nstring_copying (7)   - copying strings and character sequences\nustpcpy (3)          - copying strings and character sequences\nustr2stp (3)         - copying strings and character sequences\nzustr2stp (3)        - copying strings and character sequences\nzustr2ustp (3)       - copying strings and character sequences"
+  },
+  "5442346468319c0f": {
+    "id": "012.2-030#1",
+    "command": "man 5 passwd > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "35e6db1043934969": {
+    "id": "012.2-031#1",
+    "command": "ls --help > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "e92d78a03c03b699": {
+    "id": "012.2-032#1",
+    "command": "help cd > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "550895bc9505e64f": {
+    "id": "012.2-033#1",
+    "command": "test -d /usr/share/doc",
+    "exit": 0,
+    "output": ""
+  },
+  "e108ccceee5e2596": {
+    "id": "012.2-033#2",
+    "command": "test -d /usr/share/doc/",
+    "exit": 0,
+    "output": ""
+  },
+  "f1215d9732cc2f06": {
+    "id": "012.2-034#1",
+    "command": "whatis grep",
+    "exit": 0,
+    "output": "grep (1)             - print lines that match patterns"
+  },
+  "1a2356c43440b7d0": {
+    "id": "012.2-034#2",
+    "command": "man -f grep",
+    "exit": 0,
+    "output": "grep (1)             - print lines that match patterns"
+  },
+  "fbb262663a91d28b": {
+    "id": "012.2-036",
+    "command": "whatis mkdir",
+    "exit": 0,
+    "output": "mkdir (1)            - make directories"
+  },
+  "6e2f31a6d62b4274": {
+    "id": "012.2-037",
+    "command": "man -w mkdir",
+    "exit": 0,
+    "output": "/usr/share/man/man1/mkdir.1.gz"
+  },
+  "e54edc6ae13e5b09": {
+    "id": "012.2-038",
+    "command": "ls --help | head -n 1",
+    "exit": 0,
+    "output": "Usage: ls [OPTION]... [FILE]..."
+  },
+  "81071199164381cf": {
+    "id": "012.2-039",
+    "command": "help pwd | head -n 1",
+    "exit": 0,
+    "output": "pwd: pwd [-LP]"
+  },
+  "db760ce6f13aa46c": {
+    "id": "012.2-040",
+    "command": "man cd",
+    "exit": 16,
+    "output": "No manual entry for cd"
+  },
+  "7e8a9e5ef7cb15e7": {
+    "id": "012.2-041",
+    "command": "man -k \"^rmdir$\"",
+    "exit": 0,
+    "output": "rmdir (1)            - remove empty directories"
+  },
+  "273d0f0c89d9f1dd": {
+    "id": "012.3-020#1",
+    "command": "ls -la",
+    "exit": 0,
+    "output": "total 8\ndrwxr-xr-x 4 mira mira    0 Nov 24 20:29 .\ndrwxr-xr-x 5 root root    0 Nov 24 20:29 ..\n-rw-r--r-- 1 mira mira  220 May  7  2026 .bash_logout\n-rw-r--r-- 1 mira mira 3526 May  7  2026 .bashrc\n-rw-r--r-- 1 mira mira   34 Nov  2 09:30 notes.txt\n-rw-r--r-- 1 mira mira  807 May  7  2026 .profile\ndrwxr-xr-x 4 mira mira    0 Nov  2 09:30 projects\ndrwxr-xr-x 2 mira mira    0 Nov  2 09:30 .tuxpixel"
+  },
+  "241374953d18da56": {
+    "id": "012.3-020#2",
+    "command": "ls -al",
+    "exit": 0,
+    "output": "total 8\ndrwxr-xr-x 4 mira mira    0 Nov 24 20:29 .\ndrwxr-xr-x 5 root root    0 Nov 24 20:29 ..\n-rw-r--r-- 1 mira mira  220 May  7  2026 .bash_logout\n-rw-r--r-- 1 mira mira 3526 May  7  2026 .bashrc\n-rw-r--r-- 1 mira mira   34 Nov  2 09:30 notes.txt\n-rw-r--r-- 1 mira mira  807 May  7  2026 .profile\ndrwxr-xr-x 4 mira mira    0 Nov  2 09:30 projects\ndrwxr-xr-x 2 mira mira    0 Nov  2 09:30 .tuxpixel"
+  },
+  "a02b061b477f0c14": {
+    "id": "012.3-020#3",
+    "command": "ls -l -a",
+    "exit": 0,
+    "output": "total 8\ndrwxr-xr-x 4 mira mira    0 Nov 24 20:29 .\ndrwxr-xr-x 5 root root    0 Nov 24 20:29 ..\n-rw-r--r-- 1 mira mira  220 May  7  2026 .bash_logout\n-rw-r--r-- 1 mira mira 3526 May  7  2026 .bashrc\n-rw-r--r-- 1 mira mira   34 Nov  2 09:30 notes.txt\n-rw-r--r-- 1 mira mira  807 May  7  2026 .profile\ndrwxr-xr-x 4 mira mira    0 Nov  2 09:30 projects\ndrwxr-xr-x 2 mira mira    0 Nov  2 09:30 .tuxpixel"
+  },
+  "d8205fb88a52aa4a": {
+    "id": "012.3-020#4",
+    "command": "ls -a -l",
+    "exit": 0,
+    "output": "total 8\ndrwxr-xr-x 4 mira mira    0 Nov 24 20:29 .\ndrwxr-xr-x 5 root root    0 Nov 24 20:29 ..\n-rw-r--r-- 1 mira mira  220 May  7  2026 .bash_logout\n-rw-r--r-- 1 mira mira 3526 May  7  2026 .bashrc\n-rw-r--r-- 1 mira mira   34 Nov  2 09:30 notes.txt\n-rw-r--r-- 1 mira mira  807 May  7  2026 .profile\ndrwxr-xr-x 4 mira mira    0 Nov  2 09:30 projects\ndrwxr-xr-x 2 mira mira    0 Nov  2 09:30 .tuxpixel"
+  },
+  "a4ace594cb35ffdb": {
+    "id": "012.3-021#1",
+    "command": "cd",
+    "exit": 0,
+    "output": ""
+  },
+  "7954840706a87e06": {
+    "id": "012.3-021#2",
+    "command": "cd ~",
+    "exit": 0,
+    "output": ""
+  },
+  "611ff4f6c5718723": {
+    "id": "012.3-022#1",
+    "command": "cd ..",
+    "exit": 0,
+    "output": ""
+  },
+  "46f18bbefb762195": {
+    "id": "012.3-022#2",
+    "command": "cd ../",
+    "exit": 0,
+    "output": ""
+  },
+  "6fca1be0a8b6e16a": {
+    "id": "012.3-023#1",
+    "command": "ls -R projects",
+    "exit": 0,
+    "output": "projects:\npixel-raiders  website\n\nprojects/pixel-raiders:\ndocs  README.md  src\n\nprojects/pixel-raiders/docs:\ndesign.md  levels.md\n\nprojects/pixel-raiders/src:\nmain.c\tplayer.c\n\nprojects/website:\nindex.html  press-kit.md"
+  },
+  "c8cddbf0936fdc59": {
+    "id": "012.3-023#2",
+    "command": "ls -R projects/",
+    "exit": 0,
+    "output": "projects/:\npixel-raiders  website\n\nprojects/pixel-raiders:\ndocs  README.md  src\n\nprojects/pixel-raiders/docs:\ndesign.md  levels.md\n\nprojects/pixel-raiders/src:\nmain.c\tplayer.c\n\nprojects/website:\nindex.html  press-kit.md"
+  },
+  "f838fb57dbe47714": {
+    "id": "012.3-024#1",
+    "command": "find projects -name index.html",
+    "exit": 0,
+    "output": "projects/website/index.html"
+  },
+  "303ed99dbb9d7692": {
+    "id": "012.3-024#2",
+    "command": "find projects -name \"index.html\"",
+    "exit": 0,
+    "output": "projects/website/index.html"
+  },
+  "d25ba60ab5343200": {
+    "id": "012.3-024#3",
+    "command": "find projects -name 'index.html'",
+    "exit": 0,
+    "output": "projects/website/index.html"
+  },
+  "11860954fd00248a": {
+    "id": "012.3-026",
+    "command": "cd projects/pixel-raiders/src; cd ../docs; pwd",
+    "exit": 0,
+    "output": "/home/mira/projects/pixel-raiders/docs"
+  },
+  "907aa4954c0b8b89": {
+    "id": "012.3-027",
+    "command": "cd projects/pixel-raiders; ls -a .",
+    "exit": 0,
+    "output": ".  ..  docs  .gitignore  README.md  src"
+  },
+  "f91c818be86148e1": {
+    "id": "012.3-028",
+    "command": "ls ~/notes.txt; ls notes.txt",
+    "exit": 0,
+    "output": "/home/mira/notes.txt\nnotes.txt"
+  },
+  "3af3481c84b55a6a": {
+    "id": "012.3-029",
+    "command": "echo ~; echo ~/projects",
+    "exit": 0,
+    "output": "/home/mira\n/home/mira/projects"
+  },
+  "7760c6ad7abb8779": {
+    "id": "012.3-030",
+    "command": "cd projects/website; cd -; pwd",
+    "exit": 0,
+    "output": "/home/mira\n/home/mira"
+  },
+  "9b946c282d21ff5c": {
+    "id": "012.3-031",
+    "command": "find projects -name \"*.md\" | sort",
+    "exit": 0,
+    "output": "projects/pixel-raiders/docs/design.md\nprojects/pixel-raiders/docs/levels.md\nprojects/pixel-raiders/README.md\nprojects/website/press-kit.md"
+  },
+  "5fea562b13652bb6": {
+    "id": "012.3-032",
+    "command": "find projects -type d | sort",
+    "exit": 0,
+    "output": "projects\nprojects/pixel-raiders\nprojects/pixel-raiders/docs\nprojects/pixel-raiders/src\nprojects/website"
+  },
+  "f873b6a369fdf152": {
+    "id": "012.3-033",
+    "command": "ls -1F projects",
+    "exit": 0,
+    "output": "pixel-raiders/\nwebsite/"
+  },
+  "f99649ec4a32502d": {
+    "id": "012.4-020#1",
+    "command": "touch todo.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "302ae8b19a6fb4c2": {
+    "id": "012.4-021#1",
+    "command": "mkdir -p levels/world1/boss",
+    "exit": 0,
+    "output": ""
+  },
+  "19724cbe19b1c61d": {
+    "id": "012.4-022#1",
+    "command": "cp -r art art2",
+    "exit": 0,
+    "output": ""
+  },
+  "b0ffe0f74abeb9c2": {
+    "id": "012.4-022#2",
+    "command": "cp -R art art2",
+    "exit": 0,
+    "output": ""
+  },
+  "2b9a0036f2a0d09c": {
+    "id": "012.4-023#1",
+    "command": "cd art && mv notes.txt todo.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "1f4b374fd41e688d": {
+    "id": "012.4-024#1",
+    "command": "ls art/*.png",
+    "exit": 0,
+    "output": "art/boss10.png\tart/boss2.png  art/hero2.png  art/slime.png\nart/boss1.png\tart/hero1.png  art/hero3.png"
+  },
+  "2c2fb79d1adb3028": {
+    "id": "012.4-025#1",
+    "command": "cd art && rmdir backup",
+    "exit": 0,
+    "output": ""
+  },
+  "a8b6c3d905de6058": {
+    "id": "012.4-026#1",
+    "command": "cd art && cp readme.md backup && rm -r backup",
+    "exit": 0,
+    "output": ""
+  },
+  "561e8813a70838a0": {
+    "id": "012.4-026#2",
+    "command": "cd art && cp readme.md backup && rm -R backup",
+    "exit": 0,
+    "output": ""
+  },
+  "dc9f2af358c5fa6a": {
+    "id": "012.4-026#3",
+    "command": "cd art && cp readme.md backup && rm -rf backup",
+    "exit": 0,
+    "output": ""
+  },
+  "2d97d39adc008bac": {
+    "id": "012.4-027",
+    "command": "cd art; echo hero[13].png",
+    "exit": 0,
+    "output": "hero1.png hero3.png"
+  },
+  "107cd6b1e0423f7f": {
+    "id": "012.4-028",
+    "command": "cd art; echo boss?.png hero?.png",
+    "exit": 0,
+    "output": "boss1.png boss2.png hero1.png hero2.png hero3.png"
+  },
+  "ead1612d365a4108": {
+    "id": "012.4-029",
+    "command": "cd art; cat Notes.txt notes.txt",
+    "exit": 0,
+    "output": "Capitalised notes\nlower-case notes"
+  },
+  "db742484898f3abf": {
+    "id": "012.4-030",
+    "command": "cd art; cat readme.MD",
+    "exit": 1,
+    "output": "cat: readme.MD: No such file or directory"
+  },
+  "3253fbc143ee3ffe": {
+    "id": "012.4-031",
+    "command": "cd art; mkdir -p one/two/three; ls -R one",
+    "exit": 0,
+    "output": "one:\ntwo\n\none/two:\nthree\n\none/two/three:"
+  },
+  "c1b9c7b35c3d7eb9": {
+    "id": "012.4-032",
+    "command": "cd art; mv hero1.png hero2.png; cat hero2.png",
+    "exit": 0,
+    "output": "sprite: hero1"
+  },
+  "bec3af1b97208ec2": {
+    "id": "012.4-033",
+    "command": "cd art; echo hello > todo.txt; touch todo.txt; cat todo.txt",
+    "exit": 0,
+    "output": "hello"
+  },
+  "61c145db8b085cb1": {
+    "id": "012.4-034",
+    "command": "cd art; rm boss?.png; ls boss*",
+    "exit": 0,
+    "output": "boss10.png"
   },
   "90a6cdb9970cccc9": {
     "id": "013.1-001#1",
@@ -23,11 +539,965 @@
     "exit": 0,
     "output": "assets/\nassets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png\nassets/sounds/\nassets/sounds/jump.ogg\nassets/levels/\nassets/levels/level1.txt\nassets/README.md"
   },
+  "687201fc6c247b3c": {
+    "id": "013.1-019#1",
+    "command": "tar -xzf assets-0.9.tar.gz assets/README.md",
+    "exit": 0,
+    "output": ""
+  },
+  "7e0a202dd4254aee": {
+    "id": "013.1-019#2",
+    "command": "tar -xf assets-0.9.tar.gz assets/README.md",
+    "exit": 0,
+    "output": ""
+  },
+  "2c7b59bbfc592cb9": {
+    "id": "013.1-019#3",
+    "command": "tar -x -f assets-0.9.tar.gz assets/README.md",
+    "exit": 0,
+    "output": ""
+  },
+  "7532cfe8a1c76d24": {
+    "id": "013.1-019#4",
+    "command": "tar -zxf assets-0.9.tar.gz assets/README.md",
+    "exit": 0,
+    "output": ""
+  },
+  "005eb34cede4a724": {
+    "id": "013.1-020#1",
+    "command": "cp /etc/hostname n.txt; gzip -k n.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "b3c18ef35f896a7e": {
+    "id": "013.1-020#2",
+    "command": "cp /etc/hostname n.txt; gzip --keep n.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "66972527f667356f": {
+    "id": "013.1-021#1",
+    "command": "printf \"boom\\n\" > fight.log; gzip fight.log; gunzip fight.log.gz",
+    "exit": 0,
+    "output": ""
+  },
+  "93806ccef719a4ea": {
+    "id": "013.1-021#2",
+    "command": "printf \"boom\\n\" > fight.log; gzip fight.log; gzip -d fight.log.gz",
+    "exit": 0,
+    "output": ""
+  },
+  "411da345096fbca2": {
+    "id": "013.1-021#3",
+    "command": "printf \"boom\\n\" > fight.log; gzip fight.log; gzip --decompress fight.log.gz",
+    "exit": 0,
+    "output": ""
+  },
+  "3f37178d9ce45944": {
+    "id": "013.1-022#1",
+    "command": "tar -cf a.tar.xz -J assets",
+    "exit": 0,
+    "output": ""
+  },
+  "2ab533698efe662d": {
+    "id": "013.1-022#2",
+    "command": "tar -cf a.tar.xz --xz assets",
+    "exit": 0,
+    "output": ""
+  },
+  "8e8e6174b8eb1409": {
+    "id": "013.1-023#1",
+    "command": "zip -r assets.zip assets",
+    "exit": 0,
+    "output": "  adding: assets/ (stored 0%)\n  adding: assets/sprites/ (stored 0%)\n  adding: assets/sprites/hero.png (stored 0%)\n  adding: assets/sprites/slime.png (stored 0%)\n  adding: assets/sounds/ (stored 0%)\n  adding: assets/sounds/jump.ogg (stored 0%)\n  adding: assets/levels/ (stored 0%)\n  adding: assets/levels/level1.txt (deflated 42%)\n  adding: assets/README.md (stored 0%)"
+  },
+  "22c7a9e20a738840": {
+    "id": "013.1-023#2",
+    "command": "zip -rq assets.zip assets",
+    "exit": 0,
+    "output": ""
+  },
+  "77c17a21a3705262": {
+    "id": "013.1-023#3",
+    "command": "zip assets.zip -r assets",
+    "exit": 0,
+    "output": "  adding: assets/ (stored 0%)\n  adding: assets/sprites/ (stored 0%)\n  adding: assets/sprites/hero.png (stored 0%)\n  adding: assets/sprites/slime.png (stored 0%)\n  adding: assets/sounds/ (stored 0%)\n  adding: assets/sounds/jump.ogg (stored 0%)\n  adding: assets/levels/ (stored 0%)\n  adding: assets/levels/level1.txt (deflated 42%)\n  adding: assets/README.md (stored 0%)"
+  },
+  "9e72f70720ff2cc3": {
+    "id": "013.1-024#1",
+    "command": "zip -rq a.zip assets; mkdir out; unzip -q a.zip -d out",
+    "exit": 0,
+    "output": ""
+  },
+  "a5e8e853121da90c": {
+    "id": "013.1-025",
+    "command": "tar -tf assets-0.9.tar.gz | wc -l",
+    "exit": 0,
+    "output": "9"
+  },
+  "f79cf81e6933b785": {
+    "id": "013.1-027",
+    "command": "cd assets\ngzip -k README.md\nls -1",
+    "exit": 0,
+    "output": "levels\nREADME.md\nREADME.md.gz\nsounds\nsprites"
+  },
+  "2e182d59b60cb101": {
+    "id": "013.1-028",
+    "command": "mkdir out\ntar -xzf assets-0.9.tar.gz -C out\nls -1 out",
+    "exit": 0,
+    "output": "assets"
+  },
+  "7116761e72001af8": {
+    "id": "013.1-029",
+    "command": "tar -cJf a.tar.xz assets\nfile a.tar.xz",
+    "exit": 0,
+    "output": "a.tar.xz: XZ compressed data, checksum CRC64"
+  },
+  "33046385746ca5bb": {
+    "id": "013.1-030",
+    "command": "tar -cf all.tar assets\ngzip all.tar\nls -1 all*",
+    "exit": 0,
+    "output": "all.tar.gz"
+  },
   "d7f248cad1b30564": {
     "id": "013.2-001",
     "command": "printf 'boss\\nlevel\\nboss\\n' | sort | uniq",
     "exit": 0,
     "output": "boss\nlevel"
+  },
+  "5a484b956148cfb7": {
+    "id": "013.2-029#1",
+    "command": "grep -c WARN build.log",
+    "exit": 0,
+    "output": "2"
+  },
+  "4a7e381e4835dcf1": {
+    "id": "013.2-029#2",
+    "command": "grep -c 'WARN' build.log",
+    "exit": 0,
+    "output": "2"
+  },
+  "31b2af719989d271": {
+    "id": "013.2-029#3",
+    "command": "grep -c \"WARN\" build.log",
+    "exit": 0,
+    "output": "2"
+  },
+  "ea48593796412a4d": {
+    "id": "013.2-030#1",
+    "command": "printf '10\\n9\\n' | sort -n",
+    "exit": 0,
+    "output": "9\n10"
+  },
+  "d65e4e099a187cac": {
+    "id": "013.2-030#2",
+    "command": "printf '10\\n9\\n' | sort --numeric-sort",
+    "exit": 0,
+    "output": "9\n10"
+  },
+  "4e1949e67c71dd25": {
+    "id": "013.2-031#1",
+    "command": "cut -d, -f2 playtest.csv",
+    "exit": 0,
+    "output": "level\n1\n1\n2\n2\n2\n1\n3\n3"
+  },
+  "dcbecabfc0c48ca1": {
+    "id": "013.2-031#2",
+    "command": "cut -d ',' -f2 playtest.csv",
+    "exit": 0,
+    "output": "level\n1\n1\n2\n2\n2\n1\n3\n3"
+  },
+  "3e2d621457e04a04": {
+    "id": "013.2-031#3",
+    "command": "cut -f2 -d, playtest.csv",
+    "exit": 0,
+    "output": "level\n1\n1\n2\n2\n2\n1\n3\n3"
+  },
+  "ef83e9b6f8cb2386": {
+    "id": "013.2-031#4",
+    "command": "cut -d, -f 2 playtest.csv",
+    "exit": 0,
+    "output": "level\n1\n1\n2\n2\n2\n1\n3\n3"
+  },
+  "64fbe678ba233065": {
+    "id": "013.2-032#1",
+    "command": "echo hello >> log.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "bd349ca7cdc895a4": {
+    "id": "013.2-033#1",
+    "command": "ls nothere 2> err.txt; true",
+    "exit": 0,
+    "output": ""
+  },
+  "80f71c9fc93ab223": {
+    "id": "013.2-034#1",
+    "command": "grep -i HERO build.log",
+    "exit": 0,
+    "output": "WARN texture hero.png is not 32x32"
+  },
+  "b7b28b5632078ff5": {
+    "id": "013.2-034#2",
+    "command": "grep --ignore-case HERO build.log",
+    "exit": 0,
+    "output": "WARN texture hero.png is not 32x32"
+  },
+  "f500c5249e5fe2cd": {
+    "id": "013.2-035#1",
+    "command": "grep -E 'ghosts?' enemies.txt",
+    "exit": 0,
+    "output": "ghost\nghosts"
+  },
+  "6308b21154098f09": {
+    "id": "013.2-035#2",
+    "command": "grep -E \"ghosts?\" enemies.txt",
+    "exit": 0,
+    "output": "ghost\nghosts"
+  },
+  "f247b2b9f138e4a0": {
+    "id": "013.2-035#3",
+    "command": "grep -E 'ghost(s)?' enemies.txt",
+    "exit": 0,
+    "output": "ghost\nghosts"
+  },
+  "3c7fcbb0ea81de55": {
+    "id": "013.2-036#1",
+    "command": "head -n 5 build.log",
+    "exit": 0,
+    "output": "INFO compiling src/main.c\nINFO compiling src/player.c\nWARN texture hero.png is not 32x32\nINFO linking pixel-raiders\nERROR missing file sounds/boom.ogg"
+  },
+  "56d1e438fb77191b": {
+    "id": "013.2-036#2",
+    "command": "head -5 build.log",
+    "exit": 0,
+    "output": "INFO compiling src/main.c\nINFO compiling src/player.c\nWARN texture hero.png is not 32x32\nINFO linking pixel-raiders\nERROR missing file sounds/boom.ogg"
+  },
+  "738e7d4bce6e9a0d": {
+    "id": "013.2-036#3",
+    "command": "head -n5 build.log",
+    "exit": 0,
+    "output": "INFO compiling src/main.c\nINFO compiling src/player.c\nWARN texture hero.png is not 32x32\nINFO linking pixel-raiders\nERROR missing file sounds/boom.ogg"
+  },
+  "c3adb22401efb234": {
+    "id": "013.2-037#1",
+    "command": "printf 'a\\na\\nb\\n' | uniq -c",
+    "exit": 0,
+    "output": "      2 a\n      1 b"
+  },
+  "9ad5fe34c63d3b09": {
+    "id": "013.2-037#2",
+    "command": "printf 'a\\na\\nb\\n' | uniq --count",
+    "exit": 0,
+    "output": "      2 a\n      1 b"
+  },
+  "c69d072cc720ded1": {
+    "id": "013.2-038",
+    "command": "cut -d, -f3 playtest.csv | tail -n +2 | sort -n | head -n 2",
+    "exit": 0,
+    "output": "700\n950"
+  },
+  "dda2f91d809975a1": {
+    "id": "013.2-039",
+    "command": "sort enemies.txt | uniq -c | sort -rn | head -n 2",
+    "exit": 0,
+    "output": "      3 slime\n      2 goblin"
+  },
+  "869a72943809742c": {
+    "id": "013.2-040",
+    "command": "grep -E '^(bat|ghost)$' enemies.txt",
+    "exit": 0,
+    "output": "bat\nbat\nghost"
+  },
+  "ef60fe03b1f3551b": {
+    "id": "013.2-041",
+    "command": "echo first > notes.txt\necho second >> notes.txt\nwc -l < notes.txt",
+    "exit": 0,
+    "output": "2"
+  },
+  "405d75d68ad2bd8d": {
+    "id": "013.2-042",
+    "command": "ls nothere build.log 2> /dev/null",
+    "exit": 2,
+    "output": "build.log"
+  },
+  "273afa4bf1e504be": {
+    "id": "013.2-043",
+    "command": "grep '^s.*n$' enemies.txt",
+    "exit": 0,
+    "output": "skeleton"
+  },
+  "66c79efda7b44c2a": {
+    "id": "013.2-044",
+    "command": "tail -n 2 playtest.csv | cut -d, -f1,4",
+    "exit": 0,
+    "output": "mira,4\njonas,7"
+  },
+  "f6126418e8702d65": {
+    "id": "013.3-038#1",
+    "command": "touch deploy.sh; chmod u+x deploy.sh",
+    "exit": 0,
+    "output": ""
+  },
+  "0b31e8eed45ebc15": {
+    "id": "013.3-038#2",
+    "command": "touch deploy.sh; chmod +x deploy.sh",
+    "exit": 0,
+    "output": ""
+  },
+  "d890aba71304ab2a": {
+    "id": "013.3-038#3",
+    "command": "touch deploy.sh; chmod 755 deploy.sh",
+    "exit": 0,
+    "output": ""
+  },
+  "69630465072b8d1b": {
+    "id": "013.3-038#4",
+    "command": "touch deploy.sh; chmod 700 deploy.sh",
+    "exit": 0,
+    "output": ""
+  },
+  "e0188e9fe482046b": {
+    "id": "013.3-039#1",
+    "command": "crew=Mira",
+    "exit": 0,
+    "output": ""
+  },
+  "42fc3c5177d1daa0": {
+    "id": "013.3-039#2",
+    "command": "crew=\"Mira\"",
+    "exit": 0,
+    "output": ""
+  },
+  "26221ddd1c47d585": {
+    "id": "013.3-039#3",
+    "command": "crew='Mira'",
+    "exit": 0,
+    "output": ""
+  },
+  "fee732e60d990811": {
+    "id": "013.3-040#1",
+    "command": "set -- a b; echo $#",
+    "exit": 0,
+    "output": "2"
+  },
+  "71e917c523906a1b": {
+    "id": "013.3-041#1",
+    "command": "true; echo $?",
+    "exit": 0,
+    "output": "0"
+  },
+  "c93dbf8354af9e0a": {
+    "id": "013.3-042#1",
+    "command": "[ -d art ]",
+    "exit": 0,
+    "output": ""
+  },
+  "7155d8ea9322c43e": {
+    "id": "013.3-044#1",
+    "command": "bash check.sh art/hero.png",
+    "exit": 0,
+    "output": "found art/hero.png"
+  },
+  "d6dabaf5db8c5323": {
+    "id": "013.3-045#1",
+    "command": "./greet.sh",
+    "exit": 0,
+    "output": "Hello  and !"
+  },
+  "495054ebba0e3870": {
+    "id": "013.3-046#1",
+    "command": "echo -n hi",
+    "exit": 0,
+    "output": "hi"
+  },
+  "79359b492def22d1": {
+    "id": "013.3-047#1",
+    "command": "for e in slime bat ghost; do echo \"$e\"; done",
+    "exit": 0,
+    "output": "slime\nbat\nghost"
+  },
+  "fb02bc71cdd6ead2": {
+    "id": "013.3-047#2",
+    "command": "for e in slime bat ghost; do echo $e; done",
+    "exit": 0,
+    "output": "slime\nbat\nghost"
+  },
+  "94c04025855e958c": {
+    "id": "013.3-049",
+    "command": "name=Ada\necho \"Hello $name\"\necho 'Hello $name'",
+    "exit": 0,
+    "output": "Hello Ada\nHello $name"
+  },
+  "073815e4dea52c4f": {
+    "id": "013.3-050",
+    "command": "bash count.sh slime bat ghost",
+    "exit": 0,
+    "output": "3 arguments, first is slime"
+  },
+  "b63ed555fe5053f5": {
+    "id": "013.3-051",
+    "command": "for n in 1 2 3; do\n  echo \"level $n\"\ndone",
+    "exit": 0,
+    "output": "level 1\nlevel 2\nlevel 3"
+  },
+  "a336fb80602c6323": {
+    "id": "013.3-052",
+    "command": "mode=debug\nif [ \"$mode\" = \"release\" ]; then\n  echo \"shipping\"\nelse\n  echo \"testing\"\nfi",
+    "exit": 0,
+    "output": "testing"
+  },
+  "e37a24a5f847d77e": {
+    "id": "013.3-053",
+    "command": "bash stop.sh\necho \"status: $?\"",
+    "exit": 0,
+    "output": "before\nstatus: 3"
+  },
+  "fb6ff7428bc26ac1": {
+    "id": "013.3-054",
+    "command": "a=slime\nb=bat\n[ \"$a\"=\"$b\" ]\necho $?",
+    "exit": 0,
+    "output": "0"
+  },
+  "568591ff43b1c074": {
+    "id": "013.3-055",
+    "command": "bash greet.sh Mira",
+    "exit": 0,
+    "output": "Hello Mira and !"
+  },
+  "239dcb27dd17471c": {
+    "id": "013.3-056",
+    "command": "./name.sh",
+    "exit": 0,
+    "output": "I am ./name.sh"
+  },
+  "6ff3aa6313423da7": {
+    "id": "013.3-057",
+    "command": "./plain.sh 2> /dev/null\necho $?",
+    "exit": 0,
+    "output": "126"
+  },
+  "d571c401c48f07ab": {
+    "id": "013.3-058",
+    "command": "for f in art/*.jpg; do\n  echo \"$f\"\ndone",
+    "exit": 0,
+    "output": "art/*.jpg"
+  },
+  "3952b7276ff15bfb": {
+    "id": "013.3-059",
+    "command": "x=5\ny=$x\nx=7\necho \"$x $y\"",
+    "exit": 0,
+    "output": "7 5"
+  },
+  "13b3f24c6925d9f9": {
+    "id": "013.3-060",
+    "command": "bash sprites.sh",
+    "exit": 0,
+    "output": "checking art/bat.png\nchecking art/hero.png\nchecking art/slime.png\ndone"
+  },
+  "42acb452fc808383": {
+    "id": "014.2-023#1",
+    "command": "head -c 1024 /dev/zero | wc -c",
+    "exit": 0,
+    "output": "1024"
+  },
+  "550e2ed9c0ccb9c4": {
+    "id": "014.2-024#1",
+    "command": "lsmod",
+    "exit": 0,
+    "output": "Module                  Size  Used by\n9p                     61440  1\nfscache               196608  1 9p\nnetfs                  36864  2 fscache,9p\n9pnet_virtio           20480  1\n9pnet                  57344  2 9p,9pnet_virtio\nvirtio_pci             20480  0\nvirtio                 16384  2 9pnet_virtio,virtio_pci\nvirtio_ring            32768  3 9pnet_virtio,virtio,virtio_pci\nvirtio_pci_legacy_dev    16384  1 virtio_pci\npsmouse               147456  0\nvirtio_pci_modern_dev    16384  1 virtio_pci"
+  },
+  "3243d0d1dd1eefa8": {
+    "id": "014.2-025#2",
+    "command": "uname --machine",
+    "exit": 0,
+    "output": "i686"
+  },
+  "bc989ab23e278534": {
+    "id": "014.2-026#1",
+    "command": "ls /boot",
+    "exit": 0,
+    "output": "config-6.1.0-56-686\t System.map-6.1.0-56-686\ninitrd.img-6.1.0-56-686  vmlinuz-6.1.0-56-686"
+  },
+  "a45bc39137aa774b": {
+    "id": "014.2-026#2",
+    "command": "ls /boot/",
+    "exit": 0,
+    "output": "config-6.1.0-56-686\t System.map-6.1.0-56-686\ninitrd.img-6.1.0-56-686  vmlinuz-6.1.0-56-686"
+  },
+  "4e0e3370ca13f763": {
+    "id": "014.2-027",
+    "command": "head -c 5 /dev/zero | wc -c",
+    "exit": 0,
+    "output": "5"
+  },
+  "9364bc8e5aaba38c": {
+    "id": "014.2-028",
+    "command": "echo \"discard me\" > /dev/null; cat /dev/null | wc -c",
+    "exit": 0,
+    "output": "0"
+  },
+  "9f9510f5fab68f06": {
+    "id": "014.2-029",
+    "command": "stat -c %F /dev/null",
+    "exit": 0,
+    "output": "character special file"
+  },
+  "cde03d48724f1319": {
+    "id": "014.3-035#1",
+    "command": "ps -ef > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "02c7de42d1f915ba": {
+    "id": "014.3-035#2",
+    "command": "ps -Af > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "ab5a7260bf289aeb": {
+    "id": "014.3-035#3",
+    "command": "ps -fe > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "e74e40e32f88170f": {
+    "id": "014.3-035#4",
+    "command": "ps -fA > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "1bec784bb3196216": {
+    "id": "014.3-035#5",
+    "command": "ps -e -f > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "848dceb55599169c": {
+    "id": "014.3-035#6",
+    "command": "ps -A -f > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "f1a4cb21f5f1a02c": {
+    "id": "014.3-036#1",
+    "command": "free -h",
+    "exit": 0,
+    "output": "               total        used        free      shared  buff/cache   available\nMem:            95Mi        13Mi        71Mi        68Ki        15Mi        82Mi\nSwap:             0B          0B          0B"
+  },
+  "f03fa746a359d906": {
+    "id": "014.3-036#2",
+    "command": "free --human",
+    "exit": 0,
+    "output": "               total        used        free      shared  buff/cache   available\nMem:            95Mi        13Mi        71Mi        68Ki        15Mi        82Mi\nSwap:             0B          0B          0B"
+  },
+  "6bf77c4fb77b55f8": {
+    "id": "014.3-039#1",
+    "command": "test -r /proc/cpuinfo",
+    "exit": 0,
+    "output": ""
+  },
+  "1cd16e83f0cec90f": {
+    "id": "014.3-041",
+    "command": "grep workers /etc/tuxpixel/buildd.conf",
+    "exit": 0,
+    "output": "workers=4"
+  },
+  "d6b4e2f5c2386d8b": {
+    "id": "014.3-042",
+    "command": "grep -c ERROR /var/log/tuxpixel-build.log",
+    "exit": 0,
+    "output": "1"
+  },
+  "849bda1ece9a4c92": {
+    "id": "014.3-045",
+    "command": "free | wc -l",
+    "exit": 0,
+    "output": "3"
+  },
+  "291c9182941658fb": {
+    "id": "014.4-023#1",
+    "command": "ip route show",
+    "exit": 0,
+    "output": ""
+  },
+  "e8440fa2e4a372d7": {
+    "id": "014.4-023#2",
+    "command": "ip route",
+    "exit": 0,
+    "output": ""
+  },
+  "23d1b1c4487548cf": {
+    "id": "014.4-023#3",
+    "command": "ip r",
+    "exit": 0,
+    "output": ""
+  },
+  "01c9500b06412371": {
+    "id": "014.4-023#4",
+    "command": "ip route list",
+    "exit": 0,
+    "output": ""
+  },
+  "586b80b232ec4302": {
+    "id": "014.4-023#5",
+    "command": "ip -4 route show",
+    "exit": 0,
+    "output": ""
+  },
+  "ab58dfddc92b19c1": {
+    "id": "014.4-024#1",
+    "command": "ip -6 route show",
+    "exit": 0,
+    "output": ""
+  },
+  "724465d219312753": {
+    "id": "014.4-024#2",
+    "command": "ip -6 route",
+    "exit": 0,
+    "output": ""
+  },
+  "ca1c6873439ad167": {
+    "id": "014.4-024#3",
+    "command": "ip -6 r",
+    "exit": 0,
+    "output": ""
+  },
+  "9fa10c13e39c8433": {
+    "id": "014.4-024#4",
+    "command": "ip -6 route list",
+    "exit": 0,
+    "output": ""
+  },
+  "f447f43309692b00": {
+    "id": "014.4-025#1",
+    "command": "ss -tln > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "fc02894b4034bd75": {
+    "id": "014.4-025#2",
+    "command": "ss -ltn > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "82c4b6420c487809": {
+    "id": "014.4-025#3",
+    "command": "ss -nlt > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "77dc0c4ff5c770d7": {
+    "id": "014.4-025#4",
+    "command": "ss -lnt > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "4da942be2604b201": {
+    "id": "014.4-025#5",
+    "command": "ss -ntl > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "93d7f23396257006": {
+    "id": "014.4-025#6",
+    "command": "ss -t -l -n > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "834f006760dfda4b": {
+    "id": "014.4-025#7",
+    "command": "ss -tl -n > /dev/null",
+    "exit": 0,
+    "output": ""
+  },
+  "c85e63387fea96a2": {
+    "id": "014.4-027",
+    "command": "awk '/localhost/ {print $1}' /etc/hosts",
+    "exit": 0,
+    "output": "127.0.0.1\n::1"
+  },
+  "f6a70604cfcc6997": {
+    "id": "014.4-029",
+    "command": "grep -c nameserver /etc/resolv.conf",
+    "exit": 0,
+    "output": "2"
+  },
+  "fcb748665a03f0c4": {
+    "id": "015.1-029",
+    "command": "id -u",
+    "exit": 0,
+    "output": "1000"
+  },
+  "13fbe8755778b0ce": {
+    "id": "015.1-030",
+    "command": "getent passwd daemon | cut -d: -f3,7",
+    "exit": 0,
+    "output": "1:/usr/sbin/nologin"
+  },
+  "1fb433d52b497bd4": {
+    "id": "015.1-031",
+    "command": "stat -c '%U %G %a' /etc/shadow",
+    "exit": 0,
+    "output": "root shadow 640"
+  },
+  "c8a25639774cfd30": {
+    "id": "015.2-023#1",
+    "command": "groupadd playtest",
+    "exit": 0,
+    "output": ""
+  },
+  "39ce36d19ba51dd4": {
+    "id": "015.2-023#2",
+    "command": "sudo groupadd playtest",
+    "exit": 0,
+    "output": "^@"
+  },
+  "0a000d11c924fed4": {
+    "id": "015.2-024#1",
+    "command": "useradd -m noah",
+    "exit": 0,
+    "output": ""
+  },
+  "c78522b065990a43": {
+    "id": "015.2-024#2",
+    "command": "useradd noah -m",
+    "exit": 0,
+    "output": ""
+  },
+  "eafc52660b446874": {
+    "id": "015.2-024#3",
+    "command": "useradd --create-home noah",
+    "exit": 0,
+    "output": ""
+  },
+  "d9884e8536bbd1b2": {
+    "id": "015.2-025#1",
+    "command": "useradd -m noah && passwd -l noah",
+    "exit": 0,
+    "output": "passwd: password changed."
+  },
+  "98f6a5add3d2dda2": {
+    "id": "015.2-025#2",
+    "command": "useradd -m noah && sudo passwd -l noah",
+    "exit": 0,
+    "output": "^@passwd: password changed."
+  },
+  "a10e269f4aa95b70": {
+    "id": "015.2-026#1",
+    "command": "id -un",
+    "exit": 0,
+    "output": "mira"
+  },
+  "9ba196a4b1f40abd": {
+    "id": "015.2-026#2",
+    "command": "id -nu",
+    "exit": 0,
+    "output": "mira"
+  },
+  "7d501ead4d63e4d3": {
+    "id": "015.2-026#3",
+    "command": "id --user --name",
+    "exit": 0,
+    "output": "mira"
+  },
+  "f6db75daca08af56": {
+    "id": "015.2-027",
+    "command": "id jonas",
+    "exit": 0,
+    "output": "uid=1001(jonas) gid=1001(jonas) groups=1001(jonas)"
+  },
+  "87b94dd6eab9455c": {
+    "id": "015.2-028",
+    "command": "getent group sudo",
+    "exit": 0,
+    "output": "sudo:x:27:mira"
+  },
+  "4cfd3afc93edb6e4": {
+    "id": "015.2-029",
+    "command": "getent passwd ada | cut -d: -f1,3,6",
+    "exit": 0,
+    "output": "ada:1002:/home/ada"
+  },
+  "547a0b1bffcbd7af": {
+    "id": "015.3-017#1",
+    "command": "chmod 600 studio/draft.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "aa63b5ec8410f837": {
+    "id": "015.3-017#2",
+    "command": "chmod 0600 studio/draft.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "e28b007d38a91e09": {
+    "id": "015.3-018#1",
+    "command": "chmod 750 studio/build.sh",
+    "exit": 0,
+    "output": ""
+  },
+  "9cb0d0fff2ff50eb": {
+    "id": "015.3-018#2",
+    "command": "chmod 0750 studio/build.sh",
+    "exit": 0,
+    "output": ""
+  },
+  "019f17ed475adf0f": {
+    "id": "015.3-018#3",
+    "command": "chmod u=rwx,g=rx,o= studio/build.sh",
+    "exit": 0,
+    "output": ""
+  },
+  "8b4669592545aecb": {
+    "id": "015.3-019#1",
+    "command": "chown jonas /home/mira/studio/draft.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "5eb77aa906f4af68": {
+    "id": "015.3-019#2",
+    "command": "sudo chown jonas /home/mira/studio/draft.txt",
+    "exit": 0,
+    "output": "^@"
+  },
+  "3b70f65d45a4d99f": {
+    "id": "015.3-020#1",
+    "command": "ls -a",
+    "exit": 0,
+    "output": ".  ..  .bash_logout  .bashrc  .profile"
+  },
+  "a9b38eb54280ad05": {
+    "id": "015.3-020#2",
+    "command": "ls --all",
+    "exit": 0,
+    "output": ".  ..  .bash_logout  .bashrc  .profile"
+  },
+  "5a62c1a5ccffb799": {
+    "id": "015.3-021#1",
+    "command": "ls -l studio/level1.txt",
+    "exit": 0,
+    "output": "-rw-r--r-- 1 mira mira 27 Nov  2 09:30 studio/level1.txt"
+  },
+  "bd18d5c520a92706": {
+    "id": "015.3-021#2",
+    "command": "ls -lh studio/level1.txt",
+    "exit": 0,
+    "output": "-rw-r--r-- 1 mira mira 27 Nov  2 09:30 studio/level1.txt"
+  },
+  "2705bd58567d0f99": {
+    "id": "015.3-022#1",
+    "command": "chmod u+x studio/draft.txt",
+    "exit": 0,
+    "output": ""
+  },
+  "7fc2b4389721eecd": {
+    "id": "015.3-023#1",
+    "command": "chmod -R go-rwx studio/private",
+    "exit": 0,
+    "output": ""
+  },
+  "8fc8f97e00c12414": {
+    "id": "015.3-023#2",
+    "command": "chmod -R go= studio/private",
+    "exit": 0,
+    "output": ""
+  },
+  "cddeb401c2bf7527": {
+    "id": "015.3-023#3",
+    "command": "chmod --recursive go-rwx studio/private",
+    "exit": 0,
+    "output": ""
+  },
+  "fe83bd2c9b5b8f56": {
+    "id": "015.3-024",
+    "command": "ls -l studio/build.sh studio/level1.txt",
+    "exit": 0,
+    "output": "-rwxr-xr-x 1 mira mira 38 Nov  2 09:30 studio/build.sh\n-rw-r--r-- 1 mira mira 27 Nov  2 09:30 studio/level1.txt"
+  },
+  "80ef9e7c506d7f21": {
+    "id": "015.3-025",
+    "command": "stat -c \"%A %U:%G\" studio/release-notes.txt studio/art/hero.png",
+    "exit": 0,
+    "output": "-rw-r----- ada:release\n-rw-rw-r-- jonas:design"
+  },
+  "3d7639e8619c8f0e": {
+    "id": "015.3-026",
+    "command": "chmod 640 studio/draft.txt; stat -c \"%a %A\" studio/draft.txt",
+    "exit": 0,
+    "output": "640 -rw-r-----"
+  },
+  "9315d97d639cd121": {
+    "id": "015.3-027",
+    "command": "chmod u+x,go-r studio/level1.txt; stat -c %A studio/level1.txt",
+    "exit": 0,
+    "output": "-rwx------"
+  },
+  "9563947811c6f0d3": {
+    "id": "015.3-028",
+    "command": "cat /home/mira/studio/release-notes.txt",
+    "exit": 0,
+    "output": "v1.0: first public build."
+  },
+  "02ac256922654671": {
+    "id": "015.3-029",
+    "command": "cat /home/mira/studio/release-notes.txt",
+    "exit": 1,
+    "output": "cat: /home/mira/studio/release-notes.txt: Permission denied"
+  },
+  "7f55a988d6c79f3f": {
+    "id": "015.3-030",
+    "command": "chown jonas:design /home/mira/studio/draft.txt; stat -c \"%U:%G\" /home/mira/studio/draft.txt",
+    "exit": 0,
+    "output": "jonas:design"
+  },
+  "64544f1c4eb448ea": {
+    "id": "015.4-010#1",
+    "command": "ln -s pixel-raiders-1.1.tar builds/latest.tar",
+    "exit": 0,
+    "output": ""
+  },
+  "ea5385b512e49dec": {
+    "id": "015.4-010#2",
+    "command": "ln --symbolic pixel-raiders-1.1.tar builds/latest.tar",
+    "exit": 0,
+    "output": ""
+  },
+  "e19e2e7958c287dd": {
+    "id": "015.4-011#1",
+    "command": "ls -d */",
+    "exit": 0,
+    "output": "builds/"
+  },
+  "c5bce874f3ec6aee": {
+    "id": "015.4-012#1",
+    "command": "chmod +t builds",
+    "exit": 0,
+    "output": ""
+  },
+  "322b30bec19d08c1": {
+    "id": "015.4-012#2",
+    "command": "chmod o+t builds",
+    "exit": 0,
+    "output": ""
+  },
+  "279a2243cd767637": {
+    "id": "015.4-013",
+    "command": "ln -s pixel-raiders-1.1.tar builds/latest.tar; readlink builds/latest.tar",
+    "exit": 0,
+    "output": "pixel-raiders-1.1.tar"
+  },
+  "40218fe5c0ca5de6": {
+    "id": "015.4-014",
+    "command": "ls -d builds/*",
+    "exit": 0,
+    "output": "builds/pixel-raiders-1.0.tar  builds/pixel-raiders-1.1.tar"
+  },
+  "15e57f002868b9ad": {
+    "id": "015.4-015",
+    "command": "rm /tmp/jonas-sketch.txt; echo \"status $?\"",
+    "exit": 0,
+    "output": "rm: cannot remove '/tmp/jonas-sketch.txt': Operation not permitted\nstatus 1"
   },
   "09ff9a817c8bdef9": {
     "id": "lesson 011.1:151",

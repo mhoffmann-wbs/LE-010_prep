@@ -1,0 +1,1043 @@
+[
+  {
+    "id": "015.1-001",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.1"
+    ],
+    "stem": "Jonas asks Mira what makes `root` different from the other accounts on the studio’s Linux machines. Which answer is correct?",
+    "explanation": "Root is the superuser account with user ID 0. Because the kernel skips the usual permission checks for UID 0, a typo as root can wreck the system, which is why you work as a standard user and borrow root’s rights only when needed.",
+    "options": [
+      {
+        "text": "The name `root` is what the kernel checks, so any account with another name and UID 0 would be an ordinary user.",
+        "correct": false,
+        "rationale": "The kernel looks at the number, not the name: an account with UID 0 is root whatever it is called."
+      },
+      {
+        "text": "Its user ID is 0, and permission checks do not restrict it, so it can read, change and delete any file.",
+        "correct": true,
+        "rationale": "Root is defined by UID 0, not by its name; the kernel lets that user ID bypass the normal permission checks."
+      },
+      {
+        "text": "It is the first account created at install time and therefore holds the lowest user ID above 1000, the standard start.",
+        "correct": false,
+        "rationale": "Root’s ID is 0, and the first standard user gets 1000 on Debian."
+      },
+      {
+        "text": "It is simply a member of the group `sudo`, which grants extra rights to every user inside it.",
+        "correct": false,
+        "rationale": "Membership of `sudo` only allows running commands through `sudo`; it does not make an account root."
+      }
+    ]
+  },
+  {
+    "id": "015.1-002",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.1"
+    ],
+    "stem": "Ada opens a root shell on the build machine to look around. Where does root’s home directory live?",
+    "explanation": "Root’s home directory is `/root`. A root shell usually ends its prompt with `#`, where a standard user’s ends with `$`.",
+    "options": [
+      {
+        "text": "`/home/root`",
+        "correct": false,
+        "rationale": "Standard users live under `/home`, but root’s home is the separate top-level `/root`."
+      },
+      {
+        "text": "`/`",
+        "correct": false,
+        "rationale": "The prompt may start in `/` for some tools, but root’s home directory is `/root`."
+      },
+      {
+        "text": "`/var/root`",
+        "correct": false,
+        "rationale": "`/var` holds variable data such as logs; root’s home is not there."
+      },
+      {
+        "text": "`/root`",
+        "correct": true,
+        "rationale": "Root’s home is `/root`, so it stays reachable even if `/home` is on a separate disk that is not mounted."
+      }
+    ]
+  },
+  {
+    "id": "015.1-003",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.1"
+    ],
+    "stem": "Why does the studio tell its staff to work as standard users instead of logging in as root all day?",
+    "explanation": "Working with the least rights you need is a core security habit. You then borrow root’s power for single commands with `sudo`, so mistakes stay small and the log shows who did what.",
+    "options": [
+      {
+        "text": "A mistake or a malicious program then can only damage what that standard user is allowed to change.",
+        "correct": true,
+        "rationale": "Limited rights limit the damage: a bad `rm` or a malware download cannot reach the system files."
+      },
+      {
+        "text": "Standard users run commands faster because the kernel does not check permissions for them.",
+        "correct": false,
+        "rationale": "It is the other way round: root skips permission checks, standard users are checked on every access."
+      },
+      {
+        "text": "Root cannot start graphical programs, so a standard user is the only option for the desktop.",
+        "correct": false,
+        "rationale": "Root can run any program; the reason is safety, not capability."
+      },
+      {
+        "text": "Linux allows only one root session at a time, so the standard accounts avoid waiting for it.",
+        "correct": false,
+        "rationale": "Nothing limits the number of root sessions; the point is to keep the rights small."
+      }
+    ]
+  },
+  {
+    "id": "015.1-004",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.1"
+    ],
+    "terms": [
+      "015.1.vt1"
+    ],
+    "stem": "Mira needs to confirm that the password hashes are not readable by every standard user. Which file stores them, and who may read it?",
+    "explanation": "The user database is split in two so that programs can look up names and IDs without seeing secrets: `/etc/passwd` is world-readable, while the password hashes sit in `/etc/shadow`.",
+    "options": [
+      {
+        "text": "`/etc/passwd`, which only root may read.",
+        "correct": false,
+        "rationale": "Every user can read `/etc/passwd`, and it holds only an `x` in the password field."
+      },
+      {
+        "text": "`/etc/group`, which only the group `sudo` may read.",
+        "correct": false,
+        "rationale": "`/etc/group` lists groups and their members and is world-readable."
+      },
+      {
+        "text": "`/etc/shadow`, which only root (and the group `shadow`) may read.",
+        "correct": true,
+        "rationale": "`/etc/shadow` holds the hashes and is deliberately closed to ordinary users."
+      },
+      {
+        "text": "`/etc/skel`, which only the file’s owner may read.",
+        "correct": false,
+        "rationale": "`/etc/skel` is the template directory copied into new home directories."
+      }
+    ]
+  },
+  {
+    "id": "015.1-005",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.1",
+      "015.1.2"
+    ],
+    "terms": [
+      "015.1.vt2"
+    ],
+    "stem": "Before restarting the build machine, Ada wants to see who is logged in right now and what each of them is running. Which command shows that?",
+    "explanation": "`who` and `w` report who is logged in now, and `w` adds what each user is doing. `last` reads the login history, and `id` or `groups` describe one account’s IDs and groups.",
+    "options": [
+      {
+        "text": "`id`",
+        "correct": false,
+        "rationale": "`id` prints the user and group IDs of one account, not a list of sessions."
+      },
+      {
+        "text": "`last`",
+        "correct": false,
+        "rationale": "`last` shows the history of past logins, not what is running now."
+      },
+      {
+        "text": "`w`",
+        "correct": true,
+        "rationale": "`w` lists the logged-in users, their terminals and the command each one is running."
+      },
+      {
+        "text": "`groups`",
+        "correct": false,
+        "rationale": "`groups` lists the group names of an account."
+      }
+    ]
+  },
+  {
+    "id": "015.1-006",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.2"
+    ],
+    "stem": "Which of these /etc/passwd lines describes a system user, as the studio’s web server would use?",
+    "explanation": "System users belong to services. They have low IDs (below 1000 on Debian), usually no password and a shell such as `/usr/sbin/nologin` so nobody can log in as them.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes"
+    ],
+    "options": [
+      {
+        "text": "`www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin`",
+        "correct": true,
+        "rationale": "The UID is below 1000 and the shell is `/usr/sbin/nologin`, the typical marks of a service account."
+      },
+      {
+        "text": "`ada:x:1002:1002:Ada Lindqvist:/home/ada:/bin/bash`",
+        "correct": false,
+        "rationale": "UID 1002 and a real shell make this a standard user."
+      },
+      {
+        "text": "`jonas:x:1001:1001:Jonas Berg:/home/jonas:/bin/bash`",
+        "correct": false,
+        "rationale": "This is Jonas’s standard account with UID 1001."
+      },
+      {
+        "text": "`mira:x:1000:1000:Mira Okafor:/home/mira:/bin/bash`",
+        "correct": false,
+        "rationale": "UID 1000 is the first standard user on Debian."
+      }
+    ]
+  },
+  {
+    "id": "015.1-007",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.2"
+    ],
+    "stem": "The studio’s web server runs as `www-data` instead of root. What is the main security benefit?",
+    "explanation": "Giving each service its own low-privilege account is called privilege separation. A flaw in the service only exposes what that account may touch.",
+    "options": [
+      {
+        "text": "The account is protected by a longer password than any standard user would use.",
+        "correct": false,
+        "rationale": "System users usually have no password at all."
+      },
+      {
+        "text": "Root cannot read files that belong to a system user, so they stay private.",
+        "correct": false,
+        "rationale": "Root can read everything, whoever owns it."
+      },
+      {
+        "text": "The web server then runs faster, because system users skip the log-in checks.",
+        "correct": false,
+        "rationale": "Running as another user has no effect on speed; the point is limiting damage."
+      },
+      {
+        "text": "If the web server is hacked, the attacker only gets the few rights of that service account.",
+        "correct": true,
+        "rationale": "The service account owns almost nothing, so a compromise stays contained."
+      }
+    ]
+  },
+  {
+    "id": "015.1-008",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.2"
+    ],
+    "stem": "On a Debian system, which user ID range is normally used for system users such as `daemon` and `www-data`?",
+    "explanation": "Debian Policy puts system users below 1000 (IDs 100–999 are handed out as software is installed) and standard users from 1000. The limit is configured by `UID_MIN` in `/etc/login.defs`, and other distributions can differ.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes"
+    ],
+    "options": [
+      {
+        "text": "1000 to 59999, the range reserved for the services that run on the machine.",
+        "correct": false,
+        "rationale": "That range is where standard users begin on Debian."
+      },
+      {
+        "text": "Below 1000, apart from 0 (root).",
+        "correct": true,
+        "rationale": "Debian reserves IDs 1–999 for system accounts and starts standard users at 1000."
+      },
+      {
+        "text": "Exactly 0, because every service must run with root’s ID and rights.",
+        "correct": false,
+        "rationale": "Only root has UID 0; services get their own IDs."
+      },
+      {
+        "text": "Above 60000, so that they can never clash with the accounts of the studio’s people.",
+        "correct": false,
+        "rationale": "System accounts use the low numbers; the very high ones are for special accounts such as `nobody`."
+      }
+    ]
+  },
+  {
+    "id": "015.1-009",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.2"
+    ],
+    "stem": "Mira finds that the account `daemon` has `/usr/sbin/nologin` as its shell. What does that mean?",
+    "explanation": "Service accounts exist so that files and processes can be owned by something other than root. Setting the shell to `nologin` makes sure nobody uses them as a normal login.",
+    "options": [
+      {
+        "text": "The account is locked and its password has been removed from `/etc/shadow` by the administrator.",
+        "correct": false,
+        "rationale": "Locking an account is done in `/etc/shadow` with `passwd -l`; the shell field has nothing to do with it."
+      },
+      {
+        "text": "The account may only log in over SSH, never at the console.",
+        "correct": false,
+        "rationale": "`nologin` blocks interactive sessions altogether, including over SSH."
+      },
+      {
+        "text": "The account can log in but every command is recorded for the administrators.",
+        "correct": false,
+        "rationale": "No session is started at all, so no commands can be recorded."
+      },
+      {
+        "text": "Nobody can open an interactive session as that account; the shell just prints a refusal.",
+        "correct": true,
+        "rationale": "`nologin` is a stand-in shell that denies interactive logins while the account still owns files and processes."
+      }
+    ]
+  },
+  {
+    "id": "015.1-010",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.3"
+    ],
+    "terms": [
+      "015.1.t1"
+    ],
+    "stem": "Mira runs `sudo apt update` and is asked for a password. Whose password does `sudo` expect?",
+    "explanation": "`sudo` asks for your own password and then consults `/etc/sudoers` to see whether you may run the command as root. `su` asks for the target account’s password.",
+    "sourceLinks": [
+      "https://www.sudo.ws/docs/man/sudo.man/"
+    ],
+    "options": [
+      {
+        "text": "The root password, the same one that `su` would ask for.",
+        "correct": false,
+        "rationale": "That is `su` behaviour; `sudo` does not need the root password."
+      },
+      {
+        "text": "Her own, since `sudo` checks that she is allowed to run the command as root.",
+        "correct": true,
+        "rationale": "`sudo` authenticates the caller with the caller’s own password."
+      },
+      {
+        "text": "The password of the first user on the machine.",
+        "correct": false,
+        "rationale": "There is no such rule; `sudo` asks the user who typed the command."
+      },
+      {
+        "text": "No password at all: every member of `sudo` can run commands without asking.",
+        "correct": false,
+        "rationale": "By default a password is required; only a specific sudoers entry can drop that."
+      }
+    ]
+  },
+  {
+    "id": "015.1-011",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.3"
+    ],
+    "terms": [
+      "015.1.t1"
+    ],
+    "stem": "Jonas types `su - ada`. What does the dash do?",
+    "explanation": "With `su - NAME` you get a login shell: the environment variables, working directory and settings of the target account. Plain `su NAME` keeps most of your current environment. `exit` returns you.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/su.1.html"
+    ],
+    "options": [
+      {
+        "text": "It tells `su` to ask for Jonas’s own password instead of Ada’s.",
+        "correct": false,
+        "rationale": "`su` always asks for the password of the account you switch to; the dash does not change that."
+      },
+      {
+        "text": "It runs a single command and then returns to Jonas’s shell.",
+        "correct": false,
+        "rationale": "Running one command is `-c`; the dash selects a login shell."
+      },
+      {
+        "text": "It starts a login shell, so Jonas gets Ada’s environment and lands in her home directory.",
+        "correct": true,
+        "rationale": "The dash (like `-l`) makes the new shell a login shell with the target user’s environment."
+      },
+      {
+        "text": "It keeps Jonas’s current directory and environment unchanged.",
+        "correct": false,
+        "rationale": "That is what plain `su ada` does; the dash gives the full login environment."
+      }
+    ]
+  },
+  {
+    "id": "015.1-012",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.3"
+    ],
+    "stem": "On a Debian machine, which group lets its members run any command as root through `sudo`?",
+    "explanation": "Which group may use `sudo` comes from `/etc/sudoers`. Debian uses the group `sudo`; Red Hat-family systems use `wheel`. Mira is in `sudo` at TuxPixel, Jonas and Ada are not.",
+    "options": [
+      {
+        "text": "`sudo`",
+        "correct": true,
+        "rationale": "Debian’s default sudoers file grants this group the right to run any command."
+      },
+      {
+        "text": "`wheel`",
+        "correct": false,
+        "rationale": "This is the administrators’ group on Red Hat-family systems, not on Debian."
+      },
+      {
+        "text": "`shadow`",
+        "correct": false,
+        "rationale": "The group `shadow` may read `/etc/shadow`, nothing more."
+      },
+      {
+        "text": "`staff`",
+        "correct": false,
+        "rationale": "On Debian this group allows writing in `/usr/local`; it does not grant root rights."
+      }
+    ]
+  },
+  {
+    "id": "015.1-013",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.3"
+    ],
+    "terms": [
+      "015.1.t1"
+    ],
+    "stem": "Mira needs to read `/etc/shadow` once, without opening a root shell. Which command does that?",
+    "explanation": "Put `sudo` in front of the command you want to run as root. To run it as someone else you add `-u NAME`; without it the target is root.",
+    "sourceLinks": [
+      "https://www.sudo.ws/docs/man/sudo.man/"
+    ],
+    "options": [
+      {
+        "text": "`sudo cat /etc/shadow`",
+        "correct": true,
+        "rationale": "`sudo` runs the single command `cat /etc/shadow` with root’s rights."
+      },
+      {
+        "text": "`su cat /etc/shadow`",
+        "correct": false,
+        "rationale": "`su` takes a user name first, so it would look for an account called `cat`."
+      },
+      {
+        "text": "`sudo -u jonas cat /etc/shadow`",
+        "correct": false,
+        "rationale": "`-u jonas` runs the command as Jonas, who is not allowed to read the file either."
+      },
+      {
+        "text": "`cat /etc/shadow | sudo`",
+        "correct": false,
+        "rationale": "`sudo` needs a command to run; piping data into it does not elevate `cat`."
+      }
+    ]
+  },
+  {
+    "id": "015.1-014",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.3"
+    ],
+    "terms": [
+      "015.1.t1"
+    ],
+    "stem": "Ada runs `su` with no user name and a correct password. Which account does she become, and whose password did she type?",
+    "explanation": "`su` switches to the account you name, root by default, and asks for **that** account’s password. This is why `sudo`, which uses your own password and logs each command, is the usual way to gain root rights.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/su.1.html"
+    ],
+    "options": [
+      {
+        "text": "root, and she typed her own password.",
+        "correct": false,
+        "rationale": "`su` never uses the caller’s password; that is how `sudo` works."
+      },
+      {
+        "text": "Jonas, the user who last logged in, and she typed his password.",
+        "correct": false,
+        "rationale": "`su` does not pick accounts from login history; the default target is root."
+      },
+      {
+        "text": "root, and she typed root’s password.",
+        "correct": true,
+        "rationale": "Without a name `su` means root, and it checks the target account’s password."
+      },
+      {
+        "text": "root, and she typed the password of the group `sudo`.",
+        "correct": false,
+        "rationale": "Groups have no password for this purpose; `su` asks for the target account’s password."
+      }
+    ]
+  },
+  {
+    "id": "015.1-015",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.3"
+    ],
+    "stem": "Why do many administrators prefer `sudo` over sharing the root password?",
+    "explanation": "The benefit of `sudo` is accountability and fine-grained control: the log shows who ran which command, and the rights of each user are set in `/etc/sudoers`.",
+    "options": [
+      {
+        "text": "`sudo` needs no authentication at all, so it is always faster than logging in as root and typing a password.",
+        "correct": false,
+        "rationale": "It normally asks for the caller’s own password."
+      },
+      {
+        "text": "Each use is logged under the real user’s name, and access can be removed per person.",
+        "correct": true,
+        "rationale": "`sudo` ties every administrative command to an individual, which a shared root password cannot do."
+      },
+      {
+        "text": "`sudo` gives the user a permanent root shell that survives a reboot.",
+        "correct": false,
+        "rationale": "`sudo` elevates one command at a time; nothing persists afterwards."
+      },
+      {
+        "text": "`sudo` encrypts every command so that other users cannot read them.",
+        "correct": false,
+        "rationale": "`sudo` does not encrypt anything; it controls and logs who may run what."
+      }
+    ]
+  },
+  {
+    "id": "015.1-016",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.4"
+    ],
+    "terms": [
+      "015.1.t2"
+    ],
+    "stem": "Which TCP port does an SSH server listen on by default?",
+    "explanation": "SSH replaced Telnet because it encrypts everything, including passwords. `sshd` listens on TCP port 22 unless an administrator changes it.",
+    "sourceLinks": [
+      "https://man.openbsd.org/ssh"
+    ],
+    "options": [
+      {
+        "text": "23",
+        "correct": false,
+        "rationale": "Port 23 is Telnet, the unencrypted predecessor of SSH."
+      },
+      {
+        "text": "25",
+        "correct": false,
+        "rationale": "Port 25 is used for mail transfer (SMTP)."
+      },
+      {
+        "text": "443",
+        "correct": false,
+        "rationale": "Port 443 is HTTPS, encrypted web traffic."
+      },
+      {
+        "text": "22",
+        "correct": true,
+        "rationale": "SSH’s standard port is 22, and `ssh -p` is needed to use another one."
+      }
+    ]
+  },
+  {
+    "id": "015.1-017",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.4"
+    ],
+    "terms": [
+      "015.1.t2"
+    ],
+    "stem": "Ada wants to copy `level1.txt` from her current directory to her home directory on `build.tuxpixel.example`. Which command does that?",
+    "explanation": "`scp SOURCE DESTINATION` copies over SSH. A path with `user@host:` in front lives on the remote machine, so put it second to upload and first to download.",
+    "sourceLinks": [
+      "https://man.openbsd.org/scp"
+    ],
+    "options": [
+      {
+        "text": "`scp level1.txt ada@build.tuxpixel.example /home/ada/`",
+        "correct": false,
+        "rationale": "Without the colon, `scp` treats the host and the path as two separate local names."
+      },
+      {
+        "text": "`scp level1.txt ada@build.tuxpixel.example:/home/ada/`",
+        "correct": true,
+        "rationale": "The remote side is written `user@host:path`; the local file comes first, the destination second."
+      },
+      {
+        "text": "`scp ada@build.tuxpixel.example:/home/ada/ level1.txt`",
+        "correct": false,
+        "rationale": "The arguments are reversed, which would try to download from the server."
+      },
+      {
+        "text": "`ssh level1.txt ada@build.tuxpixel.example:/home/ada/`",
+        "correct": false,
+        "rationale": "`ssh` opens a login session and does not copy files."
+      }
+    ]
+  },
+  {
+    "id": "015.1-018",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.4"
+    ],
+    "terms": [
+      "015.1.t2"
+    ],
+    "stem": "When Mira connects to a new server for the first time and answers `yes` to the fingerprint question, where does `ssh` remember the server?",
+    "explanation": "The first connection shows the server’s host key fingerprint. Once trusted, the key is saved in `~/.ssh/known_hosts`; a later change triggers a warning because someone may be impersonating the server.",
+    "sourceLinks": [
+      "https://man.openbsd.org/ssh"
+    ],
+    "options": [
+      {
+        "text": "In `~/.ssh/authorized_keys` on the server.",
+        "correct": false,
+        "rationale": "That file lists the user public keys the server accepts."
+      },
+      {
+        "text": "In `/etc/passwd` on Mira’s own machine.",
+        "correct": false,
+        "rationale": "`/etc/passwd` is the local user database and is unrelated to SSH hosts."
+      },
+      {
+        "text": "In `~/.ssh/id_ed25519.pub` on the server.",
+        "correct": false,
+        "rationale": "That is the name of a user’s public key file, not a list of servers."
+      },
+      {
+        "text": "In `~/.ssh/known_hosts` on Mira’s own machine.",
+        "correct": true,
+        "rationale": "The client stores the host keys of servers it has trusted in `known_hosts`."
+      }
+    ]
+  },
+  {
+    "id": "015.1-019",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.5"
+    ],
+    "terms": [
+      "015.1.t3"
+    ],
+    "stem": "After running `ssh-keygen -t ed25519`, Mira has two new files. Which one may she safely give to other people and servers?",
+    "explanation": "`ssh-keygen` creates a pair: the private key (kept secret, optionally protected by a passphrase) and a public key with the same name plus `.pub`. Only the public key goes to servers.",
+    "sourceLinks": [
+      "https://man.openbsd.org/ssh-keygen"
+    ],
+    "options": [
+      {
+        "text": "`~/.ssh/id_ed25519.pub`",
+        "correct": true,
+        "rationale": "The `.pub` file is meant to be shared and copied into servers."
+      },
+      {
+        "text": "`~/.ssh/id_ed25519`, the private key.",
+        "correct": false,
+        "rationale": "The private key must never leave Mira’s machine."
+      },
+      {
+        "text": "`~/.ssh/known_hosts`, the list of trusted hosts.",
+        "correct": false,
+        "rationale": "This file is created later by `ssh`, and it is not a key pair member."
+      },
+      {
+        "text": "`~/.ssh/config`, the client configuration.",
+        "correct": false,
+        "rationale": "This optional file stores client settings and is not generated by `ssh-keygen`."
+      }
+    ]
+  },
+  {
+    "id": "015.1-020",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.5"
+    ],
+    "terms": [
+      "015.1.t4"
+    ],
+    "stem": "To log in to the build server without a password, Ada adds her public key to the server. Where exactly does it go?",
+    "explanation": "The server compares the key Ada presents with those in `authorized_keys` of the target account. `ssh-copy-id` appends the public key to that file for you.",
+    "sourceLinks": [
+      "https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT"
+    ],
+    "options": [
+      {
+        "text": "A line in `~/.ssh/known_hosts` in her home directory on the server.",
+        "correct": false,
+        "rationale": "`known_hosts` is used by the client to remember servers, not to authorise users."
+      },
+      {
+        "text": "A line in `~/.ssh/authorized_keys` in her home directory on her laptop.",
+        "correct": false,
+        "rationale": "The server decides who may log in, so the file must be on the server."
+      },
+      {
+        "text": "A line in `~/.ssh/authorized_keys` in her home directory on the server.",
+        "correct": true,
+        "rationale": "The server accepts the keys listed in that file for the account."
+      },
+      {
+        "text": "A line in `/etc/shadow`, next to her password hash.",
+        "correct": false,
+        "rationale": "`/etc/shadow` stores password data; SSH keys do not go there."
+      }
+    ]
+  },
+  {
+    "id": "015.1-021",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.5"
+    ],
+    "stem": "What is the main advantage of public key authentication over typing a password?",
+    "explanation": "A key pair lets the client prove its identity without sending a secret. If the private key has a passphrase, a stolen file is also useless without it.",
+    "options": [
+      {
+        "text": "The public key is secret and must be hidden from the owner of the server.",
+        "correct": false,
+        "rationale": "It is the private key that is secret; the public key is meant to be shared."
+      },
+      {
+        "text": "The server gets to read the private key once and then caches it.",
+        "correct": false,
+        "rationale": "The private key never leaves the client."
+      },
+      {
+        "text": "The private key is never sent over the network, so nothing can be guessed.",
+        "correct": true,
+        "rationale": "The server only needs proof that you hold the private key, which is never sent."
+      },
+      {
+        "text": "It makes the connection faster because no encryption is needed.",
+        "correct": false,
+        "rationale": "The session is still encrypted; authentication does not change that."
+      }
+    ]
+  },
+  {
+    "id": "015.1-022",
+    "objectiveId": "015.1",
+    "kind": "multi",
+    "areas": [
+      "015.1.3",
+      "015.1.1"
+    ],
+    "terms": [
+      "015.1.t1"
+    ],
+    "stem": "Which statements about `sudo` and `su` are true? (Choose TWO.)",
+    "explanation": "`sudo` runs one command with elevated rights after checking sudoers and the caller’s password. `su` starts a shell as another user and asks for that user’s password.",
+    "select": 2,
+    "options": [
+      {
+        "text": "`sudo` asks for the password of the user who runs it.",
+        "correct": true,
+        "rationale": "`sudo` authenticates the caller."
+      },
+      {
+        "text": "`su` without a name asks for root’s password.",
+        "correct": true,
+        "rationale": "The default target of `su` is root and its password is required."
+      },
+      {
+        "text": "`sudo` always requires the root password.",
+        "correct": false,
+        "rationale": "It uses the caller’s own password."
+      },
+      {
+        "text": "`su -` keeps the caller’s environment and working directory unchanged.",
+        "correct": false,
+        "rationale": "The dash requests a full login shell with the target user’s environment."
+      },
+      {
+        "text": "Only the account root may run `sudo`.",
+        "correct": false,
+        "rationale": "Users listed in `/etc/sudoers` or in the group `sudo` may run it."
+      }
+    ]
+  },
+  {
+    "id": "015.1-023",
+    "objectiveId": "015.1",
+    "kind": "multi",
+    "areas": [
+      "015.1.2",
+      "015.1.1"
+    ],
+    "stem": "Which statements about system users on Debian are true? (Choose TWO.)",
+    "explanation": "System accounts exist so services can run with limited rights. Their IDs lie below 1000 and their shell is normally `nologin`.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "They usually have a shell such as `/usr/sbin/nologin`, so nobody can log in as them.",
+        "correct": true,
+        "rationale": "They exist for services, not for people."
+      },
+      {
+        "text": "They always have the user ID 0.",
+        "correct": false,
+        "rationale": "Only root has UID 0."
+      },
+      {
+        "text": "Their home directory is always `/root`.",
+        "correct": false,
+        "rationale": "Each system user has its own directory or none; `/root` belongs to root."
+      },
+      {
+        "text": "They must be members of the group `sudo`.",
+        "correct": false,
+        "rationale": "Most services have no administrator rights at all."
+      },
+      {
+        "text": "Their user IDs are normally below 1000.",
+        "correct": true,
+        "rationale": "Debian reserves 1–999 for system accounts."
+      }
+    ]
+  },
+  {
+    "id": "015.1-024",
+    "objectiveId": "015.1",
+    "kind": "multi",
+    "areas": [
+      "015.1.5",
+      "015.1.4"
+    ],
+    "terms": [
+      "015.1.t3",
+      "015.1.t4"
+    ],
+    "stem": "Mira sets up key-based logins for the build server. Which statements are correct? (Choose TWO.)",
+    "explanation": "Public key authentication needs the public key on the server and the private key on the client. `ssh-keygen` creates the pair, and `known_hosts` is an unrelated client-side file.",
+    "sourceLinks": [
+      "https://man.openbsd.org/ssh-keygen",
+      "https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "The private key is added to `authorized_keys` so that the server can verify it.",
+        "correct": false,
+        "rationale": "A private key must never be handed to anyone."
+      },
+      {
+        "text": "`~/.ssh/known_hosts` on the server lists the users who may log in.",
+        "correct": false,
+        "rationale": "`known_hosts` is the client-side list of trusted servers."
+      },
+      {
+        "text": "A passphrase is sent to the server together with the public key.",
+        "correct": false,
+        "rationale": "A passphrase only unlocks the private key on the client."
+      },
+      {
+        "text": "The public key is appended to `~/.ssh/authorized_keys` of the account on the server.",
+        "correct": true,
+        "rationale": "The server reads that file to learn which keys may log in."
+      },
+      {
+        "text": "The private key stays on Mira’s machine and is never copied to the server.",
+        "correct": true,
+        "rationale": "Only the public half needs to be shared."
+      }
+    ]
+  },
+  {
+    "id": "015.1-025",
+    "objectiveId": "015.1",
+    "kind": "fill",
+    "areas": [
+      "015.1.5"
+    ],
+    "terms": [
+      "015.1.t3"
+    ],
+    "stem": "Mira needs a new Ed25519 key pair for logins to the build server. Type the command that generates it, naming the key type.",
+    "explanation": "`ssh-keygen -t TYPE` creates a key pair; Ed25519 is the type OpenSSH uses by default.",
+    "sourceLinks": [
+      "https://man.openbsd.org/ssh-keygen"
+    ],
+    "accept": [
+      "ssh-keygen -t ed25519"
+    ],
+    "caseSensitive": true
+  },
+  {
+    "id": "015.1-026",
+    "objectiveId": "015.1",
+    "kind": "fill",
+    "areas": [
+      "015.1.4"
+    ],
+    "terms": [
+      "015.1.t2"
+    ],
+    "stem": "The build server’s SSH daemon listens on port 2222. Type the command that connects as `ada` to `build.tuxpixel.example` on that port.",
+    "explanation": "Lower-case `-p` gives `ssh` the port. (`scp` uses a capital `-P` instead.) The user can be given as `user@host` or with `-l`.",
+    "sourceLinks": [
+      "https://man.openbsd.org/ssh"
+    ],
+    "accept": [
+      "ssh -p 2222 ada@build.tuxpixel.example",
+      "ssh ada@build.tuxpixel.example -p 2222",
+      "ssh -l ada -p 2222 build.tuxpixel.example"
+    ],
+    "caseSensitive": true
+  },
+  {
+    "id": "015.1-027",
+    "objectiveId": "015.1",
+    "kind": "fill",
+    "areas": [
+      "015.1.5"
+    ],
+    "terms": [
+      "015.1.t4"
+    ],
+    "stem": "Type the path, starting from the home directory, of the file in which the server lists the public keys allowed to log in to that account.",
+    "explanation": "Each account’s `authorized_keys` file sits in its `.ssh` directory; sshd ignores it if the permissions are too open.",
+    "sourceLinks": [
+      "https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT"
+    ],
+    "accept": [
+      "~/.ssh/authorized_keys",
+      "$HOME/.ssh/authorized_keys",
+      ".ssh/authorized_keys"
+    ],
+    "caseSensitive": true
+  },
+  {
+    "id": "015.1-028",
+    "objectiveId": "015.1",
+    "kind": "fill",
+    "areas": [
+      "015.1.1",
+      "015.1.2"
+    ],
+    "terms": [
+      "015.1.vt2"
+    ],
+    "stem": "Type the command that prints your user ID, your group ID and your supplementary groups, with both numbers and names.",
+    "explanation": "`id` prints `uid=… gid=… groups=…`. Options such as `-u`, `-g` and `-G` show single parts, and `-n` swaps numbers for names.",
+    "accept": [
+      "id"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}"
+    }
+  },
+  {
+    "id": "015.1-029",
+    "objectiveId": "015.1",
+    "kind": "output",
+    "areas": [
+      "015.1.1"
+    ],
+    "stem": "Mira runs a command in the studio’s terminal. What does it print?",
+    "explanation": "`id -u` prints only the numeric user ID. Standard users start at 1000 on Debian; Mira, the first one, got 1000.",
+    "command": "id -u",
+    "output": "1000",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "1000",
+        "correct": true,
+        "rationale": "Mira is the first standard user on the machine, so her UID is 1000."
+      },
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "UID 0 belongs to root; Mira works as a standard user."
+      },
+      {
+        "text": "27",
+        "correct": false,
+        "rationale": "27 is the group ID of `sudo`, not her user ID."
+      },
+      {
+        "text": "1001",
+        "correct": false,
+        "rationale": "1001 is Jonas’s user ID."
+      }
+    ]
+  },
+  {
+    "id": "015.1-030",
+    "objectiveId": "015.1",
+    "kind": "output",
+    "areas": [
+      "015.1.2"
+    ],
+    "stem": "What does this command print for the system account `daemon`? (Fields: UID, then login shell.)",
+    "explanation": "`getent passwd NAME` prints the account’s /etc/passwd line, and `cut` picks fields 3 (UID) and 7 (shell). System users have low IDs and `/usr/sbin/nologin`.",
+    "command": "getent passwd daemon | cut -d: -f3,7",
+    "output": "1:/usr/sbin/nologin",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "1000:/bin/bash",
+        "correct": false,
+        "rationale": "That would be a standard user such as Mira."
+      },
+      {
+        "text": "0:/usr/sbin/nologin",
+        "correct": false,
+        "rationale": "UID 0 is root; `daemon` has a different, low ID."
+      },
+      {
+        "text": "1:/bin/bash",
+        "correct": false,
+        "rationale": "The UID is right for a system user, but a service account does not get a login shell."
+      },
+      {
+        "text": "1:/usr/sbin/nologin",
+        "correct": true,
+        "rationale": "A system user has a UID far below 1000 and `nologin` as its shell."
+      }
+    ]
+  },
+  {
+    "id": "015.1-031",
+    "objectiveId": "015.1",
+    "kind": "output",
+    "areas": [
+      "015.1.1"
+    ],
+    "terms": [
+      "015.1.vt1"
+    ],
+    "stem": "In the format owner, group, octal mode, what does this command print for the file holding the password hashes?",
+    "explanation": "Only root can write `/etc/shadow`, and only root and the group `shadow` can read it (mode 640), so standard users cannot see the hashes.",
+    "command": "stat -c '%U %G %a' /etc/shadow",
+    "output": "root shadow 640",
+    "mode": "type"
+  }
+]

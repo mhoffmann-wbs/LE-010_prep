@@ -1,0 +1,629 @@
+[
+  {
+    "id": "012.2-001",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Ada wants to read the full reference for the `cp` command on the machine itself. Which command opens it?",
+    "options": [
+      { "text": "`help cp`", "correct": false, "rationale": "`help` documents only Bash builtins, and `cp` is an external program." },
+      { "text": "`which cp`", "correct": false, "rationale": "`which` prints the path of the program, not its documentation." },
+      { "text": "`man cp`", "correct": true, "rationale": "`man` opens the manual page of the named command in a pager." },
+      { "text": "`apropos cp`", "correct": false, "rationale": "`apropos` searches page descriptions and lists matches; it opens nothing." }
+    ],
+    "explanation": "`man NAME` shows the manual page in a pager. The page has the command’s synopsis and every option, and it works offline.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/man.1.html"]
+  },
+  {
+    "id": "012.2-002",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Mira opened `man ls` and wants to leave the page. Which key quits the pager?",
+    "options": [
+      { "text": "`q`", "correct": true, "rationale": "The pager quits when you press q." },
+      { "text": "`x`", "correct": false, "rationale": "This key does nothing special in the man pager." },
+      { "text": "`Enter`", "correct": false, "rationale": "Enter scrolls down by one line." },
+      { "text": "`Tab`", "correct": false, "rationale": "Tab is not bound to anything useful in the pager." }
+    ],
+    "explanation": "`man` shows pages through a pager (usually `less`). Space and `f` go forward, `b` goes back, `/` searches and `q` quits."
+  },
+  {
+    "id": "012.2-003",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "While reading a man page, Jonas wants to find the word “human” in it. Which input starts a forward search?",
+    "options": [
+      { "text": "`q human` followed by Enter", "correct": false, "rationale": "`q` quits the pager, so nothing is searched." },
+      { "text": "`h human` followed by Enter", "correct": false, "rationale": "`h` opens the pager’s own help screen." },
+      { "text": "`f human` followed by Enter", "correct": false, "rationale": "`f` moves one page forward and takes no search text." },
+      { "text": "`/human` followed by Enter", "correct": true, "rationale": "A slash starts a forward search in the pager, and `n` jumps to the next hit." }
+    ],
+    "explanation": "Inside the pager, `/text` searches forward, `n` goes to the next match and `N` to the previous one."
+  },
+  {
+    "id": "012.2-004",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Which manual section holds file formats and configuration files such as `/etc/passwd`?",
+    "options": [
+      { "text": "Section 1", "correct": false, "rationale": "Section 1 covers user commands." },
+      { "text": "Section 5", "correct": true, "rationale": "Section 5 describes file formats and conventions." },
+      { "text": "Section 8", "correct": false, "rationale": "Section 8 covers system administration commands." },
+      { "text": "Section 3", "correct": false, "rationale": "Section 3 covers library functions for programmers." }
+    ],
+    "explanation": "The common sections are 1 (user commands), 5 (file formats and configuration files) and 8 (administration commands). `man 5 passwd` shows the file format.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/man-pages.7.html"]
+  },
+  {
+    "id": "012.2-005",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Mira runs `man passwd` and reads about changing a password, but she wants the description of the `/etc/passwd` file. What should she run?",
+    "options": [
+      { "text": "`man passwd 5`", "correct": false, "rationale": "The section must come before the page name." },
+      { "text": "`man 5 passwd`", "correct": true, "rationale": "Putting the section number before the name selects section 5, the file format." },
+      { "text": "`man -5 passwd`", "correct": false, "rationale": "`-5` is not an option to select a section." },
+      { "text": "`man passwd --file`", "correct": false, "rationale": "There is no such option; the section number is how you choose." }
+    ],
+    "explanation": "The same name can exist in several sections. `man` shows the first match, here section 1, the command. `man 5 passwd` asks for the file format."
+  },
+  {
+    "id": "012.2-006",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "What does `man -k copy` do?",
+    "options": [
+      { "text": "It searches inside the full text of every man page for “copy”", "correct": false, "rationale": "Only names and short descriptions are searched, not the page bodies." },
+      { "text": "It opens the man page named `copy` in section k", "correct": false, "rationale": "`-k` is not a section; it selects the keyword search." },
+      { "text": "It lists the files on disk whose names contain “copy”", "correct": false, "rationale": "File names are searched with `find`; `man -k` knows only the manual database." },
+      { "text": "It searches the names and short descriptions of all man pages for the word “copy”", "correct": true, "rationale": "The `-k` option is a keyword search over the one-line descriptions." }
+    ],
+    "explanation": "`man -k WORD` (the same as `apropos WORD`) is the way to find a command whose name you can’t remember. It matches names and one-line descriptions.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/apropos.1.html"]
+  },
+  {
+    "id": "012.2-007",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Which command is equivalent to `man -k`?",
+    "options": [
+      { "text": "`apropos`", "correct": true, "rationale": "`apropos WORD` does a keyword search in the descriptions." },
+      { "text": "`whatis`", "correct": false, "rationale": "`whatis` is the same as `man -f`: it looks up an exact name." },
+      { "text": "`whereis`", "correct": false, "rationale": "`whereis` locates the binary, source and manual files of a command." },
+      { "text": "`mandb`", "correct": false, "rationale": "`mandb` builds the database that these searches use; it doesn’t search." }
+    ],
+    "explanation": "`apropos` and `man -k` are the same search; `whatis` and `man -f` are the same lookup of an exact name.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/apropos.1.html"]
+  },
+  {
+    "id": "012.2-008",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Jonas wants a one-line description of exactly the command `tar`, not a list of every page that mentions it. Which command does this?",
+    "options": [
+      { "text": "`man -w tar`", "correct": false, "rationale": "`man -w` prints the file path of the page, not its description." },
+      { "text": "`man -k tar`", "correct": false, "rationale": "This matches every description that contains “tar”, a longer list." },
+      { "text": "`whatis tar`", "correct": true, "rationale": "`whatis` prints the short description of pages with exactly that name." },
+      { "text": "`tar --version`", "correct": false, "rationale": "That prints the version of the program, not a description." }
+    ],
+    "explanation": "`whatis NAME` (or `man -f NAME`) shows the one-line description from the page’s NAME section for exact name matches."
+  },
+  {
+    "id": "012.2-009",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "In the SYNOPSIS `cp [OPTION]... SOURCE DEST`, what do the square brackets and the three dots mean?",
+    "options": [
+      { "text": "`OPTION` is required, and it can be used once only", "correct": false, "rationale": "Required parts are shown without brackets." },
+      { "text": "`OPTION` is a file name, and it must be typed in capitals", "correct": false, "rationale": "Upper case words are placeholders for real values and are not typed as shown." },
+      { "text": "`OPTION` is optional, and it can be repeated", "correct": true, "rationale": "Brackets mark something optional; dots mean more of the same." },
+      { "text": "`OPTION` is a comment, and the shell ignores it", "correct": false, "rationale": "The shell doesn’t read the manual notation; it’s just a convention." }
+    ],
+    "explanation": "In synopsis notation, `[ ]` means optional, `...` means “one or more of these” and upper-case words are placeholders you replace with real values.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/man-pages.7.html"]
+  },
+  {
+    "id": "012.2-010",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Where do the manual pages of a Debian system live?",
+    "options": [
+      { "text": "In directories under `/usr/share/man/`, one per section", "correct": true, "rationale": "Compressed pages are stored in `man1`, `man5` and the other section directories." },
+      { "text": "In `/usr/share/doc/`, one directory per package", "correct": false, "rationale": "This holds extra package documentation such as README files, not the man pages." },
+      { "text": "In `/etc/man/`, next to the configuration files", "correct": false, "rationale": "No: `/etc` is for configuration files." },
+      { "text": "In `/var/man/`, with the logs", "correct": false, "rationale": "`/var` holds variable data such as logs, not manual pages." }
+    ],
+    "explanation": "`man -w NAME` prints the file a page is read from, for instance `/usr/share/man/man1/mkdir.1.gz`. The pages are gzip compressed, one directory per section.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s11.html"]
+  },
+  {
+    "id": "012.2-011",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t3"],
+    "stem": "Besides man pages, packages install extra documentation such as README files, changelogs and example configuration files. Where?",
+    "options": [
+      { "text": "`/usr/share/man/`", "correct": false, "rationale": "This directory holds the man pages themselves." },
+      { "text": "`/etc/doc/`", "correct": false, "rationale": "No such standard directory exists; `/etc` is for configuration." },
+      { "text": "`/var/lib/doc/`", "correct": false, "rationale": "`/var/lib` holds program state, not documentation." },
+      { "text": "`/usr/share/doc/`", "correct": true, "rationale": "Each package gets its own subdirectory here." }
+    ],
+    "explanation": "`/usr/share/doc/NAME/` usually holds README files, `copyright`, `changelog.gz` and sometimes an `examples` folder. Files ending in `.gz` can be read with `zcat`.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s11.html"]
+  },
+  {
+    "id": "012.2-012",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t3"],
+    "stem": "Before changing a service’s settings, Mira wants a sample configuration file for the package `foo`. Where should she look first?",
+    "options": [
+      { "text": "In `/usr/bin/foo/`, next to the program", "correct": false, "rationale": "`/usr/bin` holds executables, not sample files." },
+      { "text": "In `/usr/share/doc/foo/`, for example an `examples` folder", "correct": true, "rationale": "Package documentation and sample files are installed under the package’s doc directory." },
+      { "text": "In `/home/foo/`, the package’s home directory", "correct": false, "rationale": "Packages don’t get a home directory under `/home`." },
+      { "text": "In `/var/log/foo/`, with the logs", "correct": false, "rationale": "Logs show what happened; they are not templates for configuration." }
+    ],
+    "explanation": "Many packages ship sample configuration files in `/usr/share/doc/PACKAGE/` (often in `examples`). They make a good starting point for your own file."
+  },
+  {
+    "id": "012.2-013",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "Which command prints a short usage summary of `ls` without opening the manual?",
+    "options": [
+      { "text": "`ls --manual`", "correct": false, "rationale": "`ls` has no `--manual` option, so this is an error." },
+      { "text": "`ls --help`", "correct": true, "rationale": "`--help` makes most GNU tools print a usage summary and exit." },
+      { "text": "`ls -?`", "correct": false, "rationale": "This is not a valid option for `ls`." },
+      { "text": "`ls --usage`", "correct": false, "rationale": "`ls` doesn’t implement `--usage`." }
+    ],
+    "explanation": "Most command line tools accept `--help`. The text starts with a `Usage:` line, similar to the SYNOPSIS of the man page, and then lists the options.",
+    "sourceLinks": ["https://www.gnu.org/prep/standards/html_node/_002d_002dhelp.html"]
+  },
+  {
+    "id": "012.2-014",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "Ada types `df -h` and sees sizes like `1.2G`. What does `-h` mean here?",
+    "options": [
+      { "text": "Show a help text for the command", "correct": false, "rationale": "Help is requested with `--help`; `-h` isn’t help in `df`." },
+      { "text": "Hide the header line of the table", "correct": false, "rationale": "There is no option to hide the header with `-h`." },
+      { "text": "Show only hidden file systems", "correct": false, "rationale": "`-h` doesn’t filter by hidden status." },
+      { "text": "Print sizes in human-readable form", "correct": true, "rationale": "In `ls` and `df`, `-h` stands for “human-readable”." }
+    ],
+    "explanation": "`-h` is not always “help”. In `ls -lh` and `df -h` it means human-readable sizes. `--help` is the dependable way to ask for usage."
+  },
+  {
+    "id": "012.2-015",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "Why does `man cd` print “No manual entry for cd”, even though `cd` works?",
+    "options": [
+      { "text": "`cd` is a Bash builtin and has no page of its own; `help cd` explains it", "correct": true, "rationale": "Builtins are documented by the shell’s `help` command and in the Bash manual." },
+      { "text": "`cd` is a hidden command that only root may read about", "correct": false, "rationale": "Nothing is hidden: any user can read manual pages." },
+      { "text": "`cd` is stored in section 9, which is not installed", "correct": false, "rationale": "The page doesn’t exist in any section, because it is not a separate program." },
+      { "text": "`man` can only show pages of programs that were written in C", "correct": false, "rationale": "The language a program is written in is irrelevant to man pages." }
+    ],
+    "explanation": "Bash builtins such as `cd` are part of the shell. Use `help cd` for a short description, or read the shell’s own man page, `man bash`."
+  },
+  {
+    "id": "012.2-016",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "What does `--version` usually do when it is given to a command like `cp`?",
+    "options": [
+      { "text": "It lists the file versions that were backed up", "correct": false, "rationale": "`--version` is unrelated to backups or file versions." },
+      { "text": "It opens the manual page for the newest version", "correct": false, "rationale": "It prints a short text and doesn’t open the manual." },
+      { "text": "It prints the program’s version information and exits", "correct": true, "rationale": "GNU tools print their name and version and do nothing else." },
+      { "text": "It updates the program to the latest version", "correct": false, "rationale": "Programs don’t update themselves through this option." }
+    ],
+    "explanation": "`--version` prints the program name and version, for example `cp (GNU coreutils) 9.1`, and exits without doing any work.",
+    "sourceLinks": ["https://www.gnu.org/prep/standards/html_node/_002d_002dhelp.html"]
+  },
+  {
+    "id": "012.2-017",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt1"],
+    "stem": "Which command opens the info pages for the GNU `coreutils` package?",
+    "options": [
+      { "text": "`man info coreutils`", "correct": false, "rationale": "This would look for a man page named `info` in section `coreutils`." },
+      { "text": "`help coreutils`", "correct": false, "rationale": "`help` shows Bash builtins only." },
+      { "text": "`info coreutils`", "correct": true, "rationale": "`info NAME` opens the info document for that name." },
+      { "text": "`apropos coreutils`", "correct": false, "rationale": "`apropos` searches page descriptions, and opens no document." }
+    ],
+    "explanation": "`info NAME` opens the info document. GNU projects often keep more complete documentation there than in a man page.",
+    "sourceLinks": ["https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html"]
+  },
+  {
+    "id": "012.2-018",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt1"],
+    "stem": "In an `info` document, which key goes to the next node?",
+    "options": [
+      { "text": "`n`", "correct": true, "rationale": "`n` moves to the next node, `p` to the previous one." },
+      { "text": "`q`", "correct": false, "rationale": "`q` quits the info reader." },
+      { "text": "`u`", "correct": false, "rationale": "`u` goes up to the parent node." },
+      { "text": "`p`", "correct": false, "rationale": "`p` goes to the previous node." }
+    ],
+    "explanation": "Info text is split into nodes: `n` next, `p` previous, `u` up, Enter follows a menu link, `/` searches and `q` quits.",
+    "sourceLinks": ["https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html"]
+  },
+  {
+    "id": "012.2-019",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt1"],
+    "stem": "How do info pages differ from man pages?",
+    "options": [
+      { "text": "An info document is a single flat page that is shown in a pager", "correct": false, "rationale": "That describes man pages." },
+      { "text": "An info document can be read only by the root user", "correct": false, "rationale": "Any user can read them." },
+      { "text": "An info document is stored as a graphic file and shown in a browser", "correct": false, "rationale": "Info pages are text and are read in the terminal." },
+      { "text": "An info document is split into linked nodes that you can navigate like a small website", "correct": true, "rationale": "The reader follows links between nodes with Enter and moves with `n`, `p` and `u`." }
+    ],
+    "explanation": "Man pages are single pages with a fixed layout. Info documents are organised in nodes with menus and cross references and are read with the `info` command.",
+    "sourceLinks": ["https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html"]
+  },
+  {
+    "id": "012.2-020",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt2"],
+    "stem": "Ada created a file a few minutes ago, but `locate` does not find it. Why?",
+    "options": [
+      { "text": "`locate` only searches files that are larger than one megabyte", "correct": false, "rationale": "It has no size limit like that." },
+      { "text": "`locate` searches a prebuilt database that is only updated periodically", "correct": true, "rationale": "New files appear only after the database has been refreshed." },
+      { "text": "`locate` searches inside file contents, not names", "correct": false, "rationale": "It searches file names, and `grep` searches contents." },
+      { "text": "`locate` ignores any file that Ada owns", "correct": false, "rationale": "Ownership doesn’t matter for the database search." }
+    ],
+    "explanation": "`locate` is fast because it looks up a database of file names. The database is rebuilt by a regular job, or by hand with `updatedb`, so it can miss new files and still list deleted ones.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/locate.1.html"]
+  },
+  {
+    "id": "012.2-021",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt2"],
+    "stem": "Which command, run by root, rebuilds the database that `locate` uses?",
+    "options": [
+      { "text": "`mandb`", "correct": false, "rationale": "`mandb` rebuilds the manual page index, not the file-name database." },
+      { "text": "`updatedb`", "correct": true, "rationale": "`updatedb` scans the file system and rewrites the file-name database." },
+      { "text": "`ldconfig`", "correct": false, "rationale": "`ldconfig` updates the shared library cache." },
+      { "text": "`apt update`", "correct": false, "rationale": "`apt update` refreshes the package lists from the repositories." }
+    ],
+    "explanation": "`updatedb` refreshes the database, which most systems also do daily. The command `mandb` refreshes the man page database that `man -k` uses.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/locate.1.html"]
+  },
+  {
+    "id": "012.2-022",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt2"],
+    "stem": "Mira needs a file name search that always reflects the current state of the disk, including files created a minute ago. Which command should she use?",
+    "options": [
+      { "text": "`locate`", "correct": false, "rationale": "`locate` uses a database that can be hours old." },
+      { "text": "`updatedb`", "correct": false, "rationale": "`updatedb` rebuilds the database; it doesn’t search." },
+      { "text": "`whatis`", "correct": false, "rationale": "`whatis` looks up manual page descriptions, not files." },
+      { "text": "`find`", "correct": true, "rationale": "`find` walks the real file system, so its results are always current." }
+    ],
+    "explanation": "`find` is slower than `locate` but has no database to go stale. `locate` is quick but only as current as its last `updatedb`.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/locate.1.html"]
+  },
+  {
+    "id": "012.2-023",
+    "objectiveId": "012.2",
+    "kind": "multi",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Which commands search the short descriptions of man pages for a keyword? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`man -k copy`", "correct": true, "rationale": "A keyword search over the descriptions." },
+      { "text": "`apropos copy`", "correct": true, "rationale": "The same keyword search under another name." },
+      { "text": "`whatis copy`", "correct": false, "rationale": "This only looks up pages with exactly that name." },
+      { "text": "`man -w copy`", "correct": false, "rationale": "This prints the path of the page named `copy`." },
+      { "text": "`man 1 copy`", "correct": false, "rationale": "This opens the page named `copy` in section 1, if it exists." }
+    ],
+    "explanation": "`man -k` and `apropos` are the same keyword search. `whatis` and `man -f` look up a page by its exact name, and `man -w` prints its location.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/apropos.1.html"]
+  },
+  {
+    "id": "012.2-024",
+    "objectiveId": "012.2",
+    "kind": "multi",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Which statements about manual sections are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "Section 1 holds user commands such as `ls`", "correct": true, "rationale": "Section 1 is for commands you run." },
+      { "text": "Section 5 holds file formats and configuration files", "correct": true, "rationale": "For example `man 5 passwd`." },
+      { "text": "Section 8 holds games", "correct": false, "rationale": "Games are section 6; section 8 is system administration." },
+      { "text": "Section 3 holds user commands", "correct": false, "rationale": "Section 3 covers library functions for programmers." },
+      { "text": "The section number goes after the page name", "correct": false, "rationale": "It goes before: `man 5 passwd`." }
+    ],
+    "explanation": "Sections: 1 user commands, 2 system calls, 3 library functions, 4 special files, 5 file formats, 6 games, 7 miscellaneous, 8 administration. The number is given before the name.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/man-pages.7.html"]
+  },
+  {
+    "id": "012.2-025",
+    "objectiveId": "012.2",
+    "kind": "multi",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t3"],
+    "stem": "Which of these are typically found in `/usr/share/doc/PACKAGE/`? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "README files and change logs", "correct": true, "rationale": "Package documentation is installed here." },
+      { "text": "Example configuration files", "correct": true, "rationale": "Often in an `examples` folder." },
+      { "text": "The package’s executable programs", "correct": false, "rationale": "Programs are installed under `/usr/bin` and similar directories." },
+      { "text": "The package’s man pages", "correct": false, "rationale": "These are in `/usr/share/man/`." },
+      { "text": "The package’s log files", "correct": false, "rationale": "Logs are written below `/var/log`." }
+    ],
+    "explanation": "`/usr/share/doc/` holds the extras: README, `copyright`, `changelog.gz` and examples. Programs, man pages and logs have their own places.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s11.html"]
+  },
+  {
+    "id": "012.2-026",
+    "objectiveId": "012.2",
+    "kind": "multi",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "Which of these show help for the command `cp`? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`cp --help`", "correct": true, "rationale": "Prints a usage summary." },
+      { "text": "`man cp`", "correct": true, "rationale": "Opens the full manual page." },
+      { "text": "`help cp`", "correct": false, "rationale": "`help` only knows Bash builtins." },
+      { "text": "`cp --manual`", "correct": false, "rationale": "This option does not exist." },
+      { "text": "`cp -m`", "correct": false, "rationale": "`-m` isn’t a help option." }
+    ],
+    "explanation": "`cp --help` is quick; `man cp` is complete. `help` is for builtins like `cd`."
+  },
+  {
+    "id": "012.2-027",
+    "objectiveId": "012.2",
+    "kind": "multi",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt1", "012.2.vt2"],
+    "stem": "Which statements are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`info` reads info documents made of linked nodes", "correct": true, "rationale": "The reader moves between nodes." },
+      { "text": "`locate` searches a database of file names", "correct": true, "rationale": "It is fast, but the database may be outdated." },
+      { "text": "`locate` searches the real disk every time it runs", "correct": false, "rationale": "It reads a database instead." },
+      { "text": "`info` opens man pages in section 5", "correct": false, "rationale": "Man pages are read with `man`." },
+      { "text": "`updatedb` shows the manual page of a command", "correct": false, "rationale": "`updatedb` rebuilds the file-name database used by `locate`." }
+    ],
+    "explanation": "`info` reads GNU’s info documents. `locate` is fast because it reads a prebuilt database that `updatedb` refreshes.",
+    "sourceLinks": ["https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html", "https://man7.org/linux/man-pages/man1/locate.1.html"]
+  },
+  {
+    "id": "012.2-028",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Type the command that opens the manual page of `mkdir`.",
+    "accept": ["man mkdir"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer} > /dev/null" },
+    "explanation": "`man mkdir` opens the page in a pager. Quit it with `q`.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/man.1.html"]
+  },
+  {
+    "id": "012.2-029",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Finish the command so that it lists every man page whose short description contains the word `copy`.",
+    "accept": ["-k copy"],
+    "prefix": "$ man",
+    "caseSensitive": true,
+    "verify": { "command": "man {answer}" },
+    "explanation": "`man -k copy` is the keyword search. `apropos copy` does the same.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/apropos.1.html"]
+  },
+  {
+    "id": "012.2-030",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Type the command that shows the manual page about the file format of `/etc/passwd`, not the `passwd` command.",
+    "accept": ["man 5 passwd"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer} > /dev/null" },
+    "explanation": "The section number comes first. Section 5 holds file formats, section 1 the commands.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/man-pages.7.html"]
+  },
+  {
+    "id": "012.2-031",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "Type the long option that makes most GNU commands print a usage summary.",
+    "accept": ["--help"],
+    "prefix": "$ ls",
+    "caseSensitive": true,
+    "verify": { "command": "ls {answer} > /dev/null" },
+    "explanation": "`--help` prints usage information and exits. Many tools also accept `-h`, but it isn’t reliable: `ls -h` means human-readable sizes.",
+    "sourceLinks": ["https://www.gnu.org/prep/standards/html_node/_002d_002dhelp.html"]
+  },
+  {
+    "id": "012.2-032",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "Bash builtins have no man page. Type the builtin command that describes the builtin `cd`.",
+    "accept": ["help cd"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer} > /dev/null" },
+    "explanation": "`help cd` prints a description of the builtin. External programs use `--help` or `man`."
+  },
+  {
+    "id": "012.2-033",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t3"],
+    "stem": "Type the absolute path of the directory with one subfolder of extra documentation per installed package.",
+    "accept": ["/usr/share/doc", "/usr/share/doc/"],
+    "caseSensitive": true,
+    "verify": { "command": "test -d {answer}" },
+    "explanation": "`/usr/share/doc/` holds README files, licences, change logs and examples.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s11.html"]
+  },
+  {
+    "id": "012.2-034",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Type a command that prints the one-line description of `grep`.",
+    "accept": ["whatis grep", "man -f grep"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}" },
+    "explanation": "`whatis grep` and `man -f grep` look up the exact name and print the one-line description."
+  },
+  {
+    "id": "012.2-035",
+    "objectiveId": "012.2",
+    "kind": "fill",
+    "areas": ["012.2.v1"],
+    "terms": ["012.2.vt1"],
+    "stem": "Type the command that opens the info document of `ls`.",
+    "accept": ["info ls"],
+    "caseSensitive": true,
+    "explanation": "`info ls` jumps to the `ls` node of the coreutils info document. Leave with `q`.",
+    "sourceLinks": ["https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html"]
+  },
+  {
+    "id": "012.2-036",
+    "objectiveId": "012.2",
+    "kind": "output",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Jonas looks up exactly one name. What does this command print?",
+    "command": "whatis mkdir",
+    "mode": "choice",
+    "output": "mkdir (1)            - make directories",
+    "options": [
+      { "text": "mkdir (1)            - make directories", "correct": true, "rationale": "`whatis` prints name, section and the one-line description of `mkdir`." },
+      { "text": "mkdir (1)            - remove empty directories", "correct": false, "rationale": "That is the description of `rmdir`." },
+      { "text": "mkdir (5)            - make directories", "correct": false, "rationale": "The command is in section 1, not 5." },
+      { "text": "/usr/share/man/man1/mkdir.1.gz", "correct": false, "rationale": "That is the file location, printed by `man -w`." }
+    ],
+    "explanation": "The line shows the page name, its section in brackets and the short description from the NAME section."
+  },
+  {
+    "id": "012.2-037",
+    "objectiveId": "012.2",
+    "kind": "output",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Type what this command prints.",
+    "command": "man -w mkdir",
+    "mode": "type",
+    "output": "/usr/share/man/man1/mkdir.1.gz",
+    "explanation": "`man -w` prints the path of the page file instead of showing it. Pages are gzip-compressed and live in `/usr/share/man/man1/` for section 1."
+  },
+  {
+    "id": "012.2-038",
+    "objectiveId": "012.2",
+    "kind": "output",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "What does this command print?",
+    "command": "ls --help | head -n 1",
+    "mode": "choice",
+    "output": "Usage: ls [OPTION]... [FILE]...",
+    "options": [
+      { "text": "Usage: ls [OPTION] [FILE]", "correct": false, "rationale": "The real synopsis marks both parts as repeatable with `...`." },
+      { "text": "LS(1)                User Commands                LS(1)", "correct": false, "rationale": "This is the header of the man page, not the `--help` text." },
+      { "text": "Usage: ls [OPTION]... [FILE]...", "correct": true, "rationale": "The first line of the usage text is the synopsis, with `[OPTION]...` and `[FILE]...` marking repeatable parts." },
+      { "text": "ls: invalid option -- '-'", "correct": false, "rationale": "`--help` is a valid long option for `ls`." }
+    ],
+    "explanation": "The `Usage:` line is the same synopsis the man page shows. Piping the output through `head` keeps only the first line."
+  },
+  {
+    "id": "012.2-039",
+    "objectiveId": "012.2",
+    "kind": "output",
+    "areas": ["012.2.2"],
+    "terms": ["012.2.t2"],
+    "stem": "Type what this command prints.",
+    "command": "help pwd | head -n 1",
+    "mode": "type",
+    "output": "pwd: pwd [-LP]",
+    "explanation": "`help NAME` prints the usage of a Bash builtin. The first line shows the builtin’s name and its options, `-L` and `-P`."
+  },
+  {
+    "id": "012.2-040",
+    "objectiveId": "012.2",
+    "kind": "output",
+    "areas": ["012.2.1", "012.2.2"],
+    "terms": ["012.2.t1", "012.2.t2"],
+    "stem": "Mira asks for the manual page of a Bash builtin. What does this command print?",
+    "command": "man cd",
+    "mode": "choice",
+    "output": "No manual entry for cd",
+    "options": [
+      { "text": "CD(1)                           User Commands                          CD(1)", "correct": false, "rationale": "No such page exists, so there is no header to show." },
+      { "text": "cd: cd [-L|[-P [-e]] [-@]] [dir]", "correct": false, "rationale": "That is what `help cd` prints." },
+      { "text": "No manual entry for cd", "correct": true, "rationale": "Builtins have no man page of their own, so `man` reports that no entry exists." },
+      { "text": "cd (1)               - change the working directory", "correct": false, "rationale": "No man page, and so no description, exists for `cd`." }
+    ],
+    "explanation": "Use `help cd` for Bash builtins. `man` knows only external programs, files and concepts that have a page."
+  },
+  {
+    "id": "012.2-041",
+    "objectiveId": "012.2",
+    "kind": "output",
+    "areas": ["012.2.1"],
+    "terms": ["012.2.t1"],
+    "stem": "Type what this command prints.",
+    "command": "man -k \"^rmdir$\"",
+    "mode": "type",
+    "output": "rmdir (1)            - remove empty directories",
+    "explanation": "The pattern `^rmdir$` matches only the page whose name is exactly `rmdir`, so one line is printed with its section and description."
+  }
+]

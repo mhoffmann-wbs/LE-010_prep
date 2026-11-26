@@ -1,0 +1,1057 @@
+[
+  {
+    "id": "015.2-001",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "Mira reads this line of `/etc/passwd`: `noah:x:1003:1003:Noah Kim:/home/noah:/bin/bash`. Which field holds Noah’s home directory?",
+    "explanation": "`/etc/passwd` has seven colon-separated fields: login name, password marker, UID, GID, comment, home directory and shell.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/passwd.5.html"
+    ],
+    "options": [
+      {
+        "text": "The fifth field, `/home/noah`.",
+        "correct": false,
+        "rationale": "The fifth field is the comment, here `Noah Kim`."
+      },
+      {
+        "text": "The sixth field, `/home/noah`.",
+        "correct": true,
+        "rationale": "Fields are separated by colons: name, password marker, UID, GID, comment, home, shell."
+      },
+      {
+        "text": "The fourth field, `/home/noah`.",
+        "correct": false,
+        "rationale": "The fourth field is the primary group ID."
+      },
+      {
+        "text": "The seventh field, `/home/noah`.",
+        "correct": false,
+        "rationale": "The seventh field is the login shell."
+      }
+    ]
+  },
+  {
+    "id": "015.2-002",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "Jonas asks where Linux stores the hashed passwords of the local users. Which file is it?",
+    "explanation": "Because every program needs to translate user IDs into names, `/etc/passwd` has to be readable by everyone. The hashes were therefore moved to `/etc/shadow`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/shadow.5.html"
+    ],
+    "options": [
+      {
+        "text": "`/etc/passwd`",
+        "correct": false,
+        "rationale": "This world-readable file holds an `x` in the password field instead of the hash."
+      },
+      {
+        "text": "`/etc/group`",
+        "correct": false,
+        "rationale": "This file lists groups, their IDs and their members."
+      },
+      {
+        "text": "`/etc/skel`",
+        "correct": false,
+        "rationale": "This directory holds template files for new home directories."
+      },
+      {
+        "text": "`/etc/shadow`",
+        "correct": true,
+        "rationale": "The hashes live in `/etc/shadow`, which only root and the group `shadow` can read."
+      }
+    ]
+  },
+  {
+    "id": "015.2-003",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "What does the `x` in the second field of a line in `/etc/passwd` mean?",
+    "explanation": "Old systems kept the password hash in the second field of `/etc/passwd`. Modern systems store `x` there and keep the hash in `/etc/shadow`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/passwd.5.html"
+    ],
+    "options": [
+      {
+        "text": "The password hash is stored in `/etc/shadow`.",
+        "correct": true,
+        "rationale": "The `x` is only a placeholder pointing to the shadow file."
+      },
+      {
+        "text": "The account has no password and anyone can log in.",
+        "correct": false,
+        "rationale": "An account without a password would show an empty field, not an `x`."
+      },
+      {
+        "text": "The account is locked and cannot be used.",
+        "correct": false,
+        "rationale": "Locking is shown in `/etc/shadow` with a `!` in front of the hash."
+      },
+      {
+        "text": "The password is stored in clear text after the `x`.",
+        "correct": false,
+        "rationale": "Passwords are not kept in clear text anywhere."
+      }
+    ]
+  },
+  {
+    "id": "015.2-004",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "Mira wants to know which group is Ada’s primary group. Where is it recorded?",
+    "explanation": "Every user has one primary group, whose GID is field 4 of `/etc/passwd`. Debian gives each new user a private group of the same name; `/etc/group` additionally lists supplementary members.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/passwd.5.html",
+      "https://man7.org/linux/man-pages/man5/group.5.html"
+    ],
+    "options": [
+      {
+        "text": "In the member list of the matching line in `/etc/group` only.",
+        "correct": false,
+        "rationale": "That list holds supplementary members; the primary group is set in `/etc/passwd`."
+      },
+      {
+        "text": "In the second field of Ada’s line in `/etc/shadow`.",
+        "correct": false,
+        "rationale": "That field is the password hash."
+      },
+      {
+        "text": "In the fourth field of Ada’s line in `/etc/passwd`, as a group ID.",
+        "correct": true,
+        "rationale": "The primary GID is stored with the user, in `/etc/passwd`."
+      },
+      {
+        "text": "In the files copied from `/etc/skel` into her home.",
+        "correct": false,
+        "rationale": "`/etc/skel` contains shell startup files, not account data."
+      }
+    ]
+  },
+  {
+    "id": "015.2-005",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "What happens to the files in `/etc/skel` when `useradd -m` creates a new account?",
+    "explanation": "Whatever sits in `/etc/skel` is copied into each new home directory created with `-m`. Existing users keep their own copies.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/useradd.8.html"
+    ],
+    "options": [
+      {
+        "text": "They are moved into the new home, leaving `/etc/skel` empty for the next user.",
+        "correct": false,
+        "rationale": "They are copied, so every later user gets them too."
+      },
+      {
+        "text": "They are added to `/etc/passwd` as the new user’s settings.",
+        "correct": false,
+        "rationale": "`/etc/skel` is a directory of files, not a database."
+      },
+      {
+        "text": "They are copied into the new home directory, which the new user then owns.",
+        "correct": true,
+        "rationale": "The skeleton directory is the template for new homes: `.bashrc`, `.profile` and so on."
+      },
+      {
+        "text": "They are copied only when the user logs in for the first time.",
+        "correct": false,
+        "rationale": "The copy happens when the home directory is created."
+      }
+    ]
+  },
+  {
+    "id": "015.2-006",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t3"
+    ],
+    "stem": "Mira creates the account for the new intern with `useradd noah` on Debian. What is missing afterwards?",
+    "explanation": "`useradd` alone creates only the database entries. Add `-m` for the home directory and `-s` or `-c` for shell and comment.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/useradd.8.html"
+    ],
+    "options": [
+      {
+        "text": "A home directory, because that needs the option `-m`.",
+        "correct": true,
+        "rationale": "Without `-m`, `useradd` creates the entry but no home, so nothing is copied from `/etc/skel`."
+      },
+      {
+        "text": "The entry in `/etc/passwd`, since `useradd` only writes `/etc/shadow`.",
+        "correct": false,
+        "rationale": "`useradd` adds the entry to `/etc/passwd` and the other databases."
+      },
+      {
+        "text": "The user’s private group, which needs `-g`.",
+        "correct": false,
+        "rationale": "Debian creates a private group of the same name by default."
+      },
+      {
+        "text": "A UID, because the number must always be given with `-u`.",
+        "correct": false,
+        "rationale": "The next free UID is chosen automatically."
+      }
+    ]
+  },
+  {
+    "id": "015.2-007",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t3"
+    ],
+    "stem": "Which command creates a new group called `playtest`?",
+    "explanation": "Groups are created with `groupadd` and filled with `usermod -aG GROUP USER`. Both need root.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/groupadd.8.html"
+    ],
+    "options": [
+      {
+        "text": "`useradd playtest`",
+        "correct": false,
+        "rationale": "This creates a user account called `playtest`."
+      },
+      {
+        "text": "`usermod -g playtest`",
+        "correct": false,
+        "rationale": "`usermod` changes an existing user and expects a user name too."
+      },
+      {
+        "text": "`passwd playtest`",
+        "correct": false,
+        "rationale": "`passwd` sets the password of an account."
+      },
+      {
+        "text": "`groupadd playtest`",
+        "correct": true,
+        "rationale": "`groupadd` adds an entry to `/etc/group`."
+      }
+    ]
+  },
+  {
+    "id": "015.2-008",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "stem": "Jonas is already in the groups `jonas` and `design`. Which command adds him to `playtest` without removing the others?",
+    "explanation": "Always write `-aG` together. `usermod -G` alone sets the list to exactly the groups named.",
+    "options": [
+      {
+        "text": "`usermod -G playtest jonas`",
+        "correct": false,
+        "rationale": "Without `-a`, `-G` replaces the supplementary group list, dropping `design`."
+      },
+      {
+        "text": "`usermod -aG playtest jonas`",
+        "correct": true,
+        "rationale": "`-a` appends to the supplementary groups."
+      },
+      {
+        "text": "`groupadd -a playtest jonas`",
+        "correct": false,
+        "rationale": "`groupadd` creates groups and does not accept a user."
+      },
+      {
+        "text": "`useradd -aG playtest jonas`",
+        "correct": false,
+        "rationale": "`useradd` creates new accounts, and Jonas exists already."
+      }
+    ]
+  },
+  {
+    "id": "015.2-009",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t4"
+    ],
+    "stem": "Mira wants to lock Noah’s account until the paperwork is done. Which command does that?",
+    "explanation": "`passwd -l` locks, `-u` unlocks, `-e` expires the password and `-S` prints the status, where `L` means locked.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/passwd.1.html"
+    ],
+    "options": [
+      {
+        "text": "`sudo passwd -u noah`",
+        "correct": false,
+        "rationale": "`-u` unlocks the account, the opposite."
+      },
+      {
+        "text": "`sudo passwd -S noah`",
+        "correct": false,
+        "rationale": "`-S` only shows the status of the account."
+      },
+      {
+        "text": "`sudo passwd -d noah`",
+        "correct": false,
+        "rationale": "`-d` deletes the password, so the account would have no password at all."
+      },
+      {
+        "text": "`sudo passwd -l noah`",
+        "correct": true,
+        "rationale": "`-l` puts a `!` in front of the hash, so no password matches."
+      }
+    ]
+  },
+  {
+    "id": "015.2-010",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t4"
+    ],
+    "stem": "Who may set a new password for another user without knowing the old one?",
+    "explanation": "A standard user runs `passwd` for themselves and is asked for the current password. Root can reset anyone’s without it.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/passwd.1.html"
+    ],
+    "options": [
+      {
+        "text": "Any member of the same primary group.",
+        "correct": false,
+        "rationale": "Groups do not give anyone rights over another user’s password."
+      },
+      {
+        "text": "Root, using `passwd NAME`.",
+        "correct": true,
+        "rationale": "Root may change any password; other users must enter the current one first."
+      },
+      {
+        "text": "Every user, using `passwd NAME`.",
+        "correct": false,
+        "rationale": "Standard users can change only their own password."
+      },
+      {
+        "text": "The owner of the user’s home directory.",
+        "correct": false,
+        "rationale": "Ownership of files has no effect on password changes."
+      }
+    ]
+  },
+  {
+    "id": "015.2-011",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "Ada creates three new standard users in a row on a fresh Debian machine. Which UIDs do they normally get?",
+    "explanation": "On Debian, standard users start at 1000, and that limit is configured in `/etc/login.defs`. Debian Policy reserves the lower numbers for system accounts.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes",
+      "https://man7.org/linux/man-pages/man5/login.defs.5.html"
+    ],
+    "options": [
+      {
+        "text": "Numbers from 0 upwards, so the first gets 0.",
+        "correct": false,
+        "rationale": "UID 0 is root’s."
+      },
+      {
+        "text": "Numbers from 100 upwards, as for all service accounts.",
+        "correct": false,
+        "rationale": "The range 100–999 is for system users."
+      },
+      {
+        "text": "The next free numbers from 1000 upwards.",
+        "correct": true,
+        "rationale": "Standard users are numbered from `UID_MIN`, which is 1000 on Debian, picking the next free one."
+      },
+      {
+        "text": "The same UID as their group ID, always chosen by the user.",
+        "correct": false,
+        "rationale": "The system picks the next free UID; it does not ask."
+      }
+    ]
+  },
+  {
+    "id": "015.2-012",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "Which statement about user ID 0 is correct?",
+    "explanation": "Linux works with numbers. UID 0 is the superuser, and the name `root` is only a convention.",
+    "options": [
+      {
+        "text": "The account with UID 0 is the superuser, whatever its name is.",
+        "correct": true,
+        "rationale": "The kernel treats UID 0 as root."
+      },
+      {
+        "text": "UID 0 is reserved for the first standard user created.",
+        "correct": false,
+        "rationale": "The first standard user gets 1000 on Debian."
+      },
+      {
+        "text": "UID 0 means the account has no rights at all.",
+        "correct": false,
+        "rationale": "It means the opposite."
+      },
+      {
+        "text": "UID 0 is shared by all system users.",
+        "correct": false,
+        "rationale": "System users have their own IDs between 1 and 999."
+      }
+    ]
+  },
+  {
+    "id": "015.2-013",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "Files store their owner as a number. What does `ls -l` use to show a name instead?",
+    "explanation": "Because only IDs are stored, a file whose owner was deleted shows a bare number in `ls -l`. The mapping is in `/etc/passwd` and `/etc/group`.",
+    "options": [
+      {
+        "text": "It looks the user ID up in `/etc/passwd` and the group ID in `/etc/group`.",
+        "correct": true,
+        "rationale": "The names come from the user and group databases."
+      },
+      {
+        "text": "It reads the name from a label stored in every file.",
+        "correct": false,
+        "rationale": "Files only store IDs."
+      },
+      {
+        "text": "It asks the owner’s shell for the login name.",
+        "correct": false,
+        "rationale": "`ls` does not contact shells; it looks the IDs up."
+      },
+      {
+        "text": "It reads `/etc/skel` for the name used when the home was made.",
+        "correct": false,
+        "rationale": "`/etc/skel` is a template directory."
+      }
+    ]
+  },
+  {
+    "id": "015.2-014",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.2"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "Mira’s own `/etc/group` line is `mira:x:1000:`. What does the empty last field tell you?",
+    "explanation": "`/etc/group` has four fields: name, password placeholder, GID and member list. The list holds supplementary members only.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/group.5.html"
+    ],
+    "options": [
+      {
+        "text": "Mira is not a member of this group.",
+        "correct": false,
+        "rationale": "She is, through her primary GID in `/etc/passwd`."
+      },
+      {
+        "text": "The group is disabled until a member is added.",
+        "correct": false,
+        "rationale": "A group with an empty list works normally."
+      },
+      {
+        "text": "No user is listed as a supplementary member; the group is her private primary group.",
+        "correct": true,
+        "rationale": "Primary membership comes from `/etc/passwd`, so the member list can stay empty."
+      },
+      {
+        "text": "The group has no ID yet.",
+        "correct": false,
+        "rationale": "The ID is the third field, `1000`."
+      }
+    ]
+  },
+  {
+    "id": "015.2-015",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "stem": "Ada wants to know who logged in to the build machine yesterday evening. Which command reads the login history?",
+    "explanation": "`who` and `w` describe the current sessions, `last` (or `wtmpdb last` on newer systems) the past ones.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/who.1.html"
+    ],
+    "options": [
+      {
+        "text": "`who`",
+        "correct": false,
+        "rationale": "`who` lists the sessions open now."
+      },
+      {
+        "text": "`last`",
+        "correct": true,
+        "rationale": "`last` shows past logins and reboots, newest first."
+      },
+      {
+        "text": "`id`",
+        "correct": false,
+        "rationale": "`id` prints one account’s IDs."
+      },
+      {
+        "text": "`groups`",
+        "correct": false,
+        "rationale": "`groups` lists the groups of a user."
+      }
+    ]
+  },
+  {
+    "id": "015.2-016",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "stem": "What does `w` show that `who` does not?",
+    "explanation": "Both commands list logged-in users. `w` also prints what each is doing and the machine’s uptime and load.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/who.1.html"
+    ],
+    "options": [
+      {
+        "text": "The hashes of the users’ passwords.",
+        "correct": false,
+        "rationale": "No login tool shows hashes."
+      },
+      {
+        "text": "Every login since the last reboot.",
+        "correct": false,
+        "rationale": "That is what `last` does."
+      },
+      {
+        "text": "The user’s full name and home directory.",
+        "correct": false,
+        "rationale": "That information comes from `/etc/passwd`."
+      },
+      {
+        "text": "The command each user is running and the system load.",
+        "correct": true,
+        "rationale": "`w` adds the WHAT column and a header with uptime and load averages."
+      }
+    ]
+  },
+  {
+    "id": "015.2-017",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "stem": "On a Debian 13 machine, `last` is no longer provided. Which command takes over its job?",
+    "explanation": "The old wtmp format cannot hold times after 2038. Debian 13 dropped `last` and recommends `wtmpdb` with `libpam-wtmpdb`.",
+    "sourceLinks": [
+      "https://www.debian.org/releases/trixie/release-notes/issues.html"
+    ],
+    "options": [
+      {
+        "text": "`lastlog last`",
+        "correct": false,
+        "rationale": "No such command exists; `lastlog2` replaces `lastlog`, which shows last login per account."
+      },
+      {
+        "text": "`wtmpdb last`",
+        "correct": true,
+        "rationale": "The `wtmpdb` package reads login records from a database, avoiding the Year 2038 problem."
+      },
+      {
+        "text": "`who -a`",
+        "correct": false,
+        "rationale": "`who` lists current sessions, not the history."
+      },
+      {
+        "text": "`w --history`",
+        "correct": false,
+        "rationale": "`w` has no history option."
+      }
+    ]
+  },
+  {
+    "id": "015.2-018",
+    "objectiveId": "015.2",
+    "kind": "multi",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "Which pieces of information are part of a line in `/etc/passwd`? (Choose TWO.)",
+    "explanation": "The seven fields are name, password marker, UID, GID, comment, home and shell.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/passwd.5.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "The login shell.",
+        "correct": true,
+        "rationale": "It is the seventh field."
+      },
+      {
+        "text": "The home directory.",
+        "correct": true,
+        "rationale": "It is the sixth field."
+      },
+      {
+        "text": "The password hash.",
+        "correct": false,
+        "rationale": "The hash is in `/etc/shadow`."
+      },
+      {
+        "text": "The list of supplementary group members.",
+        "correct": false,
+        "rationale": "That list is in `/etc/group`."
+      },
+      {
+        "text": "The date the password expires.",
+        "correct": false,
+        "rationale": "Password ageing is stored in `/etc/shadow`."
+      }
+    ]
+  },
+  {
+    "id": "015.2-019",
+    "objectiveId": "015.2",
+    "kind": "multi",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t3"
+    ],
+    "stem": "Mira runs `sudo useradd -m -s /bin/bash noah`. Which results are correct? (Choose TWO.)",
+    "explanation": "`useradd` options set what the defaults would not. Use `passwd` afterwards to give the account a password.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/useradd.8.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "Noah’s login shell is `/bin/bash`.",
+        "correct": true,
+        "rationale": "`-s` sets the shell field."
+      },
+      {
+        "text": "Noah is added to the group `sudo`.",
+        "correct": false,
+        "rationale": "That needs `-G sudo`."
+      },
+      {
+        "text": "Noah’s password is set to `noah`.",
+        "correct": false,
+        "rationale": "No password is set; the account stays locked."
+      },
+      {
+        "text": "The directory `/etc/skel` is emptied.",
+        "correct": false,
+        "rationale": "It is only read."
+      },
+      {
+        "text": "`/home/noah` is created and filled from `/etc/skel`.",
+        "correct": true,
+        "rationale": "`-m` creates the home and copies the template files."
+      }
+    ]
+  },
+  {
+    "id": "015.2-020",
+    "objectiveId": "015.2",
+    "kind": "multi",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "stem": "Which commands report information about login sessions? (Choose THREE.)",
+    "explanation": "Session commands are `who`, `w` and `last`; `id` and `groups` describe an account.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/who.1.html"
+    ],
+    "select": 3,
+    "options": [
+      {
+        "text": "`last`",
+        "correct": true,
+        "rationale": "It shows past logins."
+      },
+      {
+        "text": "`id`",
+        "correct": false,
+        "rationale": "It prints IDs of an account, not sessions."
+      },
+      {
+        "text": "`groups`",
+        "correct": false,
+        "rationale": "It lists group names."
+      },
+      {
+        "text": "`who`",
+        "correct": true,
+        "rationale": "It lists the users logged in now."
+      },
+      {
+        "text": "`w`",
+        "correct": true,
+        "rationale": "It lists them with what they run."
+      }
+    ]
+  },
+  {
+    "id": "015.2-021",
+    "objectiveId": "015.2",
+    "kind": "multi",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "stem": "Which commands print the group names that Mira belongs to? (Choose TWO.)",
+    "explanation": "`-n` turns the numbers of `id` into names, so `id -Gn` and `groups` print the same.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/id.1.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "`groups`",
+        "correct": true,
+        "rationale": "It lists the names of the groups."
+      },
+      {
+        "text": "`id -Gn`",
+        "correct": true,
+        "rationale": "`-G` is all groups and `-n` swaps numbers for names."
+      },
+      {
+        "text": "`id -G`",
+        "correct": false,
+        "rationale": "It prints numbers."
+      },
+      {
+        "text": "`id -u`",
+        "correct": false,
+        "rationale": "It prints the user ID."
+      },
+      {
+        "text": "`getent group`",
+        "correct": false,
+        "rationale": "It lists every group on the system."
+      }
+    ]
+  },
+  {
+    "id": "015.2-022",
+    "objectiveId": "015.2",
+    "kind": "multi",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "Which statements about user IDs on a Debian system are true? (Choose TWO.)",
+    "explanation": "IDs identify accounts for the kernel. The ranges are set by Debian Policy and `/etc/login.defs`.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes",
+      "https://man7.org/linux/man-pages/man5/login.defs.5.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "New standard users get IDs from 1000 upwards.",
+        "correct": true,
+        "rationale": "That is Debian’s `UID_MIN`."
+      },
+      {
+        "text": "Standard users start at UID 100.",
+        "correct": false,
+        "rationale": "IDs 100–999 are for system users."
+      },
+      {
+        "text": "Files store the owner’s login name.",
+        "correct": false,
+        "rationale": "Files store the number only."
+      },
+      {
+        "text": "Two users must share a UID with their group.",
+        "correct": false,
+        "rationale": "UIDs and GIDs are separate."
+      },
+      {
+        "text": "UID 0 belongs to root.",
+        "correct": true,
+        "rationale": "The superuser has the number 0."
+      }
+    ]
+  },
+  {
+    "id": "015.2-023",
+    "objectiveId": "015.2",
+    "kind": "fill",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t3"
+    ],
+    "stem": "Type the command that creates a group named `playtest` (you may use `sudo`).",
+    "explanation": "`groupadd NAME` adds the group to `/etc/group`; it needs root.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/groupadd.8.html"
+    ],
+    "accept": [
+      "groupadd playtest",
+      "sudo groupadd playtest"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "user": "root"
+    }
+  },
+  {
+    "id": "015.2-024",
+    "objectiveId": "015.2",
+    "kind": "fill",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t3"
+    ],
+    "stem": "Finish the command that creates the account `noah` together with its home directory.",
+    "explanation": "Without `-m` Debian’s `useradd` creates no home. `--create-home` is the long form.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/useradd.8.html"
+    ],
+    "accept": [
+      "-m noah",
+      "noah -m",
+      "--create-home noah"
+    ],
+    "prefix": "$ useradd",
+    "caseSensitive": true,
+    "verify": {
+      "command": "useradd {answer}",
+      "user": "root"
+    }
+  },
+  {
+    "id": "015.2-025",
+    "objectiveId": "015.2",
+    "kind": "fill",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t4"
+    ],
+    "stem": "Noah’s account exists. Type the command that locks it by putting a `!` before the password hash.",
+    "explanation": "`passwd -l` locks and `-u` unlocks the account.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/passwd.1.html"
+    ],
+    "accept": [
+      "passwd -l noah",
+      "sudo passwd -l noah"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "useradd -m noah && {answer}",
+      "user": "root"
+    }
+  },
+  {
+    "id": "015.2-026",
+    "objectiveId": "015.2",
+    "kind": "fill",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "stem": "Type the `id` command that prints only your login name.",
+    "explanation": "`-u` selects the user part and `-n` shows a name instead of a number.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/id.1.html"
+    ],
+    "accept": [
+      "id -un",
+      "id -nu",
+      "id --user --name"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}"
+    }
+  },
+  {
+    "id": "015.2-027",
+    "objectiveId": "015.2",
+    "kind": "output",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "stem": "What does this command print?",
+    "explanation": "`id NAME` shows the UID, primary GID and all group memberships of that account.",
+    "command": "id jonas",
+    "output": "uid=1001(jonas) gid=1001(jonas) groups=1001(jonas)",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "uid=1001(jonas) gid=1001(jonas) groups=1001(jonas),27(sudo)",
+        "correct": false,
+        "rationale": "Jonas is not in `sudo`; only Mira is."
+      },
+      {
+        "text": "uid=1000(jonas) gid=1000(jonas) groups=1000(jonas)",
+        "correct": false,
+        "rationale": "1000 is Mira’s ID."
+      },
+      {
+        "text": "uid=1001(jonas) gid=100(users) groups=100(users)",
+        "correct": false,
+        "rationale": "Debian gives each user a private group, not `users`."
+      },
+      {
+        "text": "uid=1001(jonas) gid=1001(jonas) groups=1001(jonas)",
+        "correct": true,
+        "rationale": "Jonas has UID 1001, a private group of the same ID and no other group."
+      }
+    ]
+  },
+  {
+    "id": "015.2-028",
+    "objectiveId": "015.2",
+    "kind": "output",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "What does this command print?",
+    "explanation": "A line of `/etc/group` has the group name, a placeholder, the GID and the comma-separated members.",
+    "command": "getent group sudo",
+    "output": "sudo:x:27:mira",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "sudo:x:27:mira",
+        "correct": true,
+        "rationale": "The group `sudo` has GID 27 and only Mira as a member."
+      },
+      {
+        "text": "sudo:x:27:mira,jonas,ada",
+        "correct": false,
+        "rationale": "Only Mira may use `sudo`."
+      },
+      {
+        "text": "sudo:x:1000:mira",
+        "correct": false,
+        "rationale": "GID 1000 is the private group `mira`."
+      },
+      {
+        "text": "mira:x:27:sudo",
+        "correct": false,
+        "rationale": "The fields are in the wrong order: name first, then members last."
+      }
+    ]
+  },
+  {
+    "id": "015.2-029",
+    "objectiveId": "015.2",
+    "kind": "output",
+    "areas": [
+      "015.2.2"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "In the format name, UID, home directory: what does this command print?",
+    "explanation": "`cut -d: -f1,3,6` picks fields 1 (name), 3 (UID) and 6 (home) of the `/etc/passwd` line.",
+    "command": "getent passwd ada | cut -d: -f1,3,6",
+    "output": "ada:1002:/home/ada",
+    "mode": "type"
+  },
+  {
+    "id": "015.2-030",
+    "objectiveId": "015.2",
+    "kind": "output",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t1"
+    ],
+    "stem": "Which hidden files does the template for new home directories hold?",
+    "explanation": "These three files are copied into every home created with `useradd -m`. `-A` lists hidden files without `.` and `..`.",
+    "command": "ls -A /etc/skel",
+    "output": ".bash_logout  .bashrc  .profile",
+    "mode": "type"
+  }
+]

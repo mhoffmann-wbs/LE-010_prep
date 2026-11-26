@@ -3,17 +3,1007 @@
     "id": "015.3-001",
     "objectiveId": "015.3",
     "kind": "multi",
-    "areas": ["015.3.1"],
-    "terms": ["015.3.t2"],
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
     "stem": "Ada’s script `deploy.sh` must be readable, writable and executable by her, readable and executable by her group, and inaccessible to everyone else. Which commands set exactly these permissions? (Choose TWO.)",
     "select": 2,
     "options": [
-      { "text": "`chmod 750 deploy.sh`", "correct": true, "rationale": "7 = rwx for the owner, 5 = r-x for the group, 0 = no permissions for others: `-rwxr-x---`." },
-      { "text": "`chmod u=rwx,g=rx,o= deploy.sh`", "correct": true, "rationale": "Symbolic mode sets each class explicitly; an empty `o=` removes every permission for others." },
-      { "text": "`chmod 705 deploy.sh`", "correct": false, "rationale": "This gives the group nothing and others r-x: `-rwx---r-x`." },
-      { "text": "`chmod u=rwx,g=rx,o=r deploy.sh`", "correct": false, "rationale": "`o=r` leaves others able to read the file: `-rwxr-xr--`." },
-      { "text": "`chmod 570 deploy.sh`", "correct": false, "rationale": "The digits are in the wrong order: the owner gets r-x and the group rwx." }
+      {
+        "text": "`chmod 750 deploy.sh`",
+        "correct": true,
+        "rationale": "7 = rwx for the owner, 5 = r-x for the group, 0 = no permissions for others: `-rwxr-x---`."
+      },
+      {
+        "text": "`chmod u=rwx,g=rx,o= deploy.sh`",
+        "correct": true,
+        "rationale": "Symbolic mode sets each class explicitly; an empty `o=` removes every permission for others."
+      },
+      {
+        "text": "`chmod 705 deploy.sh`",
+        "correct": false,
+        "rationale": "This gives the group nothing and others r-x: `-rwx---r-x`."
+      },
+      {
+        "text": "`chmod u=rwx,g=rx,o=r deploy.sh`",
+        "correct": false,
+        "rationale": "`o=r` leaves others able to read the file: `-rwxr-xr--`."
+      },
+      {
+        "text": "`chmod 570 deploy.sh`",
+        "correct": false,
+        "rationale": "The digits are in the wrong order: the owner gets r-x and the group rwx."
+      }
     ],
     "explanation": "Octal modes give one digit each to owner, group and others, adding read (4), write (2) and execute (1). Symbolic modes name the classes (u, g, o) and set, add or remove permissions."
+  },
+  {
+    "id": "015.3-002",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Mira runs `ls -l build.sh` and sees `-rwxr-x--- 1 ada release 38 Nov  2 09:30 build.sh`. Who may execute the script?",
+    "explanation": "The ten characters are the file type, then three triplets for owner, group and others. The owner and group names come from columns three and four.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "options": [
+      {
+        "text": "Everybody on the system.",
+        "correct": false,
+        "rationale": "The last three characters are `---`: others have no access."
+      },
+      {
+        "text": "Ada, and the members of the group `release`.",
+        "correct": true,
+        "rationale": "The owner has `rwx` and the group `r-x`, so both may execute it."
+      },
+      {
+        "text": "Only Ada, as the owner.",
+        "correct": false,
+        "rationale": "The group part `r-x` also includes execute."
+      },
+      {
+        "text": "Only the members of the group `release`.",
+        "correct": false,
+        "rationale": "The owner’s `rwx` includes execute too."
+      }
+    ]
+  },
+  {
+    "id": "015.3-003",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "In `ls -l` output, which line describes a directory?",
+    "explanation": "The first character is the file type: `-` regular file, `d` directory, `l` symbolic link.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "options": [
+      {
+        "text": "`-rwxr-xr-x 1 mira mira 38 Nov  2 09:30 build.sh`",
+        "correct": false,
+        "rationale": "A leading `-` marks a regular file."
+      },
+      {
+        "text": "`lrwxrwxrwx 1 mira mira 9 Nov  2 09:30 latest`",
+        "correct": false,
+        "rationale": "A leading `l` marks a symbolic link."
+      },
+      {
+        "text": "`-rw-r--r-- 1 mira mira 27 Nov  2 09:30 level1.txt`",
+        "correct": false,
+        "rationale": "A leading `-` marks a regular file."
+      },
+      {
+        "text": "`drwxr-xr-x 2 mira mira 0 Nov  2 09:30 art`",
+        "correct": true,
+        "rationale": "The first character `d` marks a directory."
+      }
+    ]
+  },
+  {
+    "id": "015.3-004",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Mira applies `chmod 640 notes.txt`. Which permissions does the file have afterwards?",
+    "explanation": "Each octal digit is the sum of read (4), write (2) and execute (1) for owner, group and others.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "options": [
+      {
+        "text": "Owner read and write, group read, others nothing.",
+        "correct": true,
+        "rationale": "6 = rw-, 4 = r-- and 0 = ---."
+      },
+      {
+        "text": "Owner read and write, group write, others read.",
+        "correct": false,
+        "rationale": "That would be 624."
+      },
+      {
+        "text": "Owner read, group read and write, others nothing.",
+        "correct": false,
+        "rationale": "That would be 460."
+      },
+      {
+        "text": "Owner read, write and execute, group read, others nothing.",
+        "correct": false,
+        "rationale": "That would be 740."
+      }
+    ]
+  },
+  {
+    "id": "015.3-005",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Ada wants to give the group write permission on `notes.txt` and leave all other permission bits alone. Which command does that?",
+    "explanation": "Symbolic mode uses `+` to add, `-` to remove and `=` to set exactly. The classes are `u`, `g`, `o` and `a`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "options": [
+      {
+        "text": "`chmod g=w notes.txt`",
+        "correct": false,
+        "rationale": "`=` replaces the group’s permissions with write alone, removing read."
+      },
+      {
+        "text": "`chmod 020 notes.txt`",
+        "correct": false,
+        "rationale": "Octal sets all classes: the owner and others lose everything."
+      },
+      {
+        "text": "`chmod g+w notes.txt`",
+        "correct": true,
+        "rationale": "`g+w` adds write for the group only."
+      },
+      {
+        "text": "`chmod a-w notes.txt`",
+        "correct": false,
+        "rationale": "This removes write for everybody."
+      }
+    ]
+  },
+  {
+    "id": "015.3-006",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Jonas has `r` but no `x` permission on the directory `art`. What can he do?",
+    "explanation": "For directories `r` allows listing the names, `w` allows creating, deleting and renaming entries, and `x` allows entering it and reaching the entries.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "options": [
+      {
+        "text": "Enter it with `cd` and open the files inside.",
+        "correct": false,
+        "rationale": "Entering and opening need `x` on the directory."
+      },
+      {
+        "text": "Create new files in it.",
+        "correct": false,
+        "rationale": "Creating files needs write and execute on the directory."
+      },
+      {
+        "text": "List the names of the files in it, but not open or enter them.",
+        "correct": true,
+        "rationale": "Read lets you list names, and execute is needed to traverse or access the entries."
+      },
+      {
+        "text": "Nothing at all; the directory is invisible to him.",
+        "correct": false,
+        "rationale": "With `r` he can still list the names."
+      }
+    ]
+  },
+  {
+    "id": "015.3-007",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Which permission does Ada need on a directory to enter it with `cd`?",
+    "explanation": "Directories use the execute bit as \"search\" permission. Without it you cannot enter them or reach their entries.",
+    "options": [
+      {
+        "text": "Execute (`x`) on that directory.",
+        "correct": true,
+        "rationale": "The execute bit on a directory is the permission to traverse it."
+      },
+      {
+        "text": "Write (`w`) on that directory.",
+        "correct": false,
+        "rationale": "Write allows changing the entries, not entering."
+      },
+      {
+        "text": "Read (`r`) on every file inside.",
+        "correct": false,
+        "rationale": "File permissions are irrelevant to `cd`."
+      },
+      {
+        "text": "Ownership of the directory.",
+        "correct": false,
+        "rationale": "Ownership is not required; permissions are."
+      }
+    ]
+  },
+  {
+    "id": "015.3-008",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Which command changes the owner of `draft.txt` to Jonas and its group to `design` in one go?",
+    "explanation": "`chown OWNER:GROUP file` sets both. Either part may be left out: `chown :design file` changes only the group.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chown.1.html"
+    ],
+    "options": [
+      {
+        "text": "`chown jonas.design draft.txt`",
+        "correct": false,
+        "rationale": "The dot is an old form; `owner:group` is the portable one."
+      },
+      {
+        "text": "`chmod jonas:design draft.txt`",
+        "correct": false,
+        "rationale": "`chmod` changes permission bits, not owners."
+      },
+      {
+        "text": "`chown design:jonas draft.txt`",
+        "correct": false,
+        "rationale": "This would make `design` the owner and `jonas` the group."
+      },
+      {
+        "text": "`chown jonas:design draft.txt`",
+        "correct": true,
+        "rationale": "The colon separates the new owner from the new group."
+      }
+    ]
+  },
+  {
+    "id": "015.3-009",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Who is allowed to give one of her files to another user with `chown`?",
+    "explanation": "Giving files away is restricted to root, which prevents users from dodging disk quotas or planting files in other names.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chown.1.html"
+    ],
+    "options": [
+      {
+        "text": "The file’s owner.",
+        "correct": false,
+        "rationale": "Owners may change the permissions, and the group to one they belong to, but not the owner."
+      },
+      {
+        "text": "Only root.",
+        "correct": true,
+        "rationale": "Standard users cannot give files away; only root may change an owner."
+      },
+      {
+        "text": "Any member of the file’s group.",
+        "correct": false,
+        "rationale": "Group membership gives no right to change ownership."
+      },
+      {
+        "text": "Anyone with `w` on the file.",
+        "correct": false,
+        "rationale": "Write permission allows changing content only."
+      }
+    ]
+  },
+  {
+    "id": "015.3-010",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Mira wants to see the hidden files in her home directory, whose names start with a dot. Which command shows them?",
+    "explanation": "Dot files are hidden by default. `ls -a` shows all, including `.` and `..`; `ls -A` omits those two.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "options": [
+      {
+        "text": "`ls -h`",
+        "correct": false,
+        "rationale": "`-h` prints human-readable sizes in a long listing."
+      },
+      {
+        "text": "`ls -R`",
+        "correct": false,
+        "rationale": "`-R` lists subdirectories recursively."
+      },
+      {
+        "text": "`ls -t`",
+        "correct": false,
+        "rationale": "`-t` sorts by modification time."
+      },
+      {
+        "text": "`ls -a`",
+        "correct": true,
+        "rationale": "`-a` includes the entries whose names start with a dot."
+      }
+    ]
+  },
+  {
+    "id": "015.3-011",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "What does the option `-R` do in `chmod -R go-w studio`?",
+    "explanation": "Use `-R` to change a directory and its whole tree. Without it only the named file or directory changes.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "options": [
+      {
+        "text": "It makes the change read-only so it can’t be undone.",
+        "correct": false,
+        "rationale": "`-R` has nothing to do with read permission."
+      },
+      {
+        "text": "It applies the change to `studio` and everything inside it.",
+        "correct": true,
+        "rationale": "`-R` means recursive."
+      },
+      {
+        "text": "It restores the previous permissions.",
+        "correct": false,
+        "rationale": "There is no restore option."
+      },
+      {
+        "text": "It applies the change to the owner only.",
+        "correct": false,
+        "rationale": "The classes are chosen by `go`."
+      }
+    ]
+  },
+  {
+    "id": "015.3-012",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "stem": "With the usual umask `022`, which permissions does a newly created regular file get?",
+    "explanation": "The umask lists bits to remove from 666 (files) or 777 (directories).",
+    "options": [
+      {
+        "text": "`rwxr-xr-x` (755)",
+        "correct": false,
+        "rationale": "That is the result for new directories."
+      },
+      {
+        "text": "`rw-rw-rw-` (666)",
+        "correct": false,
+        "rationale": "That is the maximum before the umask is applied."
+      },
+      {
+        "text": "`rw-r--r--` (644)",
+        "correct": true,
+        "rationale": "The umask removes write for group and others from 666."
+      },
+      {
+        "text": "`rw-------` (600)",
+        "correct": false,
+        "rationale": "That would need umask 077."
+      }
+    ]
+  },
+  {
+    "id": "015.3-013",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "In `-rw-r----- 1 ada release 25 Nov  2 09:30 release-notes.txt`, what are the third and fourth columns?",
+    "explanation": "The columns are type and permissions, link count, owner, group, size, date and name.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "options": [
+      {
+        "text": "The owner `ada` and the group `release`.",
+        "correct": true,
+        "rationale": "Columns three and four are the owning user and group."
+      },
+      {
+        "text": "The group `ada` and the owner `release`.",
+        "correct": false,
+        "rationale": "The owner comes first."
+      },
+      {
+        "text": "The file’s size and the number of links.",
+        "correct": false,
+        "rationale": "Those are the fifth and second columns."
+      },
+      {
+        "text": "The user who last read it and the user who last wrote it.",
+        "correct": false,
+        "rationale": "The listing keeps no such access history."
+      }
+    ]
+  },
+  {
+    "id": "015.3-014",
+    "objectiveId": "015.3",
+    "kind": "multi",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Which commands set the permissions of `passwords.txt` to read and write for the owner and nothing for anyone else? (Choose TWO.)",
+    "explanation": "Both forms give `-rw-------`. Octal states the whole result; symbolic can express it with `=`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "`chmod 600 passwords.txt`",
+        "correct": true,
+        "rationale": "6 = rw-, then 0 and 0."
+      },
+      {
+        "text": "`chmod u=rw,go= passwords.txt`",
+        "correct": true,
+        "rationale": "This sets the owner to rw and clears group and others."
+      },
+      {
+        "text": "`chmod 660 passwords.txt`",
+        "correct": false,
+        "rationale": "The group keeps read and write."
+      },
+      {
+        "text": "`chmod u=rw,g=r passwords.txt`",
+        "correct": false,
+        "rationale": "The group can read and others are untouched."
+      },
+      {
+        "text": "`chmod 400 passwords.txt`",
+        "correct": false,
+        "rationale": "The owner could only read."
+      }
+    ]
+  },
+  {
+    "id": "015.3-015",
+    "objectiveId": "015.3",
+    "kind": "multi",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Which statements about permissions on a directory are correct? (Choose TWO.)",
+    "explanation": "Directory permissions govern the entries: `r` lists, `w` changes, `x` traverses.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "`x` on the directory is needed to `cd` into it.",
+        "correct": true,
+        "rationale": "Execute means search."
+      },
+      {
+        "text": "`r` on the directory allows creating files in it.",
+        "correct": false,
+        "rationale": "Read only lists names."
+      },
+      {
+        "text": "Deleting a file needs `w` on the file itself.",
+        "correct": false,
+        "rationale": "Deleting depends on the directory’s `w`."
+      },
+      {
+        "text": "`w` on the directory allows entering it.",
+        "correct": false,
+        "rationale": "Entering needs `x`."
+      },
+      {
+        "text": "Creating a file in it needs `w` and `x` on the directory.",
+        "correct": true,
+        "rationale": "Both are needed to change entries."
+      }
+    ]
+  },
+  {
+    "id": "015.3-016",
+    "objectiveId": "015.3",
+    "kind": "multi",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Which commands change who owns `draft.txt` for it to belong to Jonas? (Choose TWO.)",
+    "explanation": "Only root may change the owner of a file.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chown.1.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "`chmod jonas draft.txt`",
+        "correct": false,
+        "rationale": "`chmod` accepts only modes."
+      },
+      {
+        "text": "`chown draft.txt jonas`",
+        "correct": false,
+        "rationale": "The owner comes first; `draft.txt` would be taken as a user."
+      },
+      {
+        "text": "`ls -l jonas draft.txt`",
+        "correct": false,
+        "rationale": "`ls` only lists."
+      },
+      {
+        "text": "`sudo chown jonas draft.txt`",
+        "correct": true,
+        "rationale": "It sets the owner to Jonas; root rights are needed."
+      },
+      {
+        "text": "`sudo chown jonas:design draft.txt`",
+        "correct": true,
+        "rationale": "It also sets the group."
+      }
+    ]
+  },
+  {
+    "id": "015.3-017",
+    "objectiveId": "015.3",
+    "kind": "fill",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Make `studio/draft.txt` readable and writable by its owner only, using octal mode. Type the full command.",
+    "explanation": "Octal 600 is `rw-------`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "accept": [
+      "chmod 600 studio/draft.txt",
+      "chmod 0600 studio/draft.txt"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "sec-perms"
+    }
+  },
+  {
+    "id": "015.3-018",
+    "objectiveId": "015.3",
+    "kind": "fill",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Complete the command so that `studio/build.sh` ends up as `rwxr-x---`.",
+    "explanation": "7, 5 and 0 mean `rwx`, `r-x` and nothing.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "accept": [
+      "750 studio/build.sh",
+      "0750 studio/build.sh",
+      "u=rwx,g=rx,o= studio/build.sh"
+    ],
+    "prefix": "$ chmod",
+    "caseSensitive": true,
+    "verify": {
+      "command": "chmod {answer}",
+      "fixture": "sec-perms"
+    }
+  },
+  {
+    "id": "015.3-019",
+    "objectiveId": "015.3",
+    "kind": "fill",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Running as root, make Jonas the owner of `/home/mira/studio/draft.txt`. Type the command.",
+    "explanation": "`chown OWNER file` changes the owner.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chown.1.html"
+    ],
+    "accept": [
+      "chown jonas /home/mira/studio/draft.txt",
+      "sudo chown jonas /home/mira/studio/draft.txt"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "sec-perms",
+      "user": "root"
+    }
+  },
+  {
+    "id": "015.3-020",
+    "objectiveId": "015.3",
+    "kind": "fill",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Type the command that lists all entries of the current directory, including hidden ones and `.` and `..`.",
+    "explanation": "`-a` or `--all` shows dot files too.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "accept": [
+      "ls -a",
+      "ls --all"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}"
+    }
+  },
+  {
+    "id": "015.3-021",
+    "objectiveId": "015.3",
+    "kind": "fill",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Type the command that shows the owner, group and permissions of `studio/level1.txt` in a long listing.",
+    "explanation": "`ls -l` prints the permissions, link count, owner, group, size and date.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "accept": [
+      "ls -l studio/level1.txt",
+      "ls -lh studio/level1.txt"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "sec-perms"
+    }
+  },
+  {
+    "id": "015.3-022",
+    "objectiveId": "015.3",
+    "kind": "fill",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Give the owner of `studio/draft.txt` execute permission without changing any other bit, using symbolic mode. Type the full command.",
+    "explanation": "`u+x` adds execute for the user (owner) only.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "accept": [
+      "chmod u+x studio/draft.txt"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "sec-perms"
+    }
+  },
+  {
+    "id": "015.3-023",
+    "objectiveId": "015.3",
+    "kind": "fill",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Remove every permission from group and others on `studio/private` and everything inside it, using recursive mode. Type the full command.",
+    "explanation": "`-R` recurses, and `go-rwx` removes all bits for group and others.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/chmod.1.html"
+    ],
+    "accept": [
+      "chmod -R go-rwx studio/private",
+      "chmod -R go= studio/private",
+      "chmod --recursive go-rwx studio/private"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "sec-perms"
+    }
+  },
+  {
+    "id": "015.3-024",
+    "objectiveId": "015.3",
+    "kind": "output",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "What does this command print?",
+    "explanation": "`ls -l` shows type and permissions, the link count, owner, group, size, date and name.",
+    "command": "ls -l studio/build.sh studio/level1.txt",
+    "fixture": "sec-perms",
+    "output": "-rwxr-xr-x 1 mira mira 38 Nov  2 09:30 studio/build.sh\n-rw-r--r-- 1 mira mira 27 Nov  2 09:30 studio/level1.txt",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "-rwxr-xr-x 1 mira mira 38 Nov  2 09:30 studio/build.sh\n-rw-r--r-- 1 mira mira 27 Nov  2 09:30 studio/level1.txt",
+        "correct": true,
+        "rationale": "The script is executable for all, the text file only readable by others."
+      },
+      {
+        "text": "-rw-r--r-- 1 mira mira 38 Nov  2 09:30 studio/build.sh\n-rwxr-xr-x 1 mira mira 27 Nov  2 09:30 studio/level1.txt",
+        "correct": false,
+        "rationale": "The permissions are swapped between the two files."
+      },
+      {
+        "text": "-rwxr-xr-x 1 root mira 38 Nov  2 09:30 studio/build.sh\n-rw-r--r-- 1 root mira 27 Nov  2 09:30 studio/level1.txt",
+        "correct": false,
+        "rationale": "Mira owns both files, not root."
+      },
+      {
+        "text": "-rwxr-x--- 1 mira mira 38 Nov  2 09:30 studio/build.sh\n-rw-r----- 1 mira mira 27 Nov  2 09:30 studio/level1.txt",
+        "correct": false,
+        "rationale": "Others have read access in both files."
+      }
+    ]
+  },
+  {
+    "id": "015.3-025",
+    "objectiveId": "015.3",
+    "kind": "output",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "In the format permissions owner:group, what does this print?",
+    "explanation": "`stat -c` prints chosen fields; `%A` is the permission string, `%U` the owner and `%G` the group.",
+    "command": "stat -c \"%A %U:%G\" studio/release-notes.txt studio/art/hero.png",
+    "fixture": "sec-perms",
+    "output": "-rw-r----- ada:release\n-rw-rw-r-- jonas:design",
+    "mode": "type"
+  },
+  {
+    "id": "015.3-026",
+    "objectiveId": "015.3",
+    "kind": "output",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "What does this command print? (`%a` is the octal mode, `%A` the symbolic one.)",
+    "explanation": "The octal digits translate directly into the triplets.",
+    "command": "chmod 640 studio/draft.txt; stat -c \"%a %A\" studio/draft.txt",
+    "fixture": "sec-perms",
+    "output": "640 -rw-r-----",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "640 -rw-r--r--",
+        "correct": false,
+        "rationale": "The symbolic form would be rw-r-----."
+      },
+      {
+        "text": "604 -rw----r--",
+        "correct": false,
+        "rationale": "604 is a different mode."
+      },
+      {
+        "text": "640 -rw-r-----",
+        "correct": true,
+        "rationale": "640 translates to rw- for owner, r-- for group and --- for others."
+      },
+      {
+        "text": "644 -rw-r--r--",
+        "correct": false,
+        "rationale": "The mode is 640, not 644."
+      }
+    ]
+  },
+  {
+    "id": "015.3-027",
+    "objectiveId": "015.3",
+    "kind": "output",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "What does this command print?",
+    "explanation": "Symbolic modes edit the current mode step by step.",
+    "command": "chmod u+x,go-r studio/level1.txt; stat -c %A studio/level1.txt",
+    "fixture": "sec-perms",
+    "output": "-rwx------",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "-rwxr--r--",
+        "correct": false,
+        "rationale": "Group and others lose read."
+      },
+      {
+        "text": "-rwx------",
+        "correct": true,
+        "rationale": "The file started as 644: `u+x` gives the owner rwx, and `go-r` removes read for the rest."
+      },
+      {
+        "text": "-rw-r--r-x",
+        "correct": false,
+        "rationale": "Execute is added for the owner, not others."
+      },
+      {
+        "text": "-rwx-w----",
+        "correct": false,
+        "rationale": "Nobody had write besides the owner to begin with."
+      }
+    ]
+  },
+  {
+    "id": "015.3-028",
+    "objectiveId": "015.3",
+    "kind": "output",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Ada is in the group `release`. What does this command print when she runs it?",
+    "explanation": "The owner’s `rw-` lets Ada read the file.",
+    "command": "cat /home/mira/studio/release-notes.txt",
+    "fixture": "sec-perms",
+    "user": "ada",
+    "output": "v1.0: first public build.",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "cat: /home/mira/studio/release-notes.txt: Permission denied",
+        "correct": false,
+        "rationale": "Ada owns the file (mode 640), so she can read it."
+      },
+      {
+        "text": "cat: /home/mira/studio/release-notes.txt: No such file or directory",
+        "correct": false,
+        "rationale": "The file exists."
+      },
+      {
+        "text": "Draft story.",
+        "correct": false,
+        "rationale": "That is the content of `draft.txt`."
+      },
+      {
+        "text": "v1.0: first public build.",
+        "correct": true,
+        "rationale": "Ada owns the file, so she may read it."
+      }
+    ]
+  },
+  {
+    "id": "015.3-029",
+    "objectiveId": "015.3",
+    "kind": "output",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t1"
+    ],
+    "stem": "Jonas is not in the group `release`. What does he see?",
+    "explanation": "The mode is 640 and Jonas is neither owner nor in the group, so he falls under \"others\", who have no access.",
+    "command": "cat /home/mira/studio/release-notes.txt",
+    "fixture": "sec-perms",
+    "user": "jonas",
+    "output": "cat: /home/mira/studio/release-notes.txt: Permission denied",
+    "mode": "type"
+  },
+  {
+    "id": "015.3-030",
+    "objectiveId": "015.3",
+    "kind": "output",
+    "areas": [
+      "015.3.1"
+    ],
+    "terms": [
+      "015.3.t2"
+    ],
+    "stem": "Running as root, what does this print?",
+    "explanation": "`chown jonas:design` set both owner and group.",
+    "command": "chown jonas:design /home/mira/studio/draft.txt; stat -c \"%U:%G\" /home/mira/studio/draft.txt",
+    "fixture": "sec-perms",
+    "user": "root",
+    "output": "jonas:design",
+    "mode": "type"
   }
 ]

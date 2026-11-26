@@ -3,15 +3,867 @@
     "id": "011.3-001",
     "objectiveId": "011.3",
     "kind": "single",
-    "areas": ["011.3.2"],
-    "terms": ["011.3.t1", "011.3.t2"],
+    "areas": [
+      "011.3.2"
+    ],
+    "terms": [
+      "011.3.t1",
+      "011.3.t2"
+    ],
     "stem": "TuxPixel releases its level editor as open source. The studio wants anyone who distributes a modified version to publish their changes under the same terms. Which license fits?",
     "options": [
-      { "text": "The GNU General Public License (GPL)", "correct": true, "rationale": "The GPL is a copyleft license: distributed modified versions must stay under the GPL, with their source code available." },
-      { "text": "The BSD 3-Clause License", "correct": false, "rationale": "BSD licenses are permissive: others may distribute modified versions under other terms, even closed source." },
-      { "text": "The MIT License", "correct": false, "rationale": "MIT is permissive too; it only asks that the copyright notice is kept." },
-      { "text": "A proprietary end-user license", "correct": false, "rationale": "A proprietary license usually forbids modifying and redistributing the software at all, so it isn’t open source." }
+      {
+        "text": "The GNU General Public License (GPL)",
+        "correct": true,
+        "rationale": "The GPL is a copyleft license: distributed modified versions must stay under the GPL, with their source code available."
+      },
+      {
+        "text": "The BSD 3-Clause License",
+        "correct": false,
+        "rationale": "BSD licenses are permissive: others may distribute modified versions under other terms, even closed source."
+      },
+      {
+        "text": "The MIT License",
+        "correct": false,
+        "rationale": "MIT is permissive too; it only asks that the copyright notice is kept."
+      },
+      {
+        "text": "A proprietary end-user license",
+        "correct": false,
+        "rationale": "A proprietary license usually forbids modifying and redistributing the software at all, so it isn’t open source."
+      }
     ],
     "explanation": "Copyleft licenses such as the GPL pass their terms on to every distributed derivative. Permissive licenses such as BSD and MIT allow derivatives under any terms, as long as the notices are kept."
+  },
+  {
+    "id": "011.3-002",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "terms": [
+      "011.3.t1",
+      "011.3.t2",
+      "011.3.vt1"
+    ],
+    "stem": "Mira compares two licences for the studio’s tools. Which statement about the GPL and the BSD licences is correct?",
+    "options": [
+      {
+        "text": "The GPL is permissive and BSD is copyleft, so BSD forces every distributor to share all their changes publicly.",
+        "correct": false,
+        "rationale": "It is the other way round."
+      },
+      {
+        "text": "Both force every distributor to publish changes under the same licence.",
+        "correct": false,
+        "rationale": "Only copyleft licences, such as the GPL, do that."
+      },
+      {
+        "text": "The GPL is copyleft and keeps derivatives free; BSD is permissive and allows closed derivatives.",
+        "correct": true,
+        "rationale": "The GPL passes its terms on, while BSD asks mostly for the copyright notice."
+      },
+      {
+        "text": "Both forbid commercial use of the software.",
+        "correct": false,
+        "rationale": "Neither licence forbids commercial use."
+      }
+    ],
+    "explanation": "Copyleft licences (GPL, LGPL, AGPL) require derivatives to stay under the same terms. Permissive licences (BSD, MIT, Apache 2.0) allow almost any reuse.",
+    "sourceLinks": [
+      "https://www.gnu.org/licenses/copyleft.html",
+      "https://opensource.org/license/bsd-3-clause"
+    ]
+  },
+  {
+    "id": "011.3-003",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "terms": [
+      "011.3.t2",
+      "011.3.vt1"
+    ],
+    "stem": "Ada wants to include BSD-licensed code in the studio’s closed-source launcher and sell it. What must she do?",
+    "options": [
+      {
+        "text": "Publish all of the launcher’s source code under the BSD licence.",
+        "correct": false,
+        "rationale": "That is a copyleft duty; BSD doesn’t demand it."
+      },
+      {
+        "text": "Ask the original authors for a fee for every copy she sells.",
+        "correct": false,
+        "rationale": "BSD licences don’t require fees."
+      },
+      {
+        "text": "Nothing at all; BSD software may be copied without any notice.",
+        "correct": false,
+        "rationale": "The notice and licence text must be kept."
+      },
+      {
+        "text": "Keep the copyright notice and the licence text; she need not release her changes.",
+        "correct": true,
+        "rationale": "Permissive licences have very few conditions."
+      }
+    ],
+    "explanation": "The BSD licences mostly ask you to keep the copyright notice and not to use the authors’ names to promote your product.",
+    "sourceLinks": [
+      "https://opensource.org/license/bsd-3-clause"
+    ]
+  },
+  {
+    "id": "011.3-004",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "terms": [
+      "011.3.t3",
+      "011.3.vt1"
+    ],
+    "stem": "Jonas wants to share his sound effects so that anyone may reuse them, if they credit him and share changed versions under the same terms. Which Creative Commons licence fits?",
+    "options": [
+      {
+        "text": "CC BY-ND",
+        "correct": false,
+        "rationale": "ND (NoDerivatives) forbids changed versions altogether."
+      },
+      {
+        "text": "CC BY-SA",
+        "correct": true,
+        "rationale": "BY asks for credit and SA (ShareAlike) passes the same terms to adaptations."
+      },
+      {
+        "text": "CC BY-NC",
+        "correct": false,
+        "rationale": "NC allows only non-commercial use and has no ShareAlike duty."
+      },
+      {
+        "text": "CC0",
+        "correct": false,
+        "rationale": "CC0 gives up as many rights as the law allows, so it asks for no credit."
+      }
+    ],
+    "explanation": "Attribution (BY), ShareAlike (SA), NonCommercial (NC) and NoDerivatives (ND) combine into six licences. SA is copyleft for content.",
+    "sourceLinks": [
+      "https://creativecommons.org/share-your-work/cclicenses/"
+    ]
+  },
+  {
+    "id": "011.3-005",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "terms": [
+      "011.3.t3",
+      "011.3.vt1"
+    ],
+    "stem": "A fan wants to use Jonas’s artwork on shirts that they sell. Jonas published it under CC BY-NC. What does that licence say?",
+    "options": [
+      {
+        "text": "They may not use it commercially without his permission.",
+        "correct": true,
+        "rationale": "NC means NonCommercial: only non-commercial use is allowed."
+      },
+      {
+        "text": "They may sell it as long as they credit Jonas.",
+        "correct": false,
+        "rationale": "That would be CC BY, without NC."
+      },
+      {
+        "text": "They may sell it only if they share the shirt designs under the same terms.",
+        "correct": false,
+        "rationale": "That is ShareAlike, which this licence doesn’t include."
+      },
+      {
+        "text": "They must not copy it at all, only look at it.",
+        "correct": false,
+        "rationale": "NC limits commercial use, not copying."
+      }
+    ],
+    "explanation": "The NonCommercial element limits use to non-commercial purposes. Because it limits use, NC licences are not free licences by the FSF and OSI standard.",
+    "sourceLinks": [
+      "https://creativecommons.org/share-your-work/cclicenses/"
+    ]
+  },
+  {
+    "id": "011.3-006",
+    "objectiveId": "011.3",
+    "kind": "fill",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "terms": [
+      "011.3.t3",
+      "011.3.vt1"
+    ],
+    "stem": "In the Creative Commons licence name “CC BY-ND”, what does ND stand for? Type the two words as one word or with a space.",
+    "accept": [
+      "NoDerivatives",
+      "No Derivatives",
+      "No Derivs"
+    ],
+    "caseSensitive": false,
+    "explanation": "ND (NoDerivatives) allows others to copy and share the work but not to change it.",
+    "sourceLinks": [
+      "https://creativecommons.org/share-your-work/cclicenses/"
+    ]
+  },
+  {
+    "id": "011.3-007",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.3"
+    ],
+    "stem": "What is the main difference between proprietary software and free software?",
+    "options": [
+      {
+        "text": "The owner of proprietary software decides what users may do, and users usually get no source code.",
+        "correct": true,
+        "rationale": "The test is the users’ freedoms, not the price."
+      },
+      {
+        "text": "Proprietary software always costs money for every user, while free software never costs any money at all.",
+        "correct": false,
+        "rationale": "Price isn’t the test; proprietary software can be free of charge."
+      },
+      {
+        "text": "Proprietary software can’t run on Linux at all.",
+        "correct": false,
+        "rationale": "Many proprietary programs run on Linux."
+      },
+      {
+        "text": "Proprietary software has no licence.",
+        "correct": false,
+        "rationale": "It has a licence that limits what users may do."
+      }
+    ],
+    "explanation": "Proprietary software is controlled by its owner. “Free” in free software means freedom, not price."
+  },
+  {
+    "id": "011.3-008",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.3"
+    ],
+    "terms": [
+      "011.3.t5"
+    ],
+    "stem": "TuxPixel’s studio decides which software it runs, where it stores its files and whether it can switch suppliers later. Which term describes this ability?",
+    "options": [
+      {
+        "text": "Copyleft licensing",
+        "correct": false,
+        "rationale": "Copyleft is a type of licence, not an ability of the organisation."
+      },
+      {
+        "text": "Digital autonomy",
+        "correct": true,
+        "rationale": "Digital autonomy is the ability to decide for yourself how you use your computers and data."
+      },
+      {
+        "text": "Open content",
+        "correct": false,
+        "rationale": "Open content is reusable material such as art or text."
+      },
+      {
+        "text": "Vendor lock-in",
+        "correct": false,
+        "rationale": "Lock-in is the opposite: being dependent on one supplier."
+      }
+    ],
+    "explanation": "Digital autonomy is about people or organisations deciding for themselves. Open source software supports it because you may run it yourself and switch suppliers."
+  },
+  {
+    "id": "011.3-009",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.3"
+    ],
+    "terms": [
+      "011.3.t6"
+    ],
+    "stem": "A city administration wants to control its own digital infrastructure, data and rules and not depend wholly on one foreign company’s software. Which term is used for this goal?",
+    "options": [
+      {
+        "text": "Open content",
+        "correct": false,
+        "rationale": "Open content is about reusable creative works."
+      },
+      {
+        "text": "Permissive licensing",
+        "correct": false,
+        "rationale": "That is a type of licence."
+      },
+      {
+        "text": "Digital sovereignty",
+        "correct": true,
+        "rationale": "Sovereignty is the same idea at the level of a country, a public body or a company."
+      },
+      {
+        "text": "Digital piracy",
+        "correct": false,
+        "rationale": "Piracy is unlawful copying."
+      }
+    ],
+    "explanation": "Digital sovereignty means control over your own digital infrastructure, data and rules. People disagree on how far open source alone delivers it.",
+    "sourceLinks": [
+      "https://fsfe.org/news/2025/news-20251124-01.html",
+      "https://opensource.org/blog/open-source-a-global-commons-to-enable-digital-sovereignty"
+    ]
+  },
+  {
+    "id": "011.3-010",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.3"
+    ],
+    "terms": [
+      "011.3.t5",
+      "011.3.t6"
+    ],
+    "stem": "What is a typical risk of depending entirely on one vendor’s proprietary software?",
+    "options": [
+      {
+        "text": "The software must always be published together with its full source code and licence.",
+        "correct": false,
+        "rationale": "That describes open source software."
+      },
+      {
+        "text": "The software can’t be sold to anyone.",
+        "correct": false,
+        "rationale": "Proprietary software is often sold."
+      },
+      {
+        "text": "The software becomes copyleft after a year.",
+        "correct": false,
+        "rationale": "Licences don’t change that way."
+      },
+      {
+        "text": "The organisation can’t inspect or change it, and switching away may be hard.",
+        "correct": true,
+        "rationale": "Users have to rely on what the owner decides."
+      }
+    ],
+    "explanation": "Open licences give users control and the ability to leave; a proprietary product can leave them dependent on one vendor.",
+    "sourceLinks": [
+      "https://fsfe.org/news/2025/news-20251124-01.html",
+      "https://opensource.org/blog/open-source-a-global-commons-to-enable-digital-sovereignty"
+    ]
+  },
+  {
+    "id": "011.3-011",
+    "objectiveId": "011.3",
+    "kind": "multi",
+    "areas": [
+      "011.3.3"
+    ],
+    "terms": [
+      "011.3.t5",
+      "011.3.t6"
+    ],
+    "stem": "Which statements about free and open source software and digital autonomy are true? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Users may run it themselves and switch to a different supplier.",
+        "correct": true,
+        "rationale": "This freedom to leave supports autonomy and sovereignty."
+      },
+      {
+        "text": "It forbids organisations from using it commercially.",
+        "correct": false,
+        "rationale": "Commercial use is allowed."
+      },
+      {
+        "text": "It can only be run by the original vendor.",
+        "correct": false,
+        "rationale": "Anyone may run it."
+      },
+      {
+        "text": "It guarantees sovereignty with no further effort.",
+        "correct": false,
+        "rationale": "Open licences don’t replace skills and good decisions."
+      },
+      {
+        "text": "It supports autonomy but does not automatically create it.",
+        "correct": true,
+        "rationale": "Skills, money and good decisions are still needed."
+      }
+    ],
+    "explanation": "Open licences give control and the ability to leave, but an organisation still needs skills and good decisions.",
+    "sourceLinks": [
+      "https://fsfe.org/news/2025/news-20251124-01.html",
+      "https://opensource.org/blog/open-source-a-global-commons-to-enable-digital-sovereignty"
+    ]
+  },
+  {
+    "id": "011.3-012",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1",
+      "011.3.4",
+      "011.3.v2"
+    ],
+    "terms": [
+      "011.3.t4",
+      "011.3.vt2"
+    ],
+    "stem": "How do Free Software and Open Source Software relate?",
+    "options": [
+      {
+        "text": "They are opposites: no program can be both free software and open source.",
+        "correct": false,
+        "rationale": "Nearly every free software licence is also an open source licence, and the other way round."
+      },
+      {
+        "text": "They are mostly the same programs, with different emphasis: ethical freedom and practical open development.",
+        "correct": true,
+        "rationale": "The FSF stresses freedom, the OSI stresses open development."
+      },
+      {
+        "text": "Free software always costs nothing, while open source software is always sold.",
+        "correct": false,
+        "rationale": "Price is not what separates them."
+      },
+      {
+        "text": "Open source software must be copyleft, while free software must be permissive.",
+        "correct": false,
+        "rationale": "Both groups accept copyleft and permissive licences."
+      }
+    ],
+    "explanation": "The two movements use different arguments, but they accept mostly the same software. “Free and open source software” names both at once.",
+    "sourceLinks": [
+      "https://www.gnu.org/philosophy/free-sw.html",
+      "https://opensource.org/osd"
+    ]
+  },
+  {
+    "id": "011.3-013",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1",
+      "011.3.v2"
+    ],
+    "stem": "Which of these is one of the criteria in the Open Source Definition?",
+    "options": [
+      {
+        "text": "Mandatory payment per user",
+        "correct": false,
+        "rationale": "Open source licences may not demand fees for redistribution."
+      },
+      {
+        "text": "Source code kept secret",
+        "correct": false,
+        "rationale": "Source code must be available."
+      },
+      {
+        "text": "Free redistribution",
+        "correct": true,
+        "rationale": "The Open Source Definition has ten criteria, among them free redistribution and available source code."
+      },
+      {
+        "text": "Use limited to non-profit work",
+        "correct": false,
+        "rationale": "The definition forbids discrimination against fields of work."
+      }
+    ],
+    "explanation": "The OSI’s Open Source Definition lists ten criteria, including free redistribution, source code, derived works and no discrimination against people or fields of work.",
+    "sourceLinks": [
+      "https://opensource.org/osd"
+    ]
+  },
+  {
+    "id": "011.3-014",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.4",
+      "011.3.v2"
+    ],
+    "stem": "Freedom 0 of the four essential freedoms says users may do what?",
+    "options": [
+      {
+        "text": "Run the program for any purpose",
+        "correct": true,
+        "rationale": "Freedom 0 is the freedom to run the program for any purpose."
+      },
+      {
+        "text": "Study the code, without changing it",
+        "correct": false,
+        "rationale": "Studying and changing is freedom 1."
+      },
+      {
+        "text": "Share copies of the program",
+        "correct": false,
+        "rationale": "Sharing copies is freedom 2."
+      },
+      {
+        "text": "Share their own changed versions",
+        "correct": false,
+        "rationale": "Sharing changed versions is freedom 3."
+      }
+    ],
+    "explanation": "The four freedoms: run (0), study and change (1), share copies (2) and share your changed versions (3).",
+    "sourceLinks": [
+      "https://www.gnu.org/philosophy/free-sw.html"
+    ]
+  },
+  {
+    "id": "011.3-015",
+    "objectiveId": "011.3",
+    "kind": "multi",
+    "areas": [
+      "011.3.4",
+      "011.3.v2"
+    ],
+    "stem": "Which statements about free software are true? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "It can be sold for money.",
+        "correct": true,
+        "rationale": "“Free” means freedom, not price."
+      },
+      {
+        "text": "It must always be distributed free of charge.",
+        "correct": false,
+        "rationale": "Free software may be sold."
+      },
+      {
+        "text": "Users may share changed versions of it.",
+        "correct": true,
+        "rationale": "Freedom 3 allows sharing modified versions."
+      },
+      {
+        "text": "Its source code stays hidden from users.",
+        "correct": false,
+        "rationale": "Studying and changing the program needs the source."
+      },
+      {
+        "text": "It may only be used for non-commercial purposes.",
+        "correct": false,
+        "rationale": "Freedom 0 lets users run it for any purpose."
+      }
+    ],
+    "explanation": "Free software respects the four freedoms. It can be sold, and anyone may use, study, change and share it.",
+    "sourceLinks": [
+      "https://www.gnu.org/philosophy/free-sw.html"
+    ]
+  },
+  {
+    "id": "011.3-016",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.4",
+      "011.3.v2"
+    ],
+    "stem": "Mira says that a program is free software if it respects the user’s freedoms. What is she referring to?",
+    "options": [
+      {
+        "text": "The ten criteria of the Open Source Definition.",
+        "correct": false,
+        "rationale": "Those belong to open source, maintained by the OSI."
+      },
+      {
+        "text": "The six Creative Commons licences.",
+        "correct": false,
+        "rationale": "Creative Commons licences are for content."
+      },
+      {
+        "text": "The rules for Linux distribution release cycles.",
+        "correct": false,
+        "rationale": "Those are LTS, stable and rolling schedules."
+      },
+      {
+        "text": "The four essential freedoms defined by the Free Software Foundation.",
+        "correct": true,
+        "rationale": "They are numbered from 0 to 3."
+      }
+    ],
+    "explanation": "The FSF’s four freedoms define free software, while the OSI’s ten-point definition defines open source.",
+    "sourceLinks": [
+      "https://www.gnu.org/philosophy/free-sw.html",
+      "https://opensource.org/osd"
+    ]
+  },
+  {
+    "id": "011.3-017",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.4",
+      "011.3.v2"
+    ],
+    "stem": "Which of the FSF’s four essential freedoms needs access to the source code?",
+    "options": [
+      {
+        "text": "The freedom to study how the program works and change it.",
+        "correct": true,
+        "rationale": "Studying and changing a program requires its source code."
+      },
+      {
+        "text": "The freedom to run the program for any purpose.",
+        "correct": false,
+        "rationale": "Running a program needs no source code."
+      },
+      {
+        "text": "The freedom to charge for support.",
+        "correct": false,
+        "rationale": "That is not one of the four freedoms."
+      },
+      {
+        "text": "The freedom to keep the licence secret.",
+        "correct": false,
+        "rationale": "That is not one of the four freedoms."
+      }
+    ],
+    "explanation": "The four freedoms are numbered from 0: run, study and change, share copies, and share your changed versions. Freedoms 1 and 3 both need the source code.",
+    "sourceLinks": [
+      "https://www.gnu.org/philosophy/free-sw.html"
+    ]
+  },
+  {
+    "id": "011.3-018",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1",
+      "011.3.v2"
+    ],
+    "terms": [
+      "011.3.t8"
+    ],
+    "stem": "Which organisation maintains the Open Source Definition, whose criteria a licence must meet to count as open source?",
+    "options": [
+      {
+        "text": "The Free Software Foundation (FSF)",
+        "correct": false,
+        "rationale": "The FSF defines the four freedoms of free software."
+      },
+      {
+        "text": "Creative Commons",
+        "correct": false,
+        "rationale": "Creative Commons publishes licences for content."
+      },
+      {
+        "text": "The Linux Professional Institute",
+        "correct": false,
+        "rationale": "LPI certifies Linux skills; it doesn’t define licences."
+      },
+      {
+        "text": "The Open Source Initiative",
+        "correct": true,
+        "rationale": "The OSI approves licences that meet the ten criteria."
+      }
+    ],
+    "explanation": "The OSI maintains the Open Source Definition and approves licences; the FSF stands behind the four freedoms.",
+    "sourceLinks": [
+      "https://opensource.org/osd"
+    ]
+  },
+  {
+    "id": "011.3-019",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1",
+      "011.3.v2"
+    ],
+    "terms": [
+      "011.3.t7"
+    ],
+    "stem": "Which statement describes the main message of the Free Software Foundation (FSF)?",
+    "options": [
+      {
+        "text": "Open development produces better software; it is a practical argument.",
+        "correct": false,
+        "rationale": "That is the Open Source Initiative’s emphasis."
+      },
+      {
+        "text": "Software should always be sold to pay its developers.",
+        "correct": false,
+        "rationale": "The FSF doesn’t require that software is sold."
+      },
+      {
+        "text": "Users’ freedom is an ethical matter, and software should respect it.",
+        "correct": true,
+        "rationale": "The FSF was started around the GNU project by Richard Stallman."
+      },
+      {
+        "text": "Source code should be hidden to protect users.",
+        "correct": false,
+        "rationale": "Free software requires that the source is available."
+      }
+    ],
+    "explanation": "The FSF and the OSI mostly accept the same programs, but they differ in emphasis: freedom as an ethical matter against open development as a practical benefit.",
+    "sourceLinks": [
+      "https://www.fsf.org/",
+      "https://www.gnu.org/philosophy/free-sw.html"
+    ]
+  },
+  {
+    "id": "011.3-020",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1",
+      "011.3.v2"
+    ],
+    "stem": "A shop owner says: “Free software must be free of charge.” Which reply is correct?",
+    "options": [
+      {
+        "text": "Correct: a program that costs money can never be free software.",
+        "correct": false,
+        "rationale": "The freedoms, not the price, decide."
+      },
+      {
+        "text": "“Free” means freedom, not price; free software can be sold.",
+        "correct": true,
+        "rationale": "A free-of-charge program can still be proprietary."
+      },
+      {
+        "text": "Correct: free software is another name for shareware.",
+        "correct": false,
+        "rationale": "Shareware is proprietary."
+      },
+      {
+        "text": "Wrong: free software must also be sold, otherwise it isn’t free.",
+        "correct": false,
+        "rationale": "Selling is allowed but not required."
+      }
+    ],
+    "explanation": "Free software is about the freedom to use, study, change and share. A free-of-charge program can be proprietary, and free software can be sold.",
+    "sourceLinks": [
+      "https://www.gnu.org/philosophy/free-sw.html"
+    ]
+  },
+  {
+    "id": "011.3-021",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1",
+      "011.3.v2"
+    ],
+    "terms": [
+      "011.3.vt2"
+    ],
+    "stem": "The abbreviations FOSS and FLOSS appear in articles. What do they refer to?",
+    "options": [
+      {
+        "text": "Two different licences: FOSS is copyleft and FLOSS is permissive.",
+        "correct": false,
+        "rationale": "They name the family of software, not licences."
+      },
+      {
+        "text": "Two Creative Commons licences for artwork.",
+        "correct": false,
+        "rationale": "They are about software."
+      },
+      {
+        "text": "Types of proprietary software that is free of charge.",
+        "correct": false,
+        "rationale": "They are about free and open source software."
+      },
+      {
+        "text": "Free and open source software; FLOSS adds “libre”, to stress freedom rather than price.",
+        "correct": true,
+        "rationale": "Both mean the same family of software."
+      }
+    ],
+    "explanation": "FOSS stands for free and open source software and FLOSS for free/libre and open source software.",
+    "sourceLinks": [
+      "https://www.gnu.org/philosophy/free-sw.html"
+    ]
+  },
+  {
+    "id": "011.3-022",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1"
+    ],
+    "terms": [
+      "011.3.vt3"
+    ],
+    "stem": "Red Hat and SUSE sell support subscriptions for software that anyone may copy. Which kind of business model is this?",
+    "options": [
+      {
+        "text": "Paid support and subscriptions for free software",
+        "correct": true,
+        "rationale": "Customers pay for updates, help and guarantees, not for the right to copy."
+      },
+      {
+        "text": "Dual licensing of the same code under a free and a paid licence",
+        "correct": false,
+        "rationale": "Dual licensing sells a second licence, which is a different model."
+      },
+      {
+        "text": "Open core with proprietary extras",
+        "correct": false,
+        "rationale": "Open core sells extra proprietary features."
+      },
+      {
+        "text": "Selling the software as a hosted service",
+        "correct": false,
+        "rationale": "That is hosting (software as a service), which is another model."
+      }
+    ],
+    "explanation": "Support and subscriptions, services and consulting, hosting, dual licensing, open core, donations and selling related products are all ways of earning money with open source."
+  },
+  {
+    "id": "011.3-023",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1"
+    ],
+    "terms": [
+      "011.3.vt3"
+    ],
+    "stem": "Which of these is an example of the “open core” business model?",
+    "options": [
+      {
+        "text": "The studio publishes all code and lives on donations only.",
+        "correct": false,
+        "rationale": "That is a donation or sponsorship model."
+      },
+      {
+        "text": "The core product is free and extra features are sold under a proprietary licence.",
+        "correct": true,
+        "rationale": "Open core mixes a free core with paid extras."
+      },
+      {
+        "text": "The studio sells a book and a poster about its open game.",
+        "correct": false,
+        "rationale": "That is selling related products."
+      },
+      {
+        "text": "The studio hosts the program for monthly fees.",
+        "correct": false,
+        "rationale": "That is hosting, or software as a service."
+      }
+    ],
+    "explanation": "Open core: free core, paid extras under a proprietary licence."
   }
 ]

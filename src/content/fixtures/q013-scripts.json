@@ -1,0 +1,59 @@
+{
+  "description": "Jonas's art folder plus small shell scripts in Mira's home (greet, count, stop, check, name, sprites; plain.sh is not executable), for the question bank of objective 013.3.",
+  "entries": [
+    {
+      "path": "/home/mira/art/hero.png",
+      "content": "placeholder sprite: hero\n"
+    },
+    {
+      "path": "/home/mira/art/slime.png",
+      "content": "placeholder sprite: slime\n"
+    },
+    {
+      "path": "/home/mira/art/bat.png",
+      "content": "placeholder sprite: bat\n"
+    },
+    {
+      "path": "/home/mira/art/boom.ogg",
+      "content": "placeholder sound: boom\n"
+    },
+    {
+      "path": "/home/mira/art/notes.txt",
+      "content": "Sprites are 32x32.\n"
+    },
+    {
+      "path": "/home/mira/greet.sh",
+      "content": "#!/bin/bash\necho \"Hello $1 and $2!\"\n",
+      "mode": "755"
+    },
+    {
+      "path": "/home/mira/count.sh",
+      "content": "#!/bin/bash\necho \"$# arguments, first is $1\"\n",
+      "mode": "755"
+    },
+    {
+      "path": "/home/mira/stop.sh",
+      "content": "#!/bin/bash\necho \"before\"\nexit 3\necho \"after\"\n",
+      "mode": "755"
+    },
+    {
+      "path": "/home/mira/check.sh",
+      "content": "#!/bin/bash\nif [ -f \"$1\" ]; then\necho \"found $1\"\nelse\necho \"missing $1\"\nexit 1\nfi\n",
+      "mode": "755"
+    },
+    {
+      "path": "/home/mira/name.sh",
+      "content": "#!/bin/bash\necho \"I am $0\"\n",
+      "mode": "755"
+    },
+    {
+      "path": "/home/mira/plain.sh",
+      "content": "#!/bin/bash\necho \"plain\"\n"
+    },
+    {
+      "path": "/home/mira/sprites.sh",
+      "content": "#!/bin/bash\nfor f in art/*.png; do\necho \"checking $f\"\ndone\necho \"done\"\n",
+      "mode": "755"
+    }
+  ]
+}

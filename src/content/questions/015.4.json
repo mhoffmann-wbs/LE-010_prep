@@ -1,0 +1,505 @@
+[
+  {
+    "id": "015.4-001",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.1"
+    ],
+    "terms": [
+      "015.4.t1"
+    ],
+    "stem": "Jonas leaves `sketch.txt` in the shared `/tmp`, and Ada tries to delete it. The directory shows `drwxrwxrwt`. Why does `rm` fail?",
+    "explanation": "On a world-writable directory, the sticky bit restricts deleting and renaming to the file’s owner, the directory’s owner and root.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/inode.7.html"
+    ],
+    "options": [
+      {
+        "text": "The `t` marks the directory as read-only, so nobody can delete anything.",
+        "correct": false,
+        "rationale": "The `t` does not remove write permission; the directory stays writable."
+      },
+      {
+        "text": "The sticky bit (`t`) lets only the file’s owner, the directory’s owner or root delete files there.",
+        "correct": true,
+        "rationale": "With the sticky bit, write permission on the directory no longer lets everybody delete other users’ files."
+      },
+      {
+        "text": "The `t` means the directory is cleared at every reboot, so deleting is pointless.",
+        "correct": false,
+        "rationale": "The `t` concerns deletion rights, not clean-up at boot."
+      },
+      {
+        "text": "Others have no execute permission on the directory, so Ada cannot reach the file.",
+        "correct": false,
+        "rationale": "The final `t` includes execute for others."
+      }
+    ]
+  },
+  {
+    "id": "015.4-002",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.1"
+    ],
+    "terms": [
+      "015.4.t1"
+    ],
+    "stem": "What does the `t` at the end of `drwxrwxrwt` tell you?",
+    "explanation": "A capital `T` would mean sticky without execute for others. The octal mode is `1777`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/inode.7.html"
+    ],
+    "options": [
+      {
+        "text": "The directory is temporary and will be removed.",
+        "correct": false,
+        "rationale": "Nothing in the mode marks removal."
+      },
+      {
+        "text": "The directory is a symbolic link to a target.",
+        "correct": false,
+        "rationale": "Links show `l` as the first character."
+      },
+      {
+        "text": "Others can only traverse it, not write.",
+        "correct": false,
+        "rationale": "The write bit for others is still shown as `w`."
+      },
+      {
+        "text": "The sticky bit is set and others also have execute permission.",
+        "correct": true,
+        "rationale": "A lower-case `t` is the sticky bit on top of `x` for others."
+      }
+    ]
+  },
+  {
+    "id": "015.4-003",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.1"
+    ],
+    "terms": [
+      "015.4.t1"
+    ],
+    "stem": "Mira wants a scratch place for files that survive a reboot. Which directory is meant for that?",
+    "explanation": "Both `/tmp` and `/var/tmp` are writable by everyone with the sticky bit. `/var/tmp` keeps data longer.",
+    "sourceLinks": [
+      "https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch05s15.html"
+    ],
+    "options": [
+      {
+        "text": "`/var/tmp`",
+        "correct": true,
+        "rationale": "Files in `/var/tmp` are expected to be preserved between reboots."
+      },
+      {
+        "text": "`/tmp`",
+        "correct": false,
+        "rationale": "Programs must assume `/tmp` is cleared at boot or earlier."
+      },
+      {
+        "text": "`/proc`",
+        "correct": false,
+        "rationale": "This is a virtual file system for kernel information."
+      },
+      {
+        "text": "`/dev/shm`",
+        "correct": false,
+        "rationale": "This is shared memory that disappears when the machine stops."
+      }
+    ]
+  },
+  {
+    "id": "015.4-004",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.1"
+    ],
+    "terms": [
+      "015.4.t1"
+    ],
+    "stem": "Mira creates `/srv/uploads` for the whole team and wants each person to delete only their own files there. Which command sets that up?",
+    "explanation": "The sticky bit is the fourth digit in front of the usual three. `chmod +t DIR` sets it too.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/inode.7.html"
+    ],
+    "options": [
+      {
+        "text": "`chmod 0777 /srv/uploads`",
+        "correct": false,
+        "rationale": "Everyone could delete everybody else’s files."
+      },
+      {
+        "text": "`chmod 4777 /srv/uploads`",
+        "correct": false,
+        "rationale": "The leading `4` is set-user-ID, not the sticky bit."
+      },
+      {
+        "text": "`chmod 1777 /srv/uploads`",
+        "correct": true,
+        "rationale": "The leading `1` is the sticky bit, plus rwx for everyone."
+      },
+      {
+        "text": "`chmod 1700 /srv/uploads`",
+        "correct": false,
+        "rationale": "This sets the sticky bit but locks everyone else out."
+      }
+    ]
+  },
+  {
+    "id": "015.4-005",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t3"
+    ],
+    "stem": "What happens to the symbolic link `latest.tar` when its target `pixel-raiders-1.1.tar` is deleted?",
+    "explanation": "A symbolic link holds a path. Removing the link with `rm` leaves the target untouched, but removing the target leaves a dangling link.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ln.1.html"
+    ],
+    "options": [
+      {
+        "text": "The link is deleted too.",
+        "correct": false,
+        "rationale": "The system does not track links."
+      },
+      {
+        "text": "The link becomes a regular file with a copy of the content.",
+        "correct": false,
+        "rationale": "No copy of the data exists."
+      },
+      {
+        "text": "The link stays but is dangling: opening it gives \"No such file or directory\".",
+        "correct": true,
+        "rationale": "A symlink only stores a path; it does not keep the target alive."
+      },
+      {
+        "text": "The link points to the trash.",
+        "correct": false,
+        "rationale": "Linux has no automatic trash for this."
+      }
+    ]
+  },
+  {
+    "id": "015.4-006",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t3"
+    ],
+    "stem": "Which statement describes a symbolic link correctly?",
+    "explanation": "Symbolic links can point to directories and across file systems. Hard links cannot.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ln.1.html"
+    ],
+    "options": [
+      {
+        "text": "It is a small file that holds the path to another file or directory.",
+        "correct": true,
+        "rationale": "Following the link means looking up that path."
+      },
+      {
+        "text": "It is a second name for the same data on disk, sharing its inode.",
+        "correct": false,
+        "rationale": "That describes a hard link."
+      },
+      {
+        "text": "It is a copy of the target that updates itself.",
+        "correct": false,
+        "rationale": "No copy is made."
+      },
+      {
+        "text": "It can only point to files on the same file system.",
+        "correct": false,
+        "rationale": "Symlinks can cross file systems."
+      }
+    ]
+  },
+  {
+    "id": "015.4-007",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t3"
+    ],
+    "stem": "Which command makes `latest.tar` a symbolic link pointing to `pixel-raiders-1.1.tar`?",
+    "explanation": "`ln -s TARGET LINKNAME` creates a symbolic link; the order is like `cp`: existing thing first.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ln.1.html"
+    ],
+    "options": [
+      {
+        "text": "`ln -s latest.tar pixel-raiders-1.1.tar`",
+        "correct": false,
+        "rationale": "This creates a link called `pixel-raiders-1.1.tar` pointing at `latest.tar`."
+      },
+      {
+        "text": "`ln pixel-raiders-1.1.tar latest.tar`",
+        "correct": false,
+        "rationale": "Without `-s` this creates a hard link."
+      },
+      {
+        "text": "`ls -s pixel-raiders-1.1.tar latest.tar`",
+        "correct": false,
+        "rationale": "`ls` lists files and does not create links."
+      },
+      {
+        "text": "`ln -s pixel-raiders-1.1.tar latest.tar`",
+        "correct": true,
+        "rationale": "The target comes first, then the link name."
+      }
+    ]
+  },
+  {
+    "id": "015.4-008",
+    "objectiveId": "015.4",
+    "kind": "multi",
+    "areas": [
+      "015.4.1"
+    ],
+    "terms": [
+      "015.4.t1"
+    ],
+    "stem": "Which statements about `/tmp` are true? (Choose TWO.)",
+    "explanation": "`/tmp` is shared scratch space: world-writable with the sticky bit.",
+    "sourceLinks": [
+      "https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch05s15.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "Every user may create files there.",
+        "correct": true,
+        "rationale": "The directory is world-writable."
+      },
+      {
+        "text": "The sticky bit stops users from deleting each other’s files.",
+        "correct": true,
+        "rationale": "That is the purpose of the `t` bit."
+      },
+      {
+        "text": "Only root may write there.",
+        "correct": false,
+        "rationale": "Mode 1777 grants write to all."
+      },
+      {
+        "text": "Its files are kept forever and never cleaned.",
+        "correct": false,
+        "rationale": "They may be removed at boot or by cleanup jobs."
+      },
+      {
+        "text": "The sticky bit hides the files of other users.",
+        "correct": false,
+        "rationale": "It restricts deleting, not listing."
+      }
+    ]
+  },
+  {
+    "id": "015.4-009",
+    "objectiveId": "015.4",
+    "kind": "multi",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t3"
+    ],
+    "stem": "Which statements about symbolic links are true? (Choose TWO.)",
+    "explanation": "A symbolic link is a pointer. Deleting it never affects the target.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ln.1.html"
+    ],
+    "select": 2,
+    "options": [
+      {
+        "text": "Removing the link with `rm` leaves the target unchanged.",
+        "correct": true,
+        "rationale": "`rm` deletes the link only."
+      },
+      {
+        "text": "They share the inode of their target.",
+        "correct": false,
+        "rationale": "That describes a hard link."
+      },
+      {
+        "text": "They keep working after the target is deleted.",
+        "correct": false,
+        "rationale": "They dangle."
+      },
+      {
+        "text": "They cannot cross file systems.",
+        "correct": false,
+        "rationale": "They can."
+      },
+      {
+        "text": "They can point to a directory.",
+        "correct": true,
+        "rationale": "The target may be any path."
+      }
+    ]
+  },
+  {
+    "id": "015.4-010",
+    "objectiveId": "015.4",
+    "kind": "fill",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t3"
+    ],
+    "stem": "Type the command that makes `builds/latest.tar` a symbolic link to `pixel-raiders-1.1.tar` (the link target is given relative to the link’s directory).",
+    "explanation": "`ln -s TARGET LINK`; a relative target is resolved from the link’s directory.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ln.1.html"
+    ],
+    "accept": [
+      "ln -s pixel-raiders-1.1.tar builds/latest.tar",
+      "ln --symbolic pixel-raiders-1.1.tar builds/latest.tar"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "sec-links"
+    }
+  },
+  {
+    "id": "015.4-011",
+    "objectiveId": "015.4",
+    "kind": "fill",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t2"
+    ],
+    "stem": "Type the command that lists only the directories in the current directory, using a glob that ends in a slash.",
+    "explanation": "`-d` lists the names themselves instead of directory contents; the `*/` glob matches directories.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "accept": [
+      "ls -d */"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "sec-links"
+    }
+  },
+  {
+    "id": "015.4-012",
+    "objectiveId": "015.4",
+    "kind": "fill",
+    "areas": [
+      "015.4.1"
+    ],
+    "terms": [
+      "015.4.t1"
+    ],
+    "stem": "Finish the command that sets the sticky bit on `builds`, leaving the other permissions unchanged.",
+    "explanation": "`+t` adds the sticky bit; `chmod 1755 builds` would also work but resets the other bits.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/inode.7.html"
+    ],
+    "accept": [
+      "+t builds",
+      "o+t builds"
+    ],
+    "prefix": "$ chmod",
+    "caseSensitive": true,
+    "verify": {
+      "command": "chmod {answer}",
+      "fixture": "sec-links"
+    }
+  },
+  {
+    "id": "015.4-013",
+    "objectiveId": "015.4",
+    "kind": "output",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t3"
+    ],
+    "stem": "What does this command print?",
+    "explanation": "The link stores the text given to `ln -s`, which `readlink` prints.",
+    "command": "ln -s pixel-raiders-1.1.tar builds/latest.tar; readlink builds/latest.tar",
+    "fixture": "sec-links",
+    "output": "pixel-raiders-1.1.tar",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "Build 1.1",
+        "correct": false,
+        "rationale": "It does not read the file’s content."
+      },
+      {
+        "text": "pixel-raiders-1.1.tar",
+        "correct": true,
+        "rationale": "`readlink` prints the path stored in the link."
+      },
+      {
+        "text": "builds/latest.tar",
+        "correct": false,
+        "rationale": "It prints the target, not the link’s own name."
+      },
+      {
+        "text": "/home/mira/builds/pixel-raiders-1.1.tar",
+        "correct": false,
+        "rationale": "The path stored is the one typed, relative."
+      }
+    ]
+  },
+  {
+    "id": "015.4-014",
+    "objectiveId": "015.4",
+    "kind": "output",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t2"
+    ],
+    "stem": "What does this command print?",
+    "explanation": "The shell expands the glob, and `ls -d` prints the names as given, in columns.",
+    "command": "ls -d builds/*",
+    "fixture": "sec-links",
+    "output": "builds/pixel-raiders-1.0.tar  builds/pixel-raiders-1.1.tar",
+    "mode": "type"
+  },
+  {
+    "id": "015.4-015",
+    "objectiveId": "015.4",
+    "kind": "output",
+    "areas": [
+      "015.4.1"
+    ],
+    "terms": [
+      "015.4.t1"
+    ],
+    "stem": "Ada tries to delete Jonas’s file in the shared `/tmp`. What does she see?",
+    "explanation": "Even though the file is writable by everyone, the sticky bit on `/tmp` allows deleting only to its owner.",
+    "command": "rm /tmp/jonas-sketch.txt; echo \"status $?\"",
+    "fixture": "sec-links",
+    "user": "ada",
+    "output": "rm: cannot remove '/tmp/jonas-sketch.txt': Operation not permitted\nstatus 1",
+    "mode": "type"
+  }
+]

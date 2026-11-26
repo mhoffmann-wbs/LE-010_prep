@@ -3,15 +3,1073 @@
     "id": "014.2-001",
     "objectiveId": "014.2",
     "kind": "single",
-    "areas": ["014.2.2"],
-    "terms": ["014.2.t7"],
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
     "stem": "A nightly build script at TuxPixel prints progress messages nobody reads. Where should the script send that output so it is thrown away?",
     "options": [
-      { "text": "`/dev/zero`", "correct": false, "rationale": "/dev/zero is used for reading: it returns an endless stream of zero bytes." },
-      { "text": "`/dev/urandom`", "correct": false, "rationale": "/dev/urandom is a source of random bytes to read, not a place to discard output." },
-      { "text": "`/dev/null`", "correct": true, "rationale": "Anything written to /dev/null is accepted and discarded, and reading from it returns end-of-file at once." },
-      { "text": "`/tmp`", "correct": false, "rationale": "/tmp is a directory for temporary files; the output would be stored, not thrown away." }
+      {
+        "text": "`/dev/zero`",
+        "correct": false,
+        "rationale": "/dev/zero is used for reading: it returns an endless stream of zero bytes."
+      },
+      {
+        "text": "`/dev/urandom`",
+        "correct": false,
+        "rationale": "/dev/urandom is a source of random bytes to read, not a place to discard output."
+      },
+      {
+        "text": "`/dev/null`",
+        "correct": true,
+        "rationale": "Anything written to /dev/null is accepted and discarded, and reading from it returns end-of-file at once."
+      },
+      {
+        "text": "`/tmp`",
+        "correct": false,
+        "rationale": "/tmp is a directory for temporary files; the output would be stored, not thrown away."
+      }
     ],
     "explanation": "/dev/null, /dev/zero and /dev/urandom are pseudo-devices: the kernel provides them, and no hardware sits behind them. Redirecting output with `> /dev/null` is the usual way to silence a command."
+  },
+  {
+    "id": "014.2-002",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1",
+      "014.2.vt1"
+    ],
+    "stem": "Jonas opens the case of the asset server and asks Mira which part every other component is plugged into. Which part is it?",
+    "options": [
+      {
+        "text": "The power supply, which gives the main circuit board its working voltages and holds the other parts.",
+        "correct": false,
+        "rationale": "A power supply only converts mains power; it doesn’t connect the components to each other."
+      },
+      {
+        "text": "The solid state disk, because the processor and memory are stored on it.",
+        "correct": false,
+        "rationale": "An SSD stores data; it is plugged into the motherboard like the other parts."
+      },
+      {
+        "text": "The motherboard, the main circuit board that connects the processor, memory and other parts.",
+        "correct": true,
+        "rationale": "Everything plugs into it or sits on it."
+      },
+      {
+        "text": "The optical drive, which reads the boards and builds the connections between them.",
+        "correct": false,
+        "rationale": "An optical drive reads discs and is a peripheral, not the central board."
+      }
+    ],
+    "explanation": "The motherboard is the main circuit board: the processor, the memory and the storage connect to it. The power supply feeds it, and peripherals such as keyboards and drives are attached to it."
+  },
+  {
+    "id": "014.2-003",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1",
+      "014.2.t4",
+      "014.2.vt1"
+    ],
+    "stem": "Ada built the wall-display tool on her x86 laptop, but it will not start on the office Raspberry Pi. What is the most likely reason?",
+    "options": [
+      {
+        "text": "The Pi has an ARM processor, so the program has to be built for ARM instead of x86.",
+        "correct": true,
+        "rationale": "Programs compiled for one processor family do not run on the other."
+      },
+      {
+        "text": "The Pi has too little memory to run any program that was built on a laptop with more memory.",
+        "correct": false,
+        "rationale": "Memory size alone doesn’t decide this; the processor family is the issue here."
+      },
+      {
+        "text": "The Pi uses a different kernel name, so every x86 program needs a new licence key first.",
+        "correct": false,
+        "rationale": "Licences have nothing to do with the processor architecture."
+      },
+      {
+        "text": "The Pi has no motherboard, so programs from other computers can’t be copied onto it.",
+        "correct": false,
+        "rationale": "A Pi is a complete board; the processor type is what makes the program incompatible."
+      }
+    ],
+    "explanation": "The processor family decides which machine code a computer understands. Intel and AMD chips are x86; phones, Apple’s chips and the Raspberry Pi use ARM. A program built for one family has to be rebuilt for the other."
+  },
+  {
+    "id": "014.2-004",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1",
+      "014.2.vt1"
+    ],
+    "stem": "Which job does the power supply do inside a desktop computer?",
+    "options": [
+      {
+        "text": "It stores the programs and data permanently, so they are still there after the computer is switched off.",
+        "correct": false,
+        "rationale": "That is the job of storage such as hard disks and SSDs."
+      },
+      {
+        "text": "It runs the program instructions and decides which process gets the next time slice.",
+        "correct": false,
+        "rationale": "Running instructions is the job of the processor, with the kernel scheduling the processes."
+      },
+      {
+        "text": "It connects the computer to the network and gives it an IP address from the router.",
+        "correct": false,
+        "rationale": "Network cards connect to a network; addresses come from DHCP or manual configuration."
+      },
+      {
+        "text": "It turns mains electricity into the voltages that the components need.",
+        "correct": true,
+        "rationale": "Without it the other parts get no power."
+      }
+    ],
+    "explanation": "The power supply converts mains power into the lower voltages used by the motherboard and the other components. Storing data, running instructions and networking are done by other parts."
+  },
+  {
+    "id": "014.2-005",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t2"
+    ],
+    "stem": "Mira sees an interface called `wlp2s0` in the output of `ip addr show` on Jonas’s laptop. What kind of network card is it?",
+    "options": [
+      {
+        "text": "An Ethernet card connected by a network cable to a switch or router in the office.",
+        "correct": false,
+        "rationale": "Ethernet names begin with `en`, not `wl`."
+      },
+      {
+        "text": "A wireless LAN (WiFi) card, since `wl` in the name stands for wireless LAN.",
+        "correct": true,
+        "rationale": "Ethernet interfaces start with `en`, such as `enp3s0`."
+      },
+      {
+        "text": "The loopback interface, which a computer uses to talk to itself.",
+        "correct": false,
+        "rationale": "The loopback interface is simply called `lo`."
+      },
+      {
+        "text": "A Bluetooth adapter for the drawing tablet, which Linux always names after its wireless type.",
+        "correct": false,
+        "rationale": "Bluetooth adapters aren’t network interfaces with `wlp` names."
+      }
+    ],
+    "explanation": "Linux names network interfaces after their type and position: `en` for Ethernet, `wl` for wireless LAN, and `lo` for the loopback. So `wlp2s0` is a WiFi card, while `enp3s0` would be Ethernet."
+  },
+  {
+    "id": "014.2-006",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t2"
+    ],
+    "stem": "Mira wants to read the settings of the Ethernet card, and looks for a device file such as `/dev/eth0`. What is the situation?",
+    "options": [
+      {
+        "text": "The file exists but is hidden, so she has to run `ls -a /dev` to show it once she has root rights.",
+        "correct": false,
+        "rationale": "No hidden `eth0` file exists; interfaces simply aren’t in `/dev`."
+      },
+      {
+        "text": "Network interfaces have no device file in `/dev`; she looks at them with `ip addr show` or in `/sys/class/net`.",
+        "correct": true,
+        "rationale": "Disks have device files, but network cards don’t."
+      },
+      {
+        "text": "The device file is created only after she runs `modprobe eth0` as root.",
+        "correct": false,
+        "rationale": "`modprobe` loads modules, and it doesn’t create a device file for a network card."
+      },
+      {
+        "text": "Network cards appear as block devices such as `/dev/sdb`, like disks do.",
+        "correct": false,
+        "rationale": "`/dev/sd*` names are disks; a network card isn’t a block device."
+      }
+    ],
+    "explanation": "Linux does not give network interfaces device files. They are shown by `ip addr show`, and the kernel describes them under `/sys/class/net`. Device files in `/dev` are for things like disks, terminals and pseudo-devices."
+  },
+  {
+    "id": "014.2-007",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3",
+      "014.2.vt2"
+    ],
+    "stem": "The file server already has a SATA disk named `/dev/sda`. Mira plugs in a second SATA disk. What does the kernel normally call the whole new disk?",
+    "options": [
+      {
+        "text": "`/dev/sda2`, the second partition",
+        "correct": false,
+        "rationale": "A number after the letters names a partition, not a new disk."
+      },
+      {
+        "text": "`/dev/sdb1`, the first partition",
+        "correct": false,
+        "rationale": "`/dev/sdb1` would be a partition on the new disk, not the whole disk."
+      },
+      {
+        "text": "`/dev/hdb`, the second drive",
+        "correct": false,
+        "rationale": "The `hd` prefix belongs to an old IDE naming that current kernels no longer use."
+      },
+      {
+        "text": "`/dev/sdb`",
+        "correct": true,
+        "rationale": "Disks get letters in the order the kernel finds them."
+      }
+    ],
+    "explanation": "SATA, SCSI and USB disks appear as `/dev/sda`, `/dev/sdb` and so on, in the order the kernel detects them. Numbers after the letters name partitions: `/dev/sdb1` is the first partition on the second disk."
+  },
+  {
+    "id": "014.2-008",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3"
+    ],
+    "stem": "Which device file is the second partition on the first NVMe drive?",
+    "options": [
+      {
+        "text": "`/dev/nvme0n1p2`",
+        "correct": true,
+        "rationale": "Controller 0, namespace 1, partition 2."
+      },
+      {
+        "text": "`/dev/nvme0n2`",
+        "correct": false,
+        "rationale": "That is the second namespace of the first controller, a different disk and not a partition."
+      },
+      {
+        "text": "`/dev/nvme1n1`",
+        "correct": false,
+        "rationale": "That is a disk on the second NVMe controller."
+      },
+      {
+        "text": "`/dev/nvme0n1p1`",
+        "correct": false,
+        "rationale": "That is the first partition of the drive, not the second."
+      }
+    ],
+    "explanation": "NVMe names read like `/dev/nvme0n1`: controller 0, namespace 1. Partitions add a `p` and a number, so `/dev/nvme0n1p2` is the second partition. SATA-style names such as `/dev/sda2` have no `p`."
+  },
+  {
+    "id": "014.2-009",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3",
+      "014.2.vt2"
+    ],
+    "stem": "Ada reads a mount list and sees `/dev/sda1`. What does this name stand for?",
+    "options": [
+      {
+        "text": "The first disk, with no partitions on it after its target was deleted from the disk.",
+        "correct": false,
+        "rationale": "The whole disk would be `/dev/sda`, without a number."
+      },
+      {
+        "text": "The first of several network interfaces.",
+        "correct": false,
+        "rationale": "Network interfaces don’t have `/dev` names, and `sd` stands for “SCSI disk”."
+      },
+      {
+        "text": "The first partition of the first SATA, SCSI or USB disk.",
+        "correct": true,
+        "rationale": "`sda` is the disk, and the number is its partition."
+      },
+      {
+        "text": "A pseudo-device that discards the data written to it.",
+        "correct": false,
+        "rationale": "Discarding is what `/dev/null` does; `/dev/sda1` is real storage."
+      }
+    ],
+    "explanation": "In `/dev/sda1`, `sd` stands for SCSI disk (SATA and USB disks use it too), the letter says which disk, and the number says which partition on it."
+  },
+  {
+    "id": "014.2-010",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3"
+    ],
+    "stem": "In `ls -l /dev` output, the line for `/dev/sda` starts with the letter `b`. What does it tell Mira?",
+    "options": [
+      {
+        "text": "The file is a broken symbolic link that points nowhere.",
+        "correct": false,
+        "rationale": "A symbolic link is marked `l`, not `b`."
+      },
+      {
+        "text": "The file is a regular file with binary content.",
+        "correct": false,
+        "rationale": "A regular file is marked `-`."
+      },
+      {
+        "text": "The file is a bundle of boot files that the kernel reads at start-up.",
+        "correct": false,
+        "rationale": "Boot files live in `/boot`, and there is no such file type."
+      },
+      {
+        "text": "The file is a block device, read and written in blocks as a disk is.",
+        "correct": true,
+        "rationale": "Terminals and serial ports are character devices, marked `c`."
+      }
+    ],
+    "explanation": "The first character of an `ls -l` line shows the file type. `b` is a block device (disks and partitions), `c` is a character device (terminals, keyboards, pseudo-devices), `d` a directory, `l` a symbolic link and `-` a regular file."
+  },
+  {
+    "id": "014.2-011",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t4"
+    ],
+    "stem": "Which description fits a Raspberry Pi?",
+    "options": [
+      {
+        "text": "A rack server with an x86 processor that is sold only to cloud providers.",
+        "correct": false,
+        "rationale": "It is a small board for hobby and learning use, with an ARM processor."
+      },
+      {
+        "text": "A small, inexpensive single-board computer with an ARM processor, which usually boots from an SD card.",
+        "correct": true,
+        "rationale": "The card holds an OS image, often Raspberry Pi OS, which is based on Debian."
+      },
+      {
+        "text": "A cloud service that rents virtual Linux servers by the hour and sells the hardware it runs on.",
+        "correct": false,
+        "rationale": "The Pi is physical hardware you own, not a rented service."
+      },
+      {
+        "text": "A boot loader that lets one computer start Windows or Linux.",
+        "correct": false,
+        "rationale": "A boot loader is software; the Pi is a complete computer."
+      }
+    ],
+    "explanation": "The Raspberry Pi is a small, cheap ARM computer on a single board, with USB, HDMI, network and GPIO pins. It boots from an SD card (or USB or NVMe storage) that holds an OS image. It is popular for learning, home servers and small projects."
+  },
+  {
+    "id": "014.2-012",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t5",
+      "014.2.vt3"
+    ],
+    "stem": "Which statement describes a Linux kernel module?",
+    "options": [
+      {
+        "text": "A separate program that runs as a normal user and talks to the hardware without the kernel and is started from the boot menu.",
+        "correct": false,
+        "rationale": "Modules are part of the kernel and run with its privileges."
+      },
+      {
+        "text": "A file in `/boot` that the boot loader needs to find the root partition.",
+        "correct": false,
+        "rationale": "That describes boot files; modules live under `/lib/modules`."
+      },
+      {
+        "text": "A driver or other piece of kernel code that can be loaded and removed while the system runs.",
+        "correct": true,
+        "rationale": "`lsmod` lists the loaded modules."
+      },
+      {
+        "text": "A hardware card that adds more memory to the motherboard.",
+        "correct": false,
+        "rationale": "A module is software, not an expansion card."
+      }
+    ],
+    "explanation": "A driver is the kernel code that knows how to talk to one kind of hardware. Many drivers are kernel modules, which can be loaded and unloaded while the machine runs. The kernel loads the matching module when a device is plugged in.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/lsmod.8.html"
+    ]
+  },
+  {
+    "id": "014.2-013",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t5",
+      "014.2.vt3"
+    ],
+    "stem": "After installing a USB WiFi stick, Mira wants to load its driver module together with the modules it depends on. Which command does this?",
+    "options": [
+      {
+        "text": "`sudo modprobe` followed by the module name",
+        "correct": true,
+        "rationale": "It resolves the dependencies for her."
+      },
+      {
+        "text": "`lsmod`, followed by the module name",
+        "correct": false,
+        "rationale": "`lsmod` only lists the loaded modules and doesn’t take a name to load."
+      },
+      {
+        "text": "`sudo rmmod`, followed by the module name",
+        "correct": false,
+        "rationale": "`rmmod` removes a module from the kernel."
+      },
+      {
+        "text": "`sudo depmod`, followed by the module name",
+        "correct": false,
+        "rationale": "`depmod` builds the dependency list and doesn’t load anything."
+      }
+    ],
+    "explanation": "`modprobe` loads a module and the modules it depends on, and `modprobe -r` removes one. `lsmod` lists loaded modules, and `rmmod` removes a single module. Most of the time the kernel loads the right module without help.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/lsmod.8.html"
+    ]
+  },
+  {
+    "id": "014.2-014",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t6",
+      "014.2.vt3"
+    ],
+    "stem": "Mira needs to find the kernel image, the file whose name starts with `vmlinuz`. In which directory does she look?",
+    "options": [
+      {
+        "text": "`/boot`",
+        "correct": true,
+        "rationale": "It holds the kernel, the initial RAM disk and boot loader files."
+      },
+      {
+        "text": "`/sys`",
+        "correct": false,
+        "rationale": "`/sys` describes devices and drivers; it doesn’t hold the kernel image."
+      },
+      {
+        "text": "`/dev`",
+        "correct": false,
+        "rationale": "`/dev` holds device files."
+      },
+      {
+        "text": "`/etc`",
+        "correct": false,
+        "rationale": "`/etc` holds configuration files."
+      }
+    ],
+    "explanation": "`/boot` contains what the machine needs to start: the kernel (`vmlinuz-…`), the initial RAM disk (`initrd.img-…`) and the boot loader’s files. The names end in the kernel version."
+  },
+  {
+    "id": "014.2-015",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t6",
+      "014.2.vt3"
+    ],
+    "stem": "Which directory is generated by the kernel while the system runs and shows information about devices and drivers, for example `/sys/class/net/`?",
+    "options": [
+      {
+        "text": "`/boot`",
+        "correct": false,
+        "rationale": "`/boot` is stored on the disk and holds boot files."
+      },
+      {
+        "text": "`/srv`",
+        "correct": false,
+        "rationale": "`/srv` holds data that the machine serves, such as TuxPixel’s asset files."
+      },
+      {
+        "text": "`/sys`",
+        "correct": true,
+        "rationale": "It is sysfs, a view of the kernel’s own data."
+      },
+      {
+        "text": "`/home`",
+        "correct": false,
+        "rationale": "`/home` holds the users’ files, which live on a disk."
+      }
+    ],
+    "explanation": "`/sys` is sysfs: the kernel builds it on the fly to show devices, drivers and some settings. It is not stored on the disk, as `/dev` and `/proc` are not either.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/sysfs.5.html",
+      "https://man7.org/linux/man-pages/man7/hier.7.html"
+    ]
+  },
+  {
+    "id": "014.2-016",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
+    "stem": "Mira needs a 1 MB placeholder file that is filled with zero bytes for an upload test. Which device file should she read from?",
+    "options": [
+      {
+        "text": "`/dev/null`",
+        "correct": false,
+        "rationale": "Reading `/dev/null` returns end-of-file at once, so the file would be empty."
+      },
+      {
+        "text": "`/dev/zero`",
+        "correct": true,
+        "rationale": "It returns an endless stream of zero bytes."
+      },
+      {
+        "text": "`/dev/urandom`",
+        "correct": false,
+        "rationale": "It returns random bytes, not zeros."
+      },
+      {
+        "text": "`/dev/tty`",
+        "correct": false,
+        "rationale": "It is the current terminal, and reading it waits for keyboard input."
+      }
+    ],
+    "explanation": "`head -c 1000000 /dev/zero > blob.bin` creates a file of one million zero bytes. `/dev/null` reads as empty, and `/dev/urandom` gives random data.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man4/null.4.html"
+    ]
+  },
+  {
+    "id": "014.2-017",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
+    "stem": "Ada needs 16 random bytes for a test key. Which device file provides them?",
+    "options": [
+      {
+        "text": "`/dev/zero`",
+        "correct": false,
+        "rationale": "It gives only zero bytes, so the key would be guessable."
+      },
+      {
+        "text": "`/dev/null`",
+        "correct": false,
+        "rationale": "It returns nothing when read."
+      },
+      {
+        "text": "`/dev/tty`",
+        "correct": false,
+        "rationale": "It is the terminal, not a source of random numbers."
+      },
+      {
+        "text": "`/dev/urandom`",
+        "correct": true,
+        "rationale": "Reading it gives random bytes, a different stream every time."
+      }
+    ],
+    "explanation": "`/dev/urandom` is a source of random bytes made by the kernel, used for keys and passwords. `head -c 16 /dev/urandom` takes 16 of them.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man4/random.4.html"
+    ]
+  },
+  {
+    "id": "014.2-018",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
+    "stem": "Which command runs `./build.sh` and throws away only its error messages, while the normal output still shows on screen?",
+    "options": [
+      {
+        "text": "`./build.sh > /dev/null`",
+        "correct": false,
+        "rationale": "That discards the normal output and leaves the errors on screen."
+      },
+      {
+        "text": "`./build.sh < /dev/null`",
+        "correct": false,
+        "rationale": "That feeds an empty input to the script and discards nothing."
+      },
+      {
+        "text": "`./build.sh 2> /dev/null`",
+        "correct": true,
+        "rationale": "Descriptor 2 is the error stream."
+      },
+      {
+        "text": "`./build.sh | /dev/null`",
+        "correct": false,
+        "rationale": "A pipe needs a program on the right; `/dev/null` is not a command."
+      }
+    ],
+    "explanation": "`2>` redirects standard error. Sending it to `/dev/null` throws the messages away, while standard output is untouched. `>` redirects standard output, and `<` redirects input."
+  },
+  {
+    "id": "014.2-019",
+    "objectiveId": "014.2",
+    "kind": "multi",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1",
+      "014.2.vt1"
+    ],
+    "stem": "Which TWO statements about computer components are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "RAM loses its contents when the power is switched off.",
+        "correct": true,
+        "rationale": "Memory is temporary storage for running programs."
+      },
+      {
+        "text": "An ARM processor runs unmodified x86 programs without any changes.",
+        "correct": false,
+        "rationale": "Programs built for x86 don’t run on ARM, and the other way round."
+      },
+      {
+        "text": "A solid state disk has spinning platters like an older hard disk.",
+        "correct": false,
+        "rationale": "Hard disks spin; an SSD stores data in flash memory."
+      },
+      {
+        "text": "The power supply converts mains power into the voltages that the components need.",
+        "correct": true,
+        "rationale": "Without it the other parts get no power."
+      },
+      {
+        "text": "The optical drive holds the running programs while the computer is on.",
+        "correct": false,
+        "rationale": "Running programs are held in RAM; an optical drive reads discs."
+      }
+    ],
+    "explanation": "RAM is fast, temporary memory that empties at power-off, while disks keep data permanently. The power supply feeds the other components. Processors of one family (x86 or ARM) cannot run programs built for the other."
+  },
+  {
+    "id": "014.2-020",
+    "objectiveId": "014.2",
+    "kind": "multi",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
+    "stem": "Which TWO device files deliver an endless stream of data when read? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`/dev/null`",
+        "correct": false,
+        "rationale": "It returns end-of-file immediately."
+      },
+      {
+        "text": "`/dev/sda1`",
+        "correct": false,
+        "rationale": "A partition ends when its last block is read."
+      },
+      {
+        "text": "`/dev/tty`",
+        "correct": false,
+        "rationale": "The terminal delivers only what is typed, and it waits for input."
+      },
+      {
+        "text": "`/dev/zero`",
+        "correct": true,
+        "rationale": "It delivers zero bytes without end."
+      },
+      {
+        "text": "`/dev/urandom`",
+        "correct": true,
+        "rationale": "It delivers random bytes without end."
+      }
+    ],
+    "explanation": "Both `/dev/zero` and `/dev/urandom` are pseudo-devices that never run out of data, which is why you limit the read with `head -c`. `/dev/null` returns end-of-file at once, and a disk partition has a fixed size.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man4/null.4.html",
+      "https://man7.org/linux/man-pages/man4/random.4.html"
+    ]
+  },
+  {
+    "id": "014.2-021",
+    "objectiveId": "014.2",
+    "kind": "multi",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3",
+      "014.2.vt2"
+    ],
+    "stem": "Which TWO names are device files for block storage on a typical Linux machine? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`/dev/eth0`",
+        "correct": false,
+        "rationale": "Network interfaces don’t have device files."
+      },
+      {
+        "text": "`/dev/sdb`",
+        "correct": true,
+        "rationale": "A whole second SATA, SCSI or USB disk."
+      },
+      {
+        "text": "`/dev/nvme0n1`",
+        "correct": true,
+        "rationale": "The first NVMe drive."
+      },
+      {
+        "text": "`/dev/null`",
+        "correct": false,
+        "rationale": "A character pseudo-device that discards data."
+      },
+      {
+        "text": "`/dev/tty1`",
+        "correct": false,
+        "rationale": "A character device for a virtual terminal."
+      }
+    ],
+    "explanation": "Disks appear as block devices: `sd…` for SATA, SCSI and USB, and `nvme…` for NVMe SSDs. Terminals and pseudo-devices are character devices, and network cards have no file in `/dev`.",
+    "sourceLinks": [
+      "https://www.kernel.org/doc/html/latest/admin-guide/devices.html"
+    ]
+  },
+  {
+    "id": "014.2-022",
+    "objectiveId": "014.2",
+    "kind": "multi",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t6",
+      "014.2.vt3"
+    ],
+    "stem": "Which TWO directories are generated by the kernel while the system runs, not stored on a disk? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`/boot`",
+        "correct": false,
+        "rationale": "It is stored on the disk and holds the kernel image."
+      },
+      {
+        "text": "`/sys`",
+        "correct": true,
+        "rationale": "The kernel’s view of devices and drivers."
+      },
+      {
+        "text": "`/etc`",
+        "correct": false,
+        "rationale": "It holds configuration files that stay on the disk."
+      },
+      {
+        "text": "`/home`",
+        "correct": false,
+        "rationale": "It holds the users’ files, stored on a disk."
+      },
+      {
+        "text": "`/dev`",
+        "correct": true,
+        "rationale": "The device files are created on the fly."
+      }
+    ],
+    "explanation": "The kernel builds `/dev` (device files), `/sys` (devices and drivers) and `/proc` (processes and system facts) while it runs. The configuration in `/etc`, the files in `/home` and the kernel image in `/boot` are stored on the disk.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/hier.7.html"
+    ]
+  },
+  {
+    "id": "014.2-023",
+    "objectiveId": "014.2",
+    "kind": "fill",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
+    "stem": "Mira creates a 1 KB test file of zero bytes with `head -c 1024 … > zeros.bin`. Type the device file path that goes in place of the dots.",
+    "accept": [
+      "/dev/zero"
+    ],
+    "prefix": "head -c 1024",
+    "verify": {
+      "command": "head -c 1024 {answer} | wc -c"
+    },
+    "caseSensitive": true,
+    "explanation": "`/dev/zero` returns an endless stream of zero bytes, and `head -c 1024` stops after the first 1024 of them. Redirecting the result with `>` writes them to a file."
+  },
+  {
+    "id": "014.2-024",
+    "objectiveId": "014.2",
+    "kind": "fill",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t5",
+      "014.2.vt3"
+    ],
+    "stem": "Which command lists the kernel modules that are currently loaded? Type the command name.",
+    "accept": [
+      "lsmod"
+    ],
+    "verify": {
+      "command": "{answer}"
+    },
+    "caseSensitive": true,
+    "explanation": "`lsmod` prints the loaded kernel modules with their size and the modules that use them. `modprobe` loads or removes a module.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/lsmod.8.html"
+    ]
+  },
+  {
+    "id": "014.2-025",
+    "objectiveId": "014.2",
+    "kind": "fill",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1",
+      "014.2.t4",
+      "014.2.vt1"
+    ],
+    "stem": "Mira has to know whether a machine has an x86 or an ARM processor. Which command with its short option prints the machine’s hardware architecture, such as `x86_64` or `aarch64`?",
+    "accept": [
+      "uname -m",
+      "uname --machine"
+    ],
+    "verify": {
+      "command": "{answer}"
+    },
+    "caseSensitive": true,
+    "explanation": "`uname -m` prints the machine hardware name: `x86_64` on a 64-bit PC, `aarch64` on a 64-bit Raspberry Pi. In the browser terminal of this app it prints `i686`, a 32-bit x86 CPU.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/uname.1.html"
+    ]
+  },
+  {
+    "id": "014.2-026",
+    "objectiveId": "014.2",
+    "kind": "fill",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t6",
+      "014.2.vt3"
+    ],
+    "stem": "Type the absolute path of the directory that holds the kernel image and the initial RAM disk.",
+    "accept": [
+      "/boot",
+      "/boot/"
+    ],
+    "verify": {
+      "command": "ls {answer}"
+    },
+    "caseSensitive": true,
+    "explanation": "`/boot` holds `vmlinuz-…`, the kernel, and `initrd.img-…`, the initial RAM disk, plus the boot loader’s files."
+  },
+  {
+    "id": "014.2-027",
+    "objectiveId": "014.2",
+    "kind": "output",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
+    "stem": "Mira reads five bytes from `/dev/zero` and counts them. What does this command print?",
+    "command": "head -c 5 /dev/zero | wc -c",
+    "output": "5",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "That would be the count of bytes read from `/dev/null`, which is empty."
+      },
+      {
+        "text": "1",
+        "correct": false,
+        "rationale": "`/dev/zero` gives as many bytes as are asked for, not just one."
+      },
+      {
+        "text": "4",
+        "correct": false,
+        "rationale": "`head -c 5` takes five bytes, so the count is five."
+      },
+      {
+        "text": "5",
+        "correct": true,
+        "rationale": "`head -c 5` takes the first five bytes of the endless stream of zeros, and `wc -c` counts them."
+      }
+    ],
+    "explanation": "`/dev/zero` never ends, so `head -c 5` can always take exactly five bytes. `wc -c` counts bytes and prints `5`."
+  },
+  {
+    "id": "014.2-028",
+    "objectiveId": "014.2",
+    "kind": "output",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t7"
+    ],
+    "stem": "Jonas writes to `/dev/null` and then counts what comes back out of it. Type what the command prints.",
+    "command": "echo \"discard me\" > /dev/null; cat /dev/null | wc -c",
+    "output": "0",
+    "mode": "type",
+    "explanation": "Whatever is written to `/dev/null` is discarded, and reading it returns end-of-file at once. So `wc -c` counts zero bytes."
+  },
+  {
+    "id": "014.2-029",
+    "objectiveId": "014.2",
+    "kind": "output",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3",
+      "014.2.t7"
+    ],
+    "stem": "Ada checks which file type `/dev/null` has. What does this command print?",
+    "command": "stat -c %F /dev/null",
+    "output": "character special file",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "character special file",
+        "correct": true,
+        "rationale": "`/dev/null` is a pseudo-device that handles data a byte at a time, so it is a character device."
+      },
+      {
+        "text": "block special file",
+        "correct": false,
+        "rationale": "Block devices are disks and partitions such as `/dev/sda`."
+      },
+      {
+        "text": "regular file",
+        "correct": false,
+        "rationale": "It is a device file and holds no data on a disk."
+      },
+      {
+        "text": "directory",
+        "correct": false,
+        "rationale": "It is a device file, not a directory."
+      }
+    ],
+    "explanation": "`stat -c %F` prints the file type in words. Terminals and pseudo-devices such as `/dev/null` are character special files, while disks are block special files."
+  },
+  {
+    "id": "014.2-030",
+    "objectiveId": "014.2",
+    "kind": "output",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t2",
+      "014.2.t6"
+    ],
+    "stem": "The practice VM that runs in your browser has no network card. Which interfaces does `/sys/class/net` list there?",
+    "command": "ls /sys/class/net",
+    "output": "lo",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "eth0",
+        "correct": false,
+        "rationale": "That would be an Ethernet card, which this VM does not have."
+      },
+      {
+        "text": "lo\neth0",
+        "correct": false,
+        "rationale": "There is no `eth0`, only the loopback interface."
+      },
+      {
+        "text": "lo",
+        "correct": true,
+        "rationale": "Only the loopback interface exists, because the VM has no network card."
+      },
+      {
+        "text": "wlp2s0",
+        "correct": false,
+        "rationale": "That would be a WiFi card, which this VM does not have."
+      }
+    ],
+    "explanation": "`/sys/class/net` has one entry per network interface. The VM has only the loopback interface `lo`, which a computer uses to talk to itself. A laptop would also list names such as `enp3s0` or `wlp2s0`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/sysfs.5.html"
+    ]
   }
 ]

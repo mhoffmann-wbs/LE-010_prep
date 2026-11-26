@@ -13,5 +13,498 @@
       { "text": "`find *.png /srv/assets`", "correct": false, "rationale": "find takes the starting directories first and the tests after them; here `*.png` is treated as a starting point, not a name test." }
     ],
     "explanation": "To search by file name through a whole directory tree, give find the starting directory and a `-name` test. Quote the pattern so the shell passes it to find instead of expanding it in the current directory."
+  },
+  {
+    "id": "012.3-002",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.1"],
+    "terms": ["012.3.t5", "012.3.t6"],
+    "stem": "What is the difference between `/` and `/root` on a Linux system?",
+    "options": [
+      { "text": "`/` is the administrator’s home directory, and `/root` is the top of the tree", "correct": false, "rationale": "The roles are the wrong way round." },
+      { "text": "Both names refer to the same directory, and `/root` is just a longer spelling", "correct": false, "rationale": "They are different directories." },
+      { "text": "`/` is the top of the whole file tree, and `/root` is the administrator’s home directory", "correct": true, "rationale": "`/` is the root directory, the start of every absolute path." },
+      { "text": "`/` is the home directory of the current user, and `/root` is a copy of it", "correct": false, "rationale": "The current user’s home is `~`, and `/root` isn’t a copy." }
+    ],
+    "explanation": "The root directory `/` contains everything else. `/root` is where the user `root` keeps personal files, just as `/home/mira` is Mira’s home.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html"]
+  },
+  {
+    "id": "012.3-003",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.3"],
+    "terms": ["012.3.t6"],
+    "stem": "Jonas types `echo ~` in his terminal. What does the shell print?",
+    "options": [
+      { "text": "`/home/jonas`", "correct": true, "rationale": "The shell replaces a leading `~` with the current user’s home directory." },
+      { "text": "`~`", "correct": false, "rationale": "Bash expands an unquoted tilde before `echo` sees it." },
+      { "text": "`/home`", "correct": false, "rationale": "`~` leads to the user’s own directory, not just its parent." },
+      { "text": "`/root`", "correct": false, "rationale": "That is the administrator’s home, not Jonas’s." }
+    ],
+    "explanation": "`~` is a shell shortcut for the home directory of the current user, and `~name` means the home directory of another user. Quotes switch the expansion off."
+  },
+  {
+    "id": "012.3-004",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.3"],
+    "terms": ["012.3.t6"],
+    "stem": "On a typical Linux system, where do ordinary users keep their personal files and settings?",
+    "options": [
+      { "text": "In a directory below `/usr`, named after the user", "correct": false, "rationale": "`/usr` holds programs and shared data." },
+      { "text": "In a directory below `/etc`, named after the user", "correct": false, "rationale": "`/etc` holds system configuration." },
+      { "text": "In a directory below `/var`, named after the user", "correct": false, "rationale": "`/var` holds variable data such as logs and caches." },
+      { "text": "In a directory below `/home`, named after the user", "correct": true, "rationale": "For example `/home/ada` for the user ada." }
+    ],
+    "explanation": "Each user has a home directory, usually `/home/NAME`. `cd` with no argument and `cd ~` both lead there.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html"]
+  },
+  {
+    "id": "012.3-005",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t4"],
+    "stem": "Which of these is an absolute path?",
+    "options": [
+      { "text": "`assets/levels/level1.txt`", "correct": false, "rationale": "It has no leading slash, so it starts in the current directory." },
+      { "text": "`/srv/assets/levels/level1.txt`", "correct": true, "rationale": "It starts at the root directory `/`." },
+      { "text": "`../assets/levels/level1.txt`", "correct": false, "rationale": "It begins at the parent of the current directory." },
+      { "text": "`./levels/level1.txt`", "correct": false, "rationale": "It begins at the current directory." }
+    ],
+    "explanation": "An absolute path starts with `/` and means the same thing wherever you are. Anything else is relative to the current directory."
+  },
+  {
+    "id": "012.3-006",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t4"],
+    "stem": "Mira is in `/home/mira/projects/website`. Which relative path leads to `/home/mira/projects/pixel-raiders`?",
+    "options": [
+      { "text": "`./pixel-raiders`", "correct": false, "rationale": "This would be a directory inside `website`." },
+      { "text": "`../pixel-raiders`", "correct": true, "rationale": "One level up gets to `projects`, and then `pixel-raiders` is inside it." },
+      { "text": "`../../pixel-raiders`", "correct": false, "rationale": "Two levels up lands in `/home/mira`, where there is no such directory." },
+      { "text": "`/pixel-raiders`", "correct": false, "rationale": "The leading slash makes it an absolute path under the root directory." }
+    ],
+    "explanation": "`..` is the parent directory. From `website`, `..` is `projects`, so `../pixel-raiders` is its sibling."
+  },
+  {
+    "id": "012.3-007",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t4"],
+    "stem": "What do the special names `.` and `..` stand for in a directory?",
+    "options": [
+      { "text": "The hidden files and the backup files in it", "correct": false, "rationale": "Hidden files merely begin with a dot." },
+      { "text": "The first and the last file in it", "correct": false, "rationale": "The names have nothing to do with the order of files." },
+      { "text": "The home directory and the root directory", "correct": false, "rationale": "Those are `~` and `/`." },
+      { "text": "The directory itself and its parent directory", "correct": true, "rationale": "Every directory has these two entries." }
+    ],
+    "explanation": "`.` is the current directory and `..` is the one above it. They appear in `ls -a`, but not in `ls -A`."
+  },
+  {
+    "id": "012.3-008",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.2"],
+    "stem": "What makes a file or directory hidden on Linux?",
+    "options": [
+      { "text": "Its name begins with a dot", "correct": true, "rationale": "A plain `ls` skips every name that starts with `.`." },
+      { "text": "It has the hidden attribute set with `chmod`", "correct": false, "rationale": "`chmod` changes permissions, not visibility." },
+      { "text": "Its name ends with a tilde, like `notes.txt~`", "correct": false, "rationale": "The tilde usually marks a backup file, which is shown normally." },
+      { "text": "It is stored below a directory named `hidden`", "correct": false, "rationale": "No special directory name hides anything." }
+    ],
+    "explanation": "Hiding is just a naming convention: a leading dot. To hide a file, rename it with a dot in front; to see hidden entries, use `ls -a` or `ls -A`."
+  },
+  {
+    "id": "012.3-009",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.2"],
+    "terms": ["012.3.t1"],
+    "stem": "Which command lists hidden entries, but leaves out the special entries `.` and `..`?",
+    "options": [
+      { "text": "`ls --all`", "correct": false, "rationale": "This is the long form of `-a`, which includes `.` and `..` too." },
+      { "text": "`ls -d`", "correct": false, "rationale": "This lists directories themselves instead of their contents." },
+      { "text": "`ls -A`", "correct": true, "rationale": "The capital A means “almost all”." },
+      { "text": "`ls -h`", "correct": false, "rationale": "This asks for human-readable sizes in long listings." }
+    ],
+    "explanation": "`-a` shows every entry, including `.` and `..`. `-A` shows every entry except those two, which is usually what you want.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
+  },
+  {
+    "id": "012.3-010",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.1"],
+    "terms": ["012.3.t1"],
+    "stem": "Ada wants a listing with one line per file showing permissions, owner, size and modification date. Which option gives that?",
+    "options": [
+      { "text": "`ls -m`", "correct": false, "rationale": "This prints the names as one comma-separated list, with no details." },
+      { "text": "`ls -s`", "correct": false, "rationale": "This shows the allocated size next to each name, nothing more." },
+      { "text": "`ls -l`", "correct": true, "rationale": "The long format shows these details." },
+      { "text": "`ls -1`", "correct": false, "rationale": "This prints one name per line without any details." }
+    ],
+    "explanation": "`-l` selects the long format. Combine it with `-a` for hidden files, and with `-h` for sizes like `4.0K`.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
+  },
+  {
+    "id": "012.3-011",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.1"],
+    "terms": ["012.3.t2"],
+    "stem": "Which command lists a directory and every directory below it, one block per directory?",
+    "options": [
+      { "text": "`ls -R`", "correct": true, "rationale": "The capital R makes the listing recursive." },
+      { "text": "`ls --reverse`", "correct": false, "rationale": "This is the long form of `-r`, which only reverses the sort order." },
+      { "text": "`ls -d`", "correct": false, "rationale": "This lists the directory itself instead of its contents." },
+      { "text": "`ls -a`", "correct": false, "rationale": "This adds hidden entries but doesn’t descend." }
+    ],
+    "explanation": "`ls -R` is recursive. Be careful with the case: `ls -R` descends, while `cp -r` and `rm -r` use a lowercase r for the same idea.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
+  },
+  {
+    "id": "012.3-012",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.3"],
+    "terms": ["012.3.t3", "012.3.t6"],
+    "stem": "What does `cd` do when it is typed without any argument?",
+    "options": [
+      { "text": "It stays where it is and prints the current directory", "correct": false, "rationale": "`pwd` is the command that prints the current directory." },
+      { "text": "It changes to the root directory `/`", "correct": false, "rationale": "The root directory needs `cd /`." },
+      { "text": "It changes back to the previous directory", "correct": false, "rationale": "That is `cd -`." },
+      { "text": "It changes to the user’s home directory", "correct": true, "rationale": "With no argument, `cd` goes home." }
+    ],
+    "explanation": "`cd` and `cd ~` both lead to the home directory, whichever directory you are in. `cd -` returns to the previous directory."
+  },
+  {
+    "id": "012.3-013",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t3"],
+    "stem": "Mira changed from her home directory to `/var/log` and now wants to jump straight back. Which command takes her to the directory she was in before?",
+    "options": [
+      { "text": "`cd ..`", "correct": false, "rationale": "This only moves to the parent, `/var`." },
+      { "text": "`cd -`", "correct": true, "rationale": "A lone dash stands for the previous directory." },
+      { "text": "`cd ../..`", "correct": false, "rationale": "This climbs two levels up, to `/`, which is not where she was." },
+      { "text": "`cd /home`", "correct": false, "rationale": "This leads to `/home`, not to her own home directory." }
+    ],
+    "explanation": "Bash remembers the previous directory. `cd -` switches to it and prints its name."
+  },
+  {
+    "id": "012.3-014",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.5"],
+    "terms": ["012.3.t7"],
+    "stem": "Jonas wants `find` to match file names ignoring upper and lower case, so that `README.md` and `readme.txt` are both found. Which test does this?",
+    "options": [
+      { "text": "`-name \"readme*\"`", "correct": false, "rationale": "`-name` is case-sensitive and would miss `README.md`." },
+      { "text": "`-iname \"readme*\"`", "correct": true, "rationale": "`-iname` works like `-name` but ignores case." },
+      { "text": "`-type \"readme*\"`", "correct": false, "rationale": "`-type` tests for the kind of entry, such as file or directory." },
+      { "text": "`-nocase \"readme*\"`", "correct": false, "rationale": "There is no such test in `find`." }
+    ],
+    "explanation": "`-name` compares names exactly; `-iname` ignores case. Quote the pattern so the shell passes the `*` to `find`.",
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+  },
+  {
+    "id": "012.3-015",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": ["012.3.5"],
+    "terms": ["012.3.t7"],
+    "stem": "Ada needs the directories named `docs` under her home, and no ordinary files with that name. Which command does this?",
+    "options": [
+      { "text": "`find ~ -type f -name docs`", "correct": false, "rationale": "`-type f` limits the results to ordinary files." },
+      { "text": "`find ~ -name docs -type`", "correct": false, "rationale": "`-type` needs a value, such as `d`." },
+      { "text": "`ls -R ~ docs`", "correct": false, "rationale": "`ls` lists contents; it doesn’t search by name." },
+      { "text": "`find ~ -type d -name docs`", "correct": true, "rationale": "`-type d` limits the results to directories." }
+    ],
+    "explanation": "`find` combines tests: `-type d` keeps directories and `-name docs` keeps the matching names. Both must hold.",
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+  },
+  {
+    "id": "012.3-016",
+    "objectiveId": "012.3",
+    "kind": "multi",
+    "areas": ["012.3.2"],
+    "terms": ["012.3.t1"],
+    "stem": "Which of these names are hidden, so that a plain `ls` does not show them? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`.bashrc`", "correct": true, "rationale": "It begins with a dot." },
+      { "text": "`.tuxpixel`", "correct": true, "rationale": "A hidden directory, since it begins with a dot." },
+      { "text": "`bashrc`", "correct": false, "rationale": "Without the dot it’s an ordinary name." },
+      { "text": "`notes.txt~`", "correct": false, "rationale": "The tilde at the end doesn’t hide anything." },
+      { "text": "`_cache`", "correct": false, "rationale": "An underscore is an ordinary character." }
+    ],
+    "explanation": "Only a leading dot hides a name, for files and directories alike. `ls -a` shows them."
+  },
+  {
+    "id": "012.3-017",
+    "objectiveId": "012.3",
+    "kind": "multi",
+    "areas": ["012.3.2"],
+    "terms": ["012.3.t1"],
+    "stem": "Which `ls` options include hidden entries in the listing? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`-a`", "correct": true, "rationale": "It lists all entries, including `.` and `..`." },
+      { "text": "`--almost-all`", "correct": true, "rationale": "The long form of `-A`: hidden entries, but not `.` and `..`." },
+      { "text": "`-l`", "correct": false, "rationale": "The long format shows details, but no hidden files by itself." },
+      { "text": "`-R`", "correct": false, "rationale": "It descends into directories, but still skips hidden names." },
+      { "text": "`-d`", "correct": false, "rationale": "It lists directories themselves, not hidden ones." }
+    ],
+    "explanation": "Hidden entries show up with `-a` (`--all`) or `-A` (`--almost-all`). The other options change the format or the depth of the listing.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
+  },
+  {
+    "id": "012.3-018",
+    "objectiveId": "012.3",
+    "kind": "multi",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t4", "012.3.t5"],
+    "stem": "Which of these are absolute paths? (Choose THREE.)",
+    "select": 3,
+    "options": [
+      { "text": "`/etc/passwd`", "correct": true, "rationale": "Starts with `/`." },
+      { "text": "`/usr/share/doc/`", "correct": true, "rationale": "Starts with `/`." },
+      { "text": "`/`", "correct": true, "rationale": "The root directory itself is an absolute path." },
+      { "text": "`../etc/passwd`", "correct": false, "rationale": "Starts at the parent of the current directory." },
+      { "text": "`etc/passwd`", "correct": false, "rationale": "Starts in the current directory." },
+      { "text": "`./usr`", "correct": false, "rationale": "Starts in the current directory." }
+    ],
+    "explanation": "Any path that begins with `/` is absolute. Paths starting with a name, `.` or `..` depend on the current directory."
+  },
+  {
+    "id": "012.3-019",
+    "objectiveId": "012.3",
+    "kind": "multi",
+    "areas": ["012.3.5"],
+    "terms": ["012.3.t7"],
+    "stem": "Which commands list the PNG files in `/srv/assets` and in all of its subdirectories? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`find /srv/assets -name \"*.png\"`", "correct": true, "rationale": "`find` walks the whole tree below the start directory." },
+      { "text": "`find /srv/assets -type f -name \"*.png\"`", "correct": true, "rationale": "The extra test only drops directories that happen to end in `.png`." },
+      { "text": "`ls /srv/assets/*.png`", "correct": false, "rationale": "The wildcard matches only the top directory, not the subdirectories." },
+      { "text": "`find \"*.png\" /srv/assets`", "correct": false, "rationale": "The start directory must come first." },
+      { "text": "`ls -d /srv/assets`", "correct": false, "rationale": "This lists only the directory itself." }
+    ],
+    "explanation": "`find START TESTS` searches the whole tree. A shell wildcard such as `*.png` only matches inside one directory, and the starting point has to come before the tests.",
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+  },
+  {
+    "id": "012.3-020",
+    "objectiveId": "012.3",
+    "kind": "fill",
+    "areas": ["012.3.1", "012.3.2"],
+    "terms": ["012.3.t1"],
+    "stem": "Type the `ls` command that prints a long listing of the current directory including hidden entries.",
+    "accept": ["ls -la", "ls -al", "ls -l -a", "ls -a -l"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}", "fixture": "projects" },
+    "explanation": "`-l` gives the long format and `-a` adds the hidden entries. Short options can be combined in either order.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
+  },
+  {
+    "id": "012.3-021",
+    "objectiveId": "012.3",
+    "kind": "fill",
+    "areas": ["012.3.3"],
+    "terms": ["012.3.t3", "012.3.t6"],
+    "stem": "Type the command that takes you back to your home directory from anywhere, using no path or only the shortcut for it.",
+    "accept": ["cd", "cd ~"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}", "fixture": "projects" },
+    "explanation": "Plain `cd` and `cd ~` both lead home."
+  },
+  {
+    "id": "012.3-022",
+    "objectiveId": "012.3",
+    "kind": "fill",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t3", "012.3.t4"],
+    "stem": "Type the command that moves up one level, to the parent of the current directory.",
+    "accept": ["cd ..", "cd ../"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}", "fixture": "projects" },
+    "explanation": "`..` is the parent directory, so `cd ..` goes up one level."
+  },
+  {
+    "id": "012.3-023",
+    "objectiveId": "012.3",
+    "kind": "fill",
+    "areas": ["012.3.1"],
+    "terms": ["012.3.t2"],
+    "stem": "Complete the command so that it lists `projects` and everything below it.",
+    "accept": ["-R projects", "-R projects/"],
+    "prefix": "$ ls",
+    "caseSensitive": true,
+    "verify": { "command": "ls {answer}", "fixture": "projects" },
+    "explanation": "`-R` is the recursive option of `ls`; it needs the capital letter.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
+  },
+  {
+    "id": "012.3-024",
+    "objectiveId": "012.3",
+    "kind": "fill",
+    "areas": ["012.3.5"],
+    "terms": ["012.3.t7"],
+    "stem": "Complete the command so that it finds every file named exactly `index.html` below `projects`.",
+    "accept": ["-name index.html", "-name \"index.html\"", "-name 'index.html'"],
+    "prefix": "$ find projects",
+    "caseSensitive": true,
+    "verify": { "command": "find projects {answer}", "fixture": "projects" },
+    "explanation": "`-name` compares the file name against a pattern; a plain name matches exactly that name.",
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+  },
+  {
+    "id": "012.3-025",
+    "objectiveId": "012.3",
+    "kind": "fill",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t4"],
+    "stem": "Type the command that prints the absolute path of the directory you are in.",
+    "accept": ["pwd"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}" },
+    "explanation": "`pwd` (print working directory) always prints an absolute path."
+  },
+  {
+    "id": "012.3-026",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t3", "012.3.t4"],
+    "stem": "Mira moves around the Pixel Raiders project. What does this command print?",
+    "command": "cd projects/pixel-raiders/src; cd ../docs; pwd",
+    "mode": "choice",
+    "fixture": "projects",
+    "output": "/home/mira/projects/pixel-raiders/docs",
+    "options": [
+      { "text": "/home/mira/projects/pixel-raiders/docs", "correct": true, "rationale": "`..` leaves `src`, and `docs` is the sibling directory in `pixel-raiders`." },
+      { "text": "/home/mira/projects/pixel-raiders/src/docs", "correct": false, "rationale": "`..` first goes up, so `docs` isn’t searched inside `src`." },
+      { "text": "/home/mira/projects/docs", "correct": false, "rationale": "Two levels up would be needed for that." },
+      { "text": "/home/mira/docs", "correct": false, "rationale": "`..` goes up only one level." }
+    ],
+    "explanation": "`cd ../docs` goes up one level to `pixel-raiders` and then down into `docs`. `pwd` prints the resulting absolute path."
+  },
+  {
+    "id": "012.3-027",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.2", "012.3.4"],
+    "terms": ["012.3.t1", "012.3.t4"],
+    "stem": "Ada lists the project folder, including hidden entries. What does this command print?",
+    "command": "cd projects/pixel-raiders; ls -a .",
+    "mode": "choice",
+    "fixture": "projects",
+    "output": ".  ..  docs  .gitignore  README.md  src",
+    "options": [
+      { "text": "docs  README.md  src", "correct": false, "rationale": "A plain `ls` would show this, without `.gitignore` or the dot entries." },
+      { "text": ".  ..  docs  README.md  src", "correct": false, "rationale": "The hidden file `.gitignore` is missing." },
+      { "text": ".  ..  docs  .gitignore  README.md  src", "correct": true, "rationale": "`-a` shows `.` and `..` and the hidden `.gitignore`, and the list is sorted ignoring the dots." },
+      { "text": "docs  .gitignore  README.md  src", "correct": false, "rationale": "This is the output of `ls -A`; `-a` adds `.` and `..`." }
+    ],
+    "explanation": "`ls -a .` lists the current directory with all entries, including `.`, `..` and `.gitignore`. The sort order ignores the leading dot."
+  },
+  {
+    "id": "012.3-028",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.3", "012.3.4"],
+    "terms": ["012.3.t6"],
+    "stem": "Mira is in her home directory. Type what this command prints.",
+    "command": "ls ~/notes.txt; ls notes.txt",
+    "mode": "type",
+    "fixture": "projects",
+    "output": "/home/mira/notes.txt\nnotes.txt",
+    "explanation": "The first `ls` prints the name as it was given, the expanded absolute path. The second prints the relative name. Both refer to the same file."
+  },
+  {
+    "id": "012.3-029",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.3"],
+    "terms": ["012.3.t6"],
+    "stem": "Type what this command prints.",
+    "command": "echo ~; echo ~/projects",
+    "mode": "type",
+    "fixture": "projects",
+    "output": "/home/mira\n/home/mira/projects",
+    "explanation": "The shell replaces `~` with the home directory of the current user, so `~/projects` becomes `/home/mira/projects`."
+  },
+  {
+    "id": "012.3-030",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.4"],
+    "terms": ["012.3.t3"],
+    "stem": "Mira jumps back and forth. What does this command print?",
+    "command": "cd projects/website; cd -; pwd",
+    "mode": "choice",
+    "fixture": "projects",
+    "output": "/home/mira\n/home/mira",
+    "options": [
+      { "text": "/home/mira/projects/website\n/home/mira", "correct": false, "rationale": "`cd -` prints the directory it moves to, not the one it leaves." },
+      { "text": "/home/mira\n/home/mira/projects/website", "correct": false, "rationale": "After `cd -` she is back in her home, so `pwd` doesn’t print `website`." },
+      { "text": "/home/mira\n/home/mira", "correct": true, "rationale": "`cd -` prints the directory it returns to, her home, and `pwd` prints the same." },
+      { "text": "/home/mira/projects\n/home/mira", "correct": false, "rationale": "She went into `website`, not `projects`, before going back." }
+    ],
+    "explanation": "`cd -` goes back to the previous directory and prints its path. Mira was in her home before she entered `website`."
+  },
+  {
+    "id": "012.3-031",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.5"],
+    "terms": ["012.3.t7"],
+    "stem": "Type what this command prints (the paths are sorted).",
+    "command": "find projects -name \"*.md\" | sort",
+    "mode": "type",
+    "fixture": "projects",
+    "output": "projects/pixel-raiders/docs/design.md\nprojects/pixel-raiders/docs/levels.md\nprojects/pixel-raiders/README.md\nprojects/website/press-kit.md",
+    "explanation": "`find` prints paths in the form of its starting point, here relative ones. `sort` puts them in a fixed order, since `find` lists directory entries in no particular order."
+  },
+  {
+    "id": "012.3-032",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.5", "012.3.1"],
+    "terms": ["012.3.t7"],
+    "stem": "What does this command print?",
+    "command": "find projects -type d | sort",
+    "mode": "choice",
+    "fixture": "projects",
+    "output": "projects\nprojects/pixel-raiders\nprojects/pixel-raiders/docs\nprojects/pixel-raiders/src\nprojects/website",
+    "options": [
+      { "text": "projects\nprojects/pixel-raiders\nprojects/pixel-raiders/docs\nprojects/pixel-raiders/src\nprojects/website", "correct": true, "rationale": "`-type d` keeps all directories, including the starting one and those nested deeper." },
+      { "text": "projects/pixel-raiders\nprojects/website", "correct": false, "rationale": "The starting directory itself and the subdirectories `docs` and `src` are missing." },
+      { "text": "projects/pixel-raiders\nprojects/pixel-raiders/docs\nprojects/pixel-raiders/src\nprojects/website", "correct": false, "rationale": "`find` also prints the starting directory `projects`." },
+      { "text": "projects\nprojects/pixel-raiders\nprojects/pixel-raiders/README.md\nprojects/website", "correct": false, "rationale": "`-type d` leaves out ordinary files such as `README.md`." }
+    ],
+    "explanation": "`find` starts by testing the start directory itself, then everything below it. Only directories pass `-type d`."
+  },
+  {
+    "id": "012.3-033",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": ["012.3.1"],
+    "terms": ["012.3.t1"],
+    "stem": "Type what this command prints (`-1` puts one entry on each line).",
+    "command": "ls -1F projects",
+    "mode": "type",
+    "fixture": "projects",
+    "output": "pixel-raiders/\nwebsite/",
+    "explanation": "With `-F`, `ls` appends a `/` to each directory name. `-1` prints one entry per line instead of columns.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
   }
 ]

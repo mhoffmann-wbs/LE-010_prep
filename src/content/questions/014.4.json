@@ -1,0 +1,1130 @@
+[
+  {
+    "id": "014.4-001",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "terms": [
+      "014.4.t5"
+    ],
+    "stem": "Ada configures the office LAN and needs an IPv4 address from a private range, which is never used on the Internet. Which address qualifies?",
+    "options": [
+      {
+        "text": "`172.32.0.1`",
+        "correct": false,
+        "rationale": "It is just outside `172.16.0.0/12` and is a public address."
+      },
+      {
+        "text": "`192.169.1.1`",
+        "correct": false,
+        "rationale": "The private range is `192.168.0.0/16`, so this address is public."
+      },
+      {
+        "text": "`172.20.5.9`",
+        "correct": true,
+        "rationale": "It lies in `172.16.0.0/12`, one of the private ranges of RFC 1918."
+      },
+      {
+        "text": "`198.51.100.20`",
+        "correct": false,
+        "rationale": "It is reserved for documentation examples, not for private networks."
+      }
+    ],
+    "explanation": "RFC 1918 reserves three private IPv4 ranges: `10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`. Addresses there are used inside a LAN, and the router translates them for the Internet.",
+    "sourceLinks": [
+      "https://www.rfc-editor.org/rfc/rfc1918"
+    ]
+  },
+  {
+    "id": "014.4-002",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1",
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t1"
+    ],
+    "stem": "Jonas’s laptop reaches the printer on `192.0.2.0/24`, but no website. Which missing setting is the most likely reason?",
+    "options": [
+      {
+        "text": "A default gateway, the router to which traffic for other networks is sent.",
+        "correct": true,
+        "rationale": "Without it, the machine can reach only its own LAN."
+      },
+      {
+        "text": "A second IPv4 address on the same interface for every website he opens.",
+        "correct": false,
+        "rationale": "Websites are reached through the router, not through extra addresses."
+      },
+      {
+        "text": "A larger swap partition for the web browser to use.",
+        "correct": false,
+        "rationale": "Swap is memory on disk and has nothing to do with routing."
+      },
+      {
+        "text": "A different host name that matches the router’s name.",
+        "correct": false,
+        "rationale": "A host name doesn’t decide where traffic for other networks goes."
+      }
+    ],
+    "explanation": "A machine talks directly only to hosts on its own network. For all other destinations, it sends the data to its default gateway, a router. In `ip route show` the gateway is the line that begins with `default via`."
+  },
+  {
+    "id": "014.4-003",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "stem": "What does the router in the TuxPixel office do?",
+    "options": [
+      {
+        "text": "It translates names such as `tuxpixel.example` into addresses for every machine in the office.",
+        "correct": false,
+        "rationale": "That is the job of DNS, which a router may only forward."
+      },
+      {
+        "text": "It stores the studio’s files and shares them with the computers in the LAN.",
+        "correct": false,
+        "rationale": "File storage is done by a file server, not by a router."
+      },
+      {
+        "text": "It starts the services on each computer when the computers are switched on.",
+        "correct": false,
+        "rationale": "Services are started by the init system on each machine."
+      },
+      {
+        "text": "It passes traffic between networks, for example between the office LAN and the Internet.",
+        "correct": true,
+        "rationale": "Machines send everything outside their own network to it."
+      }
+    ],
+    "explanation": "A router connects networks and forwards data between them. Computers on the same LAN talk directly, and they hand everything else to the router, their default gateway."
+  },
+  {
+    "id": "014.4-004",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "terms": [
+      "014.4.t5"
+    ],
+    "stem": "Which of these is a correct shortened form of the IPv6 address `2001:0db8:0000:0000:0000:0000:0000:0010`?",
+    "options": [
+      {
+        "text": "`2001:db8:10`",
+        "correct": false,
+        "rationale": "That has only three groups, and the zero groups can’t just be deleted."
+      },
+      {
+        "text": "`2001:db8::10`",
+        "correct": true,
+        "rationale": "Leading zeros are dropped, and one run of zero groups becomes `::`."
+      },
+      {
+        "text": "`2001::db8::10`",
+        "correct": false,
+        "rationale": "A double colon may appear only once in an address."
+      },
+      {
+        "text": "`2001:db8::10::`",
+        "correct": false,
+        "rationale": "A double colon may appear only once, and not at the end of the address too."
+      }
+    ],
+    "explanation": "IPv6 has 128 bits, written as eight groups of hexadecimal digits. Leading zeros in a group can be dropped, and exactly one run of zero groups can be replaced by `::`. IPv6 loopback is `::1`."
+  },
+  {
+    "id": "014.4-005",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4",
+      "014.4.vt4"
+    ],
+    "stem": "Mira needs to know which DNS servers a Linux client asks, on a machine that doesn’t use systemd-resolved. Which file lists them in `nameserver` lines?",
+    "options": [
+      {
+        "text": "`/etc/hosts`",
+        "correct": false,
+        "rationale": "It lists fixed name-to-address pairs and no DNS servers."
+      },
+      {
+        "text": "`/etc/resolv.conf`",
+        "correct": true,
+        "rationale": "Each `nameserver` line holds one DNS server’s address."
+      },
+      {
+        "text": "`/etc/hostname`",
+        "correct": false,
+        "rationale": "It holds only the name of this machine."
+      },
+      {
+        "text": "`/etc/nsswitch.conf`",
+        "correct": false,
+        "rationale": "It sets the order of the lookup sources, but not the server addresses."
+      }
+    ],
+    "explanation": "`/etc/resolv.conf` tells the resolver which DNS servers to ask (`nameserver` lines) and which `search` domains to append. On a machine that gets its settings from DHCP it is written automatically.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/resolv.conf.5.html"
+    ]
+  },
+  {
+    "id": "014.4-006",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4",
+      "014.4.vt4"
+    ],
+    "stem": "Until DNS has an entry for the new file server, Mira wants the name `fileserver` to point to `192.0.2.20` on her own laptop. Where does she add the line?",
+    "options": [
+      {
+        "text": "`/etc/resolv.conf`, as a `nameserver` line with the name of the server.",
+        "correct": false,
+        "rationale": "That file lists DNS servers, not individual host names."
+      },
+      {
+        "text": "`/etc/hostname`, as an extra line with the address of the file server.",
+        "correct": false,
+        "rationale": "That file holds only this machine’s own name."
+      },
+      {
+        "text": "`/etc/passwd`, as a line for a new user called `fileserver`.",
+        "correct": false,
+        "rationale": "That file lists user accounts."
+      },
+      {
+        "text": "`/etc/hosts`, as a line with the address followed by the name.",
+        "correct": true,
+        "rationale": "The file is checked before DNS is asked."
+      }
+    ],
+    "explanation": "`/etc/hosts` maps names to addresses locally, one line per address with one or more names. The resolver reads it before it asks a DNS server, so it is a quick way to name a machine without a DNS entry.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/hosts.5.html"
+    ]
+  },
+  {
+    "id": "014.4-007",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4"
+    ],
+    "stem": "On a systemd distribution, `/etc/resolv.conf` contains only `nameserver 127.0.0.53`. Which command shows the DNS servers that are really used?",
+    "options": [
+      {
+        "text": "`resolvectl status`",
+        "correct": true,
+        "rationale": "It shows the DNS servers per interface, as systemd-resolved knows them."
+      },
+      {
+        "text": "`ip route show`",
+        "correct": false,
+        "rationale": "It shows routes and gateways, not DNS servers."
+      },
+      {
+        "text": "`ss -tln`",
+        "correct": false,
+        "rationale": "It lists listening TCP sockets, not DNS settings."
+      },
+      {
+        "text": "`cat /etc/hosts`",
+        "correct": false,
+        "rationale": "It shows the local name list and not the DNS servers."
+      }
+    ],
+    "explanation": "`127.0.0.53` is the local stub resolver of systemd-resolved. The servers it forwards to are shown by `resolvectl status`, and `resolvectl query NAME` looks up a name through it.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html"
+    ]
+  },
+  {
+    "id": "014.4-008",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t8"
+    ],
+    "stem": "Which command asks DNS for the IP addresses behind the name `tuxpixel.example`?",
+    "options": [
+      {
+        "text": "`ip addr show tuxpixel.example`",
+        "correct": false,
+        "rationale": "It shows addresses of local interfaces, and the argument must be an interface name."
+      },
+      {
+        "text": "`ss tuxpixel.example`",
+        "correct": false,
+        "rationale": "`ss` lists sockets and expects filters, not host names to look up."
+      },
+      {
+        "text": "`host tuxpixel.example`",
+        "correct": true,
+        "rationale": "It prints the addresses it finds, in lines such as `has address`."
+      },
+      {
+        "text": "`ping -c 3 198.51.100.7`",
+        "correct": false,
+        "rationale": "It tests whether one address answers, and doesn’t look up a name."
+      }
+    ],
+    "explanation": "`host NAME` queries DNS and prints the addresses of the name (`has address` for IPv4, `has IPv6 address` for IPv6). With an address, `host` does a reverse lookup and prints the name.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/host.1.html"
+    ]
+  },
+  {
+    "id": "014.4-009",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1",
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t7"
+    ],
+    "stem": "`ping 198.51.100.7` gets answers, but `ping build01.tuxpixel.example` says that the name is unknown. What does this show?",
+    "options": [
+      {
+        "text": "The default gateway is missing, so no packet leaves the LAN.",
+        "correct": false,
+        "rationale": "Packets to the address were answered, so the gateway works."
+      },
+      {
+        "text": "The cable is unplugged, so the machine has lost its link to the network.",
+        "correct": false,
+        "rationale": "With no link at all, the ping to the address would fail too."
+      },
+      {
+        "text": "The server `198.51.100.7` is switched off and doesn’t answer any request.",
+        "correct": false,
+        "rationale": "The server answered the ping by number."
+      },
+      {
+        "text": "The network path works, and the problem is name resolution, which is DNS.",
+        "correct": true,
+        "rationale": "The number works, so the machine is reachable."
+      }
+    ],
+    "explanation": "Ping by address first, then by name. If the number works and the name doesn’t, addressing and routing are fine, and the DNS client configuration (`/etc/resolv.conf` or `resolvectl status`) is the place to look.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ping.8.html"
+    ]
+  },
+  {
+    "id": "014.4-010",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t2",
+      "014.4.vt2"
+    ],
+    "stem": "Which line type in the output of `ip addr show` carries an interface’s IPv4 address?",
+    "options": [
+      {
+        "text": "The line that starts with `inet6`",
+        "correct": false,
+        "rationale": "It carries IPv6 addresses."
+      },
+      {
+        "text": "The line that starts with `inet`",
+        "correct": true,
+        "rationale": "The address comes with its prefix length, such as `/24`."
+      },
+      {
+        "text": "The line that starts with `link/ether`",
+        "correct": false,
+        "rationale": "It shows the hardware (MAC) address."
+      },
+      {
+        "text": "The line that starts with `default via`",
+        "correct": false,
+        "rationale": "That belongs to the routing table printed by `ip route show`."
+      }
+    ],
+    "explanation": "`ip addr show` lists each interface with its state, a `link/ether` line with the MAC address, an `inet` line for each IPv4 address with its prefix length, and an `inet6` line for each IPv6 address.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip.8.html"
+    ]
+  },
+  {
+    "id": "014.4-011",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1",
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t1",
+      "014.4.vt1"
+    ],
+    "stem": "In the output of `ip route show`, which line is the default gateway?",
+    "options": [
+      {
+        "text": "The line that begins with a network such as `192.0.2.0/24 dev enp3s0`",
+        "correct": false,
+        "rationale": "That is a directly connected network, reached without a router."
+      },
+      {
+        "text": "The line that begins with `inet` and an address with a prefix length",
+        "correct": false,
+        "rationale": "`inet` lines are part of `ip addr show`."
+      },
+      {
+        "text": "The line that begins with `default via` and an address",
+        "correct": true,
+        "rationale": "Anything that matches no other route is sent there."
+      },
+      {
+        "text": "The line that begins with `nameserver` and an address",
+        "correct": false,
+        "rationale": "`nameserver` lines are part of `/etc/resolv.conf`."
+      }
+    ],
+    "explanation": "The default route reads `default via <router> dev <interface>`. Lines that name a network with `dev` are directly connected networks. If no default route exists, the machine can reach only its own LAN.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    ]
+  },
+  {
+    "id": "014.4-012",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t1"
+    ],
+    "stem": "Ada wants to see the IPv6 routing table of a cloud instance. Which command prints it?",
+    "options": [
+      {
+        "text": "`ip -6 route show`",
+        "correct": true,
+        "rationale": "`-6` selects the IPv6 family."
+      },
+      {
+        "text": "`ip route show`",
+        "correct": false,
+        "rationale": "It prints the IPv4 routing table."
+      },
+      {
+        "text": "`ip -6 addr show`",
+        "correct": false,
+        "rationale": "It shows IPv6 addresses of the interfaces, not routes."
+      },
+      {
+        "text": "`ss -6 -tln`",
+        "correct": false,
+        "rationale": "It lists listening IPv6 sockets."
+      }
+    ],
+    "explanation": "`ip route show` prints the IPv4 table, and `ip -6 route show` the IPv6 one. A `default via` line in either one is the default gateway for that protocol.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    ]
+  },
+  {
+    "id": "014.4-013",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t3",
+      "014.4.vt3"
+    ],
+    "stem": "Ada wants to know which TCP ports on the build server are waiting for connections, shown as numbers. Which command does this?",
+    "options": [
+      {
+        "text": "`ss -tln`",
+        "correct": true,
+        "rationale": "`-t` is TCP, `-l` listening sockets and `-n` numbers."
+      },
+      {
+        "text": "`ss -uln`",
+        "correct": false,
+        "rationale": "It lists listening UDP sockets instead of TCP."
+      },
+      {
+        "text": "`ss -t`",
+        "correct": false,
+        "rationale": "It shows only established TCP connections, not the listening ones."
+      },
+      {
+        "text": "`ss -s`",
+        "correct": false,
+        "rationale": "It prints a summary of socket counts without the ports."
+      }
+    ],
+    "explanation": "`ss -tln` lists TCP sockets that are listening, with numeric addresses and ports. Add `-p` (with `sudo`) to see which process owns each socket. A listener on `127.0.0.1` is reachable only from the machine itself.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "id": "014.4-014",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t2",
+      "014.4.vt2"
+    ],
+    "stem": "Jonas finds an old guide that tells him to run `ifconfig` to see his addresses. Which current command shows the same information?",
+    "options": [
+      {
+        "text": "`ip route show`",
+        "correct": false,
+        "rationale": "It replaces the old `route` command and shows routes only."
+      },
+      {
+        "text": "`ss -tulpn`",
+        "correct": false,
+        "rationale": "It replaces `netstat` and lists sockets."
+      },
+      {
+        "text": "`ip addr show`",
+        "correct": true,
+        "rationale": "It replaces `ifconfig` for listing interface addresses."
+      },
+      {
+        "text": "`host -a`",
+        "correct": false,
+        "rationale": "It asks DNS for records and doesn’t show local interfaces."
+      }
+    ],
+    "explanation": "The old `net-tools` programs have modern replacements: `ifconfig` became `ip addr show`, `route` became `ip route show` and `netstat` became `ss`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip.8.html"
+    ]
+  },
+  {
+    "id": "014.4-015",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t3",
+      "014.4.vt3"
+    ],
+    "stem": "A tutorial from years ago uses `netstat -tulpn` to see which programs listen on which ports. Which command does the same today?",
+    "options": [
+      {
+        "text": "`ip -6 route show`",
+        "correct": false,
+        "rationale": "It prints the IPv6 routing table and no sockets."
+      },
+      {
+        "text": "`ss -tulpn`",
+        "correct": true,
+        "rationale": "It uses the same letters: TCP, UDP, listening, process, numbers."
+      },
+      {
+        "text": "`ip addr show`",
+        "correct": false,
+        "rationale": "It lists interface addresses, not sockets."
+      },
+      {
+        "text": "`host -t ns`",
+        "correct": false,
+        "rationale": "It queries DNS name server records and doesn’t list local ports."
+      }
+    ],
+    "explanation": "`ss` replaces `netstat`, and it accepts the familiar letters: `-t` TCP, `-u` UDP, `-l` listening, `-p` process and `-n` numbers. Without root rights, the process names of other users are not shown.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "id": "014.4-016",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.4"
+    ],
+    "terms": [
+      "014.4.t6"
+    ],
+    "stem": "A laptop joins the office WiFi and gets an IPv4 address, a prefix length, a gateway and DNS servers on lease, without Jonas typing anything. Which protocol did this?",
+    "options": [
+      {
+        "text": "SLAAC, where a router’s advertisement lets the machine build its own IPv4 address.",
+        "correct": false,
+        "rationale": "SLAAC is the IPv6 mechanism."
+      },
+      {
+        "text": "DNS, where the server hands out addresses to machines that ask for a name.",
+        "correct": false,
+        "rationale": "DNS turns names into addresses; it doesn’t configure machines."
+      },
+      {
+        "text": "ICMP echo, where the laptop pings every address until one answers.",
+        "correct": false,
+        "rationale": "ICMP echo is ping, and it doesn’t assign addresses."
+      },
+      {
+        "text": "DHCP, where a server hands out the settings for a limited time.",
+        "correct": true,
+        "rationale": "The lease is renewed before it runs out."
+      }
+    ],
+    "explanation": "DHCP gives IPv4 machines an address on lease, the prefix length (netmask), the default gateway and the DNS servers. The settings end up in the interface, the routing table and `/etc/resolv.conf`.",
+    "sourceLinks": [
+      "https://www.rfc-editor.org/rfc/rfc2131"
+    ]
+  },
+  {
+    "id": "014.4-017",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.4"
+    ],
+    "terms": [
+      "014.4.t6"
+    ],
+    "stem": "Which statement about SLAAC is correct?",
+    "options": [
+      {
+        "text": "A server keeps a table of which host has which IPv6 address and hands out the addresses on lease.",
+        "correct": false,
+        "rationale": "That describes stateful DHCPv6."
+      },
+      {
+        "text": "A user has to enter the IPv6 address by hand on each machine before it can send data.",
+        "correct": false,
+        "rationale": "SLAAC exists to avoid typing addresses."
+      },
+      {
+        "text": "IPv6 hosts build their own address from the prefix that a router announces, so no server tracks the addresses.",
+        "correct": true,
+        "rationale": "That is why it is called stateless."
+      },
+      {
+        "text": "It converts IPv4 addresses to IPv6 addresses for traffic that crosses the router.",
+        "correct": false,
+        "rationale": "SLAAC doesn’t convert between protocols."
+      }
+    ],
+    "explanation": "With SLAAC (Stateless Address Autoconfiguration), a router sends router advertisements with the network prefix, and each host forms its own address from the prefix and an identifier of its own. No server remembers who has which address.",
+    "sourceLinks": [
+      "https://www.rfc-editor.org/rfc/rfc4862"
+    ]
+  },
+  {
+    "id": "014.4-018",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.4"
+    ],
+    "terms": [
+      "014.4.t6"
+    ],
+    "stem": "Which description fits DHCPv6?",
+    "options": [
+      {
+        "text": "It is the stateful IPv6 mechanism: a server hands out addresses and settings such as DNS servers.",
+        "correct": true,
+        "rationale": "It can also run beside SLAAC just to deliver extra settings."
+      },
+      {
+        "text": "It is the stateless IPv6 mechanism in which each host forms its address from a router advertisement.",
+        "correct": false,
+        "rationale": "That describes SLAAC."
+      },
+      {
+        "text": "It is the IPv4 mechanism that hands out private addresses, and it can’t be used with IPv6.",
+        "correct": false,
+        "rationale": "DHCP for IPv4 is plain DHCP, and DHCPv6 is the IPv6 protocol."
+      },
+      {
+        "text": "It is the file in which IPv6 name servers are listed on every Linux system.",
+        "correct": false,
+        "rationale": "That file would be `/etc/resolv.conf`."
+      }
+    ],
+    "explanation": "DHCPv6 is the IPv6 counterpart of DHCP. A server hands out addresses and keeps track of them, or it delivers only extra settings, such as DNS servers, while the hosts form their addresses with SLAAC. A network can use SLAAC, DHCPv6 or both.",
+    "sourceLinks": [
+      "https://www.rfc-editor.org/rfc/rfc8415"
+    ]
+  },
+  {
+    "id": "014.4-019",
+    "objectiveId": "014.4",
+    "kind": "multi",
+    "areas": [
+      "014.4.4"
+    ],
+    "terms": [
+      "014.4.t6"
+    ],
+    "stem": "Which TWO statements about automatic network configuration are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "DHCP assigns addresses permanently, so a machine never has to renew anything.",
+        "correct": false,
+        "rationale": "DHCP addresses are leased for a time and renewed."
+      },
+      {
+        "text": "SLAAC needs a server that keeps a table of every host’s address.",
+        "correct": false,
+        "rationale": "SLAAC is stateless and needs no such table."
+      },
+      {
+        "text": "DHCPv6 is used only for IPv4 networks.",
+        "correct": false,
+        "rationale": "DHCPv6 is the IPv6 version."
+      },
+      {
+        "text": "DHCP can hand out an IPv4 address, the gateway and DNS servers on lease.",
+        "correct": true,
+        "rationale": "The server is often built into the router."
+      },
+      {
+        "text": "With SLAAC, a router advertisement gives hosts the prefix for their IPv6 addresses.",
+        "correct": true,
+        "rationale": "The hosts form the rest of the address themselves."
+      }
+    ],
+    "explanation": "DHCP (IPv4) and DHCPv6 (IPv6) are stateful: a server hands out addresses on lease. SLAAC is stateless: hosts build their own address from the prefix that a router announces.",
+    "sourceLinks": [
+      "https://www.rfc-editor.org/rfc/rfc2131",
+      "https://www.rfc-editor.org/rfc/rfc4862",
+      "https://www.rfc-editor.org/rfc/rfc8415"
+    ]
+  },
+  {
+    "id": "014.4-020",
+    "objectiveId": "014.4",
+    "kind": "multi",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4",
+      "014.4.vt4"
+    ],
+    "stem": "Which TWO files take part in how a Linux client resolves names? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`/etc/fstab`",
+        "correct": false,
+        "rationale": "It lists filesystems that are mounted at boot."
+      },
+      {
+        "text": "`/etc/hosts`",
+        "correct": true,
+        "rationale": "It holds fixed name-to-address pairs."
+      },
+      {
+        "text": "`/etc/resolv.conf`",
+        "correct": true,
+        "rationale": "It lists the DNS servers to ask."
+      },
+      {
+        "text": "`/etc/shadow`",
+        "correct": false,
+        "rationale": "It holds the password hashes of the users."
+      },
+      {
+        "text": "`/var/log/syslog`",
+        "correct": false,
+        "rationale": "It is a general log file."
+      }
+    ],
+    "explanation": "The resolver checks `/etc/hosts` first (the order is set in `/etc/nsswitch.conf`), then asks the DNS servers named in `/etc/resolv.conf`. On systemd-resolved systems, `resolvectl status` shows the servers.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/hosts.5.html",
+      "https://man7.org/linux/man-pages/man5/resolv.conf.5.html"
+    ]
+  },
+  {
+    "id": "014.4-021",
+    "objectiveId": "014.4",
+    "kind": "multi",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t1",
+      "014.4.t2",
+      "014.4.t3",
+      "014.4.vt1",
+      "014.4.vt2",
+      "014.4.vt3"
+    ],
+    "stem": "Which THREE commands are the current iproute2 tools that replaced the old `ifconfig`, `route` and `netstat`? (Choose THREE.)",
+    "select": 3,
+    "options": [
+      {
+        "text": "`ifconfig`",
+        "correct": false,
+        "rationale": "It is one of the old tools."
+      },
+      {
+        "text": "`ip addr show`",
+        "correct": true,
+        "rationale": "It replaced `ifconfig`."
+      },
+      {
+        "text": "`netstat`",
+        "correct": false,
+        "rationale": "It is one of the old tools."
+      },
+      {
+        "text": "`host`",
+        "correct": false,
+        "rationale": "It looks up DNS records and replaces none of them."
+      },
+      {
+        "text": "`ip route show`",
+        "correct": true,
+        "rationale": "It replaced `route`."
+      },
+      {
+        "text": "`ss`",
+        "correct": true,
+        "rationale": "It replaced `netstat`."
+      }
+    ],
+    "explanation": "The old `net-tools` commands have replacements: `ip addr show` for `ifconfig`, `ip route show` for `route` and `ss` for `netstat`. The old ones may not be installed any more.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip.8.html",
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "id": "014.4-022",
+    "objectiveId": "014.4",
+    "kind": "multi",
+    "areas": [
+      "014.4.1",
+      "014.4.3",
+      "014.4.4"
+    ],
+    "terms": [
+      "014.4.t6"
+    ],
+    "stem": "A new laptop must reach the Internet from the TuxPixel LAN. Which THREE settings does it need? (Choose THREE.)",
+    "select": 3,
+    "options": [
+      {
+        "text": "A swap partition",
+        "correct": false,
+        "rationale": "Swap is disk space used as spare memory, and not part of network configuration."
+      },
+      {
+        "text": "A second user account",
+        "correct": false,
+        "rationale": "Accounts have nothing to do with network access."
+      },
+      {
+        "text": "An installed desktop environment",
+        "correct": false,
+        "rationale": "A server without a desktop works on a network too."
+      },
+      {
+        "text": "An IP address with its prefix length (netmask)",
+        "correct": true,
+        "rationale": "This identifies the machine on the LAN."
+      },
+      {
+        "text": "A DNS server",
+        "correct": true,
+        "rationale": "It turns names into addresses."
+      },
+      {
+        "text": "A default gateway",
+        "correct": true,
+        "rationale": "It is the router that leads to other networks."
+      }
+    ],
+    "explanation": "A machine needs an address and netmask for the local network, a default gateway to leave it and a DNS server to resolve names. DHCP normally delivers all three automatically."
+  },
+  {
+    "id": "014.4-023",
+    "objectiveId": "014.4",
+    "kind": "fill",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t1",
+      "014.4.vt1"
+    ],
+    "stem": "Type the command that prints the IPv4 routing table with the current `ip` tool.",
+    "accept": [
+      "ip route show",
+      "ip route",
+      "ip r",
+      "ip route list",
+      "ip -4 route show"
+    ],
+    "verify": {
+      "command": "{answer}"
+    },
+    "caseSensitive": true,
+    "explanation": "`ip route show` (short forms `ip route` and `ip r`) prints the IPv4 routing table. The default gateway is the line that begins with `default via`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    ]
+  },
+  {
+    "id": "014.4-024",
+    "objectiveId": "014.4",
+    "kind": "fill",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t1"
+    ],
+    "stem": "Type the command that prints the IPv6 routing table.",
+    "accept": [
+      "ip -6 route show",
+      "ip -6 route",
+      "ip -6 r",
+      "ip -6 route list"
+    ],
+    "verify": {
+      "command": "{answer}"
+    },
+    "caseSensitive": true,
+    "explanation": "`ip -6 route show` selects the IPv6 family. Without `-6`, `ip route show` prints the IPv4 table.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip-route.8.html"
+    ]
+  },
+  {
+    "id": "014.4-025",
+    "objectiveId": "014.4",
+    "kind": "fill",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t3",
+      "014.4.vt3"
+    ],
+    "stem": "Type the `ss` command with options that lists the listening TCP sockets with numeric ports.",
+    "accept": [
+      "ss -tln",
+      "ss -ltn",
+      "ss -nlt",
+      "ss -lnt",
+      "ss -ntl",
+      "ss -t -l -n",
+      "ss -tl -n"
+    ],
+    "verify": {
+      "command": "{answer} > /dev/null"
+    },
+    "caseSensitive": true,
+    "explanation": "`-t` selects TCP, `-l` listening sockets and `-n` numeric output. Single-letter options can be combined in any order.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  },
+  {
+    "id": "014.4-026",
+    "objectiveId": "014.4",
+    "kind": "fill",
+    "areas": [
+      "014.4.4"
+    ],
+    "terms": [
+      "014.4.t6"
+    ],
+    "stem": "Which abbreviation names the IPv6 mechanism by which a host builds its own address from a router’s advertisement without a server that keeps state? Type it.",
+    "accept": [
+      "SLAAC"
+    ],
+    "caseSensitive": false,
+    "explanation": "SLAAC stands for Stateless Address Autoconfiguration. A router announces the prefix, and the host adds an identifier of its own.",
+    "sourceLinks": [
+      "https://www.rfc-editor.org/rfc/rfc4862"
+    ]
+  },
+  {
+    "id": "014.4-027",
+    "objectiveId": "014.4",
+    "kind": "output",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4",
+      "014.4.vt4"
+    ],
+    "stem": "The practice VM’s `/etc/hosts` has a line for `localhost` in IPv4 and one in IPv6. What does this command print?",
+    "command": "awk '/localhost/ {print $1}' /etc/hosts",
+    "output": "127.0.0.1\n::1",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "127.0.0.1\n::1",
+        "correct": true,
+        "rationale": "Both the IPv4 and the IPv6 loopback lines contain `localhost`, and `awk` prints the first field of each."
+      },
+      {
+        "text": "127.0.0.1",
+        "correct": false,
+        "rationale": "The IPv6 line also contains `localhost`, so a second line is printed."
+      },
+      {
+        "text": "127.0.0.1\n127.0.1.1",
+        "correct": false,
+        "rationale": "The second IPv4 address belongs to the machine’s own name, not to `localhost`."
+      },
+      {
+        "text": "localhost\nlocalhost",
+        "correct": false,
+        "rationale": "`awk` prints the first field, which is the address, not the name."
+      }
+    ],
+    "explanation": "Each line of `/etc/hosts` begins with an address followed by names. `awk` prints the first field of the lines that match `localhost`: the IPv4 loopback `127.0.0.1` and the IPv6 loopback `::1`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/hosts.5.html"
+    ]
+  },
+  {
+    "id": "014.4-028",
+    "objectiveId": "014.4",
+    "kind": "output",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t2",
+      "014.4.vt2"
+    ],
+    "stem": "The loopback interface `lo` has one IPv4 address. Type what this command prints.",
+    "command": "ip -4 addr show lo | grep inet | awk '{print $2}'",
+    "output": "127.0.0.1/8",
+    "mode": "type",
+    "explanation": "`ip -4 addr show lo` lists the IPv4 addresses of the loopback interface. The `inet` line has the address and its prefix length in its second field, here `127.0.0.1/8`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ip.8.html"
+    ]
+  },
+  {
+    "id": "014.4-029",
+    "objectiveId": "014.4",
+    "kind": "output",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4",
+      "014.4.vt4"
+    ],
+    "stem": "Ada’s laptop uses the studio’s DNS servers 192.0.2.53 and 198.51.100.53, and the search domain `tuxpixel.example`, all set in `/etc/resolv.conf`. What does this command print?",
+    "fixture": "q014-dns",
+    "command": "grep -c nameserver /etc/resolv.conf",
+    "output": "2",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "1",
+        "correct": false,
+        "rationale": "resolv.conf doesn’t list several servers on one line: each DNS server gets a `nameserver` line of its own."
+      },
+      {
+        "text": "3",
+        "correct": false,
+        "rationale": "The search domain is set with a `search` line, which doesn’t contain the word nameserver, so grep doesn’t count it."
+      },
+      {
+        "text": "2",
+        "correct": true,
+        "rationale": "There is one `nameserver` line per DNS server, and `grep -c` counts the matching lines."
+      },
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "The DNS servers are listed with the keyword `nameserver`, so grep finds matching lines."
+      }
+    ],
+    "explanation": "`/etc/resolv.conf` tells the resolver which DNS servers to ask: one `nameserver` line per server, tried in order, plus an optional `search` line with domains to append to short host names. `grep -c` prints the number of matching lines, not the matches.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/resolv.conf.5.html"
+    ]
+  },
+  {
+    "id": "014.4-030",
+    "objectiveId": "014.4",
+    "kind": "output",
+    "areas": [
+      "014.4.3"
+    ],
+    "terms": [
+      "014.4.t3",
+      "014.4.vt3"
+    ],
+    "stem": "Nothing listens on any TCP port in the practice VM. How many lines does this command print?",
+    "command": "ss -tln | wc -l",
+    "output": "1",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "`ss` always prints the header line, even if there are no sockets."
+      },
+      {
+        "text": "2",
+        "correct": false,
+        "rationale": "There would be a second line only if a socket were listening."
+      },
+      {
+        "text": "3",
+        "correct": false,
+        "rationale": "That would need two listening sockets, and the VM has none."
+      },
+      {
+        "text": "1",
+        "correct": true,
+        "rationale": "Only the header line with the column names is printed, because nothing is listening."
+      }
+    ],
+    "explanation": "`ss -tln` prints a header (`State Recv-Q Send-Q Local Address:Port Peer Address:Port`) and then one line per listening TCP socket. With none listening, only the header remains.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/ss.8.html"
+    ]
+  }
+]

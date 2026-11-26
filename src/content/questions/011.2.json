@@ -3,17 +3,1409 @@
     "id": "011.2-001",
     "objectiveId": "011.2",
     "kind": "multi",
-    "areas": ["011.2.6"],
-    "terms": ["011.2.t5"],
+    "areas": [
+      "011.2.6"
+    ],
+    "terms": [
+      "011.2.t5"
+    ],
     "stem": "TuxPixel’s new build server runs Rocky Linux, an Enterprise Linux-based distribution. Which tools manage software packages on it? (Choose TWO.)",
     "select": 2,
     "options": [
-      { "text": "`dnf`", "correct": true, "rationale": "dnf installs, updates and removes packages from repositories on Enterprise Linux and Fedora, and resolves dependencies." },
-      { "text": "`rpm`", "correct": true, "rationale": "rpm is the low-level tool for the RPM package format that Enterprise Linux uses; it works on single package files." },
-      { "text": "`apt`", "correct": false, "rationale": "apt belongs to the Debian family (Debian, Ubuntu, Raspberry Pi OS)." },
-      { "text": "`zypper`", "correct": false, "rationale": "zypper is the package manager of the SUSE family." },
-      { "text": "`apk`", "correct": false, "rationale": "apk is Alpine Linux’s package manager." }
+      {
+        "text": "`dnf`",
+        "correct": true,
+        "rationale": "dnf installs, updates and removes packages from repositories on Enterprise Linux and Fedora, and resolves dependencies."
+      },
+      {
+        "text": "`rpm`",
+        "correct": true,
+        "rationale": "rpm is the low-level tool for the RPM package format that Enterprise Linux uses; it works on single package files."
+      },
+      {
+        "text": "`apt`",
+        "correct": false,
+        "rationale": "apt belongs to the Debian family (Debian, Ubuntu, Raspberry Pi OS)."
+      },
+      {
+        "text": "`zypper`",
+        "correct": false,
+        "rationale": "zypper is the package manager of the SUSE family."
+      },
+      {
+        "text": "`apk`",
+        "correct": false,
+        "rationale": "apk is Alpine Linux’s package manager."
+      }
     ],
     "explanation": "Each distribution family has its own package tools: dpkg and apt for Debian, rpm and dnf for Enterprise Linux, rpm and zypper for SUSE, and apk for Alpine."
+  },
+  {
+    "id": "011.2-002",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1",
+      "011.2.vt1"
+    ],
+    "stem": "Mira needs a free office suite with a word processor, a spreadsheet and a slide editor for the studio’s budget and pitch decks. Which program fits?",
+    "options": [
+      {
+        "text": "GIMP",
+        "correct": false,
+        "rationale": "GIMP edits raster images such as photos and pixel art."
+      },
+      {
+        "text": "Thunderbird",
+        "correct": false,
+        "rationale": "Thunderbird is an email client."
+      },
+      {
+        "text": "LibreOffice",
+        "correct": true,
+        "rationale": "LibreOffice bundles Writer, Calc and Impress."
+      },
+      {
+        "text": "VLC",
+        "correct": false,
+        "rationale": "VLC plays audio and video files."
+      }
+    ],
+    "explanation": "LibreOffice is the open source office suite: a word processor (Writer), a spreadsheet (Calc) and presentations (Impress).",
+    "sourceLinks": [
+      "https://www.libreoffice.org/"
+    ]
+  },
+  {
+    "id": "011.2-003",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1",
+      "011.2.vt1"
+    ],
+    "stem": "Ada wants a desktop program for her email, calendar and news feeds that is not a web browser. Which one is it?",
+    "options": [
+      {
+        "text": "Thunderbird",
+        "correct": true,
+        "rationale": "Thunderbird is Mozilla’s email, calendar and news client."
+      },
+      {
+        "text": "Visual Studio Code",
+        "correct": false,
+        "rationale": "Visual Studio Code is a code editor, not a mail program."
+      },
+      {
+        "text": "Inkscape",
+        "correct": false,
+        "rationale": "Inkscape draws vector graphics."
+      },
+      {
+        "text": "VLC",
+        "correct": false,
+        "rationale": "VLC plays media files."
+      }
+    ],
+    "explanation": "Thunderbird is the open source mail client from the makers of Firefox, while Firefox is the browser.",
+    "sourceLinks": [
+      "https://www.thunderbird.net/"
+    ]
+  },
+  {
+    "id": "011.2-004",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "stem": "What is the relationship between Chromium and Google Chrome?",
+    "options": [
+      {
+        "text": "Chrome is open source, and Chromium is Google’s proprietary extension of it.",
+        "correct": false,
+        "rationale": "It is the other way round: Chromium is the open source base."
+      },
+      {
+        "text": "Chromium is an email client made by the Chrome team and shares no code with it.",
+        "correct": false,
+        "rationale": "Chromium is a web browser."
+      },
+      {
+        "text": "They are two names for the same fully proprietary program.",
+        "correct": false,
+        "rationale": "Chromium is open source and Chrome is not entirely."
+      },
+      {
+        "text": "Chromium is the open source browser, and Chrome is built on it with some proprietary parts added.",
+        "correct": true,
+        "rationale": "Chrome adds Google’s own components to the open source base."
+      }
+    ],
+    "explanation": "Chromium is the open source browser project. Chrome is Google’s browser built from it with extra proprietary parts."
+  },
+  {
+    "id": "011.2-005",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "stem": "Mira wants to sign the studio’s release files and encrypt a file for Ada from the terminal. Which tool does that?",
+    "options": [
+      {
+        "text": "VSCodium",
+        "correct": false,
+        "rationale": "VSCodium is a code editor."
+      },
+      {
+        "text": "GPG",
+        "correct": true,
+        "rationale": "GPG (GnuPG) encrypts and signs files and email."
+      },
+      {
+        "text": "VLC",
+        "correct": false,
+        "rationale": "VLC plays audio and video."
+      },
+      {
+        "text": "R",
+        "correct": false,
+        "rationale": "R is for statistics and charts."
+      }
+    ],
+    "explanation": "GPG is a command line tool for encryption and digital signatures.",
+    "sourceLinks": [
+      "https://gnupg.org/"
+    ]
+  },
+  {
+    "id": "011.2-006",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.vt1"
+    ],
+    "stem": "Exam 010-160 lists OpenOffice.org next to LibreOffice. What kind of program is it?",
+    "options": [
+      {
+        "text": "An office suite with a word processor, a spreadsheet and slides.",
+        "correct": true,
+        "rationale": "It is the older suite from which LibreOffice was forked."
+      },
+      {
+        "text": "A web browser that is built on top of the Firefox browser engine.",
+        "correct": false,
+        "rationale": "Firefox is the Mozilla browser; OpenOffice.org is office software."
+      },
+      {
+        "text": "A package manager for office documents.",
+        "correct": false,
+        "rationale": "It edits documents; it doesn’t install packages."
+      },
+      {
+        "text": "A video player for presentations.",
+        "correct": false,
+        "rationale": "It is for creating documents, not playing videos."
+      }
+    ],
+    "explanation": "OpenOffice.org is the older office suite that LibreOffice was forked from; it lives on as Apache OpenOffice.",
+    "sourceLinks": [
+      "https://www.libreoffice.org/"
+    ]
+  },
+  {
+    "id": "011.2-007",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1",
+      "011.2.vt1"
+    ],
+    "stem": "Jonas wants to retouch a photo of the team and edit the pixels of a game sprite sheet. Which program is the open source choice for raster images?",
+    "options": [
+      {
+        "text": "Thunderbird",
+        "correct": false,
+        "rationale": "Thunderbird is an email client."
+      },
+      {
+        "text": "GIMP",
+        "correct": true,
+        "rationale": "GIMP edits photos and other pixel-based images."
+      },
+      {
+        "text": "Mozilla Firefox",
+        "correct": false,
+        "rationale": "Firefox is a web browser."
+      },
+      {
+        "text": "LibreOffice Writer",
+        "correct": false,
+        "rationale": "Writer is a word processor."
+      }
+    ],
+    "explanation": "GIMP is the open source raster image editor; Inkscape is its counterpart for vector graphics."
+  },
+  {
+    "id": "011.2-008",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1",
+      "011.2.vt1"
+    ],
+    "stem": "Which open source web browser is developed by the Mozilla community?",
+    "options": [
+      {
+        "text": "Thunderbird Mail",
+        "correct": false,
+        "rationale": "Thunderbird is Mozilla’s email client, not its browser."
+      },
+      {
+        "text": "LibreOffice Calc",
+        "correct": false,
+        "rationale": "Calc is a spreadsheet."
+      },
+      {
+        "text": "Firefox",
+        "correct": true,
+        "rationale": "Firefox is Mozilla’s browser."
+      },
+      {
+        "text": "VLC Player",
+        "correct": false,
+        "rationale": "VLC plays media files."
+      }
+    ],
+    "explanation": "Firefox is the browser and Thunderbird the mail client, both from Mozilla."
+  },
+  {
+    "id": "011.2-009",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3",
+      "011.2.vt3"
+    ],
+    "stem": "Ada wants to mount a directory from the build server on another Linux machine, as if it were local. Which network file system is built for sharing between Unix and Linux machines?",
+    "options": [
+      {
+        "text": "MariaDB",
+        "correct": false,
+        "rationale": "MariaDB is a database server."
+      },
+      {
+        "text": "Apache HTTPD",
+        "correct": false,
+        "rationale": "Apache serves web pages."
+      },
+      {
+        "text": "PostgreSQL",
+        "correct": false,
+        "rationale": "PostgreSQL is a database server."
+      },
+      {
+        "text": "NFS",
+        "correct": true,
+        "rationale": "The Network File System shares directories between Unix and Linux machines."
+      }
+    ],
+    "explanation": "NFS shares directories between Unix and Linux machines; Samba shares files and printers with Windows."
+  },
+  {
+    "id": "011.2-010",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.2"
+    ],
+    "terms": [
+      "011.2.t2"
+    ],
+    "stem": "The studio’s apprentices need online courses with quizzes and grades. Which open source platform is made for that?",
+    "options": [
+      {
+        "text": "Kodi",
+        "correct": false,
+        "rationale": "Kodi is a media center."
+      },
+      {
+        "text": "Moodle",
+        "correct": true,
+        "rationale": "Moodle is a learning platform with courses, quizzes and grades."
+      },
+      {
+        "text": "Jitsi",
+        "correct": false,
+        "rationale": "Jitsi is for video meetings."
+      },
+      {
+        "text": "Forgejo",
+        "correct": false,
+        "rationale": "Forgejo hosts Git repositories."
+      }
+    ],
+    "explanation": "Moodle is a web-based learning management system used by schools and companies.",
+    "sourceLinks": [
+      "https://moodle.org/"
+    ]
+  },
+  {
+    "id": "011.2-011",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.2"
+    ],
+    "terms": [
+      "011.2.t2"
+    ],
+    "stem": "Ada needs video meetings with the team in a browser, without installing anything. Which open source application does this?",
+    "options": [
+      {
+        "text": "Moodle",
+        "correct": false,
+        "rationale": "Moodle is a learning platform."
+      },
+      {
+        "text": "GitLab",
+        "correct": false,
+        "rationale": "GitLab hosts code and build pipelines."
+      },
+      {
+        "text": "Jitsi",
+        "correct": true,
+        "rationale": "Jitsi runs video meetings in the browser."
+      },
+      {
+        "text": "Kodi",
+        "correct": false,
+        "rationale": "Kodi plays media on a TV."
+      }
+    ],
+    "explanation": "Jitsi offers video conferencing in the browser; BigBlueButton is a web conferencing system designed for virtual classrooms.",
+    "sourceLinks": [
+      "https://jitsi.org/"
+    ]
+  },
+  {
+    "id": "011.2-012",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.2"
+    ],
+    "terms": [
+      "011.2.t2"
+    ],
+    "stem": "Jonas wants to turn the studio’s old PC under the TV into a media center for movies, music and photos. Which program fits?",
+    "options": [
+      {
+        "text": "Jitsi",
+        "correct": false,
+        "rationale": "Jitsi is a video conferencing tool."
+      },
+      {
+        "text": "GIMP",
+        "correct": false,
+        "rationale": "GIMP edits photos but doesn’t manage a media library."
+      },
+      {
+        "text": "Nextcloud",
+        "correct": false,
+        "rationale": "Nextcloud syncs and shares files, but is not a TV media center."
+      },
+      {
+        "text": "Kodi",
+        "correct": true,
+        "rationale": "Kodi is a media center application."
+      }
+    ],
+    "explanation": "Kodi is an open source media center for video, music and photos.",
+    "sourceLinks": [
+      "https://kodi.tv/"
+    ]
+  },
+  {
+    "id": "011.2-013",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.2"
+    ],
+    "terms": [
+      "011.2.t2"
+    ],
+    "stem": "Which statement about Git and GitLab is correct?",
+    "options": [
+      {
+        "text": "Git is a command line tool that tracks changes; GitLab is a web service built around Git repositories.",
+        "correct": true,
+        "rationale": "GitLab adds issue tracking and build pipelines to Git repositories."
+      },
+      {
+        "text": "Git is a web application, and GitLab is its command line client.",
+        "correct": false,
+        "rationale": "Git is the command line tool; GitLab is the web application."
+      },
+      {
+        "text": "Git and GitLab are two names for the same program.",
+        "correct": false,
+        "rationale": "They are different programs."
+      },
+      {
+        "text": "Git is a media center, and GitLab is a video conferencing system.",
+        "correct": false,
+        "rationale": "Neither fits: Git tracks code changes."
+      }
+    ],
+    "explanation": "Git tracks changes to source code. GitLab, Forgejo and Gitea are web services that host Git repositories and add features such as issue tracking.",
+    "sourceLinks": [
+      "https://about.gitlab.com/"
+    ]
+  },
+  {
+    "id": "011.2-014",
+    "objectiveId": "011.2",
+    "kind": "multi",
+    "areas": [
+      "011.2.2"
+    ],
+    "terms": [
+      "011.2.t2"
+    ],
+    "stem": "Which two are light, self-hosted Git forges? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Gitea",
+        "correct": true,
+        "rationale": "Gitea is a similar self-hosted Git forge."
+      },
+      {
+        "text": "Moodle",
+        "correct": false,
+        "rationale": "Moodle is for online courses."
+      },
+      {
+        "text": "Kodi",
+        "correct": false,
+        "rationale": "Kodi is a media center."
+      },
+      {
+        "text": "Jitsi",
+        "correct": false,
+        "rationale": "Jitsi is for video meetings."
+      },
+      {
+        "text": "Forgejo",
+        "correct": true,
+        "rationale": "Forgejo hosts Git repositories and can be run on your own server."
+      }
+    ],
+    "explanation": "Forgejo and Gitea are self-hosted Git forges similar in idea to GitLab.",
+    "sourceLinks": [
+      "https://forgejo.org/"
+    ]
+  },
+  {
+    "id": "011.2-015",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3",
+      "011.2.vt3"
+    ],
+    "stem": "Which of these programs delivers web pages to browsers?",
+    "options": [
+      {
+        "text": "MariaDB",
+        "correct": false,
+        "rationale": "MariaDB is a database server."
+      },
+      {
+        "text": "Apache HTTPD",
+        "correct": true,
+        "rationale": "Apache HTTPD and NGINX both deliver web pages."
+      },
+      {
+        "text": "Mozilla Thunderbird",
+        "correct": false,
+        "rationale": "Thunderbird is an email client, a desktop program."
+      },
+      {
+        "text": "NFS",
+        "correct": false,
+        "rationale": "NFS shares directories between Unix and Linux machines."
+      }
+    ],
+    "explanation": "Apache HTTPD and NGINX are web servers; NGINX is also often used as a reverse proxy.",
+    "sourceLinks": [
+      "https://httpd.apache.org/"
+    ]
+  },
+  {
+    "id": "011.2-016",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3",
+      "011.2.vt3"
+    ],
+    "stem": "Which statement about MariaDB and MySQL is correct?",
+    "options": [
+      {
+        "text": "Both are database servers, and MariaDB started as a fork of MySQL.",
+        "correct": true,
+        "rationale": "They store structured data and answer queries."
+      },
+      {
+        "text": "Both are web servers for static pages, and MySQL started as a fork of MariaDB.",
+        "correct": false,
+        "rationale": "They are database servers, not web servers, and the fork went the other way."
+      },
+      {
+        "text": "MariaDB is a programming language and MySQL is its compiler.",
+        "correct": false,
+        "rationale": "Both are database servers."
+      },
+      {
+        "text": "Both share files with Windows computers.",
+        "correct": false,
+        "rationale": "Sharing files with Windows is Samba’s job."
+      }
+    ],
+    "explanation": "MariaDB, MySQL and PostgreSQL are database servers. LAMP means Linux, Apache, MariaDB or MySQL, and PHP.",
+    "sourceLinks": [
+      "https://mariadb.org/"
+    ]
+  },
+  {
+    "id": "011.2-017",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3",
+      "011.2.vt3"
+    ],
+    "stem": "The studio’s artists use Windows PCs. Which server program lets Mira share a folder and printers with them from a Linux machine?",
+    "options": [
+      {
+        "text": "NGINX",
+        "correct": false,
+        "rationale": "NGINX serves web pages."
+      },
+      {
+        "text": "PostgreSQL",
+        "correct": false,
+        "rationale": "PostgreSQL stores structured data."
+      },
+      {
+        "text": "Apache HTTPD",
+        "correct": false,
+        "rationale": "Apache HTTPD serves web pages."
+      },
+      {
+        "text": "Samba",
+        "correct": true,
+        "rationale": "Samba speaks the Windows file and printer sharing protocols."
+      }
+    ],
+    "explanation": "Samba shares files and printers with Windows. NFS is the network file system for sharing directories between Unix and Linux machines.",
+    "sourceLinks": [
+      "https://www.samba.org/"
+    ]
+  },
+  {
+    "id": "011.2-018",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t2",
+      "011.2.t3",
+      "011.2.vt2",
+      "011.2.vt3"
+    ],
+    "stem": "Ada wants a self-hosted file sync and sharing service, similar to Dropbox but on the studio’s own server. Which application fits?",
+    "options": [
+      {
+        "text": "NFS",
+        "correct": false,
+        "rationale": "NFS shares directories on a local network; it is not a sync service with a web interface."
+      },
+      {
+        "text": "PostgreSQL",
+        "correct": false,
+        "rationale": "PostgreSQL is a database server; it doesn’t sync files between devices."
+      },
+      {
+        "text": "Nextcloud",
+        "correct": true,
+        "rationale": "Nextcloud (and ownCloud) offers file sync, sharing, calendars and contacts."
+      },
+      {
+        "text": "Moodle",
+        "correct": false,
+        "rationale": "Moodle is for online courses."
+      }
+    ],
+    "explanation": "Nextcloud and ownCloud are server applications for your own file sync and sharing “cloud”.",
+    "sourceLinks": [
+      "https://nextcloud.com/"
+    ]
+  },
+  {
+    "id": "011.2-019",
+    "objectiveId": "011.2",
+    "kind": "multi",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3"
+    ],
+    "stem": "Which of these are database servers? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "MariaDB",
+        "correct": true,
+        "rationale": "MariaDB stores structured data and answers queries."
+      },
+      {
+        "text": "NFS",
+        "correct": false,
+        "rationale": "NFS shares directories over the network."
+      },
+      {
+        "text": "Samba",
+        "correct": false,
+        "rationale": "Samba shares files and printers."
+      },
+      {
+        "text": "Apache HTTPD",
+        "correct": false,
+        "rationale": "Apache HTTPD is a web server."
+      },
+      {
+        "text": "PostgreSQL",
+        "correct": true,
+        "rationale": "PostgreSQL is a database server."
+      }
+    ],
+    "explanation": "The database servers in the list are MariaDB, MySQL and PostgreSQL.",
+    "sourceLinks": [
+      "https://mariadb.org/"
+    ]
+  },
+  {
+    "id": "011.2-020",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.t4",
+      "011.2.vt4"
+    ],
+    "stem": "Mira reads that the Linux kernel is mostly written in one language. Which?",
+    "options": [
+      {
+        "text": "Python",
+        "correct": false,
+        "rationale": "Python is popular for scripts but not for the kernel."
+      },
+      {
+        "text": "PHP",
+        "correct": false,
+        "rationale": "PHP is used for server-side web pages."
+      },
+      {
+        "text": "JavaScript",
+        "correct": false,
+        "rationale": "JavaScript is the language of browsers."
+      },
+      {
+        "text": "C",
+        "correct": true,
+        "rationale": "Linux is mostly written in C."
+      }
+    ],
+    "explanation": "C is used for operating systems, drivers and fast programs, and the kernel is mostly C."
+  },
+  {
+    "id": "011.2-021",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.t4",
+      "011.2.vt4"
+    ],
+    "stem": "Ada writes short scripts that automate the studio’s builds and analyse data. Which general-purpose language is popular for this?",
+    "options": [
+      {
+        "text": "Python",
+        "correct": true,
+        "rationale": "Python is popular for scripting, automation and data science."
+      },
+      {
+        "text": "PHP",
+        "correct": false,
+        "rationale": "PHP’s main use is server-side web pages."
+      },
+      {
+        "text": "C++",
+        "correct": false,
+        "rationale": "C++ is typically used for large, speed-critical programs."
+      },
+      {
+        "text": "Assembly language",
+        "correct": false,
+        "rationale": "Assembly is low-level machine programming, not for quick scripts."
+      }
+    ],
+    "explanation": "Python is an interpreted general-purpose language that is popular for scripts and automation."
+  },
+  {
+    "id": "011.2-022",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.t4",
+      "011.2.vt4"
+    ],
+    "stem": "Jonas wants to add interactivity to the studio’s website that runs inside the visitor’s browser. Which language is for that?",
+    "options": [
+      {
+        "text": "Java",
+        "correct": false,
+        "rationale": "Java runs on the Java virtual machine, in business applications."
+      },
+      {
+        "text": "JavaScript",
+        "correct": true,
+        "rationale": "JavaScript is the language of web browsers."
+      },
+      {
+        "text": "C",
+        "correct": false,
+        "rationale": "C compiles to programs that run outside the browser."
+      },
+      {
+        "text": "PHP (server-side scripting)",
+        "correct": false,
+        "rationale": "PHP runs on the server, not in the visitor’s browser."
+      }
+    ],
+    "explanation": "JavaScript runs in the browser, and also on servers through Node.js. Java is a different language."
+  },
+  {
+    "id": "011.2-023",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.t4",
+      "011.2.vt4"
+    ],
+    "stem": "Which language is mainly used to produce web pages on a server, for example WordPress or Moodle?",
+    "options": [
+      {
+        "text": "Rust",
+        "correct": false,
+        "rationale": "Rust is used for systems programming."
+      },
+      {
+        "text": "Go",
+        "correct": false,
+        "rationale": "Go is used for network services and tools."
+      },
+      {
+        "text": "PHP",
+        "correct": true,
+        "rationale": "PHP is a server-side language for web pages."
+      },
+      {
+        "text": "C++",
+        "correct": false,
+        "rationale": "C++ is used for large programs where speed matters, such as games."
+      }
+    ],
+    "explanation": "PHP is the “P” in LAMP: it runs on the web server and produces pages."
+  },
+  {
+    "id": "011.2-024",
+    "objectiveId": "011.2",
+    "kind": "multi",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.t4"
+    ],
+    "stem": "Which of these languages are compiled to machine code before they run? (Choose THREE.)",
+    "select": 3,
+    "options": [
+      {
+        "text": "JavaScript",
+        "correct": false,
+        "rationale": "JavaScript is run by a browser or Node.js engine."
+      },
+      {
+        "text": "Python",
+        "correct": false,
+        "rationale": "Python is run by an interpreter."
+      },
+      {
+        "text": "Rust",
+        "correct": true,
+        "rationale": "Rust is compiled."
+      },
+      {
+        "text": "PHP",
+        "correct": false,
+        "rationale": "PHP is run by an interpreter."
+      },
+      {
+        "text": "C",
+        "correct": true,
+        "rationale": "C is compiled."
+      },
+      {
+        "text": "Go",
+        "correct": true,
+        "rationale": "Go is compiled."
+      }
+    ],
+    "explanation": "C, C++, Rust and Go are compiled; Python, PHP and JavaScript are interpreted. Java is compiled to bytecode that a virtual machine runs."
+  },
+  {
+    "id": "011.2-025",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.vt4"
+    ],
+    "stem": "Exam 010-160 lists Perl. What is Perl?",
+    "options": [
+      {
+        "text": "An older scripting language, popular for text processing and system tasks.",
+        "correct": true,
+        "rationale": "Perl is still installed on many Linux systems."
+      },
+      {
+        "text": "A compiled language that Linux’s developers use to write the kernel today.",
+        "correct": false,
+        "rationale": "The kernel is mostly C."
+      },
+      {
+        "text": "A web browser written in Rust.",
+        "correct": false,
+        "rationale": "Perl is a scripting language."
+      },
+      {
+        "text": "A tool for installing packages on Debian.",
+        "correct": false,
+        "rationale": "Packages are installed with `dpkg` and `apt`."
+      }
+    ],
+    "explanation": "Perl is an interpreted scripting language that was very popular in the 1990s and 2000s."
+  },
+  {
+    "id": "011.2-026",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.vt4"
+    ],
+    "stem": "Exam 010-160 lists “shell” among the languages. What does that mean?",
+    "options": [
+      {
+        "text": "A language that only runs inside web browsers.",
+        "correct": false,
+        "rationale": "That describes JavaScript."
+      },
+      {
+        "text": "A language that must be compiled with a C compiler first.",
+        "correct": false,
+        "rationale": "Shell scripts are interpreted."
+      },
+      {
+        "text": "A language that is used only for designing graphics.",
+        "correct": false,
+        "rationale": "Shell is for commands and scripts."
+      },
+      {
+        "text": "Terminal commands can also be written into a script in the shell language.",
+        "correct": true,
+        "rationale": "The shell is a command language that you can also write scripts in."
+      }
+    ],
+    "explanation": "Bash, the usual shell, is both the command interpreter and a scripting language."
+  },
+  {
+    "id": "011.2-027",
+    "objectiveId": "011.2",
+    "kind": "output",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.vt4"
+    ],
+    "stem": "Ada checks that Perl is installed on the guest and runs a one-line program. What does this command print?",
+    "command": "perl -e 'print \"Pixel Raiders\\n\"'",
+    "output": "Pixel Raiders",
+    "mode": "type",
+    "explanation": "`perl -e` runs the program given on the command line. `print` writes the text, and `\\n` adds a newline."
+  },
+  {
+    "id": "011.2-028",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "stem": "What is a software repository?",
+    "options": [
+      {
+        "text": "A folder on the desktop where installed programs store their settings.",
+        "correct": false,
+        "rationale": "A repository is a server, not a local settings folder."
+      },
+      {
+        "text": "A server that holds many packages and an index that the package manager downloads.",
+        "correct": true,
+        "rationale": "Distributions run official repositories."
+      },
+      {
+        "text": "A program that compiles source code into packages.",
+        "correct": false,
+        "rationale": "Compiling is done by build tools."
+      },
+      {
+        "text": "A log file that lists all failed installations.",
+        "correct": false,
+        "rationale": "That is a log, not a repository."
+      }
+    ],
+    "explanation": "A package manager downloads the repository index and fetches the packages you ask for, together with what they depend on.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-029",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "stem": "A package declares that it needs other packages to work. What are these called?",
+    "options": [
+      {
+        "text": "Mirrors",
+        "correct": false,
+        "rationale": "Mirrors are copies of a repository on other servers."
+      },
+      {
+        "text": "Releases",
+        "correct": false,
+        "rationale": "A release is a version of the distribution."
+      },
+      {
+        "text": "Dependencies",
+        "correct": true,
+        "rationale": "The package manager resolves dependencies and installs them with the package."
+      },
+      {
+        "text": "Maintainer scripts",
+        "correct": false,
+        "rationale": "Maintainer scripts run during installation or removal; they are not the packages it needs."
+      }
+    ],
+    "explanation": "A package holds a program, its data files and metadata such as its name, version and dependencies.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-030",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "stem": "Why do distributions sign the packages in their repositories?",
+    "options": [
+      {
+        "text": "So the system can check a package’s origin and that nobody altered it.",
+        "correct": true,
+        "rationale": "Signatures protect against tampered packages."
+      },
+      {
+        "text": "So that only paying customers can install them.",
+        "correct": false,
+        "rationale": "Signing doesn’t restrict who may install."
+      },
+      {
+        "text": "So that the packages need fewer dependencies.",
+        "correct": false,
+        "rationale": "Signing has nothing to do with dependencies."
+      },
+      {
+        "text": "So that they take less disk space.",
+        "correct": false,
+        "rationale": "Signing doesn’t shrink packages."
+      }
+    ],
+    "explanation": "The package manager verifies each package’s signature against the distribution’s key before it installs it.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-031",
+    "objectiveId": "011.2",
+    "kind": "output",
+    "areas": [
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "terms": [
+      "011.2.t5",
+      "011.2.vt5"
+    ],
+    "stem": "Mira asks the Debian guest which package supplies the file `/bin/ls`. What does this command print?",
+    "command": "dpkg -S /bin/ls",
+    "output": "coreutils: /bin/ls",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "ls: /bin/ls",
+        "correct": false,
+        "rationale": "The package name comes first, and the package isn’t called `ls`."
+      },
+      {
+        "text": "/bin/ls: coreutils",
+        "correct": false,
+        "rationale": "The output starts with the package name, then a colon and the path."
+      },
+      {
+        "text": "dpkg: /bin/ls",
+        "correct": false,
+        "rationale": "`dpkg` is the tool, not a package that contains the file."
+      },
+      {
+        "text": "coreutils: /bin/ls",
+        "correct": true,
+        "rationale": "`dpkg -S` prints the owning package, a colon and the path."
+      }
+    ],
+    "explanation": "`dpkg -S` (`--search`) names the installed package that owns a file: first the package, then a colon and the path.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-032",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.6",
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "terms": [
+      "011.2.t5",
+      "011.2.vt5"
+    ],
+    "stem": "What is the difference between `dpkg` and `apt`?",
+    "options": [
+      {
+        "text": "`dpkg` fetches dependencies from repositories, and `apt` handles only single files.",
+        "correct": false,
+        "rationale": "It is the other way round."
+      },
+      {
+        "text": "`dpkg` is for Enterprise Linux, and `apt` is for SUSE.",
+        "correct": false,
+        "rationale": "Both belong to the Debian family."
+      },
+      {
+        "text": "`dpkg` works on single files and fetches nothing; `apt` uses repositories and resolves dependencies.",
+        "correct": true,
+        "rationale": "`apt` calls `dpkg` underneath."
+      },
+      {
+        "text": "They are two names for the same program.",
+        "correct": false,
+        "rationale": "They are separate tools."
+      }
+    ],
+    "explanation": "The low-level tool installs or inspects one package file. The high-level tool talks to repositories and resolves dependencies.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-033",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.6"
+    ],
+    "terms": [
+      "011.2.t5"
+    ],
+    "stem": "Which statement about `apt` and `apt-get` is correct?",
+    "options": [
+      {
+        "text": "`apt` is meant for RPM packages on Enterprise Linux, and `apt-get` is for Debian packages.",
+        "correct": false,
+        "rationale": "Both work with `.deb` packages."
+      },
+      {
+        "text": "`apt` is the friendlier front end for people; `apt-get` is the older one for scripts.",
+        "correct": true,
+        "rationale": "Both manage Debian-family packages."
+      },
+      {
+        "text": "`apt-get` is the newer replacement for `apt`.",
+        "correct": false,
+        "rationale": "`apt` is the newer, friendlier one."
+      },
+      {
+        "text": "Both can only be used by the root user without `sudo`.",
+        "correct": false,
+        "rationale": "Both can be run with `sudo`, and that isn’t the difference."
+      }
+    ],
+    "explanation": "Both belong to the Debian family. Scripts often use `apt-get`, people at the keyboard use `apt`.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-034",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.6"
+    ],
+    "terms": [
+      "011.2.t5"
+    ],
+    "stem": "Ada logs into a server running openSUSE Leap. Which command installs software from the repositories there?",
+    "options": [
+      {
+        "text": "`sudo dnf install gimp -y`",
+        "correct": false,
+        "rationale": "`dnf` belongs to Enterprise Linux and Fedora."
+      },
+      {
+        "text": "`zypper install gimp`",
+        "correct": true,
+        "rationale": "`zypper` is the SUSE family’s package manager."
+      },
+      {
+        "text": "`sudo apt install gimp -y`",
+        "correct": false,
+        "rationale": "`apt` belongs to the Debian family."
+      },
+      {
+        "text": "`apk add gimp`",
+        "correct": false,
+        "rationale": "`apk` is Alpine Linux’s tool."
+      }
+    ],
+    "explanation": "Each family has its own high-level tool: `apt`, `dnf`, `zypper` and `apk`.",
+    "sourceLinks": [
+      "https://en.opensuse.org/Portal:Zypper"
+    ]
+  },
+  {
+    "id": "011.2-035",
+    "objectiveId": "011.2",
+    "kind": "fill",
+    "areas": [
+      "011.2.6"
+    ],
+    "terms": [
+      "011.2.t5"
+    ],
+    "stem": "Which Alpine Linux command-line tool installs and removes packages? Type its name.",
+    "accept": [
+      "apk"
+    ],
+    "caseSensitive": true,
+    "explanation": "`apk` (Alpine Package Keeper) is Alpine’s package manager, for example `apk add gimp` as root.",
+    "sourceLinks": [
+      "https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper"
+    ]
+  },
+  {
+    "id": "011.2-036",
+    "objectiveId": "011.2",
+    "kind": "fill",
+    "areas": [
+      "011.2.6",
+      "011.2.v1"
+    ],
+    "terms": [
+      "011.2.t5",
+      "011.2.vt5"
+    ],
+    "stem": "Mira wants to list all packages installed on the Debian guest. Type the `dpkg` command with its short option.",
+    "accept": [
+      "dpkg -l",
+      "dpkg --list"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer} >/dev/null"
+    },
+    "explanation": "`dpkg -l` (`--list`) lists installed packages; `dpkg -L` would list the files of one package instead.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-037",
+    "objectiveId": "011.2",
+    "kind": "fill",
+    "areas": [
+      "011.2.6",
+      "011.2.v1"
+    ],
+    "terms": [
+      "011.2.t5",
+      "011.2.vt5"
+    ],
+    "stem": "Mira wants to know which installed package supplies the file `/bin/ls`. Complete the `dpkg` command with the search option and the path.",
+    "accept": [
+      "-S /bin/ls",
+      "--search /bin/ls"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ dpkg",
+    "verify": {
+      "command": "dpkg {answer}"
+    },
+    "explanation": "`dpkg -S` (`--search`) searches for the package that owns a file.",
+    "sourceLinks": [
+      "https://www.debian.org/doc/manuals/debian-reference/ch02.en.html"
+    ]
+  },
+  {
+    "id": "011.2-038",
+    "objectiveId": "011.2",
+    "kind": "output",
+    "areas": [
+      "011.2.6",
+      "011.2.v1"
+    ],
+    "terms": [
+      "011.2.t5",
+      "011.2.vt5"
+    ],
+    "stem": "Jonas asks the Debian guest which of the tools `dpkg` and `rpm` are installed. What does this command print?",
+    "command": "for t in dpkg rpm; do command -v $t || echo \"no $t\"; done",
+    "output": "/usr/bin/dpkg\nno rpm",
+    "mode": "type",
+    "explanation": "`command -v` prints the path of a program that exists. The guest is Debian, so it has `dpkg` and not `rpm`."
+  },
+  {
+    "id": "011.2-039",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.v1"
+    ],
+    "terms": [
+      "011.2.vt5"
+    ],
+    "stem": "Exam 010-160 lists `yum` instead of `dnf`. What was `yum`?",
+    "options": [
+      {
+        "text": "The Red Hat family’s package tool, which `dnf` replaced.",
+        "correct": true,
+        "rationale": "`yum install gimp` did what `dnf install gimp` does today."
+      },
+      {
+        "text": "The low-level tool that Debian uses for installing single `.deb` files.",
+        "correct": false,
+        "rationale": "Debian’s low-level tool is `dpkg`."
+      },
+      {
+        "text": "The package manager of Alpine Linux.",
+        "correct": false,
+        "rationale": "Alpine uses `apk`."
+      },
+      {
+        "text": "A SUSE tool for installing RPM files.",
+        "correct": false,
+        "rationale": "SUSE uses `zypper`."
+      }
+    ],
+    "explanation": "yum shipped with older versions of RHEL and CentOS and used the same `.rpm` packages.",
+    "sourceLinks": [
+      "https://dnf.readthedocs.io/"
+    ]
   }
 ]

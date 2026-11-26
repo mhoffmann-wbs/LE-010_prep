@@ -3,18 +3,1485 @@
     "id": "013.2-001",
     "objectiveId": "013.2",
     "kind": "output",
-    "areas": ["013.2.1"],
-    "terms": ["013.2.t4", "013.2.t5"],
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t4",
+      "013.2.t5"
+    ],
     "stem": "Jonas pipes a short list of enemy types through two filters. What does the command print?",
     "command": "printf 'boss\\nlevel\\nboss\\n' | sort | uniq",
     "output": "boss\nlevel",
     "mode": "choice",
     "options": [
-      { "text": "boss\nlevel\nboss", "correct": false, "rationale": "This is the input unchanged. sort reorders it and uniq removes the repeat, so it can’t come out like this." },
-      { "text": "      2 boss\n      1 level", "correct": false, "rationale": "Counts like these appear only with `uniq -c`." },
-      { "text": "boss\nlevel", "correct": true, "rationale": "sort puts both `boss` lines next to each other, and uniq keeps one line of each run of identical lines." },
-      { "text": "level\nboss", "correct": false, "rationale": "sort orders lines alphabetically, so `boss` comes before `level`." }
+      {
+        "text": "boss\nlevel\nboss",
+        "correct": false,
+        "rationale": "This is the input unchanged. sort reorders it and uniq removes the repeat, so it can’t come out like this."
+      },
+      {
+        "text": "      2 boss\n      1 level",
+        "correct": false,
+        "rationale": "Counts like these appear only with `uniq -c`."
+      },
+      {
+        "text": "boss\nlevel",
+        "correct": true,
+        "rationale": "sort puts both `boss` lines next to each other, and uniq keeps one line of each run of identical lines."
+      },
+      {
+        "text": "level\nboss",
+        "correct": false,
+        "rationale": "sort orders lines alphabetically, so `boss` comes before `level`."
+      }
     ],
     "explanation": "uniq only removes repeated lines that are next to each other, which is why it usually follows sort. The pipe `|` passes each command’s output to the next command’s input."
+  },
+  {
+    "id": "013.2-002",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t7",
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Mira wants a single number: how many lines of `build.log` contain `ERROR`. Which command prints it?",
+    "explanation": "A pipe connects the output of one command with the input of the next. `grep` picks the lines and `wc -l` counts them.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`grep -c ERROR build.log | wc -l`",
+        "correct": false,
+        "rationale": "`grep -c` already prints a count, so `wc -l` then counts that one line and prints 1."
+      },
+      {
+        "text": "`wc -l ERROR build.log`",
+        "correct": false,
+        "rationale": "`wc` would look for a file called `ERROR` and print counts for the files it reads; it does not search."
+      },
+      {
+        "text": "`grep ERROR build.log | wc -l`",
+        "correct": true,
+        "rationale": "The pipe hands the matching lines to `wc -l`, which counts them and prints just the number."
+      },
+      {
+        "text": "`grep ERROR build.log > wc -l`",
+        "correct": false,
+        "rationale": "The `>` creates a file called `wc` and passes `-l` to `grep`, so nothing is counted."
+      }
+    ]
+  },
+  {
+    "id": "013.2-003",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "The file `errors.txt` already holds Ada’s notes. Which command adds the warning lines of `build.log` to its end without erasing it?",
+    "explanation": "`>` replaces, `>>` appends. Both create the file when it does not exist yet.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`grep WARN build.log >> errors.txt`",
+        "correct": true,
+        "rationale": "`>>` appends the output to the end of the file."
+      },
+      {
+        "text": "`grep WARN build.log > errors.txt`",
+        "correct": false,
+        "rationale": "A single `>` empties the file first and then writes, so Ada’s notes would be lost."
+      },
+      {
+        "text": "`grep WARN build.log | errors.txt`",
+        "correct": false,
+        "rationale": "A pipe sends the output to a command named `errors.txt`, which does not exist."
+      },
+      {
+        "text": "`grep WARN build.log < errors.txt`",
+        "correct": false,
+        "rationale": "`<` changes where input comes from; the output still goes to the screen."
+      }
+    ]
+  },
+  {
+    "id": "013.2-004",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Jonas runs `ls nothere build.log`. Which command saves only the error message into `err.txt`?",
+    "explanation": "Every command has standard output (1) and standard error (2). Plain `>` catches only the first, `2>` catches the second.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`ls nothere build.log > err.txt`",
+        "correct": false,
+        "rationale": "A plain `>` redirects standard output (stream 1), so the error would still show on screen."
+      },
+      {
+        "text": "`ls nothere build.log >> err.txt`",
+        "correct": false,
+        "rationale": "Appending still affects only standard output."
+      },
+      {
+        "text": "`ls nothere build.log | err.txt`",
+        "correct": false,
+        "rationale": "A pipe passes standard output to a command named `err.txt`; the error would still appear on screen."
+      },
+      {
+        "text": "`ls nothere build.log 2> err.txt`",
+        "correct": true,
+        "rationale": "Stream 2 is standard error, so `2>` sends only the error messages to the file."
+      }
+    ]
+  },
+  {
+    "id": "013.2-005",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "stem": "Mira needs the normal output and the error messages of `ls nothere build.log` in one file, `both.txt`. Which command does that?",
+    "explanation": "The shell reads redirections from left to right, so `> file 2>&1` is the order that works. Bash also offers the short form `&> file`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`ls nothere build.log 2>&1 > both.txt`",
+        "correct": false,
+        "rationale": "Here stream 2 is joined to the screen before stream 1 moves to the file, so the error still shows on screen."
+      },
+      {
+        "text": "`ls nothere build.log > both.txt 2>&1`",
+        "correct": true,
+        "rationale": "The output goes to the file first, and then stream 2 is pointed to where stream 1 now goes."
+      },
+      {
+        "text": "`ls nothere build.log 2> both.txt`",
+        "correct": false,
+        "rationale": "This saves only the error message; `build.log` is still printed to the screen."
+      },
+      {
+        "text": "`ls nothere build.log | both.txt`",
+        "correct": false,
+        "rationale": "The pipe expects a command on its right and `both.txt` is not one."
+      }
+    ]
+  },
+  {
+    "id": "013.2-006",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "stem": "What does the shell do with `command 2> /dev/null`?",
+    "explanation": "`/dev/null` is the bin for output nobody wants, for example the “permission denied” noise of a big search.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "It discards the error messages and prints normal output as usual",
+        "correct": true,
+        "rationale": "`/dev/null` swallows everything written to it, and `2>` sends only stream 2 there."
+      },
+      {
+        "text": "It saves the error messages in a file named `null`",
+        "correct": false,
+        "rationale": "`/dev/null` is a special device that keeps nothing, not an ordinary file."
+      },
+      {
+        "text": "It hides the normal output as well as the errors",
+        "correct": false,
+        "rationale": "Only stream 2 is redirected; stream 1 still reaches the screen."
+      },
+      {
+        "text": "It sends the error messages on to the next command in a pipe",
+        "correct": false,
+        "rationale": "A pipe uses `|`; `/dev/null` has no next command."
+      }
+    ]
+  },
+  {
+    "id": "013.2-007",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t7"
+    ],
+    "stem": "Which `wc` option prints only the number of lines?",
+    "explanation": "Plain `wc` prints lines, words and bytes, in that order. `-l`, `-w` and `-c` pick one count each.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-w`",
+        "correct": false,
+        "rationale": "`-w` counts words."
+      },
+      {
+        "text": "`-c`",
+        "correct": false,
+        "rationale": "`-c` counts bytes."
+      },
+      {
+        "text": "`-l`",
+        "correct": true,
+        "rationale": "`-l` counts lines."
+      },
+      {
+        "text": "`-n`",
+        "correct": false,
+        "rationale": "`wc` has no `-n` option and reports an error."
+      }
+    ]
+  },
+  {
+    "id": "013.2-008",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t3"
+    ],
+    "stem": "Ada wants to see the last 20 lines of `server.log`. Which command does it?",
+    "explanation": "The newest lines of a log are at its end, which is why `tail` is the log reader’s tool.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`head -n 20 server.log`",
+        "correct": false,
+        "rationale": "`head` prints the first 20 lines, not the last ones."
+      },
+      {
+        "text": "`tail -n 20 server.log`",
+        "correct": true,
+        "rationale": "`tail` prints the end of a file and `-n 20` picks the number of lines."
+      },
+      {
+        "text": "`tail -n +20 server.log`",
+        "correct": false,
+        "rationale": "With a plus sign, `tail` starts at line 20 and prints everything from there to the end."
+      },
+      {
+        "text": "`cat -n 20 server.log`",
+        "correct": false,
+        "rationale": "`-n` numbers lines for `cat`, and `20` would be taken as a file name."
+      }
+    ]
+  },
+  {
+    "id": "013.2-009",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t3"
+    ],
+    "stem": "Mira wants to print `build.log` from line 8 to the end of the file. Which command does that?",
+    "explanation": "`tail -n +N` means “start at line N”, a handy way to skip a CSV header with `tail -n +2`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tail -n 8 build.log`",
+        "correct": false,
+        "rationale": "Without the plus, `tail` prints just the last 8 lines."
+      },
+      {
+        "text": "`head -n 8 build.log`",
+        "correct": false,
+        "rationale": "`head` prints the first 8 lines, so this stops where the wanted part begins."
+      },
+      {
+        "text": "`head -n -8 build.log`",
+        "correct": false,
+        "rationale": "A negative count makes `head` print everything except the last 8 lines."
+      },
+      {
+        "text": "`tail -n +8 build.log`",
+        "correct": true,
+        "rationale": "The plus sign makes `tail` start at line 8 and run to the end."
+      }
+    ]
+  },
+  {
+    "id": "013.2-010",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t4"
+    ],
+    "stem": "Why does plain `sort` put `100` before `9`?",
+    "explanation": "Use `sort -n` for numbers. Without it `10` sorts before `9`, because the comparison is alphabetical.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "It sorts by the length of each line, longest first",
+        "correct": false,
+        "rationale": "`sort` compares contents, not lengths, unless a different key is requested."
+      },
+      {
+        "text": "It ignores digits and keeps the input order",
+        "correct": false,
+        "rationale": "Digits are ordinary characters for `sort`, and the order does change."
+      },
+      {
+        "text": "It compares the lines as text, character by character, and `1` comes before `9`",
+        "correct": true,
+        "rationale": "Text order is the default; `-n` switches to comparing numbers."
+      },
+      {
+        "text": "It sorts by the file’s modification time",
+        "correct": false,
+        "rationale": "Lines come from the input; `sort` knows nothing about file times."
+      }
+    ]
+  },
+  {
+    "id": "013.2-011",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t4"
+    ],
+    "stem": "Mira wants the lines of `playtest.csv` ordered by the third comma-separated field (the score), compared as numbers. Which command does that?",
+    "explanation": "Three options work together: `-t` for the separator, `-k` for the field and `-n` for numeric comparison.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`sort -t, -k3 -n playtest.csv`",
+        "correct": true,
+        "rationale": "`-t,` sets the field separator, `-k3` picks the third field and `-n` compares it as a number."
+      },
+      {
+        "text": "`sort -t, -k3 playtest.csv`",
+        "correct": false,
+        "rationale": "This compares the field as text, so `1100` lands before `700`."
+      },
+      {
+        "text": "`sort -k3 -n playtest.csv`",
+        "correct": false,
+        "rationale": "Without `-t,` the separator is whitespace, so each line is a single field and the third field is empty."
+      },
+      {
+        "text": "`cut -d, -f3 playtest.csv | sort -n`",
+        "correct": false,
+        "rationale": "This sorts only the score column and prints just those numbers, not whole lines."
+      }
+    ]
+  },
+  {
+    "id": "013.2-012",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t5"
+    ],
+    "stem": "Why do people usually run `sort` before `uniq`?",
+    "explanation": "Without sorting, `slime bat slime` stays as it is, because the two `slime` lines are not neighbours.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`uniq` can only read files that are alphabetically ordered by name",
+        "correct": false,
+        "rationale": "It reads any text; the order of lines matters, not file names."
+      },
+      {
+        "text": "`sort` adds a counter that `uniq` needs",
+        "correct": false,
+        "rationale": "`sort` adds nothing to the lines; counting is `uniq -c`’s job."
+      },
+      {
+        "text": "`uniq` refuses input from a pipe that is not sorted",
+        "correct": false,
+        "rationale": "`uniq` runs on unsorted input too, but it then misses duplicates that are far apart."
+      },
+      {
+        "text": "`uniq` only removes repeated lines that are next to each other",
+        "correct": true,
+        "rationale": "Sorting brings identical lines together so `uniq` can see them as neighbours."
+      }
+    ]
+  },
+  {
+    "id": "013.2-013",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t6"
+    ],
+    "stem": "Which command prints only the first field, the player name, of each line in the comma-separated `playtest.csv`?",
+    "explanation": "`cut` needs `-d` when the fields are not tab-separated and `-f` for the field numbers, counted from 1.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`cut -f1 playtest.csv`",
+        "correct": false,
+        "rationale": "The default delimiter is a tab, so each comma-separated line is one field and is printed whole."
+      },
+      {
+        "text": "`cut -d, -f1 playtest.csv`",
+        "correct": true,
+        "rationale": "`-d,` makes the comma the delimiter and `-f1` selects the first field."
+      },
+      {
+        "text": "`cut -d, -c1 playtest.csv`",
+        "correct": false,
+        "rationale": "`-c1` selects the first character of every line, not the first field."
+      },
+      {
+        "text": "`cut -d\" \" -f1 playtest.csv`",
+        "correct": false,
+        "rationale": "There are no spaces in this CSV, so every line is a single field and is printed whole."
+      }
+    ]
+  },
+  {
+    "id": "013.2-014",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Mira wants every line of `build.log` that does not contain `INFO`. Which command prints them?",
+    "explanation": "`-v` for in**v**ert. Together with `-c` it counts the lines that do not match.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`grep -v INFO build.log`",
+        "correct": true,
+        "rationale": "`-v` inverts the match and prints the lines that do not contain the pattern."
+      },
+      {
+        "text": "`grep -i INFO build.log`",
+        "correct": false,
+        "rationale": "`-i` ignores case and would print the INFO lines themselves."
+      },
+      {
+        "text": "`grep -c INFO build.log`",
+        "correct": false,
+        "rationale": "`-c` prints the number of matching lines, not the other lines."
+      },
+      {
+        "text": "`grep -n INFO build.log`",
+        "correct": false,
+        "rationale": "`-n` prefixes line numbers on the INFO lines."
+      }
+    ]
+  },
+  {
+    "id": "013.2-015",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which pattern matches both `slime` and `slyme`, but not `sme`?",
+    "explanation": "The dot matches one character. Do not confuse it with the file glob `?`, which means one character only for file names.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`sl*me`",
+        "correct": false,
+        "rationale": "The star repeats the `l`, so it matches `slme` and `sllme` but not `slime`."
+      },
+      {
+        "text": "`sl?me`",
+        "correct": false,
+        "rationale": "In a plain grep pattern the question mark is an ordinary character, so it matches only the text `sl?me`."
+      },
+      {
+        "text": "`sl.me`",
+        "correct": true,
+        "rationale": "The dot stands for exactly one character of any kind."
+      },
+      {
+        "text": "`sl[a-c]me`",
+        "correct": false,
+        "rationale": "The set accepts `a`, `b` or `c` in the third place, but not `i` or `y`."
+      }
+    ]
+  },
+  {
+    "id": "013.2-016",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which lines does `grep go*blin` print?",
+    "explanation": "In a regular expression the star is “zero or more of the previous item”. It is not a wildcard like the star in file globs.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Only lines containing exactly `goblin`",
+        "correct": false,
+        "rationale": "`*` allows zero or more `o`, so more than a single spelling matches."
+      },
+      {
+        "text": "Lines containing `gblin`, `goblin` or `gooblin`",
+        "correct": true,
+        "rationale": "The star repeats the `o` before it zero or more times."
+      },
+      {
+        "text": "Lines with `go`, then any text, then `blin`",
+        "correct": false,
+        "rationale": "That would be `go.*blin`; a bare star repeats the previous character only."
+      },
+      {
+        "text": "Lines containing `go*blin` including the star",
+        "correct": false,
+        "rationale": "In a regular expression the star is an operator, not a literal character."
+      }
+    ]
+  },
+  {
+    "id": "013.2-017",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which pattern matches the lines that start with `s` or `b`?",
+    "explanation": "The caret means two things: at the start of a pattern it anchors the line start; right after `[` it negates the set.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`[^sb]`",
+        "correct": false,
+        "rationale": "With a caret inside the brackets the set is inverted: any character except `s` or `b`."
+      },
+      {
+        "text": "`^sb`",
+        "correct": false,
+        "rationale": "This matches lines starting with the two letters `sb` in a row."
+      },
+      {
+        "text": "`[sb]$`",
+        "correct": false,
+        "rationale": "The dollar sign anchors the end of the line, so it matches lines that end with `s` or `b`."
+      },
+      {
+        "text": "`^[sb]`",
+        "correct": true,
+        "rationale": "`^` anchors the match to the start of the line and the brackets accept one of the listed characters."
+      }
+    ]
+  },
+  {
+    "id": "013.2-018",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3"
+    ],
+    "terms": [
+      "013.2.t1"
+    ],
+    "stem": "Which command prints both `ghost` and `ghosts` lines from `enemies.txt`?",
+    "explanation": "In ERE, `?` means “zero or one of the previous item”. In plain `grep` patterns the question mark has no special meaning.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`grep 'ghosts?' enemies.txt`",
+        "correct": false,
+        "rationale": "Without `-E` the question mark is a literal character, so nothing matches."
+      },
+      {
+        "text": "`grep -E 'ghost.' enemies.txt`",
+        "correct": false,
+        "rationale": "The dot needs one more character, so it matches `ghosts` but not `ghost`."
+      },
+      {
+        "text": "`grep -E 'ghosts?' enemies.txt`",
+        "correct": true,
+        "rationale": "In extended syntax the question mark makes the `s` optional."
+      },
+      {
+        "text": "`grep -E 'ghost$' enemies.txt`",
+        "correct": false,
+        "rationale": "The anchor limits the match to lines ending in `ghost`, so `ghosts` is missed."
+      }
+    ]
+  },
+  {
+    "id": "013.2-019",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3"
+    ],
+    "terms": [
+      "013.2.t1"
+    ],
+    "stem": "Which command prints the lines of `enemies.txt` that contain `bat` or `slime`?",
+    "explanation": "Use `-E` (or the program `egrep`) when you need alternation with `|`, optional items with `?`, or groups in round brackets.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`grep -E 'bat|slime' enemies.txt`",
+        "correct": true,
+        "rationale": "In extended syntax the vertical bar separates alternatives."
+      },
+      {
+        "text": "`grep 'bat|slime' enemies.txt`",
+        "correct": false,
+        "rationale": "Plain patterns treat `|` as an ordinary character, so only the text `bat|slime` would match."
+      },
+      {
+        "text": "`grep -E 'bat&slime' enemies.txt`",
+        "correct": false,
+        "rationale": "The ampersand is not an operator, so the pattern asks for the literal text."
+      },
+      {
+        "text": "`grep -E '[bat|slime]' enemies.txt`",
+        "correct": false,
+        "rationale": "Brackets define a set of single characters, so it matches any line with a `b`, `a`, `t`, `|`, `s`, `l`, `i`, `m` or `e`."
+      }
+    ]
+  },
+  {
+    "id": "013.2-020",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t2"
+    ],
+    "stem": "Ada wants to scroll through a 5,000-line `server.log` one screen at a time, and to search it. Which command should she run?",
+    "explanation": "Man pages use `less`, so the same keys work there: Space or `f` forward, `b` back, `/` search, `n` next match, `q` quit.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`cat server.log`",
+        "correct": false,
+        "rationale": "`cat` prints the whole file at once, and most of it scrolls past."
+      },
+      {
+        "text": "`tail server.log`",
+        "correct": false,
+        "rationale": "`tail` prints only the last ten lines."
+      },
+      {
+        "text": "`wc server.log`",
+        "correct": false,
+        "rationale": "`wc` counts lines, words and bytes and shows no text."
+      },
+      {
+        "text": "`less server.log`",
+        "correct": true,
+        "rationale": "`less` is a pager: Space moves down a page, `/word` searches and `q` quits."
+      }
+    ]
+  },
+  {
+    "id": "013.2-021",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1",
+      "013.2.2"
+    ],
+    "stem": "Mira runs `ls nothere build.log` and wants `wc -l` to count every line it prints, the error message included (the answer is 2). Which command does that?",
+    "explanation": "A pipe carries standard output only. To send errors along, join them first with `2>&1`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`ls nothere build.log | wc -l`",
+        "correct": false,
+        "rationale": "Only standard output goes through the pipe, so `wc` counts one line and the error still shows on screen."
+      },
+      {
+        "text": "`ls nothere build.log 2>&1 | wc -l`",
+        "correct": true,
+        "rationale": "`2>&1` joins the error message to the standard output, so the pipe passes both lines on to `wc`."
+      },
+      {
+        "text": "`ls nothere build.log 2> wc -l`",
+        "correct": false,
+        "rationale": "This writes the error to a file called `wc` and passes `-l` to `ls`."
+      },
+      {
+        "text": "`ls nothere build.log > wc -l`",
+        "correct": false,
+        "rationale": "This redirects the output to a file called `wc`, so nothing is counted."
+      }
+    ]
+  },
+  {
+    "id": "013.2-022",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1",
+      "013.2.2"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which commands save the `ERROR` lines of `build.log` in `errors.txt` and print nothing to the screen? (Choose TWO.)",
+    "explanation": "The number before `>` picks the stream: 1 is standard output, which is the default, and 2 is standard error.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`grep ERROR build.log | tee errors.txt`",
+        "correct": false,
+        "rationale": "`tee` writes the file but also passes the lines on, so they appear on screen."
+      },
+      {
+        "text": "`grep ERROR build.log > errors.txt`",
+        "correct": true,
+        "rationale": "Standard output goes to the file, so nothing appears on screen."
+      },
+      {
+        "text": "`grep ERROR build.log | errors.txt`",
+        "correct": false,
+        "rationale": "A pipe needs a command on its right side."
+      },
+      {
+        "text": "`grep ERROR build.log 1> errors.txt`",
+        "correct": true,
+        "rationale": "The number 1 names standard output, so this is the same as a plain `>`."
+      },
+      {
+        "text": "`grep ERROR build.log 2> errors.txt`",
+        "correct": false,
+        "rationale": "This redirects only error messages, so the matching lines still appear on screen."
+      }
+    ]
+  },
+  {
+    "id": "013.2-023",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "stem": "Which statements about the pipe `|` are true? (Choose TWO.)",
+    "explanation": "A pipe ends in a command, a redirection ends in a file.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "It connects the standard output of the left command to the standard input of the right command",
+        "correct": true,
+        "rationale": "That is its whole job."
+      },
+      {
+        "text": "It writes the output of the left command into a file named by the right side",
+        "correct": false,
+        "rationale": "That is the job of `>`; the right side of a pipe is a command."
+      },
+      {
+        "text": "It carries error messages as well as normal output by default",
+        "correct": false,
+        "rationale": "Only standard output passes through, unless `2>&1` is added."
+      },
+      {
+        "text": "Several pipes can be chained in one command line",
+        "correct": true,
+        "rationale": "Each stage reads the output of the stage before it."
+      },
+      {
+        "text": "It needs a temporary file that the user must delete afterwards",
+        "correct": false,
+        "rationale": "The data flows between the programs directly; no file is created."
+      }
+    ]
+  },
+  {
+    "id": "013.2-024",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which patterns match `goblin` when used with plain `grep`, without `-E`? (Choose THREE.)",
+    "explanation": "Check the fixed characters first, then see what the special characters (`.`, `[ ]`, `*`) stand for.",
+    "kind": "multi",
+    "select": 3,
+    "options": [
+      {
+        "text": "`go*blin`",
+        "correct": true,
+        "rationale": "Zero or more `o` is satisfied by one `o`."
+      },
+      {
+        "text": "`go.blin`",
+        "correct": false,
+        "rationale": "The dot needs one more character between `o` and `b`."
+      },
+      {
+        "text": "`g.blin`",
+        "correct": true,
+        "rationale": "The dot stands for the `o`."
+      },
+      {
+        "text": "`^blin`",
+        "correct": false,
+        "rationale": "The anchor requires the line to start with `blin`."
+      },
+      {
+        "text": "`gob[a-z]in`",
+        "correct": true,
+        "rationale": "The set accepts the `l`."
+      },
+      {
+        "text": "`gob?lin`",
+        "correct": false,
+        "rationale": "In plain patterns the question mark is a literal character, so this wants the text `gob?lin`."
+      }
+    ]
+  },
+  {
+    "id": "013.2-025",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Mira wants a number instead of the matching lines. Which commands print only a number for `ERROR` in `build.log`? (Choose TWO.)",
+    "explanation": "Two common ways to count matches: the built-in `grep -c`, or a pipe into `wc -l`.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`grep -n ERROR build.log`",
+        "correct": false,
+        "rationale": "`-n` prints the matching lines with line numbers added."
+      },
+      {
+        "text": "`grep -v ERROR build.log`",
+        "correct": false,
+        "rationale": "This prints the lines that do not match."
+      },
+      {
+        "text": "`grep -c ERROR build.log`",
+        "correct": true,
+        "rationale": "`-c` prints the number of matching lines."
+      },
+      {
+        "text": "`grep -i ERROR build.log`",
+        "correct": false,
+        "rationale": "`-i` only ignores case; the lines are printed."
+      },
+      {
+        "text": "`grep ERROR build.log | wc -l`",
+        "correct": true,
+        "rationale": "`wc -l` counts the lines that `grep` passes on."
+      }
+    ]
+  },
+  {
+    "id": "013.2-026",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t7"
+    ],
+    "stem": "Which `wc` options count lines, words and bytes? (Choose THREE.)",
+    "explanation": "Plain `wc` shows all three counts, in the order lines, words, bytes.",
+    "kind": "multi",
+    "select": 3,
+    "options": [
+      {
+        "text": "`-n`",
+        "correct": false,
+        "rationale": "`wc` has no such option."
+      },
+      {
+        "text": "`-l`",
+        "correct": true,
+        "rationale": "Lines."
+      },
+      {
+        "text": "`-s`",
+        "correct": false,
+        "rationale": "`wc` has no such option."
+      },
+      {
+        "text": "`-w`",
+        "correct": true,
+        "rationale": "Words."
+      },
+      {
+        "text": "`-c`",
+        "correct": true,
+        "rationale": "Bytes."
+      },
+      {
+        "text": "`-r`",
+        "correct": false,
+        "rationale": "`wc` has no such option."
+      }
+    ]
+  },
+  {
+    "id": "013.2-027",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t4"
+    ],
+    "stem": "Jonas wants the highest numbers first in a list of scores, one per line. Which `sort` options does he combine? (Choose TWO.)",
+    "explanation": "Number order and reversed order together give the high-score table: `sort -n -r` or `sort -nr`.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`-n`",
+        "correct": true,
+        "rationale": "It compares by number instead of by text."
+      },
+      {
+        "text": "`-k`",
+        "correct": false,
+        "rationale": "It picks a field, which a one-column list does not need."
+      },
+      {
+        "text": "`-t`",
+        "correct": false,
+        "rationale": "It sets the field separator, which a one-column list does not need."
+      },
+      {
+        "text": "`-r`",
+        "correct": true,
+        "rationale": "It reverses the order, so the highest comes first."
+      },
+      {
+        "text": "`-u`",
+        "correct": false,
+        "rationale": "It removes repeated lines and has nothing to do with the order."
+      }
+    ]
+  },
+  {
+    "id": "013.2-028",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t2"
+    ],
+    "stem": "Inside `less`, which keys do what is described? (Choose TWO.)",
+    "explanation": "In `less` there is nothing to save, so leaving is a single key: `q`.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`q` quits `less`",
+        "correct": true,
+        "rationale": "It returns to the shell."
+      },
+      {
+        "text": "`:wq` saves and quits",
+        "correct": false,
+        "rationale": "That is a command of the `vi` editor; `less` has no saving."
+      },
+      {
+        "text": "Space scrolls down by one page",
+        "correct": true,
+        "rationale": "It is the key for moving forward quickly."
+      },
+      {
+        "text": "`Ctrl+X` quits `less`",
+        "correct": false,
+        "rationale": "That is how `nano` is left; `less` uses `q`."
+      },
+      {
+        "text": "`Ctrl+O` saves the file",
+        "correct": false,
+        "rationale": "`less` only shows files, and saving is a `nano` feature."
+      }
+    ]
+  },
+  {
+    "id": "013.2-029",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Complete the command so it prints how many lines of `build.log` contain `WARN`.",
+    "explanation": "`-c` prints the count of matching lines instead of the lines.",
+    "kind": "fill",
+    "accept": [
+      "-c WARN build.log",
+      "-c 'WARN' build.log",
+      "-c \"WARN\" build.log"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ grep",
+    "verify": {
+      "command": "grep {answer}",
+      "fixture": "data-buildlog"
+    }
+  },
+  {
+    "id": "013.2-030",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t4"
+    ],
+    "stem": "Which `sort` option compares the lines as numbers? Type it with its dash, short or long form.",
+    "explanation": "`-n` (long form `--numeric-sort`) puts `9` before `10`; plain `sort` would put `10` first.",
+    "kind": "fill",
+    "accept": [
+      "-n",
+      "--numeric-sort"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "printf '10\\n9\\n' | sort {answer}"
+    }
+  },
+  {
+    "id": "013.2-031",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t6"
+    ],
+    "stem": "Complete the command so it prints the second field (the level) of `playtest.csv`.",
+    "explanation": "The delimiter is a comma, so `-d,` is needed, and `-f2` selects the second field.",
+    "kind": "fill",
+    "accept": [
+      "-d, -f2 playtest.csv",
+      "-d ',' -f2 playtest.csv",
+      "-f2 -d, playtest.csv",
+      "-d, -f 2 playtest.csv"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ cut",
+    "verify": {
+      "command": "cut {answer}",
+      "fixture": "data-playtest"
+    }
+  },
+  {
+    "id": "013.2-032",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "stem": "Which operator sends the output of a command to a file and adds it to the end instead of replacing the file? Type the operator.",
+    "explanation": "`>>` appends; a single `>` would erase the old content first.",
+    "kind": "fill",
+    "accept": [
+      ">>"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "echo hello {answer} log.txt"
+    }
+  },
+  {
+    "id": "013.2-033",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "stem": "Which operator redirects the error messages (stream 2) of a command into a file? Type it with the file name left out.",
+    "explanation": "Stream 2 is standard error, and `2>` sends it to a file. Plain `>` is for standard output.",
+    "kind": "fill",
+    "accept": [
+      "2>"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "ls nothere {answer} err.txt; true"
+    }
+  },
+  {
+    "id": "013.2-034",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which `grep` option ignores the difference between upper and lower case? Type it with its dash.",
+    "explanation": "`-i` (long form `--ignore-case`) makes `HERO` match `hero`. Without it, `grep` is case-sensitive.",
+    "kind": "fill",
+    "accept": [
+      "-i",
+      "--ignore-case"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "grep {answer} HERO build.log",
+      "fixture": "data-buildlog"
+    }
+  },
+  {
+    "id": "013.2-035",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3"
+    ],
+    "terms": [
+      "013.2.t1"
+    ],
+    "stem": "Complete the command so it prints both `ghost` and `ghosts` from `enemies.txt`, using extended syntax.",
+    "explanation": "Extended syntax (`-E`) lets `?` make the previous character optional.",
+    "kind": "fill",
+    "accept": [
+      "-E 'ghosts?' enemies.txt",
+      "-E \"ghosts?\" enemies.txt",
+      "-E 'ghost(s)?' enemies.txt"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ grep",
+    "verify": {
+      "command": "grep {answer}",
+      "fixture": "data-playtest"
+    }
+  },
+  {
+    "id": "013.2-036",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t3"
+    ],
+    "stem": "Type the command that prints the first 5 lines of `build.log`.",
+    "explanation": "`head` prints the start of a file; `-n 5` (or `-5`) sets the number of lines. Without it, `head` shows 10.",
+    "kind": "fill",
+    "accept": [
+      "head -n 5 build.log",
+      "head -5 build.log",
+      "head -n5 build.log"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "data-buildlog"
+    }
+  },
+  {
+    "id": "013.2-037",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t5"
+    ],
+    "stem": "Which `uniq` option puts the number of repeats in front of each line? Type it with its dash.",
+    "explanation": "`-c` (long form `--count`) prints how often each line occurred, so `sort | uniq -c` gives a frequency table.",
+    "kind": "fill",
+    "accept": [
+      "-c",
+      "--count"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "printf 'a\\na\\nb\\n' | uniq {answer}"
+    }
+  },
+  {
+    "id": "013.2-038",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t4",
+      "013.2.t6",
+      "013.2.t3"
+    ],
+    "stem": "Jonas lists the two lowest scores from the CSV. What does this command print?",
+    "explanation": "The pipeline has four small stages: pick the column, drop the header, sort numerically, keep the first two.",
+    "kind": "output",
+    "command": "cut -d, -f3 playtest.csv | tail -n +2 | sort -n | head -n 2",
+    "fixture": "data-playtest",
+    "output": "700\n950",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "700\n950",
+        "correct": true,
+        "rationale": "`tail -n +2` removes the header, `sort -n` orders the scores numerically, and `head` keeps the two smallest."
+      },
+      {
+        "text": "1100\n1200",
+        "correct": false,
+        "rationale": "These are the two lowest scores when compared as text, which is what plain `sort` would give; `-n` compares numbers."
+      },
+      {
+        "text": "2600\n2100",
+        "correct": false,
+        "rationale": "These are the highest scores, which would need `sort -rn`."
+      },
+      {
+        "text": "score\n700",
+        "correct": false,
+        "rationale": "The header line was removed by `tail -n +2`, so `score` never reaches the sort."
+      }
+    ]
+  },
+  {
+    "id": "013.2-039",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t4",
+      "013.2.t5"
+    ],
+    "stem": "Ada builds a frequency table of enemy names. What does this command print?",
+    "explanation": "`uniq -c` prefixes the counts, and the final `sort -rn` orders by those numbers, largest first. The first two lines are the most common enemies.",
+    "kind": "output",
+    "command": "sort enemies.txt | uniq -c | sort -rn | head -n 2",
+    "fixture": "data-playtest",
+    "output": "      3 slime\n      2 goblin",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "      3 slime\n      2 bat",
+        "correct": false,
+        "rationale": "Both `goblin` and `bat` appear twice, and `sort -rn` puts `goblin` first when counts tie because the lines are compared in reverse."
+      },
+      {
+        "text": "      2 goblin\n      3 slime",
+        "correct": false,
+        "rationale": "The `-r` puts the largest number first, so 3 comes before 2."
+      },
+      {
+        "text": "      3 slime\n      2 goblin",
+        "correct": true,
+        "rationale": "`slime` appears three times and `goblin` twice, and `sort -rn` puts the biggest counts first."
+      },
+      {
+        "text": "slime\ngoblin",
+        "correct": false,
+        "rationale": "The counts are printed by `uniq -c`, so the numbers appear before the names."
+      }
+    ]
+  },
+  {
+    "id": "013.2-040",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "What does this command print? Type it exactly.",
+    "explanation": "The anchors `^` and `$` make the whole line match, so `ghosts` and `goblin` are out. `bat` is in the file twice, so it prints twice.",
+    "kind": "output",
+    "command": "grep -E '^(bat|ghost)$' enemies.txt",
+    "fixture": "data-playtest",
+    "output": "bat\nbat\nghost",
+    "mode": "type"
+  },
+  {
+    "id": "013.2-041",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2",
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t7"
+    ],
+    "stem": "Type what this prints.",
+    "explanation": "The second `echo` appends, so the file has two lines. Reading the file through `<` makes `wc` print the count without a file name.",
+    "kind": "output",
+    "command": "echo first > notes.txt\necho second >> notes.txt\nwc -l < notes.txt",
+    "fixture": "data-playtest",
+    "output": "2",
+    "mode": "type"
+  },
+  {
+    "id": "013.2-042",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "stem": "Ada runs `ls` on a missing file and an existing one, and hides the errors. What is printed?",
+    "explanation": "Standard error is stream 2, so `2> /dev/null` throws away the message but not the listing.",
+    "kind": "output",
+    "command": "ls nothere build.log 2> /dev/null",
+    "fixture": "data-buildlog",
+    "output": "build.log",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "ls: cannot access 'nothere': No such file or directory",
+        "correct": false,
+        "rationale": "This is the error message, which `2>` just sent away."
+      },
+      {
+        "text": "build.log",
+        "correct": true,
+        "rationale": "The error message goes to `/dev/null`, and only the normal output remains."
+      },
+      {
+        "text": "ls: cannot access 'nothere': No such file or directory\nbuild.log",
+        "correct": false,
+        "rationale": "The error would be on the screen only without the redirection."
+      },
+      {
+        "text": "nothere\nbuild.log",
+        "correct": false,
+        "rationale": "`ls` lists only files that exist; it prints no name for the missing one."
+      }
+    ]
+  },
+  {
+    "id": "013.2-043",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Type what this prints.",
+    "explanation": "`^s` anchors to a lowercase `s`, `.*` is any text of any length, and `n$` anchors to the end. `skeleton` qualifies; `Skeleton` begins with a capital and `slime` ends in `e`.",
+    "kind": "output",
+    "command": "grep '^s.*n$' enemies.txt",
+    "fixture": "data-playtest",
+    "output": "skeleton",
+    "mode": "type"
+  },
+  {
+    "id": "013.2-044",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t3",
+      "013.2.t6"
+    ],
+    "stem": "Mira looks at the last two play-test results. What does this command print?",
+    "explanation": "First select the last two lines, then keep columns 1 and 4 (the player and the deaths).",
+    "kind": "output",
+    "command": "tail -n 2 playtest.csv | cut -d, -f1,4",
+    "fixture": "data-playtest",
+    "output": "mira,4\njonas,7",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "mira,3\njonas,3",
+        "correct": false,
+        "rationale": "These are the first two fields from the level column; the second field here is the level, not the deaths."
+      },
+      {
+        "text": "mira,2600\njonas,1100",
+        "correct": false,
+        "rationale": "Those are the first and third fields; the fourth field holds the deaths."
+      },
+      {
+        "text": "jonas,2,700,9\njonas,3,1100,7",
+        "correct": false,
+        "rationale": "These are other rows entirely and uncut; `tail` takes the last two lines of the file."
+      },
+      {
+        "text": "mira,4\njonas,7",
+        "correct": true,
+        "rationale": "`tail` keeps the last two rows, and `cut` keeps the first and the fourth field of each."
+      }
+    ]
+  },
+  {
+    "id": "013.2-045",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "stem": "Which line or lines does this command show on the screen? The error is not redirected to the file.",
+    "explanation": "The shell reads redirections from left to right. For both streams in the file, write `> out.txt 2>&1`.",
+    "kind": "output",
+    "command": "ls nothere build.log 2>&1 > out.txt",
+    "fixture": "data-buildlog",
+    "output": "ls: cannot access 'nothere': No such file or directory",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "build.log",
+        "correct": false,
+        "rationale": "This is the normal output, which went into `out.txt` and not onto the screen."
+      },
+      {
+        "text": "ls: cannot access 'nothere': No such file or directory\nbuild.log",
+        "correct": false,
+        "rationale": "Both lines would be shown only without the `> out.txt` part."
+      },
+      {
+        "text": "ls: cannot access 'nothere': No such file or directory",
+        "correct": true,
+        "rationale": "Stream 2 was joined to the screen before stream 1 moved to the file, so the error stays on screen and `build.log` goes into `out.txt`."
+      },
+      {
+        "text": "(nothing)",
+        "correct": false,
+        "rationale": "The error message is still printed on screen because stream 2 points at the screen."
+      }
+    ]
   }
 ]

@@ -1,0 +1,6 @@
+{
+  "description": "The studio laptop's resolver settings: two DNS servers and the tuxpixel.example search domain in /etc/resolv.conf.",
+  "entries": [
+    { "path": "/etc/resolv.conf", "content": "# Written by the studio's network setup\nsearch tuxpixel.example\nnameserver 192.0.2.53\nnameserver 198.51.100.53\n", "mode": "644" }
+  ]
+}

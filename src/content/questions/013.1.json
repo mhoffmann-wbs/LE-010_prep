@@ -3,12 +3,977 @@
     "id": "013.1-001",
     "objectiveId": "013.1",
     "kind": "fill",
-    "areas": ["013.1.2"],
-    "terms": ["013.1.t2"],
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
     "stem": "Mira received `assets-0.9.tar.gz` and wants to see which files are inside before unpacking it. Which `tar` option lists an archive’s contents? Type the option with its dash, short or long form.",
-    "accept": ["-t", "--list"],
-    "verify": { "command": "tar {answer} -zf assets-0.9.tar.gz", "fixture": "assets" },
+    "accept": [
+      "-t",
+      "--list"
+    ],
+    "verify": {
+      "command": "tar {answer} -zf assets-0.9.tar.gz",
+      "fixture": "assets"
+    },
     "caseSensitive": true,
     "explanation": "`-t` (long form `--list`) lists an archive’s members without extracting them. With `-f` naming the file and `-z` for gzip, the full command is `tar -ztf assets-0.9.tar.gz`; `-x` would extract instead."
+  },
+  {
+    "id": "013.1-002",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t1",
+      "013.1.t2"
+    ],
+    "stem": "Ada wants one gzip-compressed file, `release-0.9.tar.gz`, that holds the folder `assets`. Which command does that?",
+    "explanation": "Create mode (`-c`), gzip filter (`-z`) and the file name (`-f`, written last in the group) give the `.tar.gz`. Keep `-f` right before the archive’s name.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tar -cfz release-0.9.tar.gz assets`",
+        "correct": false,
+        "rationale": "`-f` takes the next word as the archive name, so `tar` would create a file called `z` and treat the rest as input."
+      },
+      {
+        "text": "`tar -xzf release-0.9.tar.gz assets`",
+        "correct": false,
+        "rationale": "`-x` extracts from an existing archive; it never creates one."
+      },
+      {
+        "text": "`tar -czf release-0.9.tar.gz assets`",
+        "correct": true,
+        "rationale": "`-c` creates the archive, `-z` filters it through gzip, and `-f` is followed by the archive’s name."
+      },
+      {
+        "text": "`gzip release-0.9.tar.gz assets`",
+        "correct": false,
+        "rationale": "`gzip` compresses single files and does not bundle a folder into an archive."
+      }
+    ]
+  },
+  {
+    "id": "013.1-003",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Mira received `backup.tar` and wants to see which files it holds before she unpacks anything. Which command shows them?",
+    "explanation": "Listing with `-t` first shows where the files will land and whether the archive holds one tidy folder or many loose files.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tar -tf backup.tar`",
+        "correct": true,
+        "rationale": "`-t` prints the table of contents without writing any files."
+      },
+      {
+        "text": "`tar -xf backup.tar`",
+        "correct": false,
+        "rationale": "`-x` unpacks the files into the current directory instead of just listing them."
+      },
+      {
+        "text": "`tar -cf backup.tar`",
+        "correct": false,
+        "rationale": "`-c` would create a new archive, overwriting this one with an archive of nothing."
+      },
+      {
+        "text": "`tar -vf backup.tar`",
+        "correct": false,
+        "rationale": "`-v` only makes another mode talkative; on its own it names no mode, so `tar` refuses to run."
+      }
+    ]
+  },
+  {
+    "id": "013.1-004",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Jonas wants a `.tar.bz2` file. Which `tar` option selects the bzip2 compressor?",
+    "explanation": "The three filters are `-z` for gzip, `-j` for bzip2 and `-J` for xz. Mind the capital letter for xz.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-z`",
+        "correct": false,
+        "rationale": "`-z` selects gzip, which makes a `.tar.gz`."
+      },
+      {
+        "text": "`-x`",
+        "correct": false,
+        "rationale": "`-x` is the extract mode; it chooses no compressor."
+      },
+      {
+        "text": "`-b`",
+        "correct": false,
+        "rationale": "`tar` has no `-b` option for bzip2 (its `-b` sets a block size)."
+      },
+      {
+        "text": "`-j`",
+        "correct": true,
+        "rationale": "`-j` filters the archive through bzip2."
+      }
+    ]
+  },
+  {
+    "id": "013.1-005",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Mira runs `tar -xzf release.tar.gz -C /tmp/check`. What does the `-C /tmp/check` part do?",
+    "explanation": "`-C DIR` is how you unpack into another directory. Without it, `tar` extracts into the directory you are in.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "It compresses with the fastest setting",
+        "correct": false,
+        "rationale": "Speed is not chosen with `-C`; the compressor comes from `-z`, `-j` or `-J`."
+      },
+      {
+        "text": "It changes into `/tmp/check` first, so the files are extracted there",
+        "correct": true,
+        "rationale": "`-C` means “change directory”; the target directory must already exist."
+      },
+      {
+        "text": "It creates the archive `/tmp/check`",
+        "correct": false,
+        "rationale": "The archive is named after `-f`, and `-x` extracts, so nothing is created."
+      },
+      {
+        "text": "It checks the archive against the files in `/tmp/check`",
+        "correct": false,
+        "rationale": "`tar` has no such check with `-C`; the option only changes directory."
+      }
+    ]
+  },
+  {
+    "id": "013.1-006",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "Mira runs `gzip notes.txt` in a folder that holds only that file. What does the folder contain afterwards?",
+    "explanation": "The compressors `gzip`, `bzip2` and `xz` all replace the original unless you add `-k`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Only `notes.txt.gz`; the original is gone",
+        "correct": true,
+        "rationale": "By default `gzip` replaces the file with its compressed version."
+      },
+      {
+        "text": "Both `notes.txt` and `notes.txt.gz`",
+        "correct": false,
+        "rationale": "The original is kept only with `-k` (keep)."
+      },
+      {
+        "text": "Only `notes.txt`, now smaller",
+        "correct": false,
+        "rationale": "`gzip` writes a new `.gz` file and removes the original; the name never stays the same."
+      },
+      {
+        "text": "`notes.txt.gz` and a backup `notes.txt~`",
+        "correct": false,
+        "rationale": "`gzip` makes no backup copy."
+      }
+    ]
+  },
+  {
+    "id": "013.1-007",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t1"
+    ],
+    "stem": "Which statement about `tar -cf sprites.tar assets/sprites`, with no compression option, is true?",
+    "explanation": "Archiving and compression are separate jobs. The ending `.tar` says “bundled”; `.tar.gz` says “bundled, then compressed with gzip”.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "It compresses every file with gzip by default",
+        "correct": false,
+        "rationale": "GNU `tar` only compresses when you add `-z`, `-j`, `-J` or a similar filter."
+      },
+      {
+        "text": "It deletes the original files after bundling them",
+        "correct": false,
+        "rationale": "`tar` leaves the originals in place unless you ask it to remove them."
+      },
+      {
+        "text": "It bundles the files into one archive but does not make them smaller",
+        "correct": true,
+        "rationale": "Archiving only collects files and their paths into one file; compression is a separate step."
+      },
+      {
+        "text": "It can only bundle a single file at a time",
+        "correct": false,
+        "rationale": "Several files and whole directories can go into one archive."
+      }
+    ]
+  },
+  {
+    "id": "013.1-008",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t4"
+    ],
+    "stem": "Jonas must send the folder `screenshots` to colleagues on Windows as one ZIP file. Which command creates it?",
+    "explanation": "ZIP is the format that Windows and macOS open natively. `zip` creates the archive and compresses each file inside it, but a directory needs `-r`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`zip screenshots.zip screenshots`",
+        "correct": false,
+        "rationale": "Without `-r`, `zip` stores only the empty directory entry, not the files inside."
+      },
+      {
+        "text": "`zip -r screenshots.zip screenshots`",
+        "correct": true,
+        "rationale": "`-r` makes `zip` go into the folder and store everything below it."
+      },
+      {
+        "text": "`tar -czf screenshots.zip screenshots`",
+        "correct": false,
+        "rationale": "This creates a gzip-compressed tar file that merely carries the name `.zip`; Windows tools won’t open it as ZIP."
+      },
+      {
+        "text": "`gzip -r screenshots.zip screenshots`",
+        "correct": false,
+        "rationale": "`gzip` treats the first word as a file to compress and does not build ZIP archives."
+      }
+    ]
+  },
+  {
+    "id": "013.1-009",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t4"
+    ],
+    "stem": "Which command lists the files inside `assets.zip` without extracting them?",
+    "explanation": "`unzip` extracts by default, so use `-l` when you only want to see what is inside.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`unzip -d assets.zip`",
+        "correct": false,
+        "rationale": "`-d` names a directory to extract into; the command would then try to extract with a wrong name."
+      },
+      {
+        "text": "`unzip -x assets.zip`",
+        "correct": false,
+        "rationale": "`-x` excludes the files that follow it from extraction, and the command would still extract."
+      },
+      {
+        "text": "`zip -l assets.zip`",
+        "correct": false,
+        "rationale": "`zip` creates and updates archives; its `-l` option converts line endings in the files it adds."
+      },
+      {
+        "text": "`unzip -l assets.zip`",
+        "correct": true,
+        "rationale": "`-l` lists the archive’s members, much like `tar -t` does for tar files."
+      }
+    ]
+  },
+  {
+    "id": "013.1-010",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t1",
+      "013.1.t3"
+    ],
+    "stem": "Ada sees a file called `levels-pack.tar.xz`. What does the name say about it?",
+    "explanation": "Endings are only a convention, but they tell the next person how to unpack the file. The `file` command shows what the content really is.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "A ZIP archive with extra-strong compression",
+        "correct": false,
+        "rationale": "ZIP files end in `.zip`; the `.xz` ending belongs to the xz compressor."
+      },
+      {
+        "text": "A tar archive that was then compressed with gzip",
+        "correct": false,
+        "rationale": "`.gz` is the ending for gzip; xz files end in `.xz`."
+      },
+      {
+        "text": "A tar archive that was then compressed with xz",
+        "correct": true,
+        "rationale": "The endings read left to right in the order the steps were done: tar bundled, xz compressed."
+      },
+      {
+        "text": "An xz file that tar later bundled again",
+        "correct": false,
+        "rationale": "The last ending shows the last step, and that is the compression."
+      }
+    ]
+  },
+  {
+    "id": "013.1-011",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "Mira has `fight.log.gz` and wants the original `fight.log` back, with the `.gz` file removed. Which command does that?",
+    "explanation": "The matching commands are `gunzip`, `bunzip2` and `unxz`. They are the same as `gzip -d`, `bzip2 -d` and `xz -d`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`gunzip fight.log.gz`",
+        "correct": true,
+        "rationale": "`gunzip` decompresses a `.gz` file and, by default, removes it afterwards."
+      },
+      {
+        "text": "`gzip fight.log.gz`",
+        "correct": false,
+        "rationale": "This tries to compress a file that already has the `.gz` ending and leaves it unchanged."
+      },
+      {
+        "text": "`tar -xf fight.log.gz`",
+        "correct": false,
+        "rationale": "`tar` unpacks archives; this file is a single compressed log, not a tar archive."
+      },
+      {
+        "text": "`unzip fight.log.gz`",
+        "correct": false,
+        "rationale": "`unzip` reads ZIP files, not the gzip format."
+      }
+    ]
+  },
+  {
+    "id": "013.1-012",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3",
+      "013.1.t2"
+    ],
+    "stem": "Ada archives old logs that nobody reads and she does not mind the extra time. Which `tar` option usually produces the smallest result?",
+    "explanation": "As a rule of thumb gzip is fastest and biggest, bzip2 sits in the middle, and xz is slowest and smallest.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-z` (gzip)",
+        "correct": false,
+        "rationale": "gzip is the fastest of the three, but it usually leaves the largest file."
+      },
+      {
+        "text": "`-j` (bzip2)",
+        "correct": false,
+        "rationale": "bzip2 compresses harder than gzip but usually not as hard as xz."
+      },
+      {
+        "text": "`-c` (create)",
+        "correct": false,
+        "rationale": "`-c` creates an archive; it does not choose a compressor."
+      },
+      {
+        "text": "`-J` (xz)",
+        "correct": true,
+        "rationale": "xz usually squeezes hardest, though it is the slowest of the three to compress."
+      }
+    ]
+  },
+  {
+    "id": "013.1-013",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3",
+      "013.1.t4"
+    ],
+    "stem": "Which of these commands fails with the message that `assets` is a directory and is ignored?",
+    "explanation": "That is why `tar` exists: bundle the folder into one file first, then compress it. `tar -czf` does both steps in one command.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tar -cf assets.tar assets`",
+        "correct": false,
+        "rationale": "`tar` bundles directories without trouble."
+      },
+      {
+        "text": "`gzip assets`",
+        "correct": true,
+        "rationale": "`gzip` compresses single files only, so it skips a directory."
+      },
+      {
+        "text": "`zip -r assets.zip assets`",
+        "correct": false,
+        "rationale": "With `-r`, `zip` stores the folder and all files below it."
+      },
+      {
+        "text": "`tar -czf assets.tar.gz assets`",
+        "correct": false,
+        "rationale": "This bundles the folder and compresses the bundle in one go."
+      }
+    ]
+  },
+  {
+    "id": "013.1-014",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t1",
+      "013.1.t2"
+    ],
+    "stem": "Ada must unpack `release.tar.gz` into the existing folder `/tmp/check`, not into her current folder. Which command does that?",
+    "explanation": "To choose where files land, use `-C DIR` (the directory must already exist). Without it, files are written below the current directory.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tar -xzf release.tar.gz -C /tmp/check`",
+        "correct": true,
+        "rationale": "`-x` extracts, `-z` handles gzip, and `-C` changes into the target directory first."
+      },
+      {
+        "text": "`tar -xzf release.tar.gz /tmp/check`",
+        "correct": false,
+        "rationale": "A word after the archive name is a member to extract, so `tar` would look for a file called `/tmp/check` inside the archive."
+      },
+      {
+        "text": "`tar -czf release.tar.gz -C /tmp/check`",
+        "correct": false,
+        "rationale": "`-c` creates an archive, overwriting `release.tar.gz` instead of unpacking it."
+      },
+      {
+        "text": "`tar -tzf release.tar.gz -C /tmp/check`",
+        "correct": false,
+        "rationale": "`-t` only lists the members; nothing is written anywhere."
+      }
+    ]
+  },
+  {
+    "id": "013.1-015",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t1",
+      "013.1.t4"
+    ],
+    "stem": "Mira needs one compressed file that holds the whole folder `assets`. Which commands create it? (Choose TWO.)",
+    "explanation": "Only `tar` with `-c` and a compression option, or `zip -r`, handles a folder. The single-file compressors need a tar archive first.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`gzip assets`",
+        "correct": false,
+        "rationale": "`gzip` refuses directories and says it is ignoring them."
+      },
+      {
+        "text": "`tar -czf assets.tar.gz assets`",
+        "correct": true,
+        "rationale": "It bundles the folder into a tar archive and compresses it with gzip."
+      },
+      {
+        "text": "`bzip2 assets`",
+        "correct": false,
+        "rationale": "`bzip2` also works on single files only."
+      },
+      {
+        "text": "`tar -tzf assets.tar.gz assets`",
+        "correct": false,
+        "rationale": "`-t` lists an existing archive and creates nothing."
+      },
+      {
+        "text": "`zip -r assets.zip assets`",
+        "correct": true,
+        "rationale": "It creates a ZIP archive and compresses each file inside it."
+      }
+    ]
+  },
+  {
+    "id": "013.1-016",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Which `tar` options select a compression program? (Choose THREE.)",
+    "explanation": "Remember the trio `z`, `j` and `J`: gzip, bzip2 and xz.",
+    "kind": "multi",
+    "select": 3,
+    "options": [
+      {
+        "text": "`-z` (gzip)",
+        "correct": true,
+        "rationale": "Selects gzip."
+      },
+      {
+        "text": "`-C`",
+        "correct": false,
+        "rationale": "It changes the directory; it has nothing to do with compression."
+      },
+      {
+        "text": "`-j` (bzip2)",
+        "correct": true,
+        "rationale": "Selects bzip2."
+      },
+      {
+        "text": "`-v`",
+        "correct": false,
+        "rationale": "It lists files as `tar` works; the result is unchanged."
+      },
+      {
+        "text": "`-t`",
+        "correct": false,
+        "rationale": "It lists the archive’s table of contents."
+      },
+      {
+        "text": "`-J` (xz)",
+        "correct": true,
+        "rationale": "Selects xz."
+      }
+    ]
+  },
+  {
+    "id": "013.1-017",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "Which statements about `gzip`, `bzip2` and `xz` are true? (Choose TWO.)",
+    "explanation": "Remember the pattern: one file in, one compressed file out, original removed unless you add `-k`.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "They can compress a whole directory when given `-r`",
+        "correct": false,
+        "rationale": "Directories are handled by `tar` or `zip -r`, not by these three."
+      },
+      {
+        "text": "They all produce files that end in `.zip`",
+        "correct": false,
+        "rationale": "The endings are `.gz`, `.bz2` and `.xz`."
+      },
+      {
+        "text": "`xz` is the fastest of the three",
+        "correct": false,
+        "rationale": "It is usually the slowest; gzip is the fastest."
+      },
+      {
+        "text": "Each one works on a single file and, by default, replaces it with the compressed version",
+        "correct": true,
+        "rationale": "The original disappears unless you ask to keep it."
+      },
+      {
+        "text": "`-k` keeps the original file next to the compressed one",
+        "correct": true,
+        "rationale": "It stands for “keep”."
+      }
+    ]
+  },
+  {
+    "id": "013.1-018",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2",
+      "013.1.t4"
+    ],
+    "stem": "Which commands list the contents of an archive without extracting it? (Choose TWO.)",
+    "explanation": "Listing first is a good habit: `tar -t` and `unzip -l` show the paths before you write anything.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`tar -tzf backup.tar.gz`",
+        "correct": true,
+        "rationale": "The `-t` mode prints the members of the archive."
+      },
+      {
+        "text": "`unzip -l backup.zip`",
+        "correct": true,
+        "rationale": "The `-l` option lists the members of a ZIP file."
+      },
+      {
+        "text": "`tar -xzf backup.tar.gz`",
+        "correct": false,
+        "rationale": "`-x` writes the files to disk."
+      },
+      {
+        "text": "`unzip backup.zip`",
+        "correct": false,
+        "rationale": "Without `-l`, `unzip` extracts."
+      },
+      {
+        "text": "`gunzip backup.tar.gz`",
+        "correct": false,
+        "rationale": "It decompresses the file and removes the `.gz` ending; it does not list anything."
+      }
+    ]
+  },
+  {
+    "id": "013.1-019",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2",
+      "013.1.t1"
+    ],
+    "stem": "Mira wants only `assets/README.md` out of `assets-0.9.tar.gz`. Complete the command so it extracts that one file into the current directory.",
+    "explanation": "Name the member after the archive. `-x` extracts, `-f` names the archive, and `-z` is optional when reading, because GNU `tar` detects gzip itself.",
+    "kind": "fill",
+    "accept": [
+      "-xzf assets-0.9.tar.gz assets/README.md",
+      "-xf assets-0.9.tar.gz assets/README.md",
+      "-x -f assets-0.9.tar.gz assets/README.md",
+      "-zxf assets-0.9.tar.gz assets/README.md"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ tar",
+    "verify": {
+      "command": "tar {answer}",
+      "fixture": "assets"
+    }
+  },
+  {
+    "id": "013.1-020",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "Which option makes `gzip` keep the original file instead of deleting it? Type the short option with its dash.",
+    "explanation": "`-k` (long form `--keep`) leaves the original in place, so you end up with both `fight.log` and `fight.log.gz`.",
+    "kind": "fill",
+    "accept": [
+      "-k",
+      "--keep"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "cp /etc/hostname n.txt; gzip {answer} n.txt"
+    }
+  },
+  {
+    "id": "013.1-021",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "Type a command that decompresses `fight.log.gz` and removes the `.gz` file again.",
+    "explanation": "`gunzip` is the same program as `gzip -d`. Both turn `fight.log.gz` back into `fight.log`.",
+    "kind": "fill",
+    "accept": [
+      "gunzip fight.log.gz",
+      "gzip -d fight.log.gz",
+      "gzip --decompress fight.log.gz"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "printf \"boom\\n\" > fight.log; gzip fight.log; {answer}"
+    }
+  },
+  {
+    "id": "013.1-022",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Which long or short option tells `tar` to use xz when creating an archive? Type it with its dashes.",
+    "explanation": "A capital `-J` (long form `--xz`) filters through xz and goes with the `.tar.xz` ending.",
+    "kind": "fill",
+    "accept": [
+      "-J",
+      "--xz"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "tar -cf a.tar.xz {answer} assets",
+      "fixture": "assets"
+    }
+  },
+  {
+    "id": "013.1-023",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t4"
+    ],
+    "stem": "Complete the command so it creates `assets.zip` from the folder `assets`, including every file below it.",
+    "explanation": "The directory needs `-r` (recursive); the archive’s name comes before the files to add.",
+    "kind": "fill",
+    "accept": [
+      "-r assets.zip assets",
+      "-rq assets.zip assets",
+      "assets.zip -r assets"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ zip",
+    "verify": {
+      "command": "zip {answer}",
+      "fixture": "assets"
+    }
+  },
+  {
+    "id": "013.1-024",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t4"
+    ],
+    "stem": "Which `unzip` option extracts the archive into another directory, here `out`? Type the option with its dash.",
+    "explanation": "`-d DIR` sets the extraction directory, like `-C` does for `tar`.",
+    "kind": "fill",
+    "accept": [
+      "-d"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "zip -rq a.zip assets; mkdir out; unzip -q a.zip {answer} out",
+      "fixture": "assets"
+    }
+  },
+  {
+    "id": "013.1-025",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2",
+      "013.1.t1"
+    ],
+    "stem": "The release script made `assets-0.9.tar.gz`. How many lines does this command print? Type the number.",
+    "explanation": "`tar -tf` lists one member per line, folders included, and `wc -l` counts those lines. The folder entries are why the number is bigger than the number of regular files.",
+    "kind": "output",
+    "command": "tar -tf assets-0.9.tar.gz | wc -l",
+    "fixture": "assets",
+    "output": "9",
+    "mode": "type"
+  },
+  {
+    "id": "013.1-026",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Mira archives one subfolder and lists the result. What is printed?",
+    "explanation": "`tar` keeps each name as typed on the command line and adds the directory entry before its files.",
+    "kind": "output",
+    "command": "tar -cf sprites.tar assets/sprites\ntar -tf sprites.tar",
+    "fixture": "assets",
+    "output": "assets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "assets/sprites/hero.png\nassets/sprites/slime.png",
+        "correct": false,
+        "rationale": "The folder itself is a member of the archive too, so it appears as its own line."
+      },
+      {
+        "text": "sprites/\nsprites/hero.png\nsprites/slime.png",
+        "correct": false,
+        "rationale": "`tar` stores the paths exactly as given, so the `assets/` part stays."
+      },
+      {
+        "text": "assets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png",
+        "correct": true,
+        "rationale": "The directory entry comes first, then the two files below it, all with the paths given on the command line."
+      },
+      {
+        "text": "assets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png\nsprites.tar",
+        "correct": false,
+        "rationale": "The archive does not contain itself; `-t` shows only what is inside it."
+      }
+    ]
+  },
+  {
+    "id": "013.1-027",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "What does the listing show after `gzip -k` ran inside `assets`?",
+    "explanation": "`gzip -k` keeps the original, so both files exist afterwards. `ls -1` prints one name per line.",
+    "kind": "output",
+    "command": "cd assets\ngzip -k README.md\nls -1",
+    "fixture": "assets",
+    "output": "levels\nREADME.md\nREADME.md.gz\nsounds\nsprites",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "levels\nREADME.md.gz\nsounds\nsprites",
+        "correct": false,
+        "rationale": "Without `-k` this would be right, because the original is removed."
+      },
+      {
+        "text": "levels\nREADME.md\nREADME.md.gz\nsounds\nsprites",
+        "correct": true,
+        "rationale": "`-k` keeps README.md and adds README.md.gz; `ls` sorts the names, ignoring case."
+      },
+      {
+        "text": "levels\nREADME.md\nsounds\nsprites",
+        "correct": false,
+        "rationale": "This is the folder before compressing; the new `.gz` file is missing."
+      },
+      {
+        "text": "README.md\nREADME.md.gz\nlevels\nsounds\nsprites",
+        "correct": false,
+        "rationale": "Uppercase names would come first only with the plain C locale; here `ls` sorts ignoring case, so `levels` is listed before `README.md`."
+      }
+    ]
+  },
+  {
+    "id": "013.1-028",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2",
+      "013.1.t1"
+    ],
+    "stem": "Type the one line this prints.",
+    "explanation": "The archive stores paths starting with `assets/`, so extracting into `out` creates `out/assets`. Only that one folder sits directly in `out`.",
+    "kind": "output",
+    "command": "mkdir out\ntar -xzf assets-0.9.tar.gz -C out\nls -1 out",
+    "fixture": "assets",
+    "output": "assets",
+    "mode": "type"
+  },
+  {
+    "id": "013.1-029",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3",
+      "013.1.t2"
+    ],
+    "stem": "What does the `file` command report for this archive?",
+    "explanation": "`file` looks at the real content, not the name, so it shows which compressor was used.",
+    "kind": "output",
+    "command": "tar -cJf a.tar.xz assets\nfile a.tar.xz",
+    "fixture": "assets",
+    "output": "a.tar.xz: XZ compressed data, checksum CRC64",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "a.tar.xz: gzip compressed data, from Unix",
+        "correct": false,
+        "rationale": "That is what `-z` would produce. A capital `-J` selects xz."
+      },
+      {
+        "text": "a.tar.xz: bzip2 compressed data, block size = 900k",
+        "correct": false,
+        "rationale": "bzip2 comes from `-j`, not `-J`."
+      },
+      {
+        "text": "a.tar.xz: POSIX tar archive (GNU)",
+        "correct": false,
+        "rationale": "That would be a plain uncompressed tar, which needs no filter option."
+      },
+      {
+        "text": "a.tar.xz: XZ compressed data, checksum CRC64",
+        "correct": true,
+        "rationale": "`-J` made an xz-compressed archive, and `file` identifies that from the content."
+      }
+    ]
+  },
+  {
+    "id": "013.1-030",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3",
+      "013.1.t2"
+    ],
+    "stem": "Type the one line this prints.",
+    "explanation": "`gzip` replaces `all.tar` with `all.tar.gz`, so the glob `all*` matches only the compressed file.",
+    "kind": "output",
+    "command": "tar -cf all.tar assets\ngzip all.tar\nls -1 all*",
+    "fixture": "assets",
+    "output": "all.tar.gz",
+    "mode": "type"
   }
 ]

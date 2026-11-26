@@ -1,0 +1,1646 @@
+[
+  {
+    "id": "014.3-001",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.1"
+    ],
+    "terms": [
+      "014.3.t4",
+      "014.3.vt2"
+    ],
+    "stem": "Ada needs to change a setting of the build daemon that applies to the whole machine. Under which directory are system-wide configuration files kept?",
+    "options": [
+      {
+        "text": "`/var/log`",
+        "correct": false,
+        "rationale": "That directory holds log files, which programs write while they run."
+      },
+      {
+        "text": "`/proc`",
+        "correct": false,
+        "rationale": "That directory shows kernel and process data, made up on the fly."
+      },
+      {
+        "text": "`/etc`",
+        "correct": true,
+        "rationale": "It holds the machine’s configuration files, mostly as plain text."
+      },
+      {
+        "text": "`/boot`",
+        "correct": false,
+        "rationale": "That directory holds the kernel and boot loader files."
+      }
+    ],
+    "explanation": "System-wide configuration lives in `/etc`, as mostly plain text files that root can edit, for example `/etc/tuxpixel/buildd.conf`. Settings that affect only one user are normally kept in hidden files in that user’s home directory.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/hier.7.html"
+    ]
+  },
+  {
+    "id": "014.3-002",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.1"
+    ],
+    "stem": "Jonas changes a setting of his text editor that should apply only to his account. Where does the program normally keep it?",
+    "options": [
+      {
+        "text": "In a hidden file or directory whose name starts with a dot, inside his home directory.",
+        "correct": true,
+        "rationale": "Per-user settings stay out of the way of other users."
+      },
+      {
+        "text": "In `/etc`, in a file that every user on the machine reads and that only root may edit.",
+        "correct": false,
+        "rationale": "Files in `/etc` apply to the whole machine and are changed by root."
+      },
+      {
+        "text": "In `/proc`, where the kernel keeps a settings file for each user account.",
+        "correct": false,
+        "rationale": "`/proc` shows kernel data and is rebuilt while the system runs, so nothing is stored there."
+      },
+      {
+        "text": "In `/boot`, next to the kernel, so that the setting is read before any user logs in.",
+        "correct": false,
+        "rationale": "`/boot` holds only start-up files, not the settings of programs."
+      }
+    ],
+    "explanation": "System-wide settings are in `/etc`. A setting that belongs to one user is stored in a hidden file (a “dot file”) or a hidden directory in that user’s home directory, such as `~/.config`."
+  },
+  {
+    "id": "014.3-003",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.1"
+    ],
+    "stem": "Which of these is a program, as opposed to a configuration file or a log file?",
+    "options": [
+      {
+        "text": "`/etc/hostname`",
+        "correct": false,
+        "rationale": "It is a configuration file holding the machine’s name."
+      },
+      {
+        "text": "`/etc/tuxpixel/buildd.conf`",
+        "correct": false,
+        "rationale": "It is a configuration file of the build daemon."
+      },
+      {
+        "text": "`/var/log/dpkg.log`",
+        "correct": false,
+        "rationale": "It is a log file that records package changes."
+      },
+      {
+        "text": "`/usr/bin/ls`",
+        "correct": true,
+        "rationale": "It is an executable file on disk that becomes a process when run."
+      }
+    ],
+    "explanation": "A program is a file on disk that can be run, such as `/usr/bin/ls`. Configuration files in `/etc` only tell programs how to behave, and log files under `/var/log` record what happened."
+  },
+  {
+    "id": "014.3-004",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "stem": "What is special about the process with PID 1 on a Linux system?",
+    "options": [
+      {
+        "text": "It is the process that uses the most memory, so the kernel numbers it first when the machine starts.",
+        "correct": false,
+        "rationale": "PIDs are numbers handed out in order and have nothing to do with memory use."
+      },
+      {
+        "text": "It is the first process the kernel starts, and it starts the others, directly or indirectly.",
+        "correct": true,
+        "rationale": "On most distributions it is systemd."
+      },
+      {
+        "text": "It is the shell of the first user who logged in, and it ends when they log out.",
+        "correct": false,
+        "rationale": "The shell is an ordinary process with a later PID."
+      },
+      {
+        "text": "It is reserved for the kernel’s log messages, and no other program may use it.",
+        "correct": false,
+        "rationale": "PID 1 is a normal process, and the kernel’s ring buffer is read with `dmesg`."
+      }
+    ],
+    "explanation": "The kernel starts one first process, PID 1. It starts everything else, so every other process has a parent. On most modern distributions PID 1 is systemd, which also starts and supervises the services."
+  },
+  {
+    "id": "014.3-005",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Ada wants a live view of the processes, redrawn every few seconds and sorted by CPU use. Which command does this?",
+    "options": [
+      {
+        "text": "`ps`",
+        "correct": false,
+        "rationale": "It prints one snapshot and then exits."
+      },
+      {
+        "text": "`top`",
+        "correct": true,
+        "rationale": "It updates continuously and shows the busiest processes first."
+      },
+      {
+        "text": "`free`",
+        "correct": false,
+        "rationale": "It shows memory use, not processes."
+      },
+      {
+        "text": "`dmesg`",
+        "correct": false,
+        "rationale": "It prints kernel messages from the ring buffer."
+      }
+    ],
+    "explanation": "`top` is the live view: it redraws every few seconds, sorted by CPU use by default. `ps` takes a single snapshot, `free` reports memory, and `dmesg` shows kernel messages.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
+    "id": "014.3-006",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Which command shows every process on the system in the full format, with columns such as UID, PID, PPID and start time?",
+    "options": [
+      {
+        "text": "`ps -f`",
+        "correct": false,
+        "rationale": "Without `-e` it lists only the processes of the current terminal."
+      },
+      {
+        "text": "`ps -p 1`",
+        "correct": false,
+        "rationale": "It shows a single process, the one with PID 1."
+      },
+      {
+        "text": "`ps`",
+        "correct": false,
+        "rationale": "Without options it shows only the processes of the current terminal."
+      },
+      {
+        "text": "`ps -ef`",
+        "correct": true,
+        "rationale": "`-e` selects every process and `-f` chooses the full format."
+      }
+    ],
+    "explanation": "`ps -ef` lists every process in the full format. Plain `ps` or `ps -f` shows only the processes in your current terminal, and `ps -p` picks processes by PID. The BSD-style `ps aux` also lists all processes.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ps.1.html"
+    ]
+  },
+  {
+    "id": "014.3-007",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Inside a running `top`, which key sorts the process list by memory use?",
+    "options": [
+      {
+        "text": "`M`",
+        "correct": true,
+        "rationale": "It sorts by the share of memory used."
+      },
+      {
+        "text": "`P`",
+        "correct": false,
+        "rationale": "It sorts by CPU use."
+      },
+      {
+        "text": "`q`",
+        "correct": false,
+        "rationale": "It quits top."
+      },
+      {
+        "text": "`k`",
+        "correct": false,
+        "rationale": "It asks for a PID and kills that process."
+      }
+    ],
+    "explanation": "In `top`, `M` sorts by memory, `P` sorts by CPU, `k` kills a process and `q` quits. `h` shows the help screen with all keys.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
+    "id": "014.3-008",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "In the output of `ps aux`, a process shows the state `Z` in the STAT column. What does that mean?",
+    "options": [
+      {
+        "text": "It is running right now on a CPU.",
+        "correct": false,
+        "rationale": "A running process is marked `R`."
+      },
+      {
+        "text": "It is sleeping and waits for an event, such as input from the keyboard.",
+        "correct": false,
+        "rationale": "A sleeping process is marked `S`."
+      },
+      {
+        "text": "It is a zombie: it has ended, but its parent has not yet collected its exit status.",
+        "correct": true,
+        "rationale": "Zombies use no CPU time and disappear once the parent reads the status."
+      },
+      {
+        "text": "It is stopped by a signal until it receives the order to continue.",
+        "correct": false,
+        "rationale": "A stopped process is marked `T`."
+      }
+    ],
+    "explanation": "The state letter in the STAT column of `ps` tells what the process is doing: `R` running, `S` sleeping, `T` stopped and `Z` zombie, which is a finished process whose parent has not collected its exit status yet.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ps.1.html"
+    ]
+  },
+  {
+    "id": "014.3-009",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "The top line of `top` shows `load average: 0.05, 0.10, 0.20`. What do the three numbers mean?",
+    "options": [
+      {
+        "text": "The share of CPU time used by the first, second and third busiest process.",
+        "correct": false,
+        "rationale": "The load average is a system-wide figure, not a per-process one."
+      },
+      {
+        "text": "The memory use of RAM, swap and the disk cache, as shares of the total.",
+        "correct": false,
+        "rationale": "Memory is shown on separate lines of top."
+      },
+      {
+        "text": "The number of running, sleeping and zombie processes at this moment.",
+        "correct": false,
+        "rationale": "Those counts are shown on the “Tasks” line."
+      },
+      {
+        "text": "The average system load over the last 1, 5 and 15 minutes.",
+        "correct": true,
+        "rationale": "They show how busy the CPU has been recently."
+      }
+    ],
+    "explanation": "The load average is the average number of processes that wanted the CPU over the last 1, 5 and 15 minutes. A value near the number of CPU cores means the machine is fully used.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
+    "id": "014.3-010",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "stem": "Mira starts `ls` in two different terminals at the same time. How many processes and how many programs are involved?",
+    "options": [
+      {
+        "text": "One process and one program, because the kernel runs a program only once.",
+        "correct": false,
+        "rationale": "Every run creates a new process, even of the same program."
+      },
+      {
+        "text": "Two processes, each with its own PID, and one program, the file `/usr/bin/ls`.",
+        "correct": true,
+        "rationale": "Each running copy of a program is a separate process."
+      },
+      {
+        "text": "Two processes and two programs, because each terminal has its own copy of the file.",
+        "correct": false,
+        "rationale": "Both processes run the same program file on disk."
+      },
+      {
+        "text": "One process and two programs, because the terminals share one process list.",
+        "correct": false,
+        "rationale": "Each running copy is a process of its own, with its own PID."
+      }
+    ],
+    "explanation": "A program is a file on disk. A process is one running instance of it, with its own PID. Running `ls` twice means two processes of the same program."
+  },
+  {
+    "id": "014.3-011",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v1",
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "In the output of `free`, which column best tells how much memory programs can still use without swapping?",
+    "options": [
+      {
+        "text": "`free`",
+        "correct": false,
+        "rationale": "It counts only memory that is completely unused, which is usually small because Linux uses spare RAM as cache."
+      },
+      {
+        "text": "`used`",
+        "correct": false,
+        "rationale": "It shows memory in use, not what is left."
+      },
+      {
+        "text": "`available`",
+        "correct": true,
+        "rationale": "It estimates the memory that can be given to programs, including cache that can be freed."
+      },
+      {
+        "text": "`shared`",
+        "correct": false,
+        "rationale": "It shows memory shared between processes, mostly temporary file systems."
+      }
+    ],
+    "explanation": "A small value in the `free` column is normal, because Linux uses spare RAM as a disk cache and gives it back when programs need it. `available` is the better guide for what programs can still use.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  },
+  {
+    "id": "014.3-012",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v1"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "The asset server runs out of RAM during a big build. What is swap, and how does it help?",
+    "options": [
+      {
+        "text": "It is disk space that the kernel uses as extra memory when RAM is full, but it is much slower than RAM.",
+        "correct": true,
+        "rationale": "Heavy swapping makes a machine feel slow."
+      },
+      {
+        "text": "It is a second copy of the RAM that the kernel keeps on disk to make memory access faster and to protect it after a power cut.",
+        "correct": false,
+        "rationale": "Swap isn’t a mirror of RAM, and the disk is slower, not faster."
+      },
+      {
+        "text": "It is a cache for the processor that holds the most recent instructions, inside the CPU.",
+        "correct": false,
+        "rationale": "That describes a CPU cache, which is built into the processor."
+      },
+      {
+        "text": "It is a partition that stores the kernel and the boot loader files for the next start.",
+        "correct": false,
+        "rationale": "Those files live in `/boot`."
+      }
+    ],
+    "explanation": "Swap is disk space (a partition or a file) that the kernel can use as overflow memory when RAM is full. It keeps programs from being killed, but it is far slower than RAM. `free` shows the swap total and use in its last line.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  },
+  {
+    "id": "014.3-013",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v1"
+    ],
+    "stem": "Why can one crashing program not overwrite the memory of another program on Linux?",
+    "options": [
+      {
+        "text": "The kernel gives each process its own virtual address space, mapped to real memory by the kernel.",
+        "correct": true,
+        "rationale": "A process only sees its own addresses."
+      },
+      {
+        "text": "Every program has to be started by root, so no ordinary user can start two at once and cannot be run in parallel.",
+        "correct": false,
+        "rationale": "Programs of ordinary users run at the same time without any special rights."
+      },
+      {
+        "text": "All programs share one block of RAM, which the kernel locks as soon as one program is running.",
+        "correct": false,
+        "rationale": "The kernel doesn’t lock memory this way; memory is divided between processes."
+      },
+      {
+        "text": "The processor stores each program in swap first, so it can never reach RAM.",
+        "correct": false,
+        "rationale": "Swap is used only when RAM is full, and doesn’t isolate programs."
+      }
+    ],
+    "explanation": "Processes don’t see the real memory addresses. The kernel gives each of them its own virtual address space and maps it to physical RAM (or swap). A program can’t even name an address that belongs to another process."
+  },
+  {
+    "id": "014.3-014",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v1"
+    ],
+    "terms": [
+      "014.3.t6",
+      "014.3.vt3"
+    ],
+    "stem": "A line in `/proc/1234/maps` begins with `7f3c2a000000-7f3c2a021000`. What are these two numbers?",
+    "options": [
+      {
+        "text": "Decimal process IDs: the process and the parent that started it and the user that owns both.",
+        "correct": false,
+        "rationale": "Process IDs are small decimal numbers, and `maps` is not a list of them."
+      },
+      {
+        "text": "Octal permission modes of the two files that the process has opened.",
+        "correct": false,
+        "rationale": "Permissions look like `rw-` or `644` and don’t form ranges."
+      },
+      {
+        "text": "Hexadecimal memory addresses: the start and the end of an area of the process’s memory.",
+        "correct": true,
+        "rationale": "The addresses are virtual ones, valid only inside process 1234."
+      },
+      {
+        "text": "IPv6 addresses of the two network connections that the process has made.",
+        "correct": false,
+        "rationale": "IPv6 addresses use colons, and `maps` doesn’t list network connections."
+      }
+    ],
+    "explanation": "`/proc/<PID>/maps` lists the memory areas of a process. Each line starts with the start and end address of an area, written in hexadecimal. They are virtual addresses that belong to that process.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/proc.5.html"
+    ]
+  },
+  {
+    "id": "014.3-015",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v1"
+    ],
+    "terms": [
+      "014.3.t6",
+      "014.3.vt3"
+    ],
+    "stem": "Which file shows the total and the free memory of the machine as text that `cat` or `grep` can read?",
+    "options": [
+      {
+        "text": "`/etc/meminfo`",
+        "correct": false,
+        "rationale": "`/etc` holds configuration files, and no such file exists there."
+      },
+      {
+        "text": "`/proc/meminfo`",
+        "correct": true,
+        "rationale": "The kernel builds it when it is read, and `free` uses the same data."
+      },
+      {
+        "text": "`/var/log/memory`",
+        "correct": false,
+        "rationale": "`/var/log` holds logs, not a live memory report."
+      },
+      {
+        "text": "`/boot/meminfo`",
+        "correct": false,
+        "rationale": "`/boot` holds start-up files, not live system data."
+      }
+    ],
+    "explanation": "`/proc` is a pseudo-filesystem that the kernel makes up on the fly. `/proc/meminfo` reports memory, `/proc/cpuinfo` the processor, and `/proc/<PID>/` one process. `free`, `ps` and `top` read their data from there.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/proc.5.html"
+    ]
+  },
+  {
+    "id": "014.3-016",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.3"
+    ],
+    "terms": [
+      "014.3.t2"
+    ],
+    "stem": "On a systemd machine, Mira wants to stop the running service `buildd` right now. Which command does this?",
+    "options": [
+      {
+        "text": "`sudo systemctl status buildd`",
+        "correct": false,
+        "rationale": "It only shows the state of the service and doesn’t change it."
+      },
+      {
+        "text": "`sudo systemctl disable buildd`",
+        "correct": false,
+        "rationale": "It changes what happens at boot, but leaves a running service running."
+      },
+      {
+        "text": "`sudo systemctl enable buildd`",
+        "correct": false,
+        "rationale": "It makes the service start at boot, and doesn’t stop it."
+      },
+      {
+        "text": "`sudo systemctl stop buildd`",
+        "correct": true,
+        "rationale": "It stops the service at once and needs root rights."
+      }
+    ],
+    "explanation": "`systemctl stop` ends a service immediately, `start` starts it and `status` shows its state. `enable` and `disable` only control whether the service starts at boot.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ]
+  },
+  {
+    "id": "014.3-017",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.3"
+    ],
+    "terms": [
+      "014.3.t2"
+    ],
+    "stem": "Mira started `pixel-raiders-server` yesterday, but after a reboot it is not running. Which command makes it start at every boot?",
+    "options": [
+      {
+        "text": "`sudo systemctl start pixel-raiders-server`",
+        "correct": false,
+        "rationale": "It runs the service now and doesn’t change what happens at the next boot."
+      },
+      {
+        "text": "`sudo systemctl status pixel-raiders-server`",
+        "correct": false,
+        "rationale": "It only reports the state of the unit."
+      },
+      {
+        "text": "`sudo systemctl enable pixel-raiders-server`",
+        "correct": true,
+        "rationale": "`enable` links the unit into the boot sequence."
+      },
+      {
+        "text": "`sudo systemctl stop pixel-raiders-server`",
+        "correct": false,
+        "rationale": "It ends the service, and it would stay stopped."
+      }
+    ],
+    "explanation": "`start` affects only the current run. To start a service at every boot you `enable` it, and `disable` removes that. Both can be combined with `--now` to act at once as well.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ]
+  },
+  {
+    "id": "014.3-018",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.3"
+    ],
+    "stem": "Which description fits a service, also called a daemon?",
+    "options": [
+      {
+        "text": "A process that runs in the background and waits for requests, such as an SSH or build server.",
+        "correct": true,
+        "rationale": "systemd starts and watches most of them."
+      },
+      {
+        "text": "A configuration file in `/etc` that tells the kernel which programs may be started.",
+        "correct": false,
+        "rationale": "A service is a running process and not a file of settings."
+      },
+      {
+        "text": "A program that runs in the foreground and quits as soon as the user closes the terminal or when the session ends.",
+        "correct": false,
+        "rationale": "Services keep running with no terminal attached."
+      },
+      {
+        "text": "A hardware component that has to be plugged in before the system can start programs.",
+        "correct": false,
+        "rationale": "A service is software, started by the system itself."
+      }
+    ],
+    "explanation": "A service (daemon) is a background process that waits for work: a web server, an SSH server, a build daemon. On systemd systems, PID 1 starts and supervises services, which are described by unit files such as `ssh.service`."
+  },
+  {
+    "id": "014.3-019",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.4"
+    ],
+    "terms": [
+      "014.3.t3"
+    ],
+    "stem": "Mira wants to read only the journal messages of the `ssh` service. Which command does this?",
+    "options": [
+      {
+        "text": "`journalctl -k`",
+        "correct": false,
+        "rationale": "It shows only the messages of the kernel."
+      },
+      {
+        "text": "`journalctl -b`",
+        "correct": false,
+        "rationale": "It shows all messages since the current boot, from every service."
+      },
+      {
+        "text": "`journalctl -f`",
+        "correct": false,
+        "rationale": "It follows the journal and prints new messages of every service as they arrive."
+      },
+      {
+        "text": "`journalctl -u ssh`",
+        "correct": true,
+        "rationale": "`-u` selects one unit."
+      }
+    ],
+    "explanation": "`journalctl -u NAME` limits the output to one unit. `-b` limits it to the current boot, `-k` to kernel messages, `-n N` to the last N lines and `-f` follows new messages.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "id": "014.3-020",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "terms": [
+      "014.3.t5",
+      "014.3.vt2"
+    ],
+    "stem": "Under which directory do most services write their plain text log files?",
+    "options": [
+      {
+        "text": "`/etc/log`",
+        "correct": false,
+        "rationale": "The configuration directory has no standard place for logs."
+      },
+      {
+        "text": "`/var/log`",
+        "correct": true,
+        "rationale": "Files such as `syslog`, `auth.log` and `dpkg.log` are there."
+      },
+      {
+        "text": "`/proc/log`",
+        "correct": false,
+        "rationale": "`/proc` shows kernel data and doesn’t store logs."
+      },
+      {
+        "text": "`/boot/log`",
+        "correct": false,
+        "rationale": "`/boot` holds the kernel and boot loader files."
+      }
+    ],
+    "explanation": "Logs are variable data, so they live under `/var`, in `/var/log`. They are plain text, so `less`, `tail` and `grep` work on them. Configuration is in `/etc`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/hier.7.html"
+    ]
+  },
+  {
+    "id": "014.3-021",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.4",
+      "014.3.v2"
+    ],
+    "terms": [
+      "014.3.t3",
+      "014.3.vt1"
+    ],
+    "stem": "What is the kernel ring buffer that `dmesg` prints?",
+    "options": [
+      {
+        "text": "A text file in `/var/log` that the kernel appends to forever until the disk is full.",
+        "correct": false,
+        "rationale": "It is a memory buffer of fixed size, not a file that grows forever."
+      },
+      {
+        "text": "A fixed-size area of memory where the kernel stores its messages, and new ones overwrite the oldest.",
+        "correct": true,
+        "rationale": "It records hardware found at boot, drivers and devices plugged in."
+      },
+      {
+        "text": "A list of the processes that the kernel has started, kept in `/proc`.",
+        "correct": false,
+        "rationale": "Processes are listed by `ps`, and not in the ring buffer."
+      },
+      {
+        "text": "A cache for disk blocks that makes reading files faster and is flushed at every shutdown.",
+        "correct": false,
+        "rationale": "That is the page cache, not the kernel’s message buffer."
+      }
+    ],
+    "explanation": "The kernel keeps its own messages (hardware found at boot, driver loading, devices plugged in, disk errors) in a ring buffer of fixed size, where new lines overwrite the oldest. `dmesg` prints it, and `journalctl -k` shows the same messages.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/dmesg.1.html"
+    ]
+  },
+  {
+    "id": "014.3-022",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.4",
+      "014.3.v2"
+    ],
+    "terms": [
+      "014.3.t3",
+      "014.3.vt1"
+    ],
+    "stem": "A USB drive disconnected by itself in the middle of a transfer. Which command helps Mira see what the kernel reported about it?",
+    "options": [
+      {
+        "text": "`top`",
+        "correct": false,
+        "rationale": "It shows running processes, not kernel messages about devices."
+      },
+      {
+        "text": "`free -h`",
+        "correct": false,
+        "rationale": "It reports memory and swap and says nothing about devices."
+      },
+      {
+        "text": "`cat /etc/hosts`",
+        "correct": false,
+        "rationale": "It prints name-to-address pairs for networking."
+      },
+      {
+        "text": "`sudo dmesg | tail`",
+        "correct": true,
+        "rationale": "It prints the newest lines of the kernel ring buffer."
+      }
+    ],
+    "explanation": "Kernel messages about hardware, such as a USB port, are in the ring buffer. `dmesg` prints it, and many systems restrict it to root, so the command is run with `sudo`. `tail` limits the output to the newest lines.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/dmesg.1.html"
+    ]
+  },
+  {
+    "id": "014.3-023",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v2"
+    ],
+    "terms": [
+      "014.3.vt1"
+    ],
+    "stem": "In syslog, what is a “facility”?",
+    "options": [
+      {
+        "text": "A category of the program that sends the message, such as `auth`, `kern`, `mail` or `daemon`.",
+        "correct": true,
+        "rationale": "The facility tells which part of the system the message comes from."
+      },
+      {
+        "text": "The level of seriousness of the message, from `debug` up to `emerg` and is stored in the log line.",
+        "correct": false,
+        "rationale": "That is the priority, also called the severity."
+      },
+      {
+        "text": "The name of the log file in `/var/log` where the message is finally written.",
+        "correct": false,
+        "rationale": "The configuration maps facilities and priorities to files, but a file is not a facility."
+      },
+      {
+        "text": "The host name of the computer that the message was sent to.",
+        "correct": false,
+        "rationale": "A host name is a separate field of a log line."
+      }
+    ],
+    "explanation": "Syslog sorts messages by facility (who sent it) and priority (how serious it is). The configuration decides which combinations are written to which files.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man3/syslog.3.html"
+    ]
+  },
+  {
+    "id": "014.3-024",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v2"
+    ],
+    "terms": [
+      "014.3.vt1"
+    ],
+    "stem": "Which of these syslog priorities is the most serious one?",
+    "options": [
+      {
+        "text": "`err`",
+        "correct": false,
+        "rationale": "It is an error condition, less serious than critical."
+      },
+      {
+        "text": "`warning`",
+        "correct": false,
+        "rationale": "It warns about something that may become a problem."
+      },
+      {
+        "text": "`crit`",
+        "correct": true,
+        "rationale": "It is a critical condition, more serious than an error."
+      },
+      {
+        "text": "`info`",
+        "correct": false,
+        "rationale": "It is a purely informational message."
+      }
+    ],
+    "explanation": "From the most to the least serious, the syslog priorities are `emerg`, `alert`, `crit`, `err`, `warning`, `notice`, `info` and `debug`. Among the options, `crit` is the most serious one.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man3/syslog.3.html"
+    ]
+  },
+  {
+    "id": "014.3-025",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.1",
+      "014.3.v2"
+    ],
+    "terms": [
+      "014.3.t4",
+      "014.3.vt2"
+    ],
+    "stem": "On a Debian-based machine that uses rsyslog, which file sets which messages are written to which log file?",
+    "options": [
+      {
+        "text": "`/var/log/syslog`",
+        "correct": false,
+        "rationale": "It is a log file that collects messages; it doesn’t hold the rules."
+      },
+      {
+        "text": "`/etc/logrotate.conf`",
+        "correct": false,
+        "rationale": "It controls how old log files are rotated, not what gets logged."
+      },
+      {
+        "text": "`/etc/hosts`",
+        "correct": false,
+        "rationale": "It maps names to addresses and has nothing to do with logging."
+      },
+      {
+        "text": "`/etc/rsyslog.conf`",
+        "correct": true,
+        "rationale": "Rules there map facilities and priorities to files in `/var/log`."
+      }
+    ],
+    "explanation": "The syslog service reads its rules from a configuration file, `/etc/rsyslog.conf` on systems with rsyslog. The rules map facility and priority combinations to log files in `/var/log` or to other places."
+  },
+  {
+    "id": "014.3-026",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v2",
+      "014.3.v3"
+    ],
+    "terms": [
+      "014.3.t5",
+      "014.3.vt2"
+    ],
+    "stem": "Mira wants to check who tried to log in and who used `sudo` on a Debian-based server that uses rsyslog. Which log file records this?",
+    "options": [
+      {
+        "text": "`/var/log/dpkg.log`",
+        "correct": false,
+        "rationale": "It records which packages were installed or removed."
+      },
+      {
+        "text": "`/var/log/auth.log`",
+        "correct": true,
+        "rationale": "Authentication events are logged there on Debian-based systems."
+      },
+      {
+        "text": "`/var/log/kern.log`",
+        "correct": false,
+        "rationale": "It holds messages from the kernel."
+      },
+      {
+        "text": "`/var/log/apt/history.log`",
+        "correct": false,
+        "rationale": "It records what the package tool apt did."
+      }
+    ],
+    "explanation": "On Debian-based systems, authentication messages such as logins, failed passwords and `sudo` use go to `/var/log/auth.log`. On Enterprise Linux the equivalent is `/var/log/secure`. Some of these files can be read only by root."
+  },
+  {
+    "id": "014.3-027",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.v3",
+      "014.3.4"
+    ],
+    "terms": [
+      "014.3.t5"
+    ],
+    "stem": "What does logrotate do?",
+    "options": [
+      {
+        "text": "It sorts the lines of each log file by time, so the newest message is at the top.",
+        "correct": false,
+        "rationale": "It manages whole files and doesn’t reorder their lines."
+      },
+      {
+        "text": "It sends every new log message to the administrator by email as soon as it appears.",
+        "correct": false,
+        "rationale": "That is not its purpose; it handles file size and age."
+      },
+      {
+        "text": "It renames old log files, for example to `syslog.1`, and starts new ones so logs don’t fill the disk.",
+        "correct": true,
+        "rationale": "Old copies may be compressed and are deleted after some time."
+      },
+      {
+        "text": "It turns the binary systemd journal into text files in `/var/log`.",
+        "correct": false,
+        "rationale": "The journal is read with `journalctl`, and logrotate works on files."
+      }
+    ],
+    "explanation": "Log files grow without end, so a tool called logrotate regularly renames the current file (`syslog` becomes `syslog.1`), starts a fresh one, compresses old copies and deletes the oldest ones."
+  },
+  {
+    "id": "014.3-028",
+    "objectiveId": "014.3",
+    "kind": "multi",
+    "areas": [
+      "014.3.3"
+    ],
+    "terms": [
+      "014.3.t2"
+    ],
+    "stem": "Which TWO statements about `systemctl` are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`systemctl status` shows whether a service is running, on its `Active:` line.",
+        "correct": true,
+        "rationale": "The line reads, for example, `active (running)` or `failed`."
+      },
+      {
+        "text": "`systemctl stop` deletes the unit file, so the service can never be started again.",
+        "correct": false,
+        "rationale": "`stop` only ends the running service; the unit file stays."
+      },
+      {
+        "text": "`systemctl start` also enables the service for every following boot.",
+        "correct": false,
+        "rationale": "`start` and `enable` are separate actions."
+      },
+      {
+        "text": "`systemctl start` runs the service now but doesn’t make it start at boot.",
+        "correct": true,
+        "rationale": "`enable` is needed for that."
+      },
+      {
+        "text": "`systemctl status` restarts a service that has failed.",
+        "correct": false,
+        "rationale": "`status` only reports; `restart` changes the state."
+      }
+    ],
+    "explanation": "`start`, `stop` and `status` act on the service as it is now: they start it, end it and report its state. Whether it starts at boot is decided by `enable` and `disable`.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ]
+  },
+  {
+    "id": "014.3-029",
+    "objectiveId": "014.3",
+    "kind": "multi",
+    "areas": [
+      "014.3.4"
+    ],
+    "terms": [
+      "014.3.t3"
+    ],
+    "stem": "Mira wants the last 20 journal messages of the `ssh` service. Which TWO options does she combine with `journalctl`? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`-u ssh`",
+        "correct": true,
+        "rationale": "It limits the output to that unit."
+      },
+      {
+        "text": "`-k`",
+        "correct": false,
+        "rationale": "It would restrict the output to kernel messages."
+      },
+      {
+        "text": "`-f`",
+        "correct": false,
+        "rationale": "It follows the journal and keeps waiting for new messages."
+      },
+      {
+        "text": "`-b`",
+        "correct": false,
+        "rationale": "It selects messages of the current boot only and doesn’t pick a unit."
+      },
+      {
+        "text": "`-n 20`",
+        "correct": true,
+        "rationale": "It shows only the last 20 lines."
+      }
+    ],
+    "explanation": "`journalctl -u ssh -n 20` combines a unit filter and a line count. `-k` selects kernel messages, `-b` the current boot and `-f` follows new messages as they arrive.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "id": "014.3-030",
+    "objectiveId": "014.3",
+    "kind": "multi",
+    "areas": [
+      "014.3.v1",
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t6",
+      "014.3.vt3"
+    ],
+    "stem": "Which TWO files under `/proc` hold facts about the machine that can be read with `cat`? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`/proc/passwd`",
+        "correct": false,
+        "rationale": "User accounts are in `/etc/passwd`."
+      },
+      {
+        "text": "`/proc/hostnames`",
+        "correct": false,
+        "rationale": "No such file exists, and the machine name is in `/etc/hostname`."
+      },
+      {
+        "text": "`/proc/cpuinfo`",
+        "correct": true,
+        "rationale": "It describes the processor."
+      },
+      {
+        "text": "`/proc/logins`",
+        "correct": false,
+        "rationale": "Login records are kept elsewhere, such as in `/var/log/wtmp`."
+      },
+      {
+        "text": "`/proc/meminfo`",
+        "correct": true,
+        "rationale": "It reports the memory."
+      }
+    ],
+    "explanation": "`/proc` is a pseudo-filesystem that the kernel builds on the fly. `/proc/cpuinfo` describes the processor and `/proc/meminfo` the memory, and `/proc/uptime` and `/proc/version` give the uptime and the kernel version. The files take no space on disk.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/proc.5.html"
+    ]
+  },
+  {
+    "id": "014.3-031",
+    "objectiveId": "014.3",
+    "kind": "multi",
+    "areas": [
+      "014.3.v2"
+    ],
+    "terms": [
+      "014.3.vt1"
+    ],
+    "stem": "Which THREE of these are syslog priorities (severity levels)? (Choose THREE.)",
+    "select": 3,
+    "options": [
+      {
+        "text": "`auth`",
+        "correct": false,
+        "rationale": "It is a facility that says who sent the message."
+      },
+      {
+        "text": "`warning`",
+        "correct": true,
+        "rationale": "It is a priority between `err` and `notice`."
+      },
+      {
+        "text": "`notice`",
+        "correct": true,
+        "rationale": "It is a normal but significant condition."
+      },
+      {
+        "text": "`mail`",
+        "correct": false,
+        "rationale": "It is a facility for the mail system."
+      },
+      {
+        "text": "`daemon`",
+        "correct": false,
+        "rationale": "It is a facility for background services."
+      },
+      {
+        "text": "`debug`",
+        "correct": true,
+        "rationale": "It is the least serious priority."
+      }
+    ],
+    "explanation": "Priorities say how serious a message is: `emerg`, `alert`, `crit`, `err`, `warning`, `notice`, `info`, `debug`. Facilities such as `auth`, `mail`, `kern` and `daemon` say who sent it.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man3/syslog.3.html"
+    ]
+  },
+  {
+    "id": "014.3-032",
+    "objectiveId": "014.3",
+    "kind": "multi",
+    "areas": [
+      "014.3.v1",
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Which TWO statements about `free` are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`free` lists every process together with its memory use.",
+        "correct": false,
+        "rationale": "That is the job of `ps` and `top`."
+      },
+      {
+        "text": "The `swap` line shows the memory of the graphics card.",
+        "correct": false,
+        "rationale": "Swap is disk space the kernel uses as extra memory."
+      },
+      {
+        "text": "A `free` figure close to zero means the machine has crashed.",
+        "correct": false,
+        "rationale": "It usually just means the memory is used as cache."
+      },
+      {
+        "text": "`free -h` prints the sizes in human-readable units such as `Gi`.",
+        "correct": true,
+        "rationale": "`-h` stands for human-readable."
+      },
+      {
+        "text": "A small `free` figure is normal, because Linux uses spare RAM as a cache.",
+        "correct": true,
+        "rationale": "The `available` column is the better guide."
+      }
+    ],
+    "explanation": "`free` summarises memory and swap. Linux fills spare RAM with cached disk data, so the `free` column is often small even on a healthy machine, and `available` tells what programs could still use.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  },
+  {
+    "id": "014.3-033",
+    "objectiveId": "014.3",
+    "kind": "multi",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "terms": [
+      "014.3.t5",
+      "014.3.vt2"
+    ],
+    "stem": "Which TWO files are typical text log files under `/var/log` on a Debian-based system? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`/etc/hostname`",
+        "correct": false,
+        "rationale": "It is a configuration file that holds the machine’s name."
+      },
+      {
+        "text": "`/proc/cpuinfo`",
+        "correct": false,
+        "rationale": "It is a live view of the processor and not a log."
+      },
+      {
+        "text": "`/var/log/dpkg.log`",
+        "correct": true,
+        "rationale": "It records package installations and removals."
+      },
+      {
+        "text": "`/var/log/auth.log`",
+        "correct": true,
+        "rationale": "It records logins and `sudo` use."
+      },
+      {
+        "text": "`/boot/vmlinuz`",
+        "correct": false,
+        "rationale": "It is the kernel image, a binary file."
+      }
+    ],
+    "explanation": "Services write text logs under `/var/log`: `dpkg.log` for package changes, `auth.log` for authentication, and `syslog` for general messages. Plain text tools work on them."
+  },
+  {
+    "id": "014.3-034",
+    "objectiveId": "014.3",
+    "kind": "multi",
+    "areas": [
+      "014.3.4",
+      "014.3.v2"
+    ],
+    "terms": [
+      "014.3.t3",
+      "014.3.vt1"
+    ],
+    "stem": "Which TWO commands show messages from the kernel? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "`dmesg`",
+        "correct": true,
+        "rationale": "It prints the kernel ring buffer."
+      },
+      {
+        "text": "`ps -e`",
+        "correct": false,
+        "rationale": "It lists processes and doesn’t show kernel messages."
+      },
+      {
+        "text": "`free -h`",
+        "correct": false,
+        "rationale": "It shows memory use."
+      },
+      {
+        "text": "`journalctl -k`",
+        "correct": true,
+        "rationale": "It shows the kernel messages that the journal collected."
+      },
+      {
+        "text": "`systemctl status ssh`",
+        "correct": false,
+        "rationale": "It shows the state of one service."
+      }
+    ],
+    "explanation": "Kernel messages are kept in the ring buffer, which `dmesg` prints. On systemd systems `journalctl -k` shows the same messages from the journal.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/dmesg.1.html",
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "id": "014.3-035",
+    "objectiveId": "014.3",
+    "kind": "fill",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Type the command, with its options, that prints a snapshot of every process in the full format, with the UID, PID and PPID columns.",
+    "accept": [
+      "ps -ef",
+      "ps -Af",
+      "ps -fe",
+      "ps -fA",
+      "ps -e -f",
+      "ps -A -f"
+    ],
+    "verify": {
+      "command": "{answer} > /dev/null"
+    },
+    "caseSensitive": true,
+    "explanation": "`-e` (or `-A`) selects every process and `-f` chooses the full format. `ps aux` is the BSD-style way to list all processes.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ps.1.html"
+    ]
+  },
+  {
+    "id": "014.3-036",
+    "objectiveId": "014.3",
+    "kind": "fill",
+    "areas": [
+      "014.3.v1",
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Type the command with the short option that shows the memory and swap use in human-readable sizes such as `Gi`.",
+    "accept": [
+      "free -h",
+      "free --human"
+    ],
+    "verify": {
+      "command": "{answer}"
+    },
+    "caseSensitive": true,
+    "explanation": "`free -h` (long form `--human`) prints sizes as `Mi` or `Gi`, and `free -m` prints megabytes.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  },
+  {
+    "id": "014.3-037",
+    "objectiveId": "014.3",
+    "kind": "fill",
+    "areas": [
+      "014.3.3"
+    ],
+    "terms": [
+      "014.3.t2"
+    ],
+    "stem": "Type the full command, without `sudo`, that shows the state of the service `buildd`, including its `Active:` line.",
+    "accept": [
+      "systemctl status buildd",
+      "systemctl status buildd.service"
+    ],
+    "caseSensitive": true,
+    "explanation": "`systemctl status NAME` prints the unit’s state: the `Loaded:` and `Active:` lines, the main PID and the last few log lines. It needs no root rights.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/systemctl.html"
+    ]
+  },
+  {
+    "id": "014.3-038",
+    "objectiveId": "014.3",
+    "kind": "fill",
+    "areas": [
+      "014.3.4"
+    ],
+    "terms": [
+      "014.3.t3"
+    ],
+    "stem": "Type the full command that prints only the last 20 lines of the systemd journal.",
+    "accept": [
+      "journalctl -n 20",
+      "journalctl -n20",
+      "journalctl --lines=20",
+      "journalctl --lines 20"
+    ],
+    "caseSensitive": true,
+    "explanation": "`journalctl -n 20` (long form `--lines=20`) prints the newest 20 journal lines. Without it, `journalctl` prints the whole journal, starting with the oldest messages.",
+    "sourceLinks": [
+      "https://www.freedesktop.org/software/systemd/man/latest/journalctl.html"
+    ]
+  },
+  {
+    "id": "014.3-039",
+    "objectiveId": "014.3",
+    "kind": "fill",
+    "areas": [
+      "014.3.v1",
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t6",
+      "014.3.vt3"
+    ],
+    "stem": "Type the absolute path of the file that describes the processor of the machine, such as its model and number of cores.",
+    "accept": [
+      "/proc/cpuinfo"
+    ],
+    "verify": {
+      "command": "test -r {answer}"
+    },
+    "caseSensitive": true,
+    "explanation": "`/proc/cpuinfo` is made up by the kernel when it is read. It holds one block per processor core.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/proc.5.html"
+    ]
+  },
+  {
+    "id": "014.3-040",
+    "objectiveId": "014.3",
+    "kind": "fill",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "terms": [
+      "014.3.t5",
+      "014.3.vt2"
+    ],
+    "stem": "Ada wants to see the last two lines of the build daemon’s log. Complete the command with the path of the log file.",
+    "accept": [
+      "/var/log/tuxpixel-build.log"
+    ],
+    "prefix": "tail -n 2",
+    "verify": {
+      "command": "tail -n 2 {answer}",
+      "fixture": "admin-logs"
+    },
+    "caseSensitive": true,
+    "explanation": "`tail -n 2` prints the last two lines of a file. The build daemon’s log is an ordinary text file under `/var/log`."
+  },
+  {
+    "id": "014.3-041",
+    "objectiveId": "014.3",
+    "kind": "output",
+    "areas": [
+      "014.3.1"
+    ],
+    "terms": [
+      "014.3.t4",
+      "014.3.vt2"
+    ],
+    "stem": "Ada looks up the number of workers in the build daemon’s configuration file. What does this command print?",
+    "command": "grep workers /etc/tuxpixel/buildd.conf",
+    "fixture": "admin-logs",
+    "output": "workers=4",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "workers=8",
+        "correct": false,
+        "rationale": "The configuration says four workers, not eight."
+      },
+      {
+        "text": "workers: 4",
+        "correct": false,
+        "rationale": "The settings file uses `=` and no colon."
+      },
+      {
+        "text": "# Settings for the Pixel Raiders build daemon",
+        "correct": false,
+        "rationale": "That comment line doesn’t contain the word `workers`."
+      },
+      {
+        "text": "workers=4",
+        "correct": true,
+        "rationale": "The configuration file contains exactly one line with `workers`, and `grep` prints that line."
+      }
+    ],
+    "explanation": "Configuration files under `/etc` are plain text. `grep` prints the lines that contain the word, here the setting `workers=4`."
+  },
+  {
+    "id": "014.3-042",
+    "objectiveId": "014.3",
+    "kind": "output",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "terms": [
+      "014.3.t5",
+      "014.3.vt2"
+    ],
+    "stem": "How many lines of the build log contain the word `ERROR` in capital letters? What does this command print?",
+    "command": "grep -c ERROR /var/log/tuxpixel-build.log",
+    "fixture": "admin-logs",
+    "output": "1",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "The log does contain one ERROR line."
+      },
+      {
+        "text": "1",
+        "correct": true,
+        "rationale": "Only the linker failure is logged at the level ERROR. The lines about warnings and `0 errors` don’t match."
+      },
+      {
+        "text": "2",
+        "correct": false,
+        "rationale": "Only one line has the word in capitals."
+      },
+      {
+        "text": "6",
+        "correct": false,
+        "rationale": "That is the number of lines in the whole log."
+      }
+    ],
+    "explanation": "`grep -c` counts the matching lines instead of printing them. Matching is case-sensitive, so `ERROR` doesn’t match the lowercase word `errors`."
+  },
+  {
+    "id": "014.3-043",
+    "objectiveId": "014.3",
+    "kind": "output",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "terms": [
+      "014.3.t5"
+    ],
+    "stem": "The last line of the build log looks like `Nov 26 22:08:55 build01 buildd[402]: …`. Type what this command prints.",
+    "command": "tail -n 1 /var/log/tuxpixel-build.log | cut -d\" \" -f6-",
+    "fixture": "admin-logs",
+    "output": "build finished with 0 errors",
+    "mode": "type",
+    "explanation": "`tail -n 1` takes the last line, and `cut -d\" \" -f6-` keeps everything from the sixth space-separated field on, which is the message after the program name and its PID."
+  },
+  {
+    "id": "014.3-044",
+    "objectiveId": "014.3",
+    "kind": "output",
+    "areas": [
+      "014.3.v1",
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t6",
+      "014.3.vt3"
+    ],
+    "stem": "The kernel makes up `/proc/meminfo` when it is read. What does this command print?",
+    "command": "head -1 /proc/meminfo | cut -d: -f1",
+    "output": "MemTotal",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "MemFree",
+        "correct": false,
+        "rationale": "`MemFree` is on the second line of the file."
+      },
+      {
+        "text": "MemTotal",
+        "correct": true,
+        "rationale": "The first line of the file starts with the label `MemTotal`, and `cut` keeps only the part before the colon."
+      },
+      {
+        "text": "Memory",
+        "correct": false,
+        "rationale": "There is no label called `Memory`."
+      },
+      {
+        "text": "total",
+        "correct": false,
+        "rationale": "The label is written `MemTotal`, in this exact form."
+      }
+    ],
+    "explanation": "The first line of `/proc/meminfo` reports the total memory as `MemTotal: … kB`. `cut -d: -f1` keeps the part before the colon.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/proc.5.html"
+    ]
+  },
+  {
+    "id": "014.3-045",
+    "objectiveId": "014.3",
+    "kind": "output",
+    "areas": [
+      "014.3.v1",
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "`free` prints a header line, a line for the RAM and a line for the swap space. How many lines does this command print?",
+    "command": "free | wc -l",
+    "output": "3",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "2",
+        "correct": false,
+        "rationale": "Besides the header and the RAM line, there is also a swap line."
+      },
+      {
+        "text": "1",
+        "correct": false,
+        "rationale": "`free` prints more than the header."
+      },
+      {
+        "text": "5",
+        "correct": false,
+        "rationale": "`free` doesn’t print separate lines for cache or buffers by default."
+      },
+      {
+        "text": "3",
+        "correct": true,
+        "rationale": "The header, the `Mem:` line and the `Swap:` line make three lines."
+      }
+    ],
+    "explanation": "`free` shows a header, the `Mem:` line and the `Swap:` line. `wc -l` counts the lines. The figures change all the time, but the number of lines doesn’t.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/free.1.html"
+    ]
+  }
+]

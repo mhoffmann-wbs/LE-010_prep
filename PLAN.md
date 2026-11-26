@@ -240,7 +240,10 @@ Scripts:
    - The exam-track switch (§3b): v1.6 data in the blueprint, `itemInExam`, progress v2 with `track`, track-aware practice, mock, readiness and labels.
    - 19 lessons with 252 verified snippet claims (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`), with `<ExamOnly>` blocks for each exam's own material. Each cites its sources and links to the LPI Learning Materials; per-lesson deep links wait until the URL pattern is checked in a browser (§1).
    - `vm:run` to try a command in the guest while writing.
-4. **Question bank**: 600 items, every objective at target, every area at 5 or more, and every term covered.
+4. **Question bank** (done 2026-11-26):
+   - 666 items (target 600): every objective at or over target, and every area at 5 or more and every term tested, on both exams. Concept objectives overshoot so each exam's own lines count on that exam.
+   - Kind mix: 58% single, 13% multi, 15% fill, 15% output. 518 runnable claims verified in the guest.
+   - The `q014-dns` and `q013-scripts` fixtures were added for items.
 5. **Exercises**: terminal exercises with checks, plus the `/terminal` playground.
 6. **Explore I**: flashcards and drills.
 7. **Explore II**: transcript capture, the five transcript simulators and the concept simulators.

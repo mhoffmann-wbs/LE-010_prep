@@ -1,0 +1,1928 @@
+[
+  {
+    "id": "013.3-001",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t1",
+      "013.3.t2"
+    ],
+    "stem": "Ada writes `build.sh` and wants Linux to run it with bash when she starts it as `./build.sh`. Which must be the first line of the file?",
+    "explanation": "The shebang line must be the very first line. Linux reads the program’s path from it when the script is started as a program.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`!#/bin/bash`",
+        "correct": false,
+        "rationale": "The characters are in the wrong order; the line must begin with a hash and then a bang."
+      },
+      {
+        "text": "`#/bin/bash`",
+        "correct": false,
+        "rationale": "Without the exclamation mark this is an ordinary comment and tells Linux nothing."
+      },
+      {
+        "text": "`#!/bin/bash`",
+        "correct": true,
+        "rationale": "The two characters `#!`, the shebang, are followed by the absolute path of the interpreter."
+      },
+      {
+        "text": "`$!/bin/bash`",
+        "correct": false,
+        "rationale": "A dollar sign does not start a shebang line."
+      }
+    ]
+  },
+  {
+    "id": "013.3-002",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t1"
+    ],
+    "stem": "What is the job of the shebang line, such as `#!/bin/bash`, when a script is started as `./script.sh`?",
+    "explanation": "Remember the two jobs: `chmod +x` allows running the file, and the shebang says which interpreter to use.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "It tells the system which program should interpret the file",
+        "correct": true,
+        "rationale": "The kernel reads the interpreter’s path from that line and starts the program with the script as its input."
+      },
+      {
+        "text": "It makes the file executable",
+        "correct": false,
+        "rationale": "Permissions come from `chmod +x`; the line cannot grant them."
+      },
+      {
+        "text": "It sets the exit status of the script to 0",
+        "correct": false,
+        "rationale": "Exit status is set by the last command or by `exit`."
+      },
+      {
+        "text": "It imports the bash settings of the user who wrote the script",
+        "correct": false,
+        "rationale": "It names a program and loads no personal settings."
+      }
+    ]
+  },
+  {
+    "id": "013.3-003",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t1"
+    ],
+    "stem": "Mira types `./deploy.sh` and sees “Permission denied”. The file starts with `#!/bin/bash`. What is the usual fix?",
+    "explanation": "Without execute permission you can still run the script with `bash deploy.sh`, because bash only needs to read it.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`chmod -x deploy.sh`",
+        "correct": false,
+        "rationale": "`-x` removes the execute permission, which makes things worse."
+      },
+      {
+        "text": "`touch deploy.sh`",
+        "correct": false,
+        "rationale": "`touch` only updates the time stamp or creates an empty file."
+      },
+      {
+        "text": "`export deploy.sh`",
+        "correct": false,
+        "rationale": "`export` makes a variable visible to child programs and has nothing to do with files."
+      },
+      {
+        "text": "`chmod +x deploy.sh`",
+        "correct": true,
+        "rationale": "A new file has no execute permission; `+x` adds it."
+      }
+    ]
+  },
+  {
+    "id": "013.3-004",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t2"
+    ],
+    "stem": "The file `backup.sh` is in the current folder and has no execute permission. Which command runs it anyway?",
+    "explanation": "Two ways to start a script: as an argument to `bash`, which needs read permission, or as a program, which needs execute permission and the `./` path.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`./backup.sh`",
+        "correct": false,
+        "rationale": "This starts the file as a program, which needs the execute permission."
+      },
+      {
+        "text": "`bash backup.sh`",
+        "correct": true,
+        "rationale": "bash is the program started here and it only needs to read the script."
+      },
+      {
+        "text": "`backup.sh`",
+        "correct": false,
+        "rationale": "The current folder is not in `PATH`, so the shell would not find the command."
+      },
+      {
+        "text": "`run backup.sh`",
+        "correct": false,
+        "rationale": "There is no standard command named `run` for this."
+      }
+    ]
+  },
+  {
+    "id": "013.3-005",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Which line correctly sets the variable `game` to the text “Pixel Raiders”?",
+    "explanation": "A variable is set as `name=value`, with no spaces. It is read with a dollar sign: `$name`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`game=\"Pixel Raiders\"`",
+        "correct": true,
+        "rationale": "No spaces around the equal sign, and quotes keep the two words together."
+      },
+      {
+        "text": "`game = \"Pixel Raiders\"`",
+        "correct": false,
+        "rationale": "Spaces make the shell look for a command called `game`."
+      },
+      {
+        "text": "`game=Pixel Raiders`",
+        "correct": false,
+        "rationale": "Unquoted, the shell takes `Raiders` as a command to run with `game` set only for it."
+      },
+      {
+        "text": "`$game=\"Pixel Raiders\"`",
+        "correct": false,
+        "rationale": "A dollar sign reads a variable; it is not used when setting one."
+      }
+    ]
+  },
+  {
+    "id": "013.3-006",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3",
+      "013.3.t7"
+    ],
+    "stem": "The variable `who` holds `Ada`. Which command prints exactly “Built by Ada”?",
+    "explanation": "Double quotes replace variables, single quotes do not. Always quote when a value may contain spaces.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`echo 'Built by $who'`",
+        "correct": false,
+        "rationale": "Single quotes switch variable replacement off, so the text `$who` is printed."
+      },
+      {
+        "text": "`echo \"Built by who\"`",
+        "correct": false,
+        "rationale": "Without the dollar sign the word `who` is just text."
+      },
+      {
+        "text": "`echo \"Built by $who\"`",
+        "correct": true,
+        "rationale": "Double quotes keep the text together and still replace `$who` by its value."
+      },
+      {
+        "text": "`echo Built by \\$who`",
+        "correct": false,
+        "rationale": "The backslash switches off the replacement, so `$who` is printed literally."
+      }
+    ]
+  },
+  {
+    "id": "013.3-007",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "The variable `who` holds `Ada`. Which command prints “Adas build”, with the `s` directly after the name?",
+    "explanation": "Use `${name}` when characters that could belong to a name follow the variable.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`echo \"$whos build\"`",
+        "correct": false,
+        "rationale": "The shell reads `whos` as the variable name, which is empty, and prints only “ build”."
+      },
+      {
+        "text": "`echo \"${who}s build\"`",
+        "correct": true,
+        "rationale": "The braces mark where the name ends, so `s` is plain text after the value."
+      },
+      {
+        "text": "`echo '${who}s build'`",
+        "correct": false,
+        "rationale": "Single quotes print the text unchanged, braces and all."
+      },
+      {
+        "text": "`echo \"$who s build\"`",
+        "correct": false,
+        "rationale": "This puts a space between the value and the `s`."
+      }
+    ]
+  },
+  {
+    "id": "013.3-008",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4"
+    ],
+    "stem": "Mira starts a script with `./pack.sh art bonus`. What does `$1` hold inside the script?",
+    "explanation": "Count from 0: `$0` is the script, `$1` the first argument, `$2` the second.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`./pack.sh`",
+        "correct": false,
+        "rationale": "The script’s own name is in `$0`, not in `$1`."
+      },
+      {
+        "text": "`bonus`",
+        "correct": false,
+        "rationale": "That is the second argument, `$2`."
+      },
+      {
+        "text": "`art bonus`",
+        "correct": false,
+        "rationale": "Each argument has its own variable; the words are not joined in `$1`."
+      },
+      {
+        "text": "`art`",
+        "correct": true,
+        "rationale": "`$1` is the first argument after the script’s name."
+      }
+    ]
+  },
+  {
+    "id": "013.3-009",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4"
+    ],
+    "stem": "Which special variable holds the number of arguments given to a script?",
+    "explanation": "The four to know: `$0` script name, `$1` first argument, `$#` count and `$@` all arguments.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`$0`",
+        "correct": false,
+        "rationale": "It holds the name of the script."
+      },
+      {
+        "text": "`$?`",
+        "correct": false,
+        "rationale": "It holds the exit status of the last command."
+      },
+      {
+        "text": "`$#`",
+        "correct": true,
+        "rationale": "The hash character stands for “how many”."
+      },
+      {
+        "text": "`$@`",
+        "correct": false,
+        "rationale": "It holds the list of all arguments, not their number."
+      }
+    ]
+  },
+  {
+    "id": "013.3-010",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4"
+    ],
+    "stem": "Mira runs `bash greet.sh Mira`. What does `$0` contain inside `greet.sh`?",
+    "explanation": "`$0` is the script itself, not the first argument. That is why the arguments start at `$1`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`greet.sh`",
+        "correct": true,
+        "rationale": "`$0` holds the script name as it was typed after `bash`."
+      },
+      {
+        "text": "`bash`",
+        "correct": false,
+        "rationale": "The interpreter is not part of the arguments."
+      },
+      {
+        "text": "`Mira`",
+        "correct": false,
+        "rationale": "That is the first argument and is in `$1`."
+      },
+      {
+        "text": "`greet`",
+        "correct": false,
+        "rationale": "The name is kept as typed, with the `.sh` ending."
+      }
+    ]
+  },
+  {
+    "id": "013.3-011",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t8"
+    ],
+    "stem": "What does the special variable `$?` contain?",
+    "explanation": "Read `$?` right away. Each new command, even an `echo`, replaces it.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "The process ID of the running shell",
+        "correct": false,
+        "rationale": "That is `$$`."
+      },
+      {
+        "text": "The number of arguments of the script",
+        "correct": false,
+        "rationale": "That is `$#`."
+      },
+      {
+        "text": "The last word of the previous command line",
+        "correct": false,
+        "rationale": "`$?` holds a number, not a word of the command line."
+      },
+      {
+        "text": "The exit status of the last command that ran",
+        "correct": true,
+        "rationale": "A value of 0 means success and anything else means some kind of failure."
+      }
+    ]
+  },
+  {
+    "id": "013.3-012",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t8"
+    ],
+    "stem": "What does `exit 2` do inside a script?",
+    "explanation": "The status can be read as `$?` by whoever started the script. By convention 0 is success.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "It prints the number 2 and goes on with the next line",
+        "correct": false,
+        "rationale": "`exit` never continues with the next line."
+      },
+      {
+        "text": "It stops the script at once and hands the status 2 to the caller",
+        "correct": true,
+        "rationale": "Nothing after it runs."
+      },
+      {
+        "text": "It leaves only the current `if` block",
+        "correct": false,
+        "rationale": "`exit` ends the whole script, not a block."
+      },
+      {
+        "text": "It sets the first argument `$1` to 2",
+        "correct": false,
+        "rationale": "Arguments are not changed by `exit`."
+      }
+    ]
+  },
+  {
+    "id": "013.3-013",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Which condition is true only when `art/hero.png` exists and is a regular file?",
+    "explanation": "The file tests: `-e` exists, `-f` regular file, `-d` directory. Keep the spaces inside the brackets.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`[ -f art/hero.png ]`",
+        "correct": true,
+        "rationale": "`-f` tests for an ordinary file."
+      },
+      {
+        "text": "`[ -d art/hero.png ]`",
+        "correct": false,
+        "rationale": "`-d` tests for a directory."
+      },
+      {
+        "text": "`[ -e art/hero.png ]`",
+        "correct": false,
+        "rationale": "`-e` is also true for directories, so it does not prove a regular file."
+      },
+      {
+        "text": "`[ art/hero.png ]`",
+        "correct": false,
+        "rationale": "A lone word tests as true whenever it is not empty, whether or not the file exists."
+      }
+    ]
+  },
+  {
+    "id": "013.3-014",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Ada’s script must check that the folder `levels` exists. Which test does that?",
+    "explanation": "Pick the test letter for what you want: `-d` for folders, `-f` for files and `-e` for anything.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`[ -f levels ]`",
+        "correct": false,
+        "rationale": "`-f` is true only for regular files, so a folder fails it."
+      },
+      {
+        "text": "`[ -z levels ]`",
+        "correct": false,
+        "rationale": "`-z` tests whether a string is empty; it does not look at files."
+      },
+      {
+        "text": "`[ -d levels ]`",
+        "correct": true,
+        "rationale": "`-d` is true when the path exists and is a directory."
+      },
+      {
+        "text": "`[ levels -d ]`",
+        "correct": false,
+        "rationale": "The option must come before the path."
+      }
+    ]
+  },
+  {
+    "id": "013.3-015",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5",
+      "013.3.t3"
+    ],
+    "stem": "Which test checks whether the variable `mode` is equal to the text `release`?",
+    "explanation": "Setting a variable forbids spaces around `=`, but testing a variable requires them.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`[ \"$mode\"=\"release\" ]`",
+        "correct": false,
+        "rationale": "Without spaces this is a single word, which always tests as true."
+      },
+      {
+        "text": "`[ \"$mode\" = \"release\" ]`",
+        "correct": true,
+        "rationale": "Spaces around `=` are required in a test, and quoting protects the value."
+      },
+      {
+        "text": "`[ mode = \"release\" ]`",
+        "correct": false,
+        "rationale": "Without the dollar sign it compares the word `mode`, not the value."
+      },
+      {
+        "text": "`[ \"$mode\" -eq \"release\" ]`",
+        "correct": false,
+        "rationale": "`-eq` compares whole numbers, and `release` is not a number."
+      }
+    ]
+  },
+  {
+    "id": "013.3-016",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Why does `[ \"$a\"=\"$b\" ]` report success even when `a=slime` and `b=bat`?",
+    "explanation": "The brackets are a command, and `=` is one of its arguments, so it needs spaces on both sides.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Because `=` is not a valid comparison in bash",
+        "correct": false,
+        "rationale": "`=` does compare text, as long as it stands apart with spaces."
+      },
+      {
+        "text": "Because double quotes switch the test off",
+        "correct": false,
+        "rationale": "The quotes protect the values and do not disable the test."
+      },
+      {
+        "text": "Because `[` needs `then` on the same line",
+        "correct": false,
+        "rationale": "`then` belongs to `if` and does not change the test itself."
+      },
+      {
+        "text": "Without spaces it is a single word, and a single non-empty word tests as true",
+        "correct": true,
+        "rationale": "`[` sees only one argument and checks that it is not empty."
+      }
+    ]
+  },
+  {
+    "id": "013.3-017",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Which keyword ends an `if` block in bash?",
+    "explanation": "The pairs to remember: `if … then … fi` for conditions and `for … do … done` for loops.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`end`",
+        "correct": false,
+        "rationale": "bash has no `end` keyword for this."
+      },
+      {
+        "text": "`done`",
+        "correct": false,
+        "rationale": "`done` closes loops such as `for`."
+      },
+      {
+        "text": "`fi`",
+        "correct": true,
+        "rationale": "It is “if” written backwards."
+      },
+      {
+        "text": "`endif`",
+        "correct": false,
+        "rationale": "That keyword exists in other languages, not in bash."
+      }
+    ]
+  },
+  {
+    "id": "013.3-018",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "Which loop prints `slime`, `bat` and `ghost` on three separate lines?",
+    "explanation": "A for loop is `for VARIABLE in LIST; do COMMANDS; done`. The list is split at spaces.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`for e in slime bat ghost; do echo \"$e\"; done`",
+        "correct": true,
+        "rationale": "The words are separated by spaces, and the body sits between `do` and `done`."
+      },
+      {
+        "text": "`for e in slime,bat,ghost; do echo \"$e\"; done`",
+        "correct": false,
+        "rationale": "Commas do not separate items, so the loop runs once with the whole text."
+      },
+      {
+        "text": "`for e in slime bat ghost; echo \"$e\"; done`",
+        "correct": false,
+        "rationale": "The keyword `do` is missing, which is a syntax error."
+      },
+      {
+        "text": "`for e = slime bat ghost; do echo \"$e\"; done`",
+        "correct": false,
+        "rationale": "The word `in` is required; an equal sign is a syntax error."
+      }
+    ]
+  },
+  {
+    "id": "013.3-019",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "Which loop runs once for every `.png` file in the folder `art`?",
+    "explanation": "Globs are expanded by the shell, and only when they are not in quotes.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`for f in \"art/*.png\"; do echo \"$f\"; done`",
+        "correct": false,
+        "rationale": "Quotes stop the expansion, so the loop runs once with the literal text."
+      },
+      {
+        "text": "`for f in $(art/*.png); do echo \"$f\"; done`",
+        "correct": false,
+        "rationale": "The `$( )` tries to run the matching file as a command instead of listing it."
+      },
+      {
+        "text": "`for f in art.png; do echo \"$f\"; done`",
+        "correct": false,
+        "rationale": "This loops over one made-up file name and not over the folder’s files."
+      },
+      {
+        "text": "`for f in art/*.png; do echo \"$f\"; done`",
+        "correct": true,
+        "rationale": "The shell replaces the glob with the matching file names before the loop starts."
+      }
+    ]
+  },
+  {
+    "id": "013.3-020",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "There is no `.jpg` file in `art`. What does `for f in art/*.jpg; do echo \"$f\"; done` print?",
+    "explanation": "Test whether the file really exists (`[ -f \"$f\" ]`) inside such a loop if no match is possible.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Nothing at all",
+        "correct": false,
+        "rationale": "The loop does run once, with the unexpanded pattern."
+      },
+      {
+        "text": "`art/*.jpg`",
+        "correct": true,
+        "rationale": "A glob with no match is left as it is, so the body runs once with the literal text."
+      },
+      {
+        "text": "An error that the folder is empty",
+        "correct": false,
+        "rationale": "The shell does not complain about unmatched globs."
+      },
+      {
+        "text": "`art`",
+        "correct": false,
+        "rationale": "The pattern is passed as a whole; the folder name is not extracted."
+      }
+    ]
+  },
+  {
+    "id": "013.3-021",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "Which pair of keywords encloses the body of a `for` loop?",
+    "explanation": "Keep the two pairs apart: `then … fi` for `if`, `do … done` for loops.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`do` and `done`",
+        "correct": true,
+        "rationale": "The body of a loop starts after `do` and ends at `done`."
+      },
+      {
+        "text": "`then` and `fi`",
+        "correct": false,
+        "rationale": "This pair belongs to the `if` command."
+      },
+      {
+        "text": "`begin` and `end`",
+        "correct": false,
+        "rationale": "bash does not use these words."
+      },
+      {
+        "text": "`{` and `}`",
+        "correct": false,
+        "rationale": "Braces group commands in other contexts; a `for` loop uses keywords."
+      }
+    ]
+  },
+  {
+    "id": "013.3-022",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t7"
+    ],
+    "stem": "Which option makes `echo` leave out the newline at the end of its output?",
+    "explanation": "`echo` prints its arguments followed by a newline, and `-n` removes that newline.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-e`",
+        "correct": false,
+        "rationale": "`-e` turns on backslash escapes such as `\\n` and still adds a newline."
+      },
+      {
+        "text": "`-l`",
+        "correct": false,
+        "rationale": "`echo` has no such option; the text `-l` would simply be printed."
+      },
+      {
+        "text": "`-n`",
+        "correct": true,
+        "rationale": "`echo -n` prints the text without the final newline."
+      },
+      {
+        "text": "`-s`",
+        "correct": false,
+        "rationale": "`echo` has no such option; the text `-s` would simply be printed."
+      }
+    ]
+  },
+  {
+    "id": "013.3-023",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Which line stores the number of entries in `art` in the variable `count`?",
+    "explanation": "Command substitution `$( )` runs a command and puts its output where the substitution stands.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`count=\"ls art | wc -l\"`",
+        "correct": false,
+        "rationale": "Quoted, the text of the command is stored and nothing runs."
+      },
+      {
+        "text": "`count=$(ls art | wc -l)`",
+        "correct": true,
+        "rationale": "The command inside `$( )` runs, and its output becomes the value."
+      },
+      {
+        "text": "`count=ls art | wc -l`",
+        "correct": false,
+        "rationale": "The pipe splits the line, so `count` is set only for the `ls` command and `wc` counts nothing useful."
+      },
+      {
+        "text": "`count=$(ls art) | wc -l`",
+        "correct": false,
+        "rationale": "The pipe is outside the substitution, so the variable receives the listing and not a number."
+      }
+    ]
+  },
+  {
+    "id": "013.3-024",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.v1"
+    ],
+    "stem": "Mira opens a file in `nano` and wants to write it to disk while staying in the editor. Which keys do that?",
+    "explanation": "In `nano` the commands are listed at the bottom of the screen, where `^` stands for the Ctrl key.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`Ctrl+X`",
+        "correct": false,
+        "rationale": "It exits `nano`, asking whether to save first."
+      },
+      {
+        "text": "`Ctrl+K`",
+        "correct": false,
+        "rationale": "It cuts the current line into the buffer."
+      },
+      {
+        "text": "`Ctrl+W`",
+        "correct": false,
+        "rationale": "It starts a search (“Where is”)."
+      },
+      {
+        "text": "`Ctrl+O`",
+        "correct": true,
+        "rationale": "It is “write Out” and saves under the file name shown."
+      }
+    ]
+  },
+  {
+    "id": "013.3-025",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.v1"
+    ],
+    "stem": "Jonas opens a file with `vi`, starts typing, and nothing sensible appears. What is the likely reason?",
+    "explanation": "vi has modes. Normal mode is for commands, insert mode for text, and Esc returns to normal mode.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "The file is read-only, so `vi` ignores the typing",
+        "correct": false,
+        "rationale": "A read-only file still accepts typing; `vi` warns when saving."
+      },
+      {
+        "text": "`vi` needs the file to be opened with `-e` for editing",
+        "correct": false,
+        "rationale": "There is no such option; opening the file is enough."
+      },
+      {
+        "text": "`vi` starts in normal mode, where keys are commands; he must press `i` to insert text",
+        "correct": true,
+        "rationale": "Insert mode is the mode in which typed characters become text."
+      },
+      {
+        "text": "`vi` only works after `Ctrl+X` has been pressed",
+        "correct": false,
+        "rationale": "That is a `nano` key and does nothing like that in `vi`."
+      }
+    ]
+  },
+  {
+    "id": "013.3-026",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.v1"
+    ],
+    "stem": "Ada made changes in `vi` and wants to leave without saving them. Which keys do that?",
+    "explanation": "Remember `:wq` for “save and quit” and `:q!` for “quit and forget”.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Press Esc, then type `:q!` and press Enter",
+        "correct": true,
+        "rationale": "The exclamation mark forces `vi` to quit and throw the changes away."
+      },
+      {
+        "text": "Press Esc, then type `:wq` and press Enter",
+        "correct": false,
+        "rationale": "`:wq` writes the changes and then quits."
+      },
+      {
+        "text": "Press `Ctrl+X`, then `N`",
+        "correct": false,
+        "rationale": "That is how `nano` handles it."
+      },
+      {
+        "text": "Press `i`, then `Esc`",
+        "correct": false,
+        "rationale": "This only switches between insert and normal mode."
+      }
+    ]
+  },
+  {
+    "id": "013.3-027",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.v1"
+    ],
+    "stem": "In the key list at the bottom of `nano`, what does the `^` in `^X Exit` stand for?",
+    "explanation": "`nano` shows its shortcuts as `^O`, `^X`, `^K`, `^W` and so on. Ctrl is the key to hold.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "The Shift key",
+        "correct": false,
+        "rationale": "Shift is not marked with a caret."
+      },
+      {
+        "text": "The Alt key",
+        "correct": false,
+        "rationale": "Alt shortcuts are written with `M-`."
+      },
+      {
+        "text": "The Esc key",
+        "correct": false,
+        "rationale": "Esc is not what the caret stands for."
+      },
+      {
+        "text": "The Ctrl key",
+        "correct": true,
+        "rationale": "`^X` means holding Ctrl and pressing X."
+      }
+    ]
+  },
+  {
+    "id": "013.3-028",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t2"
+    ],
+    "stem": "`backup.sh` is in the current folder, has no execute permission, and `.` is not in `PATH`. Which ways run it? (Choose TWO.)",
+    "explanation": "Either give the file the execute permission or hand it to bash.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`./backup.sh`",
+        "correct": false,
+        "rationale": "It needs execute permission, which the file does not have."
+      },
+      {
+        "text": "`bash backup.sh`",
+        "correct": true,
+        "rationale": "bash only needs to read the file."
+      },
+      {
+        "text": "`backup.sh`",
+        "correct": false,
+        "rationale": "The current folder is not in `PATH`, so the shell does not find it."
+      },
+      {
+        "text": "`exec -x backup.sh`",
+        "correct": false,
+        "rationale": "`exec` has no such use and would not make the script runnable."
+      },
+      {
+        "text": "`chmod +x backup.sh; ./backup.sh`",
+        "correct": true,
+        "rationale": "It adds the execute permission first and then starts the file as a program."
+      }
+    ]
+  },
+  {
+    "id": "013.3-029",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4"
+    ],
+    "stem": "Which special variables relate to the arguments of a script? (Choose THREE.)",
+    "explanation": "Arguments are numbered `$1`, `$2` and so on; `$#` counts them and `$@` lists all of them.",
+    "kind": "multi",
+    "select": 3,
+    "options": [
+      {
+        "text": "`$1`",
+        "correct": true,
+        "rationale": "The first argument."
+      },
+      {
+        "text": "`$?`",
+        "correct": false,
+        "rationale": "The exit status of the last command."
+      },
+      {
+        "text": "`$#`",
+        "correct": true,
+        "rationale": "The number of arguments."
+      },
+      {
+        "text": "`$HOME`",
+        "correct": false,
+        "rationale": "The path of the user’s home directory."
+      },
+      {
+        "text": "`$@`",
+        "correct": true,
+        "rationale": "All arguments."
+      },
+      {
+        "text": "`$USER`",
+        "correct": false,
+        "rationale": "The name of the user."
+      }
+    ]
+  },
+  {
+    "id": "013.3-030",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Which lines set a variable correctly? (Choose TWO.)",
+    "explanation": "Setting: `name=value`. Reading: `$name`.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`version=0.9`",
+        "correct": true,
+        "rationale": "A name, an equal sign and the value, without spaces."
+      },
+      {
+        "text": "`version = 0.9`",
+        "correct": false,
+        "rationale": "The spaces make the shell look for a command named `version`."
+      },
+      {
+        "text": "`game=Pixel Raiders`",
+        "correct": false,
+        "rationale": "The shell treats `Raiders` as a command."
+      },
+      {
+        "text": "`game=\"Pixel Raiders\"`",
+        "correct": true,
+        "rationale": "Quotes keep the words together as one value."
+      },
+      {
+        "text": "`$version=0.9`",
+        "correct": false,
+        "rationale": "The dollar sign belongs to reading a variable."
+      }
+    ]
+  },
+  {
+    "id": "013.3-031",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "The folder `art` exists. Which tests are true for it? (Choose TWO.)",
+    "explanation": "Use `-e` for “anything exists”, `-f` for a file and `-d` for a folder.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`[ -f art ]`",
+        "correct": false,
+        "rationale": "A directory is not a regular file."
+      },
+      {
+        "text": "`[ -z art ]`",
+        "correct": false,
+        "rationale": "`-z` tests whether the text `art` is empty, which it is not."
+      },
+      {
+        "text": "`[ -e art ]`",
+        "correct": true,
+        "rationale": "The path exists."
+      },
+      {
+        "text": "`[ art = \"\" ]`",
+        "correct": false,
+        "rationale": "The word `art` is not equal to the empty string."
+      },
+      {
+        "text": "`[ -d art ]`",
+        "correct": true,
+        "rationale": "The path is a directory."
+      }
+    ]
+  },
+  {
+    "id": "013.3-032",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "Which statements about `for f in art/*.png; do … done` are true? (Choose TWO.)",
+    "explanation": "The shell does the globbing, and the loop only walks through the list it gets.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`f` holds the contents of each file",
+        "correct": false,
+        "rationale": "It holds the name, not the contents."
+      },
+      {
+        "text": "The shell replaces the pattern with the matching file names before the loop runs",
+        "correct": true,
+        "rationale": "Globs are expanded by the shell, not by the loop."
+      },
+      {
+        "text": "If no file matches, the body is skipped silently",
+        "correct": false,
+        "rationale": "The unexpanded pattern is passed on and the body runs once."
+      },
+      {
+        "text": "The loop sorts the files by size first",
+        "correct": false,
+        "rationale": "The glob result is in alphabetical order, with no sorting by size."
+      },
+      {
+        "text": "The loop body runs once for each file name in the list",
+        "correct": true,
+        "rationale": "`f` takes one name after the other."
+      }
+    ]
+  },
+  {
+    "id": "013.3-033",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t8"
+    ],
+    "stem": "Which statements about exit status are true? (Choose TWO.)",
+    "explanation": "Scripts and conditions rely on this: 0 is “true” and everything else is “false”.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "A status of 0 means success",
+        "correct": true,
+        "rationale": "This is the convention for all commands."
+      },
+      {
+        "text": "Any status other than 0 means success",
+        "correct": false,
+        "rationale": "It means failure of some kind."
+      },
+      {
+        "text": "`exit` ends only the current line",
+        "correct": false,
+        "rationale": "`exit` ends the whole script."
+      },
+      {
+        "text": "`$?` holds the status of the last command",
+        "correct": true,
+        "rationale": "It changes with every new command."
+      },
+      {
+        "text": "The status of a command is kept in `$#`",
+        "correct": false,
+        "rationale": "`$#` is the number of arguments."
+      }
+    ]
+  },
+  {
+    "id": "013.3-034",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3",
+      "013.3.t7"
+    ],
+    "stem": "The variable `who` holds `Ada`. Which commands print “Hello Ada”? (Choose TWO.)",
+    "explanation": "Variables are replaced everywhere except in single quotes and after a backslash.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "`echo 'Hello $who'`",
+        "correct": false,
+        "rationale": "Single quotes print `$who` literally."
+      },
+      {
+        "text": "`echo \"Hello who\"`",
+        "correct": false,
+        "rationale": "There is no dollar sign, so the word `who` is printed."
+      },
+      {
+        "text": "`echo \"Hello $who\"`",
+        "correct": true,
+        "rationale": "Double quotes still replace the variable."
+      },
+      {
+        "text": "`echo Hello \\$who`",
+        "correct": false,
+        "rationale": "The backslash makes the dollar sign literal."
+      },
+      {
+        "text": "`echo Hello $who`",
+        "correct": true,
+        "rationale": "The variable is replaced even without quotes."
+      }
+    ]
+  },
+  {
+    "id": "013.3-035",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t1",
+      "013.3.t2"
+    ],
+    "stem": "Which statements about the first line `#!/bin/bash` are true? (Choose TWO.)",
+    "explanation": "The shebang selects the interpreter for `./script.sh`. For `bash script.sh` it plays no role.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "It is needed when the script is started as `bash script.sh`",
+        "correct": false,
+        "rationale": "Then bash reads the file anyway, and the line is just a comment."
+      },
+      {
+        "text": "It names the interpreter by an absolute path",
+        "correct": true,
+        "rationale": "The path must be complete, so the system can find the program."
+      },
+      {
+        "text": "It makes the script executable",
+        "correct": false,
+        "rationale": "Only `chmod +x` does that."
+      },
+      {
+        "text": "The system uses it when the file is started as a program",
+        "correct": true,
+        "rationale": "It is read when you run `./script.sh`."
+      },
+      {
+        "text": "It ends the script after the first command",
+        "correct": false,
+        "rationale": "It has no effect on how long the script runs."
+      }
+    ]
+  },
+  {
+    "id": "013.3-036",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.v1"
+    ],
+    "stem": "Which statements about `vi` and `nano` are true? (Choose TWO.)",
+    "explanation": "Both editors work in a terminal and are found on most systems. `vi` has modes, `nano` shows its keys on screen.",
+    "kind": "multi",
+    "select": 2,
+    "options": [
+      {
+        "text": "In `vi`, pressing `i` switches to insert mode, where typing writes text",
+        "correct": true,
+        "rationale": "Normal mode is the starting mode."
+      },
+      {
+        "text": "In `nano`, Ctrl+O quits without saving",
+        "correct": false,
+        "rationale": "Ctrl+O writes the file out."
+      },
+      {
+        "text": "In `vi`, `:q!` saves the changes and quits",
+        "correct": false,
+        "rationale": "It quits and discards the changes."
+      },
+      {
+        "text": "Both editors always start in insert mode",
+        "correct": false,
+        "rationale": "`vi` starts in normal mode."
+      },
+      {
+        "text": "In `nano`, Ctrl+X exits and asks whether to save changed text",
+        "correct": true,
+        "rationale": "It is the key to leave `nano`."
+      }
+    ]
+  },
+  {
+    "id": "013.3-037",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t1",
+      "013.3.t2"
+    ],
+    "stem": "Type the first line (the shebang) of a script that bash should interpret.",
+    "explanation": "The hash and the bang are followed by the interpreter’s absolute path, `/bin/bash`.",
+    "kind": "fill",
+    "accept": [
+      "#!/bin/bash",
+      "#! /bin/bash"
+    ],
+    "caseSensitive": true
+  },
+  {
+    "id": "013.3-038",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t1"
+    ],
+    "stem": "Type the command that gives the script `deploy.sh` the execute permission for its owner.",
+    "explanation": "`chmod +x` (or `u+x` for the owner only) adds the execute permission, so `./deploy.sh` can start it.",
+    "kind": "fill",
+    "accept": [
+      "chmod u+x deploy.sh",
+      "chmod +x deploy.sh",
+      "chmod 755 deploy.sh",
+      "chmod 700 deploy.sh"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "touch deploy.sh; {answer}"
+    }
+  },
+  {
+    "id": "013.3-039",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Type the line that sets the variable `crew` to `Mira`.",
+    "explanation": "No spaces around the equal sign. Quotes are optional here because the value has no spaces.",
+    "kind": "fill",
+    "accept": [
+      "crew=Mira",
+      "crew=\"Mira\"",
+      "crew='Mira'"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-040",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4"
+    ],
+    "stem": "Which special variable holds the number of arguments of a script? Type it with its dollar sign.",
+    "explanation": "The hash stands for “how many”: `$#`.",
+    "kind": "fill",
+    "accept": [
+      "$#"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "set -- a b; echo {answer}",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-041",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t8"
+    ],
+    "stem": "Which special variable holds the exit status of the last command? Type it with its dollar sign.",
+    "explanation": "`$?` holds the status. 0 means success.",
+    "kind": "fill",
+    "accept": [
+      "$?"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "true; echo {answer}",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-042",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Complete the test so that it succeeds when the folder `art` exists.",
+    "explanation": "`-d` tests for a directory; the closing bracket is the last argument of the test and needs a space before it.",
+    "kind": "fill",
+    "accept": [
+      "-d art ]"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ [",
+    "verify": {
+      "command": "[ {answer}",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-043",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Type the keyword that closes an `if` block.",
+    "explanation": "`fi` is “if” backwards. Loops close with `done`.",
+    "kind": "fill",
+    "accept": [
+      "fi"
+    ],
+    "caseSensitive": true
+  },
+  {
+    "id": "013.3-044",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4",
+      "013.3.t2"
+    ],
+    "stem": "Type the command that runs `check.sh` with bash and gives it the argument `art/hero.png`.",
+    "explanation": "The file name after `bash` is the script, and the words after that are its arguments.",
+    "kind": "fill",
+    "accept": [
+      "bash check.sh art/hero.png"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-045",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t1",
+      "013.3.t2"
+    ],
+    "stem": "Type the command that starts `greet.sh`, which is in the current folder and executable, as a program.",
+    "explanation": "The `./` says “in this folder”, because the current folder is not in `PATH`.",
+    "kind": "fill",
+    "accept": [
+      "./greet.sh"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer}",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-046",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t7"
+    ],
+    "stem": "Type the `echo` option that suppresses the newline at the end. Include the dash.",
+    "explanation": "`echo -n` leaves out the trailing newline.",
+    "kind": "fill",
+    "accept": [
+      "-n"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "echo {answer} hi",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-047",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "Complete the loop so it prints `slime`, `bat` and `ghost` on separate lines.",
+    "explanation": "The list of words follows `in`, and the commands between `do` and `done` run once per word.",
+    "kind": "fill",
+    "accept": [
+      "slime bat ghost; do echo \"$e\"; done",
+      "slime bat ghost; do echo $e; done"
+    ],
+    "caseSensitive": true,
+    "prefix": "$ for e in",
+    "verify": {
+      "command": "for e in {answer}",
+      "fixture": "q013-scripts"
+    }
+  },
+  {
+    "id": "013.3-048",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.v1"
+    ],
+    "stem": "Type the `vi` command that writes the file and quits (the usual one, with a colon).",
+    "explanation": "In normal mode, `:wq` and `:x` save and quit, and so does `ZZ`.",
+    "kind": "fill",
+    "accept": [
+      ":wq",
+      ":x",
+      "ZZ"
+    ],
+    "caseSensitive": true
+  },
+  {
+    "id": "013.3-049",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3",
+      "013.3.t7"
+    ],
+    "stem": "What do these commands print?",
+    "explanation": "Double quotes keep spaces together and replace `$name`. Single quotes keep everything literal.",
+    "kind": "output",
+    "command": "name=Ada\necho \"Hello $name\"\necho 'Hello $name'",
+    "fixture": "q013-scripts",
+    "output": "Hello Ada\nHello $name",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "Hello Ada\nHello Ada",
+        "correct": false,
+        "rationale": "Single quotes switch the replacement off, so the second line shows `$name`."
+      },
+      {
+        "text": "Hello Ada\nHello $name",
+        "correct": true,
+        "rationale": "Double quotes replace the variable and single quotes print the text unchanged."
+      },
+      {
+        "text": "Hello $name\nHello $name",
+        "correct": false,
+        "rationale": "Double quotes still replace variables, so the first line shows the value."
+      },
+      {
+        "text": "Hello $name\nHello Ada",
+        "correct": false,
+        "rationale": "The quotes are mixed up: the replacement happens in the double-quoted line, not the single-quoted one."
+      }
+    ]
+  },
+  {
+    "id": "013.3-050",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4",
+      "013.3.t2"
+    ],
+    "stem": "The file `count.sh` contains the line `echo \"$# arguments, first is $1\"`. What does `bash count.sh slime bat ghost` print?",
+    "explanation": "`$#` is the number of arguments (3) and `$1` is the first one (slime).",
+    "kind": "output",
+    "command": "bash count.sh slime bat ghost",
+    "fixture": "q013-scripts",
+    "output": "3 arguments, first is slime",
+    "mode": "type"
+  },
+  {
+    "id": "013.3-051",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "Type what this loop prints.",
+    "explanation": "The body runs once per item in the list, and `$n` takes each value in turn.",
+    "kind": "output",
+    "command": "for n in 1 2 3; do\n  echo \"level $n\"\ndone",
+    "fixture": "q013-scripts",
+    "output": "level 1\nlevel 2\nlevel 3",
+    "mode": "type"
+  },
+  {
+    "id": "013.3-052",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5",
+      "013.3.t3"
+    ],
+    "stem": "What does this print?",
+    "explanation": "A test succeeds only when the two texts are equal. Otherwise the `else` branch is used.",
+    "kind": "output",
+    "command": "mode=debug\nif [ \"$mode\" = \"release\" ]; then\n  echo \"shipping\"\nelse\n  echo \"testing\"\nfi",
+    "fixture": "q013-scripts",
+    "output": "testing",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "testing",
+        "correct": true,
+        "rationale": "The values differ, so the test fails and the `else` branch runs."
+      },
+      {
+        "text": "shipping",
+        "correct": false,
+        "rationale": "That branch would run only if `$mode` held `release`."
+      },
+      {
+        "text": "shipping\ntesting",
+        "correct": false,
+        "rationale": "Only one branch of an `if` runs."
+      },
+      {
+        "text": "debug",
+        "correct": false,
+        "rationale": "Nothing in the commands prints the value of `$mode`."
+      }
+    ]
+  },
+  {
+    "id": "013.3-053",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t8",
+      "013.3.t1"
+    ],
+    "stem": "The file `stop.sh` has four lines: `#!/bin/bash`, `echo \"before\"`, `exit 3` and `echo \"after\"`. Type what this prints.",
+    "explanation": "`exit 3` ends the script before the last line runs and sets the status to 3, which `$?` shows.",
+    "kind": "output",
+    "command": "bash stop.sh\necho \"status: $?\"",
+    "fixture": "q013-scripts",
+    "output": "before\nstatus: 3",
+    "mode": "type"
+  },
+  {
+    "id": "013.3-054",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5",
+      "013.3.t3"
+    ],
+    "stem": "What does this print?",
+    "explanation": "The shell passes `[` one word instead of three, so the test is just “is this word not empty?”.",
+    "kind": "output",
+    "command": "a=slime\nb=bat\n[ \"$a\"=\"$b\" ]\necho $?",
+    "fixture": "q013-scripts",
+    "output": "0",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "1",
+        "correct": false,
+        "rationale": "The status would be 1 if the values were compared, but without spaces nothing is compared."
+      },
+      {
+        "text": "2",
+        "correct": false,
+        "rationale": "Status 2 means the test command itself failed with an error."
+      },
+      {
+        "text": "0",
+        "correct": true,
+        "rationale": "Without spaces around the equal sign, the test is a single non-empty word, which counts as true, so the status is 0."
+      },
+      {
+        "text": "slime=bat",
+        "correct": false,
+        "rationale": "The test prints nothing; `echo $?` prints only the status."
+      }
+    ]
+  },
+  {
+    "id": "013.3-055",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4"
+    ],
+    "stem": "The file `greet.sh` contains the line `echo \"Hello $1 and $2!\"`. What does `bash greet.sh Mira` print?",
+    "explanation": "A missing argument is not an error; its variable is simply empty.",
+    "kind": "output",
+    "command": "bash greet.sh Mira",
+    "fixture": "q013-scripts",
+    "output": "Hello Mira and !",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "Hello Mira and Mira!",
+        "correct": false,
+        "rationale": "There is no second argument, so `$2` does not repeat the first one."
+      },
+      {
+        "text": "Hello Mira and !",
+        "correct": true,
+        "rationale": "The missing second argument is an empty string, so nothing appears between “and” and the “!”."
+      },
+      {
+        "text": "Hello Mira!",
+        "correct": false,
+        "rationale": "The text between the quotes is printed as written, with `$2` replaced by nothing."
+      },
+      {
+        "text": "Hello Mira and $2!",
+        "correct": false,
+        "rationale": "Inside double quotes the variable is replaced, even when it is empty."
+      }
+    ]
+  },
+  {
+    "id": "013.3-056",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t4",
+      "013.3.t2",
+      "013.3.t1"
+    ],
+    "stem": "The file `name.sh` is executable and contains the line `echo \"I am $0\"`. What does `./name.sh` print?",
+    "explanation": "`$0` is the name used to start the script, so `./name.sh` and `bash name.sh` give different results.",
+    "kind": "output",
+    "command": "./name.sh",
+    "fixture": "q013-scripts",
+    "output": "I am ./name.sh",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "I am name.sh",
+        "correct": false,
+        "rationale": "That would be the output of `bash name.sh`, where the name is typed without `./`."
+      },
+      {
+        "text": "I am bash",
+        "correct": false,
+        "rationale": "`$0` holds the script’s name, not the interpreter’s."
+      },
+      {
+        "text": "I am /home/mira/name.sh",
+        "correct": false,
+        "rationale": "The name is not turned into a full path; it shows what was typed."
+      },
+      {
+        "text": "I am ./name.sh",
+        "correct": true,
+        "rationale": "`$0` holds the script name as it was typed, including the `./`."
+      }
+    ]
+  },
+  {
+    "id": "013.3-057",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t8",
+      "013.3.t2"
+    ],
+    "stem": "`plain.sh` is not executable. What does this print?",
+    "explanation": "Status 126 means the file was found but cannot be executed, here for lack of the execute permission.",
+    "kind": "output",
+    "command": "./plain.sh 2> /dev/null\necho $?",
+    "fixture": "q013-scripts",
+    "output": "126",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "0",
+        "correct": false,
+        "rationale": "Status 0 would mean the script ran successfully, but it never ran."
+      },
+      {
+        "text": "1",
+        "correct": false,
+        "rationale": "A script’s own failure would give 1; here the shell itself refused to start it."
+      },
+      {
+        "text": "126",
+        "correct": true,
+        "rationale": "The shell cannot execute the file and reports status 126, “found but not executable”."
+      },
+      {
+        "text": "127",
+        "correct": false,
+        "rationale": "127 means “command not found”, which is for names that do not exist at all."
+      }
+    ]
+  },
+  {
+    "id": "013.3-058",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6"
+    ],
+    "stem": "There is no `.jpg` file in `art`. What does this print?",
+    "explanation": "Unmatched globs are passed on unchanged, so loops over globs often need a file test inside.",
+    "kind": "output",
+    "command": "for f in art/*.jpg; do\n  echo \"$f\"\ndone",
+    "fixture": "q013-scripts",
+    "output": "art/*.jpg",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "art/*.jpg",
+        "correct": true,
+        "rationale": "A glob with no match stays as typed, so the loop runs once with the literal pattern."
+      },
+      {
+        "text": "(nothing)",
+        "correct": false,
+        "rationale": "The loop does not skip; it runs once with the unexpanded pattern."
+      },
+      {
+        "text": "art",
+        "correct": false,
+        "rationale": "The glob is not shortened to the folder name."
+      },
+      {
+        "text": "ls: cannot access 'art/*.jpg': No such file or directory",
+        "correct": false,
+        "rationale": "The loop only echoes; `ls` is not involved."
+      }
+    ]
+  },
+  {
+    "id": "013.3-059",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Type what this prints.",
+    "explanation": "`y=$x` copies the value at that moment, so changing `x` later does not change `y`.",
+    "kind": "output",
+    "command": "x=5\ny=$x\nx=7\necho \"$x $y\"",
+    "fixture": "q013-scripts",
+    "output": "7 5",
+    "mode": "type"
+  },
+  {
+    "id": "013.3-060",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t6",
+      "013.3.t1"
+    ],
+    "stem": "The file `sprites.sh` contains a for loop over `art/*.png` that prints “checking” and the name, followed by `echo \"done\"`. Type what `bash sprites.sh` prints.",
+    "explanation": "The glob expands in alphabetical order to the three sprites, and `done` is printed once after the loop ends.",
+    "kind": "output",
+    "command": "bash sprites.sh",
+    "fixture": "q013-scripts",
+    "output": "checking art/bat.png\nchecking art/hero.png\nchecking art/slime.png\ndone",
+    "mode": "type"
+  }
+]

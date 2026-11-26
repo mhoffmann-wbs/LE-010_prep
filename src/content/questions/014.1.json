@@ -1,0 +1,764 @@
+[
+  {
+    "id": "014.1-001",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1"
+    ],
+    "stem": "Jonas asks the team what “Linux” strictly means, since Debian, Ubuntu and Fedora all call themselves Linux. Which statement is correct?",
+    "options": [
+      {
+        "text": "Linux is one complete operating system made by a single company, and Debian and Fedora are its paid editions that customers have to renew every single year.",
+        "correct": false,
+        "rationale": "Linux has no single owner or vendor, and the distributions are separate projects that use the same kernel."
+      },
+      {
+        "text": "Linux is the desktop environment, and the kernel is a separate product that each distribution has to buy.",
+        "correct": false,
+        "rationale": "The kernel is the part of Linux itself; a desktop environment is one of the many extra programs a distribution adds."
+      },
+      {
+        "text": "Linux is the kernel, and a distribution such as Debian bundles it with tools, a package manager and often a desktop.",
+        "correct": true,
+        "rationale": "The kernel is the core that talks to the hardware, and the distribution is the complete system built around it."
+      },
+      {
+        "text": "Linux is the package manager that all distributions share, and the kernel is different in each one.",
+        "correct": false,
+        "rationale": "Package managers differ between distributions (apt, dnf, zypper), and the kernel is the shared part."
+      }
+    ],
+    "explanation": "Strictly, Linux is only the kernel. A distribution combines it with a shell, system tools, a package manager and usually a desktop, which is why Debian, Ubuntu and Fedora feel different but share the same core."
+  },
+  {
+    "id": "014.1-002",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1"
+    ],
+    "stem": "Ada moves a build script from a Windows laptop to a Linux server and has to change the file paths in it. Which difference between the systems explains this?",
+    "options": [
+      {
+        "text": "Linux has one directory tree that starts at `/` and separates names with `/`, while Windows uses drive letters such as `C:\\` and `\\`.",
+        "correct": true,
+        "rationale": "A path like `C:\\builds\\pixel` has to become something like `/srv/builds/pixel` on the server."
+      },
+      {
+        "text": "Linux gives every disk its own drive letter such as `D:`, while Windows mounts everything below one root directory and calls the main system disk the C drive.",
+        "correct": false,
+        "rationale": "The picture is reversed: Windows uses drive letters, and Linux attaches all disks into a single tree."
+      },
+      {
+        "text": "Linux separates path elements with backslashes, while Windows uses forward slashes between names.",
+        "correct": false,
+        "rationale": "Linux uses forward slashes; the backslash is Windows’ separator and an escape character in the shell."
+      },
+      {
+        "text": "Linux paths are not case-sensitive, so `Build` and `build` name the same file, while Windows treats them as different.",
+        "correct": false,
+        "rationale": "Linux file names are case-sensitive, so `Build` and `build` are two different names."
+      }
+    ],
+    "explanation": "Linux has a single tree rooted at `/`, and every disk is mounted somewhere inside it. Windows has a separate tree per drive letter. Linux file names are also case-sensitive."
+  },
+  {
+    "id": "014.1-003",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1"
+    ],
+    "terms": [
+      "014.1.vt1"
+    ],
+    "stem": "TuxPixel starts a new build server in the cloud. It has no monitor, and Mira will manage it from her desk over a slow connection. Which way of working fits best?",
+    "options": [
+      {
+        "text": "Install a full graphical desktop first, because the command line cannot be used over a network connection.",
+        "correct": false,
+        "rationale": "SSH gives a full command line over the network; no desktop is needed to administer a server."
+      },
+      {
+        "text": "Use only graphical tools, because shell scripts cannot run on a machine without a monitor.",
+        "correct": false,
+        "rationale": "Shell scripts run fine without a monitor; they only need a shell."
+      },
+      {
+        "text": "Plug a keyboard and screen into the data centre machine, since Linux has no remote access.",
+        "correct": false,
+        "rationale": "Linux supports remote access with SSH, which is how cloud servers are normally used."
+      },
+      {
+        "text": "Log in over SSH and use the command line, which needs little memory and bandwidth and can be scripted.",
+        "correct": true,
+        "rationale": "Servers are normally run from the command line, as it works well over slow links and in scripts."
+      }
+    ],
+    "explanation": "A graphical user interface suits desktops, but servers are normally run through the command line, usually over SSH. It uses little memory, works over slow links and can be automated with scripts. Linux lets you choose either."
+  },
+  {
+    "id": "014.1-004",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1"
+    ],
+    "terms": [
+      "014.1.vt1"
+    ],
+    "stem": "Jonas runs GNOME on his laptop, while Ada prefers Xfce on the same Debian release. What does this show about a Linux desktop?",
+    "options": [
+      {
+        "text": "Each distribution is tied to exactly one desktop environment and cannot offer another one that the vendor ships together with it.",
+        "correct": false,
+        "rationale": "Distributions usually offer several desktop environments, which you can pick at the login screen."
+      },
+      {
+        "text": "The desktop environment is chosen separately from the distribution, and one distribution can offer several.",
+        "correct": true,
+        "rationale": "Per-user desktop settings are kept as files in the home directory, so each user can have their own look."
+      },
+      {
+        "text": "A different desktop environment needs a different kernel, so Jonas and Ada must run separate machines.",
+        "correct": false,
+        "rationale": "The kernel is independent of the desktop; both desktops run on the same one."
+      },
+      {
+        "text": "The desktop is part of the kernel, so changing it means compiling a new kernel.",
+        "correct": false,
+        "rationale": "The desktop is a normal program, installed and replaced like any other software."
+      }
+    ],
+    "explanation": "The desktop environment (GNOME, KDE Plasma, Xfce and others) is a separate layer on top of the system. You can install several and choose one at the login screen, and each user’s desktop settings are stored in files in their home directory."
+  },
+  {
+    "id": "014.1-005",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.2"
+    ],
+    "terms": [
+      "014.1.t1"
+    ],
+    "stem": "Mira downloads `debian-12.iso` to install Linux on a spare laptop. What is this file?",
+    "options": [
+      {
+        "text": "A compressed backup of Mira’s own installed system, which she unpacks into `/` to restore it.",
+        "correct": false,
+        "rationale": "An ISO is the distribution’s installer image, not a backup of an installed machine."
+      },
+      {
+        "text": "A single file that is an exact copy of an optical disc, which you write to a USB stick or DVD, or boot a virtual machine from.",
+        "correct": true,
+        "rationale": "An ISO file is the installer, delivered as a disc image."
+      },
+      {
+        "text": "A kernel module that the running system loads to read DVD drives.",
+        "correct": false,
+        "rationale": "Modules are drivers inside the running kernel; an ISO is a disc image that can contain an installer."
+      },
+      {
+        "text": "A checksum list that proves the download is not corrupt.",
+        "correct": false,
+        "rationale": "Checksums are published as separate small files; the ISO is the installer itself."
+      }
+    ],
+    "explanation": "An ISO file is a copy of a disc in one file. Distributions publish their installers this way. You put it on installation media (a USB stick or DVD) and boot from it, or you attach it to a virtual machine. Check the download against the project’s published checksum first."
+  },
+  {
+    "id": "014.1-006",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.2",
+      "014.1.3"
+    ],
+    "terms": [
+      "014.1.t2"
+    ],
+    "stem": "Ada compares an installer ISO with an operating system image of a cloud provider. What is the main difference?",
+    "options": [
+      {
+        "text": "An image is always smaller, because it only holds the kernel and none of the programs and the boot loader.",
+        "correct": false,
+        "rationale": "An image holds a complete installed system, usually with the programs included."
+      },
+      {
+        "text": "An image can only be used on a physical computer, while an ISO works only in virtual machines.",
+        "correct": false,
+        "rationale": "Images are used mainly in clouds and on SD cards, and ISOs work on real hardware too."
+      },
+      {
+        "text": "An image must be installed from a DVD, while an ISO is copied directly to the disk.",
+        "correct": false,
+        "rationale": "It is the other way round: the image is copied to the disk, the ISO starts an installer."
+      },
+      {
+        "text": "An image is a copy of an already installed system that is booted directly, so no installation steps are needed.",
+        "correct": true,
+        "rationale": "An ISO starts an installer that asks questions and writes the system to a disk; an image is the finished result."
+      }
+    ],
+    "explanation": "An ISO is an installer. An OS image is a ready-made copy of an installed system that you copy to a disk, an SD card or a virtual disk and boot. That is why cloud instances and Raspberry Pis start without clicking through an installation."
+  },
+  {
+    "id": "014.1-007",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.2"
+    ],
+    "terms": [
+      "014.1.t3"
+    ],
+    "stem": "When Jonas switches on his laptop, a menu lets him pick Windows or Debian, and only the chosen system runs. What is this setup called?",
+    "options": [
+      {
+        "text": "Dual boot, with two operating systems on one computer and a boot loader that offers the choice.",
+        "correct": true,
+        "rationale": "Only one system runs at a time; the boot loader asks at power-on."
+      },
+      {
+        "text": "A virtual machine, where Debian runs as a program inside Windows next to it.",
+        "correct": false,
+        "rationale": "In a virtual machine both systems run at the same time, one inside the other."
+      },
+      {
+        "text": "Windows Subsystem for Linux, where Windows starts a Linux environment without a restart inside a Windows terminal window.",
+        "correct": false,
+        "rationale": "WSL needs no menu and no restart: Linux runs inside Windows."
+      },
+      {
+        "text": "A cloud instance, where a provider starts Debian from an image on a rented server.",
+        "correct": false,
+        "rationale": "A cloud instance runs on the provider’s hardware, not on Jonas’s laptop."
+      }
+    ],
+    "explanation": "In a dual boot setup, two operating systems are installed on the same computer, usually on separate partitions, and the boot loader lets you choose one at start-up. Only one runs at a time, and switching needs a restart."
+  },
+  {
+    "id": "014.1-008",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1",
+      "014.1.2"
+    ],
+    "terms": [
+      "014.1.t4"
+    ],
+    "stem": "Which statement describes WSL 2, the current Windows Subsystem for Linux?",
+    "options": [
+      {
+        "text": "It replaces the Windows kernel with Linux at the next restart, so the computer is no longer Windows.",
+        "correct": false,
+        "rationale": "Windows stays in charge; WSL runs next to it and never replaces its kernel."
+      },
+      {
+        "text": "It translates Linux system calls into Windows ones without any Linux kernel at all.",
+        "correct": false,
+        "rationale": "That describes the older WSL 1; WSL 2 has a real Linux kernel in a lightweight VM."
+      },
+      {
+        "text": "It runs a real Linux kernel inside a lightweight virtual machine that Windows manages, so Linux tools run inside Windows.",
+        "correct": true,
+        "rationale": "This gives full compatibility with Linux programs without a separate window or a dual boot."
+      },
+      {
+        "text": "It lets the boot loader offer Windows or Linux each time the computer starts.",
+        "correct": false,
+        "rationale": "That is dual boot; WSL needs no restart and no boot menu."
+      }
+    ],
+    "explanation": "WSL runs a Linux environment on Windows. WSL 2 does it with a real Linux kernel in a lightweight utility virtual machine, while WSL 1 translated Linux calls into Windows calls. Either way, you get a Linux shell without dual boot.",
+    "sourceLinks": [
+      "https://learn.microsoft.com/en-us/windows/wsl/about"
+    ]
+  },
+  {
+    "id": "014.1-009",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.2"
+    ],
+    "stem": "Mira wants to rehearse a risky change to the file server on a copy of the same distribution without touching her laptop’s disk. Which approach is the safest?",
+    "options": [
+      {
+        "text": "Shrink the laptop’s main partition and install the distribution next to the current system as a dual boot.",
+        "correct": false,
+        "rationale": "Resizing partitions touches the real disk and carries a risk of data loss."
+      },
+      {
+        "text": "Install the distribution over the laptop’s current system to see how it behaves with the real hardware.",
+        "correct": false,
+        "rationale": "Overwriting the existing system destroys the data and settings that are on it."
+      },
+      {
+        "text": "Run the new steps on the real file server first, and restore a backup if something goes wrong.",
+        "correct": false,
+        "rationale": "Testing on the production machine risks the studio’s files and uptime."
+      },
+      {
+        "text": "Create a virtual machine, install the same distribution into it from an ISO, and try the steps there.",
+        "correct": true,
+        "rationale": "A virtual machine has its own virtual disk, so a mistake only harms the VM, which can be thrown away."
+      }
+    ],
+    "explanation": "A virtual machine is a pretend computer running as a program inside the normal system. It gets its own virtual disk, so nothing on the real disk changes, and it can be deleted afterwards. The price is speed, since the VM shares the host’s CPU and memory."
+  },
+  {
+    "id": "014.1-010",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.3"
+    ],
+    "terms": [
+      "014.1.t2"
+    ],
+    "stem": "Ada needs a fresh Linux build server within minutes. How is a Linux cloud instance normally created?",
+    "options": [
+      {
+        "text": "Download an ISO, write it to a USB stick and let a provider’s technician plug it into a server.",
+        "correct": false,
+        "rationale": "Cloud providers don’t install from sticks; their instances start from images."
+      },
+      {
+        "text": "Pick a size and an OS image, and the provider copies the image to a virtual disk and starts the instance.",
+        "correct": true,
+        "rationale": "No installer runs; the system comes up from the image in about a minute."
+      },
+      {
+        "text": "Buy a physical server, install Linux by hand from a DVD and connect it to the provider’s network and plug it into a rack in the data centre.",
+        "correct": false,
+        "rationale": "That is installing on a computer, not renting a virtual server."
+      },
+      {
+        "text": "Start the provider’s generic empty instance and click through a graphical installer on its console.",
+        "correct": false,
+        "rationale": "Instances start from an image, so there is no installer wizard to go through."
+      }
+    ],
+    "explanation": "A cloud instance is a virtual server rented by the hour. You choose a size, a region and an OS image, and the provider copies the image to a virtual disk and starts it. That is why it takes about a minute rather than a full installation."
+  },
+  {
+    "id": "014.1-011",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.3"
+    ],
+    "stem": "What does cloud-init do when a new Linux cloud instance boots for the first time?",
+    "options": [
+      {
+        "text": "It downloads the provider’s ISO and runs the installer to write the system onto the virtual disk on every new instance.",
+        "correct": false,
+        "rationale": "The system already comes from an image, so there is no ISO and no installer."
+      },
+      {
+        "text": "It converts the instance into a dual boot machine so that the provider can add a second system.",
+        "correct": false,
+        "rationale": "Dual boot is about physical computers with a boot menu and has nothing to do with cloud-init."
+      },
+      {
+        "text": "It reads the user data supplied with the instance and applies it, for example creating users and adding SSH keys.",
+        "correct": true,
+        "rationale": "It can also set the hostname and install packages, so the new server is ready for its job."
+      },
+      {
+        "text": "It copies the instance to a physical server in the data centre so that it keeps running after a power cut.",
+        "correct": false,
+        "rationale": "cloud-init configures the instance at first boot and does not move it or back it up."
+      }
+    ],
+    "explanation": "cloud-init is the usual provisioning tool for cloud images. On first boot it reads the user data you gave the instance and applies it: creating accounts, adding your SSH public key, setting the hostname and installing software.",
+    "sourceLinks": [
+      "https://docs.cloud-init.io/en/latest/explanation/introduction.html"
+    ]
+  },
+  {
+    "id": "014.1-012",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.3"
+    ],
+    "stem": "Ada’s new cloud instance has no screen and no password for her account. How does she most likely log in the first time?",
+    "options": [
+      {
+        "text": "Over SSH with her key pair, because cloud-init put her public key into her account from the user data.",
+        "correct": true,
+        "rationale": "This is why SSH keys are part of provisioning."
+      },
+      {
+        "text": "With a graphical remote desktop that every Linux image starts by default.",
+        "correct": false,
+        "rationale": "Cloud images are normally command-line systems and start no desktop."
+      },
+      {
+        "text": "By typing the provider’s default root password at a console, since images ship with one.",
+        "correct": false,
+        "rationale": "Providers avoid shared default passwords; key-based login is the usual start."
+      },
+      {
+        "text": "By booting the instance from an ISO and choosing her account in the installer.",
+        "correct": false,
+        "rationale": "A cloud instance has no installer step, because it starts from an image."
+      }
+    ],
+    "explanation": "A cloud instance is administered remotely. cloud-init installs the SSH public key from the user data into the account, so Ada connects with `ssh` and her private key, without a password and without a screen.",
+    "sourceLinks": [
+      "https://docs.cloud-init.io/en/latest/explanation/introduction.html"
+    ]
+  },
+  {
+    "id": "014.1-013",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.v1"
+    ],
+    "terms": [
+      "014.1.vt2"
+    ],
+    "stem": "TuxPixel wants a build server that gets security updates for years without frequent big upgrades. Which kind of release fits best?",
+    "options": [
+      {
+        "text": "A long-term support (LTS) release, which is maintained with security fixes for several years.",
+        "correct": true,
+        "rationale": "LTS versions favour stability and a long support period over new features."
+      },
+      {
+        "text": "A beta release, which is a pre-release that the project publishes for early testing.",
+        "correct": false,
+        "rationale": "A beta may still contain bugs and is not meant for production machines."
+      },
+      {
+        "text": "An alpha snapshot of the next version, which gets the newest features first and is built every night by volunteers.",
+        "correct": false,
+        "rationale": "An alpha is even less finished than a beta and is for developers and testers."
+      },
+      {
+        "text": "The unstable branch, which changes daily and receives the newest package versions.",
+        "correct": false,
+        "rationale": "Unstable gets constant change, the opposite of a calm, long-supported server."
+      }
+    ],
+    "explanation": "LTS releases are designed for machines that should run for years: they receive security and bug fixes for a long period. Alpha and beta versions are for testing, and an unstable branch changes constantly.",
+    "sourceLinks": [
+      "https://ubuntu.com/about/release-cycle",
+      "https://www.debian.org/releases/"
+    ]
+  },
+  {
+    "id": "014.1-014",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.v1"
+    ],
+    "terms": [
+      "014.1.vt2"
+    ],
+    "stem": "Which release is the best choice for the studio’s production build server?",
+    "options": [
+      {
+        "text": "A beta release, because it already contains the features of the next version and is tested by the community.",
+        "correct": false,
+        "rationale": "A beta is meant for testing and may have bugs, so it doesn’t belong on production."
+      },
+      {
+        "text": "A testing snapshot, because it receives updates a few days after they are released.",
+        "correct": false,
+        "rationale": "Testing is still a pre-release stage; stability isn’t guaranteed."
+      },
+      {
+        "text": "A stable release, which gets only bug and security fixes and is considered ready for production.",
+        "correct": true,
+        "rationale": "Stable means the project regards it as fit for real work."
+      },
+      {
+        "text": "A release candidate chosen by date, since only the newest version is supported.",
+        "correct": false,
+        "rationale": "Release candidates are pre-releases for last checks, not supported production releases."
+      }
+    ],
+    "explanation": "A stable release is the one the project considers ready for production: it receives bug and security fixes but no big changes. Alpha, beta and testing versions are for trying things out, not for servers."
+  },
+  {
+    "id": "014.1-015",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.v1"
+    ],
+    "terms": [
+      "014.1.vt2"
+    ],
+    "stem": "Which statement correctly contrasts a rolling release with a fixed release?",
+    "options": [
+      {
+        "text": "A rolling release gets no updates after installation, while a fixed release is updated every day.",
+        "correct": false,
+        "rationale": "A rolling release is the one that is updated all the time."
+      },
+      {
+        "text": "A rolling release is updated continuously without big version jumps, while a fixed release is replaced by a new numbered version now and then.",
+        "correct": true,
+        "rationale": "Debian stable and Ubuntu are fixed; Arch is the usual rolling example."
+      },
+      {
+        "text": "A rolling release is only used for servers, while a fixed release is only used for desktops.",
+        "correct": false,
+        "rationale": "Both models are used on desktops and servers; they describe how updates arrive."
+      },
+      {
+        "text": "A rolling release must be reinstalled from an ISO every year, while a fixed release never changes.",
+        "correct": false,
+        "rationale": "Reinstalling is needed in neither case; rolling releases just keep updating."
+      }
+    ],
+    "explanation": "In a fixed release model, you run a numbered version (for example a Debian release) until you upgrade to the next one. A rolling release keeps updating packages continuously, so there is no big upgrade step.",
+    "sourceLinks": [
+      "https://www.debian.org/releases/"
+    ]
+  },
+  {
+    "id": "014.1-016",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.v1"
+    ],
+    "stem": "Mira’s build server still runs a distribution release that the project no longer supports. What is the main risk?",
+    "options": [
+      {
+        "text": "It stops working at once, because the kernel refuses to run after the end of its support period.",
+        "correct": false,
+        "rationale": "The system keeps running; it simply isn’t updated any more."
+      },
+      {
+        "text": "It switches to a rolling release automatically, which may replace programs without warning.",
+        "correct": false,
+        "rationale": "A release doesn’t convert itself to another release model."
+      },
+      {
+        "text": "It can no longer run command-line programs, because the shell is removed when support ends and every installed package.",
+        "correct": false,
+        "rationale": "Nothing is removed; installed programs work as before but without updates."
+      },
+      {
+        "text": "It no longer receives security fixes, so known weaknesses stay open and Mira should upgrade to a supported release.",
+        "correct": true,
+        "rationale": "Support ends on a published date, so upgrades must be planned ahead."
+      }
+    ],
+    "explanation": "Every release is supported only for a limited time. After the end of that period there are no more security fixes, so it is a risk to keep running it. Plan the upgrade to a newer release before support ends.",
+    "sourceLinks": [
+      "https://ubuntu.com/about/release-cycle",
+      "https://docs.fedoraproject.org/en-US/releases/lifecycle/"
+    ]
+  },
+  {
+    "id": "014.1-017",
+    "objectiveId": "014.1",
+    "kind": "multi",
+    "areas": [
+      "014.1.1"
+    ],
+    "stem": "Which TWO statements correctly compare Linux with Windows? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Linux runs only on computers sold by one hardware manufacturer.",
+        "correct": false,
+        "rationale": "Linux runs on PCs, servers, phones, routers and Raspberry Pis, among other hardware."
+      },
+      {
+        "text": "Linux needs a paid licence for every computer it is installed on.",
+        "correct": false,
+        "rationale": "Linux distributions are typically free to download and use."
+      },
+      {
+        "text": "Linux is open source, so people may study, change and share it under its licences.",
+        "correct": true,
+        "rationale": "Free and open source licensing is a key difference from Windows."
+      },
+      {
+        "text": "Linux comes in many distributions and offers a choice of several desktop environments.",
+        "correct": true,
+        "rationale": "There are hundreds of distributions, while Windows comes from one vendor."
+      },
+      {
+        "text": "Linux has no command line, which is why servers run Windows.",
+        "correct": false,
+        "rationale": "Linux has a powerful command line, and most servers run Linux."
+      }
+    ],
+    "explanation": "Linux is open source and free to use, and it comes in many distributions with a choice of desktops. It runs on almost any hardware, from phones to servers, and the command line is central to it."
+  },
+  {
+    "id": "014.1-018",
+    "objectiveId": "014.1",
+    "kind": "multi",
+    "areas": [
+      "014.1.2"
+    ],
+    "terms": [
+      "014.1.t3"
+    ],
+    "stem": "Which TWO statements about a dual boot setup are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Only one of the installed systems runs at a time.",
+        "correct": true,
+        "rationale": "Switching to the other system needs a restart."
+      },
+      {
+        "text": "Both systems run at once, each in its own window on the same desktop.",
+        "correct": false,
+        "rationale": "That describes a virtual machine, not dual boot."
+      },
+      {
+        "text": "It needs no partitioning, because both systems share one filesystem.",
+        "correct": false,
+        "rationale": "Each system normally has its own partitions, and the installer often shrinks an existing one."
+      },
+      {
+        "text": "A boot loader shows a menu at power-on so that the user can choose the system.",
+        "correct": true,
+        "rationale": "GRUB is the usual boot loader on Linux."
+      },
+      {
+        "text": "It works only if both systems are Linux distributions.",
+        "correct": false,
+        "rationale": "Dual boot also pairs Linux with Windows, as on Jonas’s laptop."
+      }
+    ],
+    "explanation": "Dual boot means two systems installed side by side, with a boot loader that asks which one to start. Only that system runs until the next restart. Back up your data before resizing partitions to make room."
+  },
+  {
+    "id": "014.1-019",
+    "objectiveId": "014.1",
+    "kind": "multi",
+    "areas": [
+      "014.1.3"
+    ],
+    "stem": "Which TWO tasks can cloud-init do on a new cloud instance, based on the user data? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Change the provider’s physical network cabling.",
+        "correct": false,
+        "rationale": "cloud-init works inside the instance and can’t touch the provider’s hardware."
+      },
+      {
+        "text": "Write the OS image onto a DVD for the data centre.",
+        "correct": false,
+        "rationale": "Images are copied to virtual disks; no DVD is involved."
+      },
+      {
+        "text": "Replace the hypervisor’s kernel on the host machine.",
+        "correct": false,
+        "rationale": "The host belongs to the provider; cloud-init configures only the guest."
+      },
+      {
+        "text": "Add Ada’s SSH public key to her account.",
+        "correct": true,
+        "rationale": "Key injection is a standard use of user data."
+      },
+      {
+        "text": "Install packages that the user data lists.",
+        "correct": true,
+        "rationale": "Package installation is part of first-boot provisioning."
+      }
+    ],
+    "explanation": "On first boot, cloud-init reads the instance’s user data and applies it: it can create users, add SSH keys, set the hostname and install packages. It configures the instance itself, not the provider’s infrastructure.",
+    "sourceLinks": [
+      "https://docs.cloud-init.io/en/latest/explanation/introduction.html"
+    ]
+  },
+  {
+    "id": "014.1-020",
+    "objectiveId": "014.1",
+    "kind": "multi",
+    "areas": [
+      "014.1.v1"
+    ],
+    "terms": [
+      "014.1.vt2"
+    ],
+    "stem": "Which TWO statements about release types are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "A beta release is the final version and is meant for production use.",
+        "correct": false,
+        "rationale": "A beta comes before the final release."
+      },
+      {
+        "text": "A beta is a pre-release for testing, so it may still contain bugs.",
+        "correct": true,
+        "rationale": "That is why a beta should not run on a production server."
+      },
+      {
+        "text": "A stable release mainly gets bug and security fixes, not big changes.",
+        "correct": true,
+        "rationale": "Stable favours reliability over new features."
+      },
+      {
+        "text": "A stable release receives new features every week to stay up to date.",
+        "correct": false,
+        "rationale": "Constant feature changes are typical of unstable or rolling branches, not stable ones."
+      },
+      {
+        "text": "Every distribution publishes a new release on the same day every year.",
+        "correct": false,
+        "rationale": "Release cycles differ: Debian releases when it is ready, Ubuntu and Fedora about twice a year."
+      }
+    ],
+    "explanation": "A stable release is the one considered ready for production and mostly changes only through fixes. A beta is a test version published before the final release and may contain bugs. Release cycles differ between projects.",
+    "sourceLinks": [
+      "https://www.debian.org/releases/",
+      "https://ubuntu.com/about/release-cycle",
+      "https://docs.fedoraproject.org/en-US/releases/lifecycle/"
+    ]
+  },
+  {
+    "id": "014.1-021",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1"
+    ],
+    "stem": "Ada’s colleague uses a MacBook and asks how macOS and Linux relate. Which statement is correct?",
+    "options": [
+      {
+        "text": "macOS is a Linux distribution that Apple maintains, so every Linux program runs on it without any changes at all.",
+        "correct": false,
+        "rationale": "macOS is not based on the Linux kernel, so Linux programs need to be built for it."
+      },
+      {
+        "text": "Both use drive letters such as `C:` for their disks, which makes their paths different from Unix systems.",
+        "correct": false,
+        "rationale": "Drive letters are a Windows habit; macOS and Linux have one tree that starts at `/`."
+      },
+      {
+        "text": "Both are Unix-like, so the command line and many tools look alike, but macOS is Apple’s system for Apple hardware.",
+        "correct": true,
+        "rationale": "Linux runs on almost any hardware instead."
+      },
+      {
+        "text": "Linux is closed source and sold with Apple hardware, while macOS is open source and free to change.",
+        "correct": false,
+        "rationale": "The roles are reversed: Linux is open source, and macOS is mostly closed source."
+      }
+    ],
+    "explanation": "Linux and macOS are both Unix-like systems, so they share the single directory tree, a similar shell and many tools. They differ in origin and licence: macOS is Apple’s mostly closed-source system for its own hardware, while Linux is open source and runs on almost anything."
+  }
+]

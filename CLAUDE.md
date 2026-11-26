@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Phases 0 (scaffold and VM spike), 1 (blueprint and quiz engine) and 2 (terminal runtime) are done: the tooling, the Pages deploy, the in-browser Debian guest, the `/terminal` page, the verbatim blueprint, the item schema, the content tests and scripts, practice, the question bank browser, the mock exam, the progress store and page, 9 seed items, fixtures, the job runner, `content:verify` with its verified cache, and the lesson cell components (`bash` cells, `output` blocks, `<Predict>`). Phase 3 is done: the 010-160 exam track and all 19 lessons. **`PLAN.md` is the build plan and sets the order of work.** It records the decisions made, the blueprint → content map, the item kinds, the terminal design, the Explore pillar and the phases. As parts get built, describe them here (commands, file layout, gotchas), and mark phases done in `PLAN.md` §8 with the date.
+Phases 0 (scaffold and VM spike), 1 (blueprint and quiz engine) and 2 (terminal runtime) are done: the tooling, the Pages deploy, the in-browser Debian guest, the `/terminal` page, the verbatim blueprint, the item schema, the content tests and scripts, practice, the question bank browser, the mock exam, the progress store and page, 9 seed items, fixtures, the job runner, `content:verify` with its verified cache, and the lesson cell components (`bash` cells, `output` blocks, `<Predict>`). Phase 3 is done: the 010-160 exam track and all 19 lessons. Phase 4 is done: the question bank has 666 items, with every area and term of both exams covered. **`PLAN.md` is the build plan and sets the order of work.** It records the decisions made, the blueprint → content map, the item kinds, the terminal design, the Explore pillar and the phases. As parts get built, describe them here (commands, file layout, gotchas), and mark phases done in `PLAN.md` §8 with the date.
 
 The sibling apps `../AIF-C01` (newest; follow its structure, conventions and styling) and `../PCEP_prep` (in-browser runner, verified outputs, `<Predict>` blocks) are the reference implementations. Port their code rather than reinventing it.
 
@@ -146,5 +146,7 @@ The scripts run TypeScript directly with Node, so imports in `scripts/` use `.ts
 - In the guest, `ls -l` shows directories with size 0 (9p), not ext4's 4096. Don't write items whose answer depends on a directory's size or `total` line.
 - Node's type stripping (the scripts) rejects TypeScript-only syntax such as constructor parameter properties and enums, in any `src/` module a script imports.
 - Tests that need lesson MDX as text read the files with `fs`: the MDX plugin compiles even a `?raw` import.
+- The schema rejects options that differ only by case, so `-a`/`-A` or `-r`/`-R` can't both be options; use long forms (`--all`, `--almost-all`) as distractors.
+- In the guest, `man ls` can hit the 10 s job timeout, and `/etc/resolv.conf` is an empty file from the Docker export; a fixture can replace it.
 - Zod's `.trim()` transforms values, so the schema's `nonEmpty` changes text. Never use it for text whose whitespace matters (outputs).
 - To check phone layout, emulate the viewport over DevTools (`Emulation.setDeviceMetricsOverride`, width 360). `--window-size=360` gives a wider layout viewport, because headless Chrome has a minimum window width.

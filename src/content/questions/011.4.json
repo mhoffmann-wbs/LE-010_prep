@@ -1,0 +1,1470 @@
+[
+  {
+    "id": "011.4-001",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.1"
+    ],
+    "terms": [
+      "011.4.t1"
+    ],
+    "stem": "Jonas takes his laptop to a conference. Which kind of Linux machine is that?",
+    "options": [
+      {
+        "text": "A server, because it is a computer with a keyboard and a screen",
+        "correct": false,
+        "rationale": "Servers are set up to provide services, often with no screen."
+      },
+      {
+        "text": "An embedded system, because it is portable",
+        "correct": false,
+        "rationale": "Embedded systems are built into a product with one fixed job."
+      },
+      {
+        "text": "An HPC cluster, because it has more than one core",
+        "correct": false,
+        "rationale": "Clusters link many servers into one machine."
+      },
+      {
+        "text": "A laptop, one of the desktop and mobile computers that run Linux",
+        "correct": true,
+        "rationale": "Laptops run the same desktop distributions as PCs, such as Debian, Ubuntu and Fedora."
+      }
+    ],
+    "explanation": "Desktops, laptops and mobile devices (phones and tablets, mostly Android) are the machines people use directly."
+  },
+  {
+    "id": "011.4-002",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.1"
+    ],
+    "terms": [
+      "011.4.t2"
+    ],
+    "stem": "Which machine is typically managed remotely and has no screen or keyboard?",
+    "options": [
+      {
+        "text": "A server",
+        "correct": true,
+        "rationale": "Servers run services such as web or build servers and are managed over the network."
+      },
+      {
+        "text": "A desktop",
+        "correct": false,
+        "rationale": "Desktops have a screen and keyboard because people use them directly."
+      },
+      {
+        "text": "A tablet",
+        "correct": false,
+        "rationale": "Tablets are used directly through a touch screen."
+      },
+      {
+        "text": "A smart phone",
+        "correct": false,
+        "rationale": "Phones are used directly through a touch screen."
+      }
+    ],
+    "explanation": "Server computers provide services to other machines, and usually work without a screen or keyboard."
+  },
+  {
+    "id": "011.4-003",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.1"
+    ],
+    "terms": [
+      "011.4.t3"
+    ],
+    "stem": "Which statement about an HPC cluster is correct?",
+    "options": [
+      {
+        "text": "It is a single small device built into a product, with one fixed job.",
+        "correct": false,
+        "rationale": "That describes an embedded system."
+      },
+      {
+        "text": "It is a virtual machine rented by the hour.",
+        "correct": false,
+        "rationale": "That describes a cloud instance."
+      },
+      {
+        "text": "It joins many servers, called nodes, to work together on one big job.",
+        "correct": true,
+        "rationale": "Weather, science and AI workloads run on clusters, and nearly all the biggest supercomputers run Linux."
+      },
+      {
+        "text": "It is a laptop with a very fast graphics card.",
+        "correct": false,
+        "rationale": "A laptop is a single machine for one user."
+      }
+    ],
+    "explanation": "HPC stands for high-performance computing. The cluster’s nodes share one job."
+  },
+  {
+    "id": "011.4-004",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.1"
+    ],
+    "terms": [
+      "011.4.t3"
+    ],
+    "stem": "Which of these devices is an embedded system?",
+    "options": [
+      {
+        "text": "A rented cloud instance.",
+        "correct": false,
+        "rationale": "It is a virtual server."
+      },
+      {
+        "text": "A router built to do one job.",
+        "correct": true,
+        "rationale": "Embedded systems are small and have one fixed job, and Linux is popular in them."
+      },
+      {
+        "text": "A laptop with a docking station.",
+        "correct": false,
+        "rationale": "It is a general-purpose computer."
+      },
+      {
+        "text": "A node of a supercomputer.",
+        "correct": false,
+        "rationale": "Nodes belong to an HPC cluster."
+      }
+    ],
+    "explanation": "Routers, TVs, cars, cameras and smart home devices contain computers with one fixed job; Linux is common in them."
+  },
+  {
+    "id": "011.4-005",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.1"
+    ],
+    "terms": [
+      "011.4.t4"
+    ],
+    "stem": "Ada opens a web page in her browser. Which statement describes the roles?",
+    "options": [
+      {
+        "text": "The browser is the server, because it shows the page to the user on the screen.",
+        "correct": false,
+        "rationale": "A server waits for requests and provides the service."
+      },
+      {
+        "text": "Both programs are servers, since they run on computers.",
+        "correct": false,
+        "rationale": "The browser asks for the page, which makes it the client."
+      },
+      {
+        "text": "The web server is the client, because it receives the request.",
+        "correct": false,
+        "rationale": "A client is the one that makes the request."
+      },
+      {
+        "text": "The browser is the client that asks, and the web server answers.",
+        "correct": true,
+        "rationale": "A client asks, and a server answers."
+      }
+    ],
+    "explanation": "The same computer can be a client for one service and a server for another."
+  },
+  {
+    "id": "011.4-006",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.2",
+      "011.4.v3"
+    ],
+    "stem": "Mira wants to test a risky update on a copy of a whole server, with its own operating system and kernel, without touching real hardware. What fits best?",
+    "options": [
+      {
+        "text": "A container that shares the host’s kernel",
+        "correct": false,
+        "rationale": "A container shares the kernel, so it doesn’t contain a full operating system."
+      },
+      {
+        "text": "A virtual machine running on a hypervisor",
+        "correct": true,
+        "rationale": "A hypervisor gives each VM its own pretend hardware and complete operating system."
+      },
+      {
+        "text": "A second user account on the same system",
+        "correct": false,
+        "rationale": "An account shares the same system and kernel."
+      },
+      {
+        "text": "A shell script that backs up the home directory",
+        "correct": false,
+        "rationale": "A script copies files and does not provide a second system."
+      }
+    ],
+    "explanation": "A VM contains a whole operating system with its own kernel; a container contains an application."
+  },
+  {
+    "id": "011.4-007",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.2",
+      "011.4.v3"
+    ],
+    "stem": "What is the main difference between a container and a virtual machine?",
+    "options": [
+      {
+        "text": "A container shares the host’s kernel; a VM runs its own operating system.",
+        "correct": true,
+        "rationale": "This is why containers start quickly and take little space."
+      },
+      {
+        "text": "A container needs its own hypervisor, but a VM does not.",
+        "correct": false,
+        "rationale": "VMs need a hypervisor; containers don’t."
+      },
+      {
+        "text": "A container runs a whole operating system of its own, but a VM runs only one app.",
+        "correct": false,
+        "rationale": "It is the other way round."
+      },
+      {
+        "text": "A container only runs on phones, and a VM only on servers.",
+        "correct": false,
+        "rationale": "Both run on servers and desktops."
+      }
+    ],
+    "explanation": "Docker and Podman are well-known container tools. A VM contains a whole operating system, a container only an application and its files.",
+    "sourceLinks": [
+      "https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/",
+      "https://podman.io/"
+    ]
+  },
+  {
+    "id": "011.4-008",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.2",
+      "011.4.v3"
+    ],
+    "stem": "Which cloud service level gives you virtual servers, disks and networks that you set up yourself?",
+    "options": [
+      {
+        "text": "SaaS, software as a service",
+        "correct": false,
+        "rationale": "SaaS is a finished application, such as webmail."
+      },
+      {
+        "text": "PaaS, platform as a service",
+        "correct": false,
+        "rationale": "PaaS is a ready environment to run your code."
+      },
+      {
+        "text": "IaaS, infrastructure as a service",
+        "correct": true,
+        "rationale": "IaaS rents the building blocks, such as a cloud instance running Debian."
+      },
+      {
+        "text": "HPC, high-performance computing",
+        "correct": false,
+        "rationale": "HPC is a type of cluster, not a cloud service level."
+      }
+    ],
+    "explanation": "IaaS rents infrastructure, PaaS a platform for your code, and SaaS a finished application."
+  },
+  {
+    "id": "011.4-009",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.2",
+      "011.4.v3"
+    ],
+    "stem": "Which statement describes cloud computing?",
+    "options": [
+      {
+        "text": "You buy your own servers and run them in the basement of the office.",
+        "correct": false,
+        "rationale": "That is running your own hardware."
+      },
+      {
+        "text": "You install every program from a USB stick, one machine after another.",
+        "correct": false,
+        "rationale": "Installing from USB has nothing to do with the cloud."
+      },
+      {
+        "text": "You rent computing power over the internet and pay for what you use.",
+        "correct": true,
+        "rationale": "Capacity can be added or removed quickly."
+      },
+      {
+        "text": "You use only programs that run in a single browser tab on one computer.",
+        "correct": false,
+        "rationale": "Browser apps may be hosted in the cloud, but that is not what defines it."
+      }
+    ],
+    "explanation": "Cloud computing means renting servers, storage and databases instead of owning them."
+  },
+  {
+    "id": "011.4-010",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v3"
+    ],
+    "stem": "Why do many companies choose Linux for their servers?",
+    "options": [
+      {
+        "text": "It only works with hardware from one single vendor, which has to be paid for in advance.",
+        "correct": false,
+        "rationale": "Linux runs on many kinds of hardware."
+      },
+      {
+        "text": "It is free to run, stable and secure, and can be fixed by anyone with the skills.",
+        "correct": true,
+        "rationale": "These properties suit web and cloud use."
+      },
+      {
+        "text": "It needs a new licence fee for every user and for every machine of the company.",
+        "correct": false,
+        "rationale": "Linux is free to run."
+      },
+      {
+        "text": "It can only run one program at a time, so many machines are needed.",
+        "correct": false,
+        "rationale": "Linux runs many programs at once."
+      }
+    ],
+    "explanation": "Linux is used for web servers, clouds, phones, embedded devices and supercomputers. Virtualization lets one machine run many VMs, which saves money."
+  },
+  {
+    "id": "011.4-011",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.2"
+    ],
+    "stem": "Webmail, an online office suite and other finished applications that run in the provider’s data center belong to which cloud service level?",
+    "options": [
+      {
+        "text": "IaaS, infrastructure as a service for virtual servers",
+        "correct": false,
+        "rationale": "IaaS rents virtual servers, disks and networks."
+      },
+      {
+        "text": "PaaS, platform as a service for your own code",
+        "correct": false,
+        "rationale": "PaaS rents a ready environment to run your code."
+      },
+      {
+        "text": "HPC, high-performance computing clusters",
+        "correct": false,
+        "rationale": "HPC is a cluster type, not a cloud service level."
+      },
+      {
+        "text": "SaaS, software as a service",
+        "correct": true,
+        "rationale": "SaaS delivers a finished application over the internet."
+      }
+    ],
+    "explanation": "IaaS, PaaS and SaaS are the three common cloud service levels."
+  },
+  {
+    "id": "011.4-012",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.3"
+    ],
+    "terms": [
+      "011.4.t5"
+    ],
+    "stem": "Which text editor runs in the terminal, lists its key commands at the bottom of the screen and lets you type text right away?",
+    "options": [
+      {
+        "text": "nano",
+        "correct": true,
+        "rationale": "nano is the easy editor; `^X` means Ctrl+X to exit."
+      },
+      {
+        "text": "vi",
+        "correct": false,
+        "rationale": "vi has modes, so you must press `i` before typing text."
+      },
+      {
+        "text": "LibreOffice Writer",
+        "correct": false,
+        "rationale": "Writer is a graphical word processor."
+      },
+      {
+        "text": "Thunderbird",
+        "correct": false,
+        "rationale": "Thunderbird is an email client."
+      }
+    ],
+    "explanation": "nano is the beginner-friendly editor; vi is the powerful, modal one that exists almost everywhere.",
+    "sourceLinks": [
+      "https://www.nano-editor.org/"
+    ]
+  },
+  {
+    "id": "011.4-013",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.3"
+    ],
+    "terms": [
+      "011.4.t5"
+    ],
+    "stem": "Mira opens a file in `vi` and starts typing, but nothing appears the way she expects. Why?",
+    "options": [
+      {
+        "text": "vi can only edit files that are already open in nano at the very same time.",
+        "correct": false,
+        "rationale": "The editors are independent."
+      },
+      {
+        "text": "vi needs the file to be saved under a name before anything can be typed.",
+        "correct": false,
+        "rationale": "Mode, not saving, is the issue."
+      },
+      {
+        "text": "vi only edits graphical files such as images and drawings.",
+        "correct": false,
+        "rationale": "vi edits text files in the terminal."
+      },
+      {
+        "text": "vi starts in normal mode, where keys are commands; `i` starts insert mode.",
+        "correct": true,
+        "rationale": "vi is a modal editor."
+      }
+    ],
+    "explanation": "In vi, Esc returns to normal mode, `i` starts insert mode, `:wq` saves and quits and `:q!` quits without saving.",
+    "sourceLinks": [
+      "https://www.vim.org/"
+    ]
+  },
+  {
+    "id": "011.4-014",
+    "objectiveId": "011.4",
+    "kind": "fill",
+    "areas": [
+      "011.4.3"
+    ],
+    "terms": [
+      "011.4.t5"
+    ],
+    "stem": "In `vi`, which command typed in normal mode saves the file and quits the editor? Type the colon command.",
+    "accept": [
+      ":wq",
+      ":x",
+      "ZZ"
+    ],
+    "caseSensitive": true,
+    "explanation": "`:wq` writes the file and quits. `:q!` quits without saving.",
+    "sourceLinks": [
+      "https://www.vim.org/"
+    ]
+  },
+  {
+    "id": "011.4-015",
+    "objectiveId": "011.4",
+    "kind": "output",
+    "areas": [
+      "011.4.3"
+    ],
+    "terms": [
+      "011.4.t5"
+    ],
+    "stem": "Ada checks that both editors are installed in the guest. What does this command print?",
+    "command": "type vi nano",
+    "output": "vi is /usr/bin/vi\nnano is /usr/bin/nano",
+    "mode": "type",
+    "explanation": "`type` shows how the shell would run each name. Both `vi` and `nano` are programs under `/usr/bin` in the guest."
+  },
+  {
+    "id": "011.4-016",
+    "objectiveId": "011.4",
+    "kind": "multi",
+    "areas": [
+      "011.4.3"
+    ],
+    "terms": [
+      "011.4.t5"
+    ],
+    "stem": "Which statements about vi and nano are true? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "vi has modes, such as normal mode and insert mode.",
+        "correct": true,
+        "rationale": "vi is a modal editor."
+      },
+      {
+        "text": "nano shows its key commands on screen, and `^X` exits it.",
+        "correct": true,
+        "rationale": "nano is the easy editor."
+      },
+      {
+        "text": "vi is a graphical editor that only works on a desktop.",
+        "correct": false,
+        "rationale": "vi runs in the terminal."
+      },
+      {
+        "text": "nano is installed only on Enterprise Linux.",
+        "correct": false,
+        "rationale": "nano is found on many distributions."
+      },
+      {
+        "text": "Both editors close without asking when you press Ctrl+C.",
+        "correct": false,
+        "rationale": "That isn’t how they exit."
+      }
+    ],
+    "explanation": "You only need awareness: which editors exist, that nano is easy, and that vi is modal and nearly always available.",
+    "sourceLinks": [
+      "https://www.nano-editor.org/",
+      "https://www.vim.org/"
+    ]
+  },
+  {
+    "id": "011.4-017",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.4"
+    ],
+    "stem": "Mira must install the same software and set the same files on twenty new build machines. Which kind of tool is built for this?",
+    "options": [
+      {
+        "text": "A configuration management tool, such as Ansible",
+        "correct": true,
+        "rationale": "You describe the wanted state in files and apply it to many machines."
+      },
+      {
+        "text": "A text editor, such as nano",
+        "correct": false,
+        "rationale": "nano edits one file at a time."
+      },
+      {
+        "text": "A web browser, such as Firefox",
+        "correct": false,
+        "rationale": "A browser shows web pages."
+      },
+      {
+        "text": "A hypervisor, such as a VM host",
+        "correct": false,
+        "rationale": "A hypervisor runs virtual machines."
+      }
+    ],
+    "explanation": "Configuration management tools such as Ansible, Puppet, Chef and Salt apply a described state again and again, with the same result.",
+    "sourceLinks": [
+      "https://docs.ansible.com/",
+      "https://www.puppet.com/"
+    ]
+  },
+  {
+    "id": "011.4-018",
+    "objectiveId": "011.4",
+    "kind": "multi",
+    "areas": [
+      "011.4.4"
+    ],
+    "stem": "Which of these are configuration management tools? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Ansible",
+        "correct": true,
+        "rationale": "Ansible applies a described configuration to machines."
+      },
+      {
+        "text": "Samba",
+        "correct": false,
+        "rationale": "Samba shares files with Windows."
+      },
+      {
+        "text": "Puppet",
+        "correct": true,
+        "rationale": "Puppet manages configuration from a description of the wanted state."
+      },
+      {
+        "text": "Inkscape",
+        "correct": false,
+        "rationale": "Inkscape draws vector graphics."
+      },
+      {
+        "text": "Moodle",
+        "correct": false,
+        "rationale": "Moodle is a learning platform."
+      }
+    ],
+    "explanation": "Ansible, Puppet, Chef and Salt are well-known configuration management tools.",
+    "sourceLinks": [
+      "https://docs.ansible.com/",
+      "https://www.puppet.com/"
+    ]
+  },
+  {
+    "id": "011.4-019",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.4"
+    ],
+    "stem": "Why is it useful that a configuration management tool reads the wanted state from text files?",
+    "options": [
+      {
+        "text": "The files turn into graphical dialogs that an administrator clicks through on each machine.",
+        "correct": false,
+        "rationale": "The state is described in files, not dialogs."
+      },
+      {
+        "text": "The files replace the need for any servers, because they run the services themselves.",
+        "correct": false,
+        "rationale": "The tools configure servers; they don’t replace them."
+      },
+      {
+        "text": "The files can be kept in Git, reviewed and reused: infrastructure as code.",
+        "correct": true,
+        "rationale": "Text files are easy to version."
+      },
+      {
+        "text": "The files can only be read by the tool’s vendor, and not by the administrators.",
+        "correct": false,
+        "rationale": "They are normal text files."
+      }
+    ],
+    "explanation": "Because the description is a text file, it can be tracked, reviewed and applied again and again."
+  },
+  {
+    "id": "011.4-020",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.4"
+    ],
+    "stem": "Ansible, Puppet, Chef and Salt are examples of what kind of software?",
+    "options": [
+      {
+        "text": "Package managers for Debian-based systems",
+        "correct": false,
+        "rationale": "Debian’s package tools are `dpkg` and `apt`."
+      },
+      {
+        "text": "Configuration management tools",
+        "correct": true,
+        "rationale": "They apply a described state to many machines."
+      },
+      {
+        "text": "Hypervisors for running virtual machines",
+        "correct": false,
+        "rationale": "Hypervisors run VMs, which isn’t what these tools do."
+      },
+      {
+        "text": "Text editors that run in the terminal",
+        "correct": false,
+        "rationale": "Terminal editors include vi and nano."
+      }
+    ],
+    "explanation": "Configuration management tools describe the wanted state of machines in files and apply it.",
+    "sourceLinks": [
+      "https://docs.ansible.com/",
+      "https://www.puppet.com/"
+    ]
+  },
+  {
+    "id": "011.4-021",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.4"
+    ],
+    "stem": "After Mira set up ten servers by hand, their settings differ slightly. How does configuration management help with this?",
+    "options": [
+      {
+        "text": "It sets all passwords to the same value on every server.",
+        "correct": false,
+        "rationale": "That would be a security problem, not configuration management."
+      },
+      {
+        "text": "A description applied again and again leaves every machine in the same state.",
+        "correct": true,
+        "rationale": "The same file gives the same result on every machine."
+      },
+      {
+        "text": "It replaces the kernel on every machine with a newer one.",
+        "correct": false,
+        "rationale": "It applies the described state, not a new kernel."
+      },
+      {
+        "text": "It turns every server into a virtual machine automatically.",
+        "correct": false,
+        "rationale": "It doesn’t change what kind of machine it is."
+      }
+    ],
+    "explanation": "Hand-made setups drift apart; a description applied repeatedly keeps all machines in the same state.",
+    "sourceLinks": [
+      "https://docs.ansible.com/"
+    ]
+  },
+  {
+    "id": "011.4-022",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.5"
+    ],
+    "terms": [
+      "011.4.t6"
+    ],
+    "stem": "Which password is the best choice for a studio account?",
+    "options": [
+      {
+        "text": "A random passphrase of unrelated words, 16 characters or more, used for one account",
+        "correct": true,
+        "rationale": "Long, random and unique is stronger than short and clever."
+      },
+      {
+        "text": "Pixel2024!, which is easy to remember and has a symbol in it",
+        "correct": false,
+        "rationale": "It is short and predictable."
+      },
+      {
+        "text": "The studio’s name with the year after it, so that everyone on the team remembers it easily",
+        "correct": false,
+        "rationale": "It can be guessed from public facts."
+      },
+      {
+        "text": "The same strong password on all accounts, so that only one has to be remembered",
+        "correct": false,
+        "rationale": "Reuse means one leak exposes every account."
+      }
+    ],
+    "explanation": "Length beats cleverness. A strong password is long, random or made of unrelated words, and unique.",
+    "sourceLinks": [
+      "https://www.cisa.gov/secure-our-world/require-strong-passwords"
+    ]
+  },
+  {
+    "id": "011.4-023",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.5",
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.t6",
+      "011.4.vt3"
+    ],
+    "stem": "Why does the studio’s team use a password manager?",
+    "options": [
+      {
+        "text": "It lets them reuse one single password everywhere without any risk to their accounts.",
+        "correct": false,
+        "rationale": "Reuse is a problem it helps avoid."
+      },
+      {
+        "text": "It makes passwords unnecessary on all sites, because the vault logs in for them.",
+        "correct": false,
+        "rationale": "Passkeys do that; a manager stores passwords."
+      },
+      {
+        "text": "It sends passwords to colleagues by email so that the whole team shares one login.",
+        "correct": false,
+        "rationale": "Passwords should never be sent by email."
+      },
+      {
+        "text": "It keeps many unique passwords in an encrypted vault that one master password opens.",
+        "correct": true,
+        "rationale": "It can also create random passwords and fill them in."
+      }
+    ],
+    "explanation": "A password manager is an encrypted store of passwords. Open source ones exist, such as KeePassXC and Bitwarden.",
+    "sourceLinks": [
+      "https://www.cisa.gov/secure-our-world/require-strong-passwords"
+    ]
+  },
+  {
+    "id": "011.4-024",
+    "objectiveId": "011.4",
+    "kind": "multi",
+    "areas": [
+      "011.4.5",
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.t6",
+      "011.4.vt3"
+    ],
+    "stem": "Which two are factors for multi-factor authentication? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "The user name",
+        "correct": false,
+        "rationale": "The user name identifies you; it is not a secret."
+      },
+      {
+        "text": "The name of the site",
+        "correct": false,
+        "rationale": "It is not a secret proof of identity."
+      },
+      {
+        "text": "A second password that is the same as the first",
+        "correct": false,
+        "rationale": "It is the same kind of factor: something you know."
+      },
+      {
+        "text": "A fingerprint",
+        "correct": true,
+        "rationale": "That is something you are."
+      },
+      {
+        "text": "An authenticator app code on a phone",
+        "correct": true,
+        "rationale": "That is something you have."
+      }
+    ],
+    "explanation": "Factors are something you know, something you have and something you are. Two factors from different kinds are far safer than one.",
+    "sourceLinks": [
+      "https://www.cisa.gov/secure-our-world/turn-mfa"
+    ]
+  },
+  {
+    "id": "011.4-025",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.5",
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.t6",
+      "011.4.vt3"
+    ],
+    "stem": "Which statement about passkeys is correct?",
+    "options": [
+      {
+        "text": "A passkey is a long random password that a password manager types in for you automatically.",
+        "correct": false,
+        "rationale": "A passkey isn’t a password."
+      },
+      {
+        "text": "A passkey is a code that is sent by text message.",
+        "correct": false,
+        "rationale": "That is an SMS code."
+      },
+      {
+        "text": "The website stores a public key; the private key stays on your device, unlocked by a PIN.",
+        "correct": true,
+        "rationale": "Passkeys resist phishing, since there is no password to type."
+      },
+      {
+        "text": "A passkey is a list of backup answers to security questions.",
+        "correct": false,
+        "rationale": "Passkeys are public-key credentials."
+      }
+    ],
+    "explanation": "Passkeys use public-key cryptography, and can sync between devices or be tied to a hardware key.",
+    "sourceLinks": [
+      "https://fidoalliance.org/passkeys/"
+    ]
+  },
+  {
+    "id": "011.4-026",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.5",
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.t6",
+      "011.4.vt3"
+    ],
+    "stem": "Ada receives an email that looks like it comes from the studio’s bank and links to a login page. What is the risk?",
+    "options": [
+      {
+        "text": "A virus on a USB stick infects the server through the mail program.",
+        "correct": false,
+        "rationale": "That is another threat."
+      },
+      {
+        "text": "The password expires after exactly one year because the email says so.",
+        "correct": false,
+        "rationale": "Expiry isn’t the risk."
+      },
+      {
+        "text": "The browser stops working until the email is deleted from the inbox.",
+        "correct": false,
+        "rationale": "The page being fake is the risk."
+      },
+      {
+        "text": "Phishing: typing her password on a fake site hands it to an attacker.",
+        "correct": true,
+        "rationale": "Passkeys and a password manager help against this, since they won’t fill in a fake site."
+      }
+    ],
+    "explanation": "Typical password problems are weak or short passwords, reuse, writing them down, sharing them and phishing.",
+    "sourceLinks": [
+      "https://www.cisa.gov/secure-our-world/require-strong-passwords"
+    ]
+  },
+  {
+    "id": "011.4-027",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.6"
+    ],
+    "terms": [
+      "011.4.t7"
+    ],
+    "stem": "Jonas wants to know whether the shop page he is about to pay on is encrypted in transit. What should he check?",
+    "options": [
+      {
+        "text": "The page loads quickly and looks the same as the shop’s paper catalogue.",
+        "correct": false,
+        "rationale": "Speed says nothing about encryption."
+      },
+      {
+        "text": "The address starts with `https://` and a lock symbol is shown.",
+        "correct": true,
+        "rationale": "HTTPS is HTTP wrapped in TLS, with a certificate."
+      },
+      {
+        "text": "The page has a lot of images and a famous brand’s logo at the top.",
+        "correct": false,
+        "rationale": "Images say nothing about security."
+      },
+      {
+        "text": "The address starts with `http://` and the shop’s name appears in it.",
+        "correct": false,
+        "rationale": "Plain HTTP isn’t encrypted."
+      }
+    ],
+    "explanation": "HTTPS encrypts the traffic and the browser checks the server’s certificate.",
+    "sourceLinks": [
+      "https://support.mozilla.org/en-US/kb/how-do-i-tell-if-my-connection-is-secure"
+    ]
+  },
+  {
+    "id": "011.4-028",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.6"
+    ],
+    "terms": [
+      "011.4.t7"
+    ],
+    "stem": "Mira’s laptop is lost on a train. Which measure protects the files on its disk?",
+    "options": [
+      {
+        "text": "A longer user name",
+        "correct": false,
+        "rationale": "A user name doesn’t protect files on a disk."
+      },
+      {
+        "text": "Using HTTPS for web pages",
+        "correct": false,
+        "rationale": "HTTPS protects data in transit, not on the disk."
+      },
+      {
+        "text": "Full-disk encryption with a strong passphrase",
+        "correct": true,
+        "rationale": "Encrypted data is useless without the key."
+      },
+      {
+        "text": "A bigger hard disk",
+        "correct": false,
+        "rationale": "Size has no security effect."
+      }
+    ],
+    "explanation": "On Linux the usual tool is LUKS, set up with `cryptsetup`. The passphrase must be strong.",
+    "sourceLinks": [
+      "https://gitlab.com/cryptsetup/cryptsetup/-/wikis/home"
+    ]
+  },
+  {
+    "id": "011.4-029",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.6"
+    ],
+    "terms": [
+      "011.4.t7"
+    ],
+    "stem": "Why is `ssh` preferred over the old `telnet` for logging in to a remote machine?",
+    "options": [
+      {
+        "text": "ssh encrypts the connection; telnet sends everything as plain text.",
+        "correct": true,
+        "rationale": "Anyone on the way could read telnet traffic."
+      },
+      {
+        "text": "ssh works without any network connection, directly through the keyboard.",
+        "correct": false,
+        "rationale": "Both need a network."
+      },
+      {
+        "text": "telnet is newer and uses a stronger password.",
+        "correct": false,
+        "rationale": "telnet is the old plaintext protocol."
+      },
+      {
+        "text": "ssh only works for the root user and never for ordinary accounts.",
+        "correct": false,
+        "rationale": "ssh works for ordinary users."
+      }
+    ],
+    "explanation": "Encrypted network protocols such as HTTPS and ssh protect data in transit."
+  },
+  {
+    "id": "011.4-030",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.6"
+    ],
+    "terms": [
+      "011.4.t8"
+    ],
+    "stem": "Jonas finds a USB stick on the studio’s parking lot. What should he do?",
+    "options": [
+      {
+        "text": "Plug it into the build server to see what is on it.",
+        "correct": false,
+        "rationale": "That risks the most important machine."
+      },
+      {
+        "text": "Not plug it in; it might carry malware",
+        "correct": true,
+        "rationale": "Unknown sticks can be a trick."
+      },
+      {
+        "text": "Run the programs on it to find the owner.",
+        "correct": false,
+        "rationale": "Running unknown programs is dangerous."
+      },
+      {
+        "text": "Copy its files to the shared drive.",
+        "correct": false,
+        "rationale": "That spreads possible malware."
+      }
+    ],
+    "explanation": "Don’t plug in found or unknown USB devices, scan files from sticks, encrypt private ones and eject them before pulling them out.",
+    "sourceLinks": [
+      "https://www.cisa.gov/news-events/news/using-caution-usb-drives"
+    ]
+  },
+  {
+    "id": "011.4-031",
+    "objectiveId": "011.4",
+    "kind": "multi",
+    "areas": [
+      "011.4.6"
+    ],
+    "terms": [
+      "011.4.t8"
+    ],
+    "stem": "Which two habits make USB sticks safer? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Run any program from a stick you were handed.",
+        "correct": false,
+        "rationale": "Unknown programs may be malware."
+      },
+      {
+        "text": "Turn on auto-running so that sticks start by themselves.",
+        "correct": false,
+        "rationale": "Auto-running should be turned off."
+      },
+      {
+        "text": "Encrypt sticks that carry private data.",
+        "correct": true,
+        "rationale": "A lost stick then doesn’t expose the data."
+      },
+      {
+        "text": "Keep the only copy of your files on the stick.",
+        "correct": false,
+        "rationale": "Sticks are easy to lose, so keep backups."
+      },
+      {
+        "text": "Eject (unmount) a stick before pulling it out.",
+        "correct": true,
+        "rationale": "That makes sure the data is fully written."
+      }
+    ],
+    "explanation": "Encrypt, scan, eject and back up.",
+    "sourceLinks": [
+      "https://www.cisa.gov/news-events/news/using-caution-usb-drives"
+    ]
+  },
+  {
+    "id": "011.4-032",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.6",
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.t7",
+      "011.4.vt4"
+    ],
+    "stem": "Which tool is a privacy tool that hides your traffic from the local network and shows its own address to websites?",
+    "options": [
+      {
+        "text": "A VPN",
+        "correct": true,
+        "rationale": "A VPN moves your trust to the VPN company."
+      },
+      {
+        "text": "A cookie",
+        "correct": false,
+        "rationale": "Cookies are small files that sites store in your browser."
+      },
+      {
+        "text": "A password manager",
+        "correct": false,
+        "rationale": "A manager stores passwords."
+      },
+      {
+        "text": "A spreadsheet",
+        "correct": false,
+        "rationale": "A spreadsheet isn’t a privacy tool."
+      }
+    ],
+    "explanation": "Privacy tools include a password manager, a browser with tracking protection, an encrypted messenger, GPG, disk encryption and a VPN."
+  },
+  {
+    "id": "011.4-033",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.vt1"
+    ],
+    "stem": "What is a cookie in a web browser?",
+    "options": [
+      {
+        "text": "A program in the browser that blocks advertising on websites.",
+        "correct": false,
+        "rationale": "That is a content blocker."
+      },
+      {
+        "text": "A bookmark of a favourite page that the browser keeps in a list on the toolbar.",
+        "correct": false,
+        "rationale": "Bookmarks are saved links."
+      },
+      {
+        "text": "A small file a site stores in your browser, used for logins and tracking",
+        "correct": true,
+        "rationale": "Cookies remember logins and can track you across sites."
+      },
+      {
+        "text": "An encrypted connection to a site, shown by a lock next to the address.",
+        "correct": false,
+        "rationale": "That is HTTPS."
+      }
+    ],
+    "explanation": "You can block third-party cookies or delete cookies on exit."
+  },
+  {
+    "id": "011.4-034",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.vt1"
+    ],
+    "stem": "Jonas uses a private (incognito) window in his browser. What does it do?",
+    "options": [
+      {
+        "text": "It hides all his traffic from the internet provider and from his employer.",
+        "correct": false,
+        "rationale": "It does not hide traffic from the provider."
+      },
+      {
+        "text": "It makes the connection to every website encrypted with a stronger key.",
+        "correct": false,
+        "rationale": "Encryption depends on HTTPS."
+      },
+      {
+        "text": "It stops websites from seeing his address.",
+        "correct": false,
+        "rationale": "Sites still see his address."
+      },
+      {
+        "text": "It keeps no history or cookies on his computer, but doesn’t hide him from sites.",
+        "correct": true,
+        "rationale": "It stops the history from being kept locally."
+      }
+    ],
+    "explanation": "Private mode only avoids local traces."
+  },
+  {
+    "id": "011.4-035",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.vt5"
+    ],
+    "stem": "Mira prepares a presentation for a school talk using only open source programs. Which program creates the slides?",
+    "options": [
+      {
+        "text": "Inkscape",
+        "correct": false,
+        "rationale": "Inkscape draws vector graphics."
+      },
+      {
+        "text": "LibreOffice Impress",
+        "correct": true,
+        "rationale": "Impress is the presentation program of LibreOffice."
+      },
+      {
+        "text": "Thunderbird",
+        "correct": false,
+        "rationale": "Thunderbird is an email client."
+      },
+      {
+        "text": "VLC",
+        "correct": false,
+        "rationale": "VLC plays media files."
+      }
+    ],
+    "explanation": "Writer, Calc and Impress cover reports, spreadsheets and slides. A PDF can be saved for any computer."
+  },
+  {
+    "id": "011.4-036",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v1"
+    ],
+    "terms": [
+      "011.4.vt1"
+    ],
+    "stem": "Ada opens a Linux desktop she has never used. Which part launches programs and which part manages files?",
+    "options": [
+      {
+        "text": "The terminal emulator is the only way to start any program on the desktop.",
+        "correct": false,
+        "rationale": "Desktops offer a launcher or menu."
+      },
+      {
+        "text": "The package manager shows folders as windows.",
+        "correct": false,
+        "rationale": "That is the job of a file manager."
+      },
+      {
+        "text": "The kernel draws the file manager’s icons.",
+        "correct": false,
+        "rationale": "Icons are drawn by the desktop."
+      },
+      {
+        "text": "A launcher or menu starts programs; the file manager handles files.",
+        "correct": true,
+        "rationale": "Most desktops have a launcher, a way to switch windows, a file manager and settings."
+      }
+    ],
+    "explanation": "GNOME, KDE Plasma and Xfce look different but offer the same kinds of tools."
+  },
+  {
+    "id": "011.4-037",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v2"
+    ],
+    "terms": [
+      "011.4.vt2"
+    ],
+    "stem": "Jonas wants to reach the shell on his Linux desktop. What can he open in a window?",
+    "options": [
+      {
+        "text": "A terminal emulator",
+        "correct": true,
+        "rationale": "A terminal emulator is a program that runs a shell in a window."
+      },
+      {
+        "text": "A file manager",
+        "correct": false,
+        "rationale": "A file manager shows files."
+      },
+      {
+        "text": "A web browser",
+        "correct": false,
+        "rationale": "A browser shows web pages."
+      },
+      {
+        "text": "A hypervisor",
+        "correct": false,
+        "rationale": "A hypervisor runs virtual machines."
+      }
+    ],
+    "explanation": "Ctrl+Alt+T opens a terminal on many desktops."
+  },
+  {
+    "id": "011.4-038",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v2"
+    ],
+    "terms": [
+      "011.4.vt2"
+    ],
+    "stem": "What is a virtual console?",
+    "options": [
+      {
+        "text": "A window on the desktop that runs a shell for you, which is a terminal emulator.",
+        "correct": false,
+        "rationale": "That is a terminal emulator."
+      },
+      {
+        "text": "A remote login over the network using `ssh` from another machine.",
+        "correct": false,
+        "rationale": "That is done with `ssh`."
+      },
+      {
+        "text": "A text-only screen from the kernel, reached with keys such as Ctrl+Alt+F2.",
+        "correct": true,
+        "rationale": "You can switch between virtual consoles."
+      },
+      {
+        "text": "A virtual machine that runs a shell.",
+        "correct": false,
+        "rationale": "It isn’t a machine."
+      }
+    ],
+    "explanation": "The console was originally the physical keyboard and screen. A terminal is any text interface."
+  },
+  {
+    "id": "011.4-039",
+    "objectiveId": "011.4",
+    "kind": "output",
+    "areas": [
+      "011.4.v2"
+    ],
+    "terms": [
+      "011.4.vt2"
+    ],
+    "stem": "Mira asks the guest for the device name of the terminal she is typing in. What does this command print?",
+    "command": "tty",
+    "output": "/dev/pts/0",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "/dev/pts/0",
+        "correct": true,
+        "rationale": "The terminal is a pseudo-terminal, so `tty` prints its device."
+      },
+      {
+        "text": "/dev/tty1",
+        "correct": false,
+        "rationale": "`/dev/tty1` is the first virtual console, not a pseudo-terminal."
+      },
+      {
+        "text": "/dev/sda",
+        "correct": false,
+        "rationale": "`/dev/sda` is a disk."
+      },
+      {
+        "text": "/dev/null",
+        "correct": false,
+        "rationale": "`/dev/null` discards data."
+      }
+    ],
+    "explanation": "The terminal in this app is a pseudo-terminal, and `tty` prints its device name."
+  },
+  {
+    "id": "011.4-040",
+    "objectiveId": "011.4",
+    "kind": "output",
+    "areas": [
+      "011.4.v2"
+    ],
+    "terms": [
+      "011.4.vt2"
+    ],
+    "stem": "What does this command print in the guest’s terminal?",
+    "command": "echo $TERM",
+    "output": "xterm-256color",
+    "mode": "type",
+    "explanation": "`TERM` tells programs which kind of terminal the shell has; xterm.js reports `xterm-256color`."
+  },
+  {
+    "id": "011.4-041",
+    "objectiveId": "011.4",
+    "kind": "fill",
+    "areas": [
+      "011.4.v2"
+    ],
+    "terms": [
+      "011.4.vt2"
+    ],
+    "stem": "Which command prints the file name of the terminal connected to your shell? Type the command.",
+    "accept": [
+      "tty"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "{answer} >/dev/null"
+    },
+    "explanation": "`tty` prints the device name of the terminal, for example `/dev/pts/0`."
+  },
+  {
+    "id": "011.4-042",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.v2"
+    ],
+    "terms": [
+      "011.4.vt2"
+    ],
+    "stem": "Which statement about the words terminal and console is correct?",
+    "options": [
+      {
+        "text": "A terminal is always a physical device with a screen, and a console is only software.",
+        "correct": false,
+        "rationale": "It is the other way round."
+      },
+      {
+        "text": "The console was the machine’s own keyboard and screen; a terminal is any text interface.",
+        "correct": true,
+        "rationale": "A terminal emulator pretends to be one inside a window."
+      },
+      {
+        "text": "They are the same as a desktop environment.",
+        "correct": false,
+        "rationale": "A desktop is graphical."
+      },
+      {
+        "text": "A console is a remote machine in the cloud.",
+        "correct": false,
+        "rationale": "It isn’t."
+      }
+    ],
+    "explanation": "The terms overlap, and in practice people use both for the text interface."
+  }
+]

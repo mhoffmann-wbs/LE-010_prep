@@ -1,0 +1,528 @@
+[
+  {
+    "id": "012.4-001",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Jonas needs an empty file called `todo.txt` in the current directory. Which command creates it if it doesn’t exist yet?",
+    "options": [
+      { "text": "`mkdir todo.txt`", "correct": false, "rationale": "`mkdir` would create a directory with that name." },
+      { "text": "`cat todo.txt`", "correct": false, "rationale": "`cat` only reads a file, so it reports an error when the file is missing." },
+      { "text": "`touch todo.txt`", "correct": true, "rationale": "`touch` creates an empty file when the name is new." },
+      { "text": "`cp todo.txt`", "correct": false, "rationale": "`cp` needs a source and a destination, and the source doesn’t exist." }
+    ],
+    "explanation": "`touch NAME` creates an empty file, or, if the file exists, only updates its modification time. It can take several names at once.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/touch.1.html"]
+  },
+  {
+    "id": "012.4-002",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "The file `notes.txt` already contains text. What does `touch notes.txt` do to it?",
+    "options": [
+      { "text": "It keeps the content and updates the modification time", "correct": true, "rationale": "`touch` only changes the timestamps of an existing file." },
+      { "text": "It empties the file so that it can be written again", "correct": false, "rationale": "`touch` never removes the content." },
+      { "text": "It creates a second file named `notes.txt` beside it", "correct": false, "rationale": "Two files cannot share a name in one directory." },
+      { "text": "It fails with an error because the name already exists", "correct": false, "rationale": "`touch` works fine on existing files." }
+    ],
+    "explanation": "For an existing file, `touch` leaves the data alone and sets the modification time to now. Only for a new name does it create an empty file.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/touch.1.html"]
+  },
+  {
+    "id": "012.4-003",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t2"],
+    "stem": "Mira wants the directory chain `levels/world1/boss` created in one command, but `levels` doesn’t exist yet. Which command works?",
+    "options": [
+      { "text": "`mkdir levels/world1/boss`", "correct": false, "rationale": "Without `-p`, `mkdir` fails because the parent `levels/world1` doesn’t exist." },
+      { "text": "`mkdir -r levels/world1/boss`", "correct": false, "rationale": "`mkdir` has no `-r` option." },
+      { "text": "`touch levels/world1/boss`", "correct": false, "rationale": "`touch` makes files, not directories, and doesn’t create the parents." },
+      { "text": "`mkdir -p levels/world1/boss`", "correct": true, "rationale": "`-p` creates missing parent directories as needed." }
+    ],
+    "explanation": "`mkdir` creates one directory and refuses when a parent is missing. `-p` (parents) creates the whole chain and doesn’t complain about directories that already exist.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/mkdir.1.html"]
+  },
+  {
+    "id": "012.4-004",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t2"],
+    "stem": "Jonas wants to delete the directory `old`, but only if it is empty, so nothing is lost by accident. Which command should he use?",
+    "options": [
+      { "text": "`rm -r old`", "correct": false, "rationale": "`rm -r` deletes the directory with everything in it." },
+      { "text": "`rmdir old`", "correct": true, "rationale": "`rmdir` removes a directory only when it is empty." },
+      { "text": "`rm -rf old`", "correct": false, "rationale": "This deletes everything below `old` without asking." },
+      { "text": "`mv old /dev/null`", "correct": false, "rationale": "That is not a way to remove a directory." }
+    ],
+    "explanation": "`rmdir` is the safe way to remove directories: if anything is still inside, it fails with “Directory not empty”. `rm -r` removes the contents too.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/rm.1.html"]
+  },
+  {
+    "id": "012.4-005",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Mira runs `cp backup backup2` on a directory and gets “omitting directory”. What does she have to add?",
+    "options": [
+      { "text": "The `-f` option, to force the copy of directories", "correct": false, "rationale": "`-f` forces overwriting of files, but doesn’t make `cp` descend." },
+      { "text": "The `-r` option, to copy the directory and everything inside it", "correct": true, "rationale": "`cp -r` copies recursively." },
+      { "text": "The `-d` option, to select directories", "correct": false, "rationale": "This is not how `cp` is told to copy directories." },
+      { "text": "A trailing slash after the target name", "correct": false, "rationale": "A slash alone doesn’t change that `cp` skips directories." }
+    ],
+    "explanation": "By default `cp` copies only files. With `-r` (recursive) it also copies directories and their contents. `mv` needs no such option.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/cp.1.html"]
+  },
+  {
+    "id": "012.4-006",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Ada wants to rename `slime.png` to `blob.png`, with no copy left behind. Which command does this?",
+    "options": [
+      { "text": "`cp slime.png blob.png`", "correct": false, "rationale": "`cp` leaves the original `slime.png` in place." },
+      { "text": "`mv blob.png slime.png`", "correct": false, "rationale": "The arguments are reversed: this would rename `blob.png`." },
+      { "text": "`rm slime.png blob.png`", "correct": false, "rationale": "`rm` deletes both names." },
+      { "text": "`mv slime.png blob.png`", "correct": true, "rationale": "Moving a file to a new name in the same place is how files are renamed." }
+    ],
+    "explanation": "There is no separate rename command in the basic toolkit: `mv OLD NEW` renames. Source first, destination second.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/mv.1.html"]
+  },
+  {
+    "id": "012.4-007",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Jonas deletes a file with `rm` by mistake. What happens to the file?",
+    "options": [
+      { "text": "It is removed at once, and there is no trash to restore it from", "correct": true, "rationale": "The command line has no recycle bin." },
+      { "text": "It is moved to a hidden trash folder in his home directory", "correct": false, "rationale": "`rm` doesn’t move anything to a trash folder." },
+      { "text": "It is kept in `/tmp` and restored with `undelete`", "correct": false, "rationale": "No such restore command exists, and `/tmp` isn’t a backup." },
+      { "text": "It is only hidden, and `ls -a` brings it back", "correct": false, "rationale": "`rm` doesn’t rename files; they are really removed." }
+    ],
+    "explanation": "`rm` deletes the directory entry for good. Check the names (an `echo` in front of the command shows what a wildcard expands to) before pressing Enter.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/rm.1.html"]
+  },
+  {
+    "id": "012.4-008",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Which command deletes the directory `old` together with everything that is inside it?",
+    "options": [
+      { "text": "`rmdir old`", "correct": false, "rationale": "`rmdir` fails when the directory is not empty." },
+      { "text": "`rm old`", "correct": false, "rationale": "Without `-r`, `rm` refuses to remove a directory." },
+      { "text": "`rm -r old`", "correct": true, "rationale": "`-r` makes `rm` remove directories recursively." },
+      { "text": "`rm -i old`", "correct": false, "rationale": "This asks before each removal, but on a directory it fails like plain `rm`." }
+    ],
+    "explanation": "`rm -r` descends into directories and removes everything. Add `-i` to be asked before each removal, and be very careful with `-f`.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/rm.1.html"]
+  },
+  {
+    "id": "012.4-009",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Ada copies `hero1.png` to `hero2.png`, and `hero2.png` already exists. What does `cp` do by default?",
+    "options": [
+      { "text": "It asks whether to overwrite the file first", "correct": false, "rationale": "It asks only when `-i` is given." },
+      { "text": "It stops with an error, because the name is taken", "correct": false, "rationale": "It doesn’t refuse; the destination is replaced." },
+      { "text": "It silently overwrites `hero2.png`", "correct": true, "rationale": "Without `-i`, `cp` replaces an existing destination without asking." },
+      { "text": "It adds a number to the name of the new file", "correct": false, "rationale": "`cp` doesn’t pick a new name unless `--backup` is given." }
+    ],
+    "explanation": "`cp` and `mv` overwrite existing files without a warning. `-i` asks first, and `-n` never overwrites.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/cp.1.html"]
+  },
+  {
+    "id": "012.4-010",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.2"],
+    "stem": "Mira’s art folder holds both `notes.txt` and `Notes.txt`. What is true?",
+    "options": [
+      { "text": "They are two different files, because Linux file names are case sensitive", "correct": true, "rationale": "Upper and lower case letters make different names." },
+      { "text": "Only one of them can exist, so the second would replace the first", "correct": false, "rationale": "On Linux both can exist side by side." },
+      { "text": "Both names refer to the same file", "correct": false, "rationale": "That happens on some other systems, not on Linux." },
+      { "text": "The shell shows an error whenever both names are used in one command", "correct": false, "rationale": "There is no such restriction." }
+    ],
+    "explanation": "File names, directory names, commands and options are all case sensitive on Linux. `notes.txt`, `Notes.txt` and `NOTES.TXT` are three names."
+  },
+  {
+    "id": "012.4-011",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.2"],
+    "stem": "The directory is called `art`, but `cd Art` prints “No such file or directory”. What is the reason?",
+    "options": [
+      { "text": "Directories can only be entered with an absolute path", "correct": false, "rationale": "Relative paths such as `art` work fine." },
+      { "text": "`cd` can’t change into a directory that Mira owns", "correct": false, "rationale": "Owning a directory doesn’t stop `cd`." },
+      { "text": "The capital letter is read as an option of `cd`", "correct": false, "rationale": "Only words starting with a dash are options." },
+      { "text": "The name `Art` is a different name from `art`", "correct": true, "rationale": "Directory names are case sensitive." }
+    ],
+    "explanation": "A name that differs only in case doesn’t exist. Tab completion helps, as it fills in the exact spelling."
+  },
+  {
+    "id": "012.4-012",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Which pattern matches `boss1.png` and `boss2.png`, but not `boss10.png`?",
+    "options": [
+      { "text": "`boss*.png`", "correct": false, "rationale": "The `*` also matches the two characters in `10`." },
+      { "text": "`boss?.png`", "correct": true, "rationale": "The `?` stands for exactly one character." },
+      { "text": "`boss??.png`", "correct": false, "rationale": "This needs two characters between `boss` and `.png`, so only `boss10.png` matches." },
+      { "text": "`boss[!1].png`", "correct": false, "rationale": "This excludes `boss1.png`." }
+    ],
+    "explanation": "`?` matches exactly one character, `*` matches any number of characters, including none, and `[abc]` matches one character from a set.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/glob.7.html", "https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html"]
+  },
+  {
+    "id": "012.4-013",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "What does the pattern `hero[13].png` match?",
+    "options": [
+      { "text": "`hero1.png`, `hero2.png` and `hero3.png`", "correct": false, "rationale": "That would need a range such as `[1-3]`." },
+      { "text": "`hero1.png` and `hero3.png`", "correct": true, "rationale": "The brackets match one character from the list, either 1 or 3." },
+      { "text": "`hero13.png` only", "correct": false, "rationale": "The brackets match just one character, so the two digits do not both appear." },
+      { "text": "A file that is literally named `hero[13].png`", "correct": false, "rationale": "The shell treats the brackets as a pattern if matching files exist." }
+    ],
+    "explanation": "`[13]` is a set of one character. `[1-3]` is a range from 1 to 3, and `[!13]` is any character that is not 1 or 3.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/glob.7.html"]
+  },
+  {
+    "id": "012.4-014",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.3"],
+    "stem": "When Mira types `rm *.tmp`, which part of the system turns `*.tmp` into a list of file names?",
+    "options": [
+      { "text": "The `rm` program, when it reads its arguments", "correct": false, "rationale": "`rm` receives the already expanded list of names." },
+      { "text": "The kernel, when it opens the files", "correct": false, "rationale": "The kernel doesn’t know about patterns." },
+      { "text": "The terminal emulator, when she presses Enter", "correct": false, "rationale": "The terminal only sends the typed characters on." },
+      { "text": "The shell, before it starts `rm`", "correct": true, "rationale": "Globbing is done by the shell, so every command gets the same behaviour." }
+    ],
+    "explanation": "The shell expands wildcards before the command runs. This is why quoting the pattern, `\"*.tmp\"`, hands the star to the command unchanged."
+  },
+  {
+    "id": "012.4-015",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Ada wants to copy every `.png` file in the current directory into the directory `backup`. Which command does this?",
+    "options": [
+      { "text": "`cp *.png backup`", "correct": true, "rationale": "The shell expands `*.png`, and `backup`, as the last argument, is the destination." },
+      { "text": "`cp backup *.png`", "correct": false, "rationale": "The destination must come last, so this would copy `backup` into a PNG file name." },
+      { "text": "`cp \"*.png\" backup`", "correct": false, "rationale": "The quotes stop the expansion, so `cp` looks for a file literally named `*.png`." },
+      { "text": "`cp -r *.png`", "correct": false, "rationale": "No destination is given, so this fails." }
+    ],
+    "explanation": "With several sources, `cp` expects the destination directory last. An unquoted `*.png` is replaced by all matching names.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/cp.1.html"]
+  },
+  {
+    "id": "012.4-016",
+    "objectiveId": "012.4",
+    "kind": "multi",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Which of these commands refuse to work on a directory unless the option `-r` is given? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`cp`", "correct": true, "rationale": "It skips directories unless told to copy recursively." },
+      { "text": "`rm`", "correct": true, "rationale": "It won’t remove a directory without `-r`." },
+      { "text": "`mv`", "correct": false, "rationale": "It moves a directory like any other file." },
+      { "text": "`mkdir`", "correct": false, "rationale": "Its whole job is directories." },
+      { "text": "`touch`", "correct": false, "rationale": "It only works on the timestamps of names and takes no `-r`." }
+    ],
+    "explanation": "`cp -r` and `rm -r` are recursive. `mv` needs no option for directories, and `mkdir` and `rmdir` work on directories anyway."
+  },
+  {
+    "id": "012.4-017",
+    "objectiveId": "012.4",
+    "kind": "multi",
+    "areas": ["012.4.2"],
+    "stem": "Which statements about case sensitivity on Linux are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`Notes.txt` and `notes.txt` can exist in the same directory", "correct": true, "rationale": "They are different names." },
+      { "text": "`ls -r` and `ls -R` do different things", "correct": true, "rationale": "Options are case sensitive too." },
+      { "text": "`LS` runs the same program as `ls`", "correct": false, "rationale": "Command names are case sensitive, so `LS` isn’t found." },
+      { "text": "Only directory names are case sensitive, not file names", "correct": false, "rationale": "Both are." },
+      { "text": "`cd Art` enters the directory `art`", "correct": false, "rationale": "The names differ, so `cd` fails." }
+    ],
+    "explanation": "Everything is case sensitive: file names, directory names, command names and options."
+  },
+  {
+    "id": "012.4-018",
+    "objectiveId": "012.4",
+    "kind": "multi",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Which names does the pattern `hero?.png` match? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`hero1.png`", "correct": true, "rationale": "One character, `1`, stands in for the `?`." },
+      { "text": "`hero2.png`", "correct": true, "rationale": "One character, `2`, stands in for the `?`." },
+      { "text": "`hero10.png`", "correct": false, "rationale": "Two characters between `hero` and `.png`." },
+      { "text": "`hero.png`", "correct": false, "rationale": "The `?` needs exactly one character, so the name must not be missing it." },
+      { "text": "`hero1.jpg`", "correct": false, "rationale": "The extension differs from `.png`." }
+    ],
+    "explanation": "`?` matches exactly one character: not none and not two. Matching is case sensitive as well.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/glob.7.html"]
+  },
+  {
+    "id": "012.4-019",
+    "objectiveId": "012.4",
+    "kind": "multi",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Which patterns match the file name `slime.png`? (Choose THREE.)",
+    "select": 3,
+    "options": [
+      { "text": "`*.png`", "correct": true, "rationale": "Any name that ends in `.png`." },
+      { "text": "`s?ime.png`", "correct": true, "rationale": "The `?` stands for the `l`." },
+      { "text": "`[a-z]*.png`", "correct": true, "rationale": "The name starts with a lower-case letter." },
+      { "text": "`slime?.png`", "correct": false, "rationale": "It needs one more character before `.png`." },
+      { "text": "`*.jpg`", "correct": false, "rationale": "The extension differs from `.png`." },
+      { "text": "`[!s]*.png`", "correct": false, "rationale": "It must start with a character that is not `s`." }
+    ],
+    "explanation": "Test each pattern in order: `*` matches any run of characters, `?` exactly one, `[a-z]` one letter in the range, and `[!s]` anything but `s`.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/glob.7.html"]
+  },
+  {
+    "id": "012.4-020",
+    "objectiveId": "012.4",
+    "kind": "fill",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Type the command that creates an empty file named `todo.txt`.",
+    "accept": ["touch todo.txt"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}", "fixture": "basics-art" },
+    "explanation": "`touch` creates the file when the name is new.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/touch.1.html"]
+  },
+  {
+    "id": "012.4-021",
+    "objectiveId": "012.4",
+    "kind": "fill",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t2"],
+    "stem": "Complete the command so that the whole chain `levels/world1/boss` is created in one step.",
+    "accept": ["-p levels/world1/boss"],
+    "prefix": "$ mkdir",
+    "caseSensitive": true,
+    "verify": { "command": "mkdir {answer}", "fixture": "basics-art" },
+    "explanation": "`-p` creates the missing parent directories too, and doesn’t complain about existing ones.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/mkdir.1.html"]
+  },
+  {
+    "id": "012.4-022",
+    "objectiveId": "012.4",
+    "kind": "fill",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Complete the command so that the directory `art` is copied with everything inside it to a new directory `art2`.",
+    "accept": ["-r art art2", "-R art art2"],
+    "prefix": "$ cp",
+    "caseSensitive": true,
+    "verify": { "command": "cp {answer}", "fixture": "basics-art" },
+    "explanation": "The recursive option makes `cp` copy a directory tree. `-R` and `-r` mean the same for `cp`, unlike for `ls`.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/cp.1.html"]
+  },
+  {
+    "id": "012.4-023",
+    "objectiveId": "012.4",
+    "kind": "fill",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "In the directory `art`, type the command that renames `notes.txt` to `todo.txt`.",
+    "accept": ["mv notes.txt todo.txt"],
+    "caseSensitive": true,
+    "verify": { "command": "cd art && {answer}", "fixture": "basics-art" },
+    "explanation": "`mv` renames when the destination is a new name in the same directory.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/mv.1.html"]
+  },
+  {
+    "id": "012.4-024",
+    "objectiveId": "012.4",
+    "kind": "fill",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Complete the command so that it lists every file in `art` whose name ends in `.png`.",
+    "accept": ["*.png"],
+    "prefix": "$ ls art/",
+    "caseSensitive": true,
+    "verify": { "command": "ls art/{answer}", "fixture": "basics-art" },
+    "explanation": "The shell expands `art/*.png` into the matching names before `ls` runs.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man7/glob.7.html"]
+  },
+  {
+    "id": "012.4-025",
+    "objectiveId": "012.4",
+    "kind": "fill",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t2"],
+    "stem": "In the directory `art`, type the command that removes the empty directory `backup`, and only if it is empty.",
+    "accept": ["rmdir backup"],
+    "caseSensitive": true,
+    "verify": { "command": "cd art && {answer}", "fixture": "basics-art" },
+    "explanation": "`rmdir` refuses to remove a directory that still has content, which makes it the safe choice.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/rm.1.html"]
+  },
+  {
+    "id": "012.4-026",
+    "objectiveId": "012.4",
+    "kind": "fill",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "In the directory `art`, type the command that deletes the directory `backup` and everything inside it.",
+    "accept": ["rm -r backup", "rm -R backup", "rm -rf backup"],
+    "caseSensitive": true,
+    "verify": { "command": "cd art && cp readme.md backup && {answer}", "fixture": "basics-art" },
+    "explanation": "`-r` makes `rm` recursive. The extra `-f` isn’t needed and removes the safety checks.",
+    "sourceLinks": ["https://man7.org/linux/man-pages/man1/rm.1.html"]
+  },
+  {
+    "id": "012.4-027",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Type what this command prints.",
+    "command": "cd art; echo hero[13].png",
+    "mode": "type",
+    "fixture": "basics-art",
+    "output": "hero1.png hero3.png",
+    "explanation": "The brackets match one character that is either 1 or 3, so `hero2.png` isn’t included. `echo` prints the expanded names."
+  },
+  {
+    "id": "012.4-028",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Type what this command prints.",
+    "command": "cd art; echo boss?.png hero?.png",
+    "mode": "type",
+    "fixture": "basics-art",
+    "output": "boss1.png boss2.png hero1.png hero2.png hero3.png",
+    "explanation": "Each pattern is expanded on its own. `boss?.png` skips `boss10.png`, since the `?` is only one character, and `hero?.png` matches all three heroes."
+  },
+  {
+    "id": "012.4-029",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.2"],
+    "terms": ["012.4.t1"],
+    "stem": "The art folder has two notes files. What does this command print?",
+    "command": "cd art; cat Notes.txt notes.txt",
+    "mode": "choice",
+    "fixture": "basics-art",
+    "output": "Capitalised notes\nlower-case notes",
+    "options": [
+      { "text": "lower-case notes\nCapitalised notes", "correct": false, "rationale": "`cat` prints the files in the order given, and `Notes.txt` is named first." },
+      { "text": "Capitalised notes\nCapitalised notes", "correct": false, "rationale": "The two names are different files with different content." },
+      { "text": "Capitalised notes\nlower-case notes", "correct": true, "rationale": "`cat` prints `Notes.txt` first and then `notes.txt`, which are two different files." },
+      { "text": "cat: notes.txt: No such file or directory", "correct": false, "rationale": "Both files exist, since the names differ by case." }
+    ],
+    "explanation": "The two names don’t clash because case matters. `cat` joins the files in the order of its arguments."
+  },
+  {
+    "id": "012.4-030",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.2"],
+    "terms": ["012.4.t1"],
+    "stem": "Jonas misspells the extension in capitals. Type what this command prints.",
+    "command": "cd art; cat readme.MD",
+    "mode": "type",
+    "fixture": "basics-art",
+    "output": "cat: readme.MD: No such file or directory",
+    "explanation": "`readme.MD` is a different name from `readme.md`, so `cat` reports that there is no such file."
+  },
+  {
+    "id": "012.4-031",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t2"],
+    "stem": "Type what this command prints.",
+    "command": "cd art; mkdir -p one/two/three; ls -R one",
+    "mode": "type",
+    "fixture": "basics-art",
+    "output": "one:\ntwo\n\none/two:\nthree\n\none/two/three:",
+    "explanation": "`mkdir -p` creates the chain, and `ls -R` lists each directory in turn, separated by a blank line."
+  },
+  {
+    "id": "012.4-032",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "Mira moves one sprite onto another. What does this command print?",
+    "command": "cd art; mv hero1.png hero2.png; cat hero2.png",
+    "mode": "choice",
+    "fixture": "basics-art",
+    "output": "sprite: hero1",
+    "options": [
+      { "text": "sprite: hero2", "correct": false, "rationale": "`mv` replaced the old `hero2.png`; its content is gone." },
+      { "text": "sprite: hero1\nsprite: hero2", "correct": false, "rationale": "The files are not merged; the second one is replaced." },
+      { "text": "sprite: hero1", "correct": true, "rationale": "`mv` silently overwrites the destination, so `hero2.png` now holds the content of `hero1.png`." },
+      { "text": "mv: cannot move 'hero1.png' to 'hero2.png': File exists", "correct": false, "rationale": "`mv` overwrites existing files unless it is told otherwise with `-i` or `-n`." }
+    ],
+    "explanation": "Without `-i` (ask) or `-n` (never overwrite), `mv` and `cp` replace an existing destination without a warning."
+  },
+  {
+    "id": "012.4-033",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.1"],
+    "terms": ["012.4.t1"],
+    "stem": "What does this command print?",
+    "command": "cd art; echo hello > todo.txt; touch todo.txt; cat todo.txt",
+    "mode": "choice",
+    "fixture": "basics-art",
+    "output": "hello",
+    "options": [
+      { "text": "hello", "correct": true, "rationale": "`touch` leaves the content alone for an existing file; only the time stamp changes." },
+      { "text": "touch: cannot touch 'todo.txt': File exists", "correct": false, "rationale": "`touch` is happy to work on existing files." },
+      { "text": "hello\nhello", "correct": false, "rationale": "`touch` does not append anything." },
+      { "text": "todo.txt", "correct": false, "rationale": "`cat` prints the content of the file, not its name." }
+    ],
+    "explanation": "`echo hello > todo.txt` creates the file with one line. `touch` afterwards only changes its modification time, so `cat` shows `hello`."
+  },
+  {
+    "id": "012.4-034",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": ["012.4.1", "012.4.3"],
+    "terms": ["012.4.t1"],
+    "stem": "Ada removes the single-digit boss sprites with a wildcard. What does this command print?",
+    "command": "cd art; rm boss?.png; ls boss*",
+    "mode": "choice",
+    "fixture": "basics-art",
+    "output": "boss10.png",
+    "options": [
+      { "text": "boss1.png  boss2.png", "correct": false, "rationale": "Those are the files that were removed; the `?` matches one character." },
+      { "text": "boss1.png  boss10.png  boss2.png", "correct": false, "rationale": "`rm` has deleted two of these." },
+      { "text": "ls: cannot access 'boss*': No such file or directory", "correct": false, "rationale": "`boss10.png` still matches `boss*`." },
+      { "text": "boss10.png", "correct": true, "rationale": "`boss?.png` removes only names with one character after `boss`, so `boss10.png` stays." }
+    ],
+    "explanation": "The `?` matches exactly one character, so `boss1.png` and `boss2.png` are deleted and the two-digit `boss10.png` survives."
+  }
+]

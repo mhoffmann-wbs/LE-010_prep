@@ -22,5 +22,695 @@
     "verify": { "command": "{answer} cd" },
     "caseSensitive": true,
     "explanation": "`type cd` prints `cd is a shell builtin`, while `type tar` prints the path of the executable, such as `/usr/bin/tar`. Builtins like `cd` have to live inside the shell, because a separate program can’t change the shell’s working directory."
+  },
+  {
+    "id": "012.1-003",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t1"],
+    "stem": "Jonas types a line into his terminal window. Which program reads that line, works out the command in it and starts the right program?",
+    "options": [
+      { "text": "The kernel, which parses the text and runs it by itself", "correct": false, "rationale": "The kernel runs programs, but it does not read or interpret command lines; the shell does that." },
+      { "text": "The terminal emulator, which looks up each command name", "correct": false, "rationale": "The terminal window only shows text and passes keystrokes on; it does not interpret commands." },
+      { "text": "The shell, which on most distributions is Bash", "correct": true, "rationale": "The shell reads and interprets every line; Bash is the usual default." },
+      { "text": "The init system, which launches every command typed", "correct": false, "rationale": "The init system starts system services at boot, not the commands a user types." }
+    ],
+    "explanation": "The terminal is only a window. The shell, usually Bash, reads each line, splits it into words, expands variables and wildcards and then asks the kernel to start the program.",
+    "sourceLinks": ["https://www.gnu.org/software/bash/manual/bash.html"]
+  },
+  {
+    "id": "012.1-004",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t1"],
+    "stem": "What does the name “Bash” stand for?",
+    "options": [
+      { "text": "Bourne Again SHell", "correct": true, "rationale": "It is a pun on the older Bourne shell, which Bash replaced and extended." },
+      { "text": "Basic Admin SHell", "correct": false, "rationale": "No such expansion exists, and Bash is not limited to administrators." },
+      { "text": "Binary Access SHell", "correct": false, "rationale": "Bash has nothing to do with binary access; it is a command interpreter." },
+      { "text": "Berkeley Automated SHell", "correct": false, "rationale": "Berkeley produced other shells, but Bash comes from the GNU project." }
+    ],
+    "explanation": "Bash is the GNU project’s “Bourne Again SHell”, a successor to the original Bourne shell. It is the default login shell on most Linux distributions.",
+    "sourceLinks": ["https://www.gnu.org/software/bash/manual/bash.html"]
+  },
+  {
+    "id": "012.1-005",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t1"],
+    "stem": "Mira types `cd pro` and presses the Tab key. Only one name in the current directory starts with `pro`. What happens?",
+    "options": [
+      { "text": "Bash inserts a tab character into the command line", "correct": false, "rationale": "In an interactive shell, Tab is bound to completion, not to a literal tab character." },
+      { "text": "Bash runs `cd` with the text `pro` as the directory", "correct": false, "rationale": "Nothing runs until Enter is pressed, and Tab only completes the word." },
+      { "text": "Bash lists every file in the directory and runs nothing", "correct": false, "rationale": "A list of choices appears only when several names match, not when exactly one does." },
+      { "text": "Bash completes the name, for example to `projects/`", "correct": true, "rationale": "Tab completion fills in the rest of a name when only one match exists." }
+    ],
+    "explanation": "Tab asks Bash to complete the word under the cursor. One match is filled in at once; several matches are shown after a second Tab press. It saves typing and avoids typos."
+  },
+  {
+    "id": "012.1-006",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1", "012.1.2"],
+    "terms": ["012.1.t1"],
+    "stem": "A command Ada started is still running and she wants to stop it from the keyboard. Which key combination sends it an interrupt?",
+    "options": [
+      { "text": "Ctrl+D", "correct": false, "rationale": "Ctrl+D signals the end of input; at an empty prompt it closes the shell, but it does not interrupt a program." },
+      { "text": "Ctrl+C", "correct": true, "rationale": "Ctrl+C interrupts the foreground program." },
+      { "text": "Ctrl+L", "correct": false, "rationale": "Ctrl+L clears the terminal screen and leaves the program running." },
+      { "text": "Ctrl+R", "correct": false, "rationale": "Ctrl+R searches the command history; it does not stop anything." }
+    ],
+    "explanation": "Ctrl+C sends an interrupt to the program in the foreground. Ctrl+D ends input, Ctrl+L clears the screen and Ctrl+R searches the history."
+  },
+  {
+    "id": "012.1-007",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.2"],
+    "stem": "In the command `ls -l /srv/assets`, which part is the option?",
+    "options": [
+      { "text": "`ls`", "correct": false, "rationale": "This is the command name, the program being run." },
+      { "text": "`-l`", "correct": true, "rationale": "Options start with a dash and change what the command does; `-l` asks for the long format." },
+      { "text": "`/srv/assets`", "correct": false, "rationale": "This is an argument: the thing the command works on." },
+      { "text": "`ls -l`", "correct": false, "rationale": "The command and its option together are not “the option”." }
+    ],
+    "explanation": "A command line has the command name first, then options that start with a dash, then arguments such as file or directory names. Here `ls` is the command, `-l` the option and `/srv/assets` the argument."
+  },
+  {
+    "id": "012.1-008",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.2"],
+    "terms": ["012.1.t1"],
+    "stem": "Mira types `ls     -l      art` with several spaces between the words. How does Bash treat them?",
+    "options": [
+      { "text": "It passes the extra spaces to `ls` as part of the arguments", "correct": false, "rationale": "Unquoted blanks only separate words; they are not passed on." },
+      { "text": "It reports a syntax error because of the repeated spaces", "correct": false, "rationale": "Repeated blanks are allowed and ignored between words." },
+      { "text": "It runs `ls` three times, once for each group of spaces", "correct": false, "rationale": "Spaces never cause a command to repeat; the line is one command." },
+      { "text": "It treats each run of spaces as one separator and passes three words", "correct": true, "rationale": "The shell splits the line into words at blanks, so extra spaces make no difference." }
+    ],
+    "explanation": "Bash splits the line into words at unquoted spaces and tabs. How many blanks sit between the words doesn’t matter, which is why spaces inside a value have to be quoted to survive."
+  },
+  {
+    "id": "012.1-009",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.2"],
+    "stem": "Which character lets a single command line run two commands, one after the other, whether or not the first one succeeds?",
+    "options": [
+      { "text": "`;` (semicolon)", "correct": true, "rationale": "A semicolon ends one command and starts the next, regardless of the first command’s result." },
+      { "text": "`|` (pipe)", "correct": false, "rationale": "A pipe sends the output of the first command into the second; they run together." },
+      { "text": "`#` (hash)", "correct": false, "rationale": "A hash turns the rest of the line into a comment, so nothing after it runs." },
+      { "text": "`&&` (double ampersand)", "correct": false, "rationale": "The second command runs only if the first one succeeds." }
+    ],
+    "explanation": "Use `;` to put several commands on one line. `&&` makes the second depend on the first’s success, `|` connects them through a pipe and `#` starts a comment."
+  },
+  {
+    "id": "012.1-010",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.2"],
+    "stem": "In Bash, what does a `#` at the start of a word do?",
+    "options": [
+      { "text": "It runs the rest of the line as the administrator", "correct": false, "rationale": "The root prompt often ends in `#`, but typing it does not raise privileges." },
+      { "text": "It refers to the previous command in the history", "correct": false, "rationale": "History expansion uses `!`, not `#`." },
+      { "text": "Everything from there to the end of the line is a comment and is ignored", "correct": true, "rationale": "In an interactive shell Bash treats the rest of the line as a comment." },
+      { "text": "It expands to the number of arguments given", "correct": false, "rationale": "The number of arguments is `$#`, which is a different use of the character." }
+    ],
+    "explanation": "A `#` that begins a word starts a comment. Scripts use it for notes and for the first line `#!/bin/bash`. Don’t confuse it with the root prompt, which ends in `#` only as a display convention."
+  },
+  {
+    "id": "012.1-011",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.2"],
+    "terms": ["012.1.t2"],
+    "stem": "Which of these is the long form of the `-a` option of `ls`?",
+    "options": [
+      { "text": "`-all`", "correct": false, "rationale": "With a single dash this means the options `-a`, `-l` and `-l` combined, not a long option." },
+      { "text": "`--hidden`", "correct": false, "rationale": "This option does not exist in `ls`." },
+      { "text": "`--all`", "correct": true, "rationale": "GNU tools pair many short options with a long form; `ls --all` equals `ls -a`." },
+      { "text": "`--almost-all`", "correct": false, "rationale": "That is the long form of `-A`, which leaves out `.` and `..`." }
+    ],
+    "explanation": "Long options start with two dashes and use whole words. A single dash followed by several letters is a bundle of short options, so `-all` is not a long option."
+  },
+  {
+    "id": "012.1-012",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.3", "012.1.4"],
+    "stem": "Mira runs `level=3` in her terminal and then starts a new `bash` from it. Inside the new shell, `echo $level` prints nothing. Why?",
+    "options": [
+      { "text": "`level` is a shell variable that was never exported, so child processes don’t inherit it", "correct": true, "rationale": "Only exported variables are copied into the environment of programs started from the shell." },
+      { "text": "Variable names must be written in upper case to be inherited", "correct": false, "rationale": "The name’s case is irrelevant to inheritance; `export` is what matters." },
+      { "text": "The variable was erased as soon as the line ended", "correct": false, "rationale": "The variable lives until the shell exits; it just isn’t passed on." },
+      { "text": "The assignment is a comment because it has no quotes", "correct": false, "rationale": "Assignments without quotes are fine, and a comment needs a `#`." }
+    ],
+    "explanation": "A plain assignment creates a variable that exists only in the current shell. `export level` (or `export level=3`) puts it in the environment, which every child process inherits."
+  },
+  {
+    "id": "012.1-013",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t5"],
+    "stem": "The variable `GAME` already exists in Ada’s shell. Which command makes it visible to the programs she starts from this shell?",
+    "options": [
+      { "text": "`echo GAME`", "correct": false, "rationale": "This prints the word GAME; it changes nothing." },
+      { "text": "`type GAME`", "correct": false, "rationale": "`type` describes commands, not variables." },
+      { "text": "`history GAME`", "correct": false, "rationale": "`history` lists earlier command lines and doesn’t export anything." },
+      { "text": "`export GAME`", "correct": true, "rationale": "`export` marks the variable for the environment of child processes." }
+    ],
+    "explanation": "`export NAME` marks an existing variable for export, and `export NAME=value` sets and exports it in one step. Without export, the variable stays local to the shell."
+  },
+  {
+    "id": "012.1-014",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.3"],
+    "stem": "Which line correctly assigns the value `Pixel` to the variable `title` in Bash?",
+    "options": [
+      { "text": "`title = Pixel`", "correct": false, "rationale": "With spaces, Bash tries to run a command named `title` with two arguments." },
+      { "text": "`title=Pixel`", "correct": true, "rationale": "An assignment has no spaces around the equals sign." },
+      { "text": "`$title=Pixel`", "correct": false, "rationale": "The dollar sign is used to read a variable, not to name it in an assignment." },
+      { "text": "`set title Pixel`", "correct": false, "rationale": "`set` doesn’t create a variable this way; it would set positional parameters instead." }
+    ],
+    "explanation": "In Bash an assignment is `NAME=value` with no spaces on either side of the `=`. The `$` is only written when you read the value."
+  },
+  {
+    "id": "012.1-015",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t4"],
+    "stem": "What does the `PATH` environment variable contain?",
+    "options": [
+      { "text": "The absolute path of the directory you are currently in", "correct": false, "rationale": "That is the job of `PWD`, not `PATH`." },
+      { "text": "A colon-separated list of directories in which the shell looks for commands", "correct": true, "rationale": "When you type a name without a slash, Bash searches these directories in order." },
+      { "text": "A space-separated list of the files you opened recently", "correct": false, "rationale": "The shell keeps no such list; recent commands live in the history." },
+      { "text": "The location of the user’s home directory", "correct": false, "rationale": "That is the `HOME` variable." }
+    ],
+    "explanation": "`PATH` is a list of directories separated by colons, such as `/usr/local/bin:/usr/bin:/bin`. The shell tries each one from left to right and runs the first match it finds."
+  },
+  {
+    "id": "012.1-016",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1", "012.1.3"],
+    "terms": ["012.1.t4"],
+    "stem": "Mira put a script called `deploy` in her current directory. Typing `deploy` gives “command not found”, but `./deploy` works. What explains this?",
+    "options": [
+      { "text": "Scripts can only be run when their names begin with a dot and a slash", "correct": false, "rationale": "The `./` is just a path to the file; the file’s name doesn’t need to include it." },
+      { "text": "The shell only runs files whose names end in `.sh`", "correct": false, "rationale": "Bash doesn’t require any extension; the executable permission matters." },
+      { "text": "The script must be exported with `export` before it can run", "correct": false, "rationale": "`export` is for variables, not for programs." },
+      { "text": "The current directory isn’t listed in `PATH`, so the shell doesn’t search it", "correct": true, "rationale": "A name without a slash is only looked up in the `PATH` directories; `./` names the file explicitly." }
+    ],
+    "explanation": "Without a slash, Bash searches only the directories in `PATH`. Giving a path, such as `./deploy` or `/home/mira/deploy`, skips the search. The current directory is left out of `PATH` on purpose, for safety."
+  },
+  {
+    "id": "012.1-017",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1", "012.1.3"],
+    "terms": ["012.1.t6"],
+    "stem": "Which Bash builtin reports whether a name such as `echo` is a builtin, an alias, a keyword or a program found through `PATH`?",
+    "options": [
+      { "text": "`type`", "correct": true, "rationale": "`type NAME` describes how Bash would interpret that name." },
+      { "text": "`history`", "correct": false, "rationale": "`history` lists earlier command lines." },
+      { "text": "`export`", "correct": false, "rationale": "`export` marks variables for child processes." },
+      { "text": "`read`", "correct": false, "rationale": "`read` reads a line of input into a variable." }
+    ],
+    "explanation": "`type echo` prints “echo is a shell builtin”, while `type ls` prints the path of the executable file. `type -t NAME` prints only one word: `builtin`, `file`, `alias` or `keyword`."
+  },
+  {
+    "id": "012.1-018",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t6"],
+    "stem": "Why can `cd` not be implemented as an ordinary program file like `ls`?",
+    "options": [
+      { "text": "Programs on disk may not use directory names", "correct": false, "rationale": "Programs can read directories freely; that is not the reason." },
+      { "text": "`cd` is too small to be stored as a file", "correct": false, "rationale": "Size has nothing to do with it; plenty of tiny programs exist." },
+      { "text": "A separate program runs in its own process and could not change the working directory of the shell that started it", "correct": true, "rationale": "A working directory belongs to a process, so only the shell itself can change its own." },
+      { "text": "Only commands starting with a letter c can be builtins", "correct": false, "rationale": "Builtins can have any name, such as `echo` or `type`." }
+    ],
+    "explanation": "Each process has its own working directory. If `cd` were a separate program, it would change only its own directory and then exit, leaving the shell where it was. That’s why `cd` is built into the shell."
+  },
+  {
+    "id": "012.1-019",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.4"],
+    "stem": "Which kind of quotes lets Bash expand `$name` inside the quoted text, while keeping the spaces in the text together as one word?",
+    "options": [
+      { "text": "Single quotes", "correct": false, "rationale": "Single quotes keep every character literal, so `$name` would not be expanded." },
+      { "text": "No quotes at all", "correct": false, "rationale": "Without quotes, the value is expanded but split at spaces into several words." },
+      { "text": "Double quotes", "correct": true, "rationale": "Inside double quotes, variables are expanded and the whole text stays one word." },
+      { "text": "A backslash in front of every space", "correct": false, "rationale": "A backslash escapes one character; it doesn’t make variables expand any differently." }
+    ],
+    "explanation": "Double quotes protect spaces but still allow `$` expansion. Single quotes switch off all special meanings, and without quotes the shell splits the result at spaces.",
+    "sourceLinks": ["https://www.gnu.org/software/bash/manual/html_node/Quoting.html"]
+  },
+  {
+    "id": "012.1-020",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.4"],
+    "stem": "What does a backslash in front of a character, as in `\\$`, do in Bash?",
+    "options": [
+      { "text": "It removes the special meaning of the next character", "correct": true, "rationale": "The backslash escapes exactly one character, which is then taken literally." },
+      { "text": "It starts a comment that runs to the end of the line", "correct": false, "rationale": "Comments begin with `#`." },
+      { "text": "It turns the next word into a variable name", "correct": false, "rationale": "Variables are introduced by `$`, not by a backslash." },
+      { "text": "It repeats the previous command", "correct": false, "rationale": "The history uses `!!` for that." }
+    ],
+    "explanation": "The backslash is the escape character: `echo \\$HOME` prints `$HOME` literally. At the very end of a line it also continues the command on the next line.",
+    "sourceLinks": ["https://www.gnu.org/software/bash/manual/html_node/Quoting.html"]
+  },
+  {
+    "id": "012.1-021",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.4"],
+    "stem": "Why is `echo \"Mira’s level\"` valid, while the same text in single quotes, `echo 'Mira's level'`, is not?",
+    "options": [
+      { "text": "Double quotes allow apostrophes to be spelled with a backslash only", "correct": false, "rationale": "No backslash is needed inside double quotes here." },
+      { "text": "Single quotes may only contain digits and no words", "correct": false, "rationale": "Single-quoted text can hold any characters except a single quote." },
+      { "text": "Bash always refuses text that has an apostrophe in it", "correct": false, "rationale": "An apostrophe works fine as long as it is inside double quotes or escaped." },
+      { "text": "Inside single quotes, a single quote ends the quoted text; inside double quotes it is an ordinary character", "correct": true, "rationale": "Single quotes can’t contain a single quote, whereas double quotes treat it literally." }
+    ],
+    "explanation": "Single quotes end at the next single quote, no matter what. To print an apostrophe, put the text in double quotes or escape it with a backslash outside quotes."
+  },
+  {
+    "id": "012.1-022",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1", "012.1.3"],
+    "terms": ["012.1.t3"],
+    "stem": "What does the `history` command show?",
+    "options": [
+      { "text": "A list of the directories visited with `cd`", "correct": false, "rationale": "Bash’s history stores command lines, not directories." },
+      { "text": "A numbered list of the commands entered earlier in this shell", "correct": true, "rationale": "Bash remembers the lines you typed and numbers them, oldest first." },
+      { "text": "The manual pages read during the session", "correct": false, "rationale": "No record of manual pages is kept by `history`." },
+      { "text": "The files changed on the system today", "correct": false, "rationale": "File changes aren’t recorded by the shell history." }
+    ],
+    "explanation": "`history` prints the remembered command lines with numbers. `!!` repeats the last one, `!42` repeats line 42, and Bash saves the list in `~/.bash_history` when the shell exits."
+  },
+  {
+    "id": "012.1-023",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t7"],
+    "stem": "Under `/usr`, which directory holds programs mainly meant for system administration, such as tools that manage disks or users?",
+    "options": [
+      { "text": "`/usr/bin`", "correct": false, "rationale": "This holds the ordinary programs and commands for all users." },
+      { "text": "`/usr/sbin`", "correct": true, "rationale": "The `sbin` directories hold system administration programs, mainly for root." },
+      { "text": "`/usr/share`", "correct": false, "rationale": "This holds architecture-independent data such as documentation, not programs." },
+      { "text": "`/usr/lib`", "correct": false, "rationale": "This holds libraries and supporting files, not the commands themselves." }
+    ],
+    "explanation": "Ordinary commands live in `/bin` and `/usr/bin`, while `/sbin` and `/usr/sbin` hold system administration programs. On a modern Debian system `/bin` and `/sbin` are links into `/usr`.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html"]
+  },
+  {
+    "id": "012.1-024",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t7"],
+    "stem": "Which directory, besides `/usr/bin`, traditionally holds the essential user commands such as `ls` and `cp`?",
+    "options": [
+      { "text": "`/etc`", "correct": false, "rationale": "This holds configuration files, not programs." },
+      { "text": "`/home`", "correct": false, "rationale": "This holds users’ personal files and directories." },
+      { "text": "`/var`", "correct": false, "rationale": "This holds variable data such as logs and caches." },
+      { "text": "`/bin`", "correct": true, "rationale": "The FHS puts commands needed by all users in `/bin`." }
+    ],
+    "explanation": "`/bin` holds essential user commands. On current distributions it is usually a symbolic link to `/usr/bin`, so both paths reach the same programs.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html"]
+  },
+  {
+    "id": "012.1-025",
+    "objectiveId": "012.1",
+    "kind": "multi",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t6"],
+    "stem": "Which of these are builtin commands of Bash? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`cd`", "correct": true, "rationale": "It changes the shell’s own working directory, so it must be built in." },
+      { "text": "`ls`", "correct": false, "rationale": "This is an external program, found as `/usr/bin/ls`." },
+      { "text": "`type`", "correct": true, "rationale": "It is a builtin that describes how a name would be run." },
+      { "text": "`cp`", "correct": false, "rationale": "This is an external program." },
+      { "text": "`mkdir`", "correct": false, "rationale": "This is an external program." }
+    ],
+    "explanation": "Builtins such as `cd` and `type` are part of Bash. `ls`, `cp` and `mkdir` are separate programs found through `PATH`. `type NAME` tells you which kind a command is."
+  },
+  {
+    "id": "012.1-026",
+    "objectiveId": "012.1",
+    "kind": "multi",
+    "areas": ["012.1.3"],
+    "stem": "Which of these lines create a variable named `game` with the value `pixel`? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`game=pixel`", "correct": true, "rationale": "A plain assignment with no spaces creates a shell variable." },
+      { "text": "`game = pixel`", "correct": false, "rationale": "The spaces make Bash run `game` as a command." },
+      { "text": "`export game=pixel`", "correct": true, "rationale": "This assigns the value and also exports the variable." },
+      { "text": "`$game=pixel`", "correct": false, "rationale": "The `$` would expand a variable first, so this is not an assignment." },
+      { "text": "`var game=pixel`", "correct": false, "rationale": "Bash has no `var` keyword." }
+    ],
+    "explanation": "Both a plain assignment and `export NAME=value` create the variable; only the latter also puts it in the environment. Spaces around `=` break the assignment."
+  },
+  {
+    "id": "012.1-027",
+    "objectiveId": "012.1",
+    "kind": "multi",
+    "areas": ["012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "Which commands print the text `$HOME` literally instead of the home directory? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`echo '$HOME'`", "correct": true, "rationale": "Single quotes switch off expansion." },
+      { "text": "`echo \"$HOME\"`", "correct": false, "rationale": "Double quotes still expand variables." },
+      { "text": "`echo $HOME`", "correct": false, "rationale": "Without quotes, the variable is expanded." },
+      { "text": "`echo \\$HOME`", "correct": true, "rationale": "The backslash removes the special meaning of the dollar sign." },
+      { "text": "`echo ($HOME)`", "correct": false, "rationale": "The parentheses are a syntax error in this position, and the variable would be expanded anyway." }
+    ],
+    "explanation": "To stop expansion, quote with single quotes or escape the `$` with a backslash. Double quotes and no quotes both expand `$HOME`.",
+    "sourceLinks": ["https://www.gnu.org/software/bash/manual/html_node/Quoting.html"]
+  },
+  {
+    "id": "012.1-028",
+    "objectiveId": "012.1",
+    "kind": "multi",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t7"],
+    "stem": "Which of these directories hold executable programs according to the Filesystem Hierarchy Standard? (Choose THREE.)",
+    "select": 3,
+    "options": [
+      { "text": "`/usr/bin`", "correct": true, "rationale": "The main directory for user commands." },
+      { "text": "`/usr/sbin`", "correct": true, "rationale": "System administration programs." },
+      { "text": "`/sbin`", "correct": true, "rationale": "Essential system administration programs." },
+      { "text": "`/etc`", "correct": false, "rationale": "Configuration files are kept here, not programs." },
+      { "text": "`/home`", "correct": false, "rationale": "Users’ personal files, not system programs." }
+    ],
+    "explanation": "Commands are kept in `/bin`, `/usr/bin`, `/sbin` and `/usr/sbin`. `/etc` holds configuration and `/home` the users’ files.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html"]
+  },
+  {
+    "id": "012.1-029",
+    "objectiveId": "012.1",
+    "kind": "multi",
+    "areas": ["012.1.2"],
+    "stem": "In `ls -l -a /srv`, which words are options? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "`-l`", "correct": true, "rationale": "An option beginning with a dash." },
+      { "text": "`ls`", "correct": false, "rationale": "The command name." },
+      { "text": "`-a`", "correct": true, "rationale": "An option beginning with a dash." },
+      { "text": "`/srv`", "correct": false, "rationale": "An argument naming the directory to list." },
+      { "text": "`ls -l`", "correct": false, "rationale": "This is a command with its first option, not a single word." }
+    ],
+    "explanation": "The first word is the command, words starting with a dash are options and the rest are arguments. `-l -a` could also be written `-la`."
+  },
+  {
+    "id": "012.1-030",
+    "objectiveId": "012.1",
+    "kind": "multi",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t4"],
+    "stem": "Which statements about the `PATH` variable are true? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      { "text": "Its directories are separated by colons", "correct": true, "rationale": "The entries are separated by `:`." },
+      { "text": "The shell searches its directories from left to right and runs the first match", "correct": true, "rationale": "The first directory containing the command wins." },
+      { "text": "Its directories are separated by spaces", "correct": false, "rationale": "Spaces would split the value into several words; colons are used." },
+      { "text": "It holds the directory you are in now", "correct": false, "rationale": "That is `PWD`." },
+      { "text": "Changing it in one terminal window changes it in all windows at once", "correct": false, "rationale": "Each shell has its own copy of its variables." }
+    ],
+    "explanation": "`PATH` is a colon-separated list that Bash walks through from the left. If two directories hold a command with the same name, the one listed first runs."
+  },
+  {
+    "id": "012.1-031",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t3"],
+    "stem": "Which builtin lists the commands you typed earlier, with numbers? Type the command.",
+    "accept": ["history"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}" },
+    "explanation": "`history` prints the numbered list of earlier lines. `!!` repeats the last one and `!N` repeats line N."
+  },
+  {
+    "id": "012.1-032",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t5"],
+    "stem": "Mira wants the variable `GAME` with the value `pixel` to be visible to programs started from her shell. Type one command that sets and exports it.",
+    "accept": ["export GAME=pixel", "export GAME=\"pixel\"", "export GAME='pixel'"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}" },
+    "explanation": "`export GAME=pixel` assigns the value and marks the variable for the environment in one step. A plain `GAME=pixel` stays local to the shell."
+  },
+  {
+    "id": "012.1-033",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t2", "012.1.t4"],
+    "stem": "Use `echo` to print the value of the `PATH` variable. Type the command.",
+    "accept": ["echo $PATH", "echo \"$PATH\""],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}" },
+    "explanation": "A dollar sign in front of the variable name makes the shell replace it with its value. `echo \"$PATH\"` works too; the quotes are optional here."
+  },
+  {
+    "id": "012.1-034",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "Type the `echo` command that prints exactly `$HOME`, using single quotes.",
+    "accept": ["echo '$HOME'"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}" },
+    "explanation": "Inside single quotes nothing is expanded, so `$HOME` is printed as typed.",
+    "sourceLinks": ["https://www.gnu.org/software/bash/manual/html_node/Quoting.html"]
+  },
+  {
+    "id": "012.1-035",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.1"],
+    "terms": ["012.1.t7"],
+    "stem": "Type the absolute path of the directory under `/usr` that holds programs for system administration.",
+    "accept": ["/usr/sbin", "/usr/sbin/"],
+    "caseSensitive": true,
+    "verify": { "command": "test -d {answer}" },
+    "explanation": "`/usr/sbin` holds administration programs. Ordinary user commands are in `/usr/bin`.",
+    "sourceLinks": ["https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html"]
+  },
+  {
+    "id": "012.1-036",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t5"],
+    "stem": "Finish the command so that the variable is passed on to child processes.",
+    "accept": ["LEVEL=3", "LEVEL=\"3\""],
+    "prefix": "$ export",
+    "caseSensitive": true,
+    "verify": { "command": "export {answer}" },
+    "explanation": "`export LEVEL=3` creates the variable and exports it. Remember there are no spaces around the `=`."
+  },
+  {
+    "id": "012.1-037",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t4"],
+    "stem": "Type the name of the variable (without a dollar sign) that lists the directories Bash searches for programs.",
+    "accept": ["PATH"],
+    "caseSensitive": true,
+    "verify": { "command": "printenv {answer}" },
+    "explanation": "The variable is `PATH`. Its directories are separated by colons and searched from left to right."
+  },
+  {
+    "id": "012.1-038",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.3"],
+    "stem": "Type the name of the variable (without a dollar sign) that holds the path of the current user’s home directory.",
+    "accept": ["HOME"],
+    "caseSensitive": true,
+    "verify": { "command": "printenv {answer}" },
+    "explanation": "`HOME` holds the home directory, such as `/home/mira`. The `~` shortcut expands to the same place."
+  },
+  {
+    "id": "012.1-039",
+    "objectiveId": "012.1",
+    "kind": "fill",
+    "areas": ["012.1.2"],
+    "terms": ["012.1.t2"],
+    "stem": "Type an `echo` command that prints the word Raiders without adding a newline afterwards.",
+    "accept": ["echo -n Raiders", "echo -n \"Raiders\"", "echo -n 'Raiders'"],
+    "caseSensitive": true,
+    "verify": { "command": "{answer}" },
+    "explanation": "The `-n` option of `echo` leaves out the trailing newline, so the next prompt would appear right after the word."
+  },
+  {
+    "id": "012.1-040",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.3", "012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "Mira stores a name in a variable and greets it. Type what the command prints.",
+    "command": "name=Mira; echo \"Hello, $name\"",
+    "mode": "type",
+    "output": "Hello, Mira",
+    "explanation": "Double quotes still allow `$name` to be expanded, so the text `Hello, Mira` is printed."
+  },
+  {
+    "id": "012.1-041",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "Jonas tries the same greeting with single quotes. What does this command print?",
+    "command": "name=Mira; echo 'Hello, $name'",
+    "mode": "choice",
+    "output": "Hello, $name",
+    "options": [
+      { "text": "Hello, $name", "correct": true, "rationale": "Single quotes keep every character literal, so `$name` is printed as it is." },
+      { "text": "Hello, Mira", "correct": false, "rationale": "This would need double quotes, which expand the variable." },
+      { "text": "Hello, name", "correct": false, "rationale": "The dollar sign is kept, so the variable name is not reduced to plain text." },
+      { "text": "Hello,", "correct": false, "rationale": "An empty value would only appear if the variable were unset and expanded." }
+    ],
+    "explanation": "Single quotes turn off all expansion. The shell passes `Hello, $name` to `echo` unchanged."
+  },
+  {
+    "id": "012.1-042",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.2"],
+    "terms": ["012.1.t2"],
+    "stem": "Ada types extra spaces between the words. What does this command print?",
+    "command": "echo Hello      Pixel     Raiders",
+    "mode": "choice",
+    "output": "Hello Pixel Raiders",
+    "options": [
+      { "text": "Hello      Pixel     Raiders", "correct": false, "rationale": "The shell splits unquoted text at blanks, so the extra spaces are lost." },
+      { "text": "HelloPixelRaiders", "correct": false, "rationale": "`echo` puts a single space between its arguments." },
+      { "text": "Hello Pixel Raiders", "correct": true, "rationale": "The shell splits the line into three words and `echo` prints them separated by single spaces." },
+      { "text": "Hello_Pixel_Raiders", "correct": false, "rationale": "Nothing in the shell replaces spaces with underscores." }
+    ],
+    "explanation": "Unquoted blanks only separate words. To keep the extra spaces, quote the text."
+  },
+  {
+    "id": "012.1-043",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "Now the same kind of spacing, but inside double quotes. Type what the command prints.",
+    "command": "echo \"Hello      Pixel\"",
+    "mode": "type",
+    "output": "Hello      Pixel",
+    "explanation": "Quotes make the text a single word, so `echo` receives it with all six spaces and prints them."
+  },
+  {
+    "id": "012.1-044",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t5"],
+    "stem": "Mira sets `x` without exporting it and then starts a new `bash` that prints it. What does the command print?",
+    "command": "x=5; bash -c 'echo \"[$x]\"'",
+    "mode": "choice",
+    "output": "[]",
+    "options": [
+      { "text": "[5]", "correct": false, "rationale": "That would need the variable exported; the child shell never received it." },
+      { "text": "[x]", "correct": false, "rationale": "Nothing turns the variable name into text." },
+      { "text": "[]", "correct": true, "rationale": "The variable is local to the first shell, so the child sees an empty value and prints just the brackets." },
+      { "text": "[$x]", "correct": false, "rationale": "The inner shell expands `$x` inside double quotes; the text is not printed literally." }
+    ],
+    "explanation": "A variable that has not been exported isn’t in the environment of child processes. The inner Bash expands `$x` to nothing."
+  },
+  {
+    "id": "012.1-045",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.3"],
+    "terms": ["012.1.t5"],
+    "stem": "This time Mira exports the variable first. Type what the command prints.",
+    "command": "export x=5; bash -c 'echo \"[$x]\"'",
+    "mode": "type",
+    "output": "[5]",
+    "explanation": "`export` puts `x` into the environment, so the child shell inherits it and prints `[5]`."
+  },
+  {
+    "id": "012.1-046",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "A price must show a literal dollar sign. What does this command print?",
+    "command": "echo \"Cost: \\$5\"",
+    "mode": "choice",
+    "output": "Cost: $5",
+    "options": [
+      { "text": "Cost: $5", "correct": true, "rationale": "Inside double quotes, `\\$` yields a literal `$`, so the text appears unchanged without the backslash." },
+      { "text": "Cost: 5", "correct": false, "rationale": "The backslash escapes the dollar sign, so it stays in the output." },
+      { "text": "Cost: \\$5", "correct": false, "rationale": "Inside double quotes `\\$` becomes a plain `$`; the backslash is removed." },
+      { "text": "Cost: ", "correct": false, "rationale": "Without the backslash, `$5` would be expanded to an empty value; here it is escaped." }
+    ],
+    "explanation": "A backslash in front of `$` stops the expansion, even inside double quotes, and is removed afterwards."
+  },
+  {
+    "id": "012.1-047",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.1", "012.1.3"],
+    "terms": ["012.1.t6"],
+    "stem": "What does this command print?",
+    "command": "type echo",
+    "mode": "choice",
+    "output": "echo is a shell builtin",
+    "options": [
+      { "text": "echo is /usr/bin/echo", "correct": false, "rationale": "A program with that name exists, but Bash prefers its builtin." },
+      { "text": "echo is an alias for printf", "correct": false, "rationale": "No alias is defined for it." },
+      { "text": "bash: type: echo: not found", "correct": false, "rationale": "`echo` is known to the shell, so this error doesn’t appear." },
+      { "text": "echo is a shell builtin", "correct": true, "rationale": "`type` reports builtins first, and `echo` is built into Bash." }
+    ],
+    "explanation": "Bash has its own `echo`, which is found before any file in `PATH`. `type -a echo` would also list the files with that name."
+  },
+  {
+    "id": "012.1-048",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.2"],
+    "terms": ["012.1.t2"],
+    "stem": "Type what the command prints.",
+    "command": "echo -n Pixel; echo Raiders",
+    "mode": "type",
+    "output": "PixelRaiders",
+    "explanation": "The first `echo` has `-n`, so it prints no newline; the second word follows immediately on the same line."
+  },
+  {
+    "id": "012.1-049",
+    "objectiveId": "012.1",
+    "kind": "output",
+    "areas": ["012.1.4"],
+    "terms": ["012.1.t2"],
+    "stem": "Type what the command prints (the three words are separated by single spaces).",
+    "command": "x=1; echo \"$x\" '$x' $x",
+    "mode": "type",
+    "output": "1 $x 1",
+    "explanation": "Double quotes and no quotes expand the variable, so two of the words become `1`. Single quotes keep `$x` literal."
   }
 ]

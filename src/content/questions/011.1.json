@@ -1,0 +1,1348 @@
+[
+  {
+    "id": "011.1-001",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.1"
+    ],
+    "stem": "Mira explains to Jonas what “Linux” means in the strict sense. Which statement is correct?",
+    "options": [
+      {
+        "text": "Linux is a complete operating system that the GNU project wrote as one single program from scratch.",
+        "correct": false,
+        "rationale": "The GNU project wrote many userspace tools, but Linux itself is only the kernel."
+      },
+      {
+        "text": "Linux is a desktop environment that runs on top of the Ubuntu kernel.",
+        "correct": false,
+        "rationale": "Desktops such as GNOME are userspace programs; they run on the Linux kernel, not the other way round."
+      },
+      {
+        "text": "Linux is the kernel; the shell, the tools and the desktop around it are userspace software.",
+        "correct": true,
+        "rationale": "The kernel is the part that talks to the hardware, and a distribution adds everything else."
+      },
+      {
+        "text": "Linux is a package format that both Debian and Red Hat use to install and update software.",
+        "correct": false,
+        "rationale": "Package formats are `.deb` and `.rpm`; they are not Linux itself."
+      }
+    ],
+    "explanation": "Linux is the kernel: it manages hardware, memory and processes. Userspace (shell, tools, libraries, desktop) and a package manager come from other projects and are bundled by a distribution."
+  },
+  {
+    "id": "011.1-002",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.1"
+    ],
+    "stem": "Which job is done by the kernel and not by an ordinary userspace program?",
+    "options": [
+      {
+        "text": "Reading a script line by line and running its commands.",
+        "correct": false,
+        "rationale": "That is the shell’s job, and the shell is a userspace program."
+      },
+      {
+        "text": "Choosing the next process for the CPU and handing out memory.",
+        "correct": true,
+        "rationale": "Scheduling and memory management are core kernel tasks."
+      },
+      {
+        "text": "Listing the files of a folder when Jonas types `ls`.",
+        "correct": false,
+        "rationale": "`ls` is a userspace tool; it asks the kernel for the directory contents."
+      },
+      {
+        "text": "Drawing the windows and the panel of the desktop.",
+        "correct": false,
+        "rationale": "The desktop environment is userspace software."
+      }
+    ],
+    "explanation": "The kernel schedules processes, manages memory, drives hardware and handles filesystems and networking. Everything you start yourself runs in userspace on top of it."
+  },
+  {
+    "id": "011.1-003",
+    "objectiveId": "011.1",
+    "kind": "multi",
+    "areas": [
+      "011.1.1"
+    ],
+    "stem": "Which parts of a Linux system belong to userspace? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "The driver for the disk controller",
+        "correct": false,
+        "rationale": "Drivers are part of the kernel or its modules."
+      },
+      {
+        "text": "The `bash` shell",
+        "correct": true,
+        "rationale": "Bash is an ordinary program that you start and that asks the kernel for services."
+      },
+      {
+        "text": "The `ls` command",
+        "correct": true,
+        "rationale": "`ls` is a userspace tool from the GNU core utilities."
+      },
+      {
+        "text": "The memory manager",
+        "correct": false,
+        "rationale": "Managing RAM for all processes is a kernel task."
+      },
+      {
+        "text": "The process scheduler",
+        "correct": false,
+        "rationale": "Scheduling which process runs next is done inside the kernel."
+      }
+    ],
+    "explanation": "Userspace is everything you start and use: shells, commands, libraries and applications. The scheduler, the memory manager and drivers are inside the kernel."
+  },
+  {
+    "id": "011.1-004",
+    "objectiveId": "011.1",
+    "kind": "output",
+    "areas": [
+      "011.1.1"
+    ],
+    "stem": "The terminal asks the system for the name of its kernel. What does this command print?",
+    "command": "uname -s",
+    "output": "Linux",
+    "mode": "choice",
+    "options": [
+      {
+        "text": "GNU/Linux",
+        "correct": false,
+        "rationale": "`GNU/Linux` is what `uname -o` prints, the operating system name."
+      },
+      {
+        "text": "Debian",
+        "correct": false,
+        "rationale": "`uname -s` prints the kernel name, not the distribution."
+      },
+      {
+        "text": "i686",
+        "correct": false,
+        "rationale": "`i686` is the machine type that `uname -m` prints."
+      },
+      {
+        "text": "Linux",
+        "correct": true,
+        "rationale": "`uname -s` prints the kernel name, which is Linux."
+      }
+    ],
+    "explanation": "`uname -s` (`--kernel-name`) prints the kernel’s name. The distribution’s name is stored in other places, such as `/etc/os-release`."
+  },
+  {
+    "id": "011.1-005",
+    "objectiveId": "011.1",
+    "kind": "fill",
+    "areas": [
+      "011.1.1"
+    ],
+    "stem": "Which command, with one short option, prints just the name of the running kernel? Type the whole command.",
+    "accept": [
+      "uname -s",
+      "uname --kernel-name"
+    ],
+    "caseSensitive": true,
+    "verify": {
+      "command": "test \"$({answer})\" = Linux"
+    },
+    "explanation": "`uname` prints system information. Its `-s` option (`--kernel-name`) prints the kernel name, here `Linux`; `-o` prints the operating system name."
+  },
+  {
+    "id": "011.1-006",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.1"
+    ],
+    "stem": "A userspace program such as `cp` needs to read a file from the disk. How does it get the data?",
+    "options": [
+      {
+        "text": "It asks the kernel through a system call, and the kernel talks to the disk.",
+        "correct": true,
+        "rationale": "Userspace programs never touch the hardware directly; the kernel does it for them."
+      },
+      {
+        "text": "It talks to the disk controller directly, which is faster than going through the kernel.",
+        "correct": false,
+        "rationale": "Userspace programs have no direct hardware access; only the kernel does."
+      },
+      {
+        "text": "It asks the package manager to fetch the file from a repository.",
+        "correct": false,
+        "rationale": "Package managers install software; they don’t serve file reads."
+      },
+      {
+        "text": "It loads its own private disk driver into userspace and uses that.",
+        "correct": false,
+        "rationale": "Drivers live in the kernel, so a program can’t bring its own."
+      }
+    ],
+    "explanation": "System calls are the doorway between userspace and the kernel. Because every program goes through it, the kernel can share the hardware safely."
+  },
+  {
+    "id": "011.1-007",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t1"
+    ],
+    "stem": "Ada wants a Raspberry Pi board for the studio’s test lab. Which statement about its official operating system, Raspberry Pi OS, is correct?",
+    "options": [
+      {
+        "text": "It is Enterprise Linux-based, so it uses `.rpm` packages and `dnf`.",
+        "correct": false,
+        "rationale": "The RPM-based families are Enterprise Linux and SUSE; Raspberry Pi OS isn’t one of them."
+      },
+      {
+        "text": "It is Alpine-based, so it uses `.apk` packages.",
+        "correct": false,
+        "rationale": "Alpine is a separate family with its own tools, and Raspberry Pi OS doesn’t use it."
+      },
+      {
+        "text": "It is Debian-based, so it uses `.deb` packages and `apt`.",
+        "correct": true,
+        "rationale": "Raspberry Pi OS belongs to the Debian family."
+      },
+      {
+        "text": "It is SUSE-based, so it uses `zypper`.",
+        "correct": false,
+        "rationale": "`zypper` belongs to SUSE-based distributions."
+      }
+    ],
+    "explanation": "Debian GNU/Linux, Ubuntu and Raspberry Pi OS are the Debian-based distributions to know. They share the `.deb` format and the `dpkg` and `apt` tools.",
+    "sourceLinks": [
+      "https://www.raspberrypi.com/software/"
+    ]
+  },
+  {
+    "id": "011.1-008",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t2"
+    ],
+    "stem": "TuxPixel’s accountant asks which distribution is a free, community-driven system that aims to be compatible with Red Hat Enterprise Linux. Which one fits?",
+    "options": [
+      {
+        "text": "Alpine Linux",
+        "correct": false,
+        "rationale": "Alpine is its own family, built around musl and BusyBox, and isn’t a RHEL rebuild."
+      },
+      {
+        "text": "Rocky Linux",
+        "correct": true,
+        "rationale": "Rocky Linux (like AlmaLinux) is a free RHEL-compatible distribution."
+      },
+      {
+        "text": "openSUSE Tumbleweed",
+        "correct": false,
+        "rationale": "Tumbleweed is SUSE’s rolling release and has no RHEL compatibility goal."
+      },
+      {
+        "text": "Raspberry Pi OS",
+        "correct": false,
+        "rationale": "It is a Debian derivative for Raspberry Pi boards."
+      }
+    ],
+    "explanation": "AlmaLinux and Rocky Linux are free alternatives for people who want RHEL compatibility without paying Red Hat for support.",
+    "sourceLinks": [
+      "https://rockylinux.org/about",
+      "https://almalinux.org/"
+    ]
+  },
+  {
+    "id": "011.1-009",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t2"
+    ],
+    "stem": "Which statement describes the relationship between Fedora Linux and Red Hat Enterprise Linux (RHEL)?",
+    "options": [
+      {
+        "text": "Fedora is the community distribution that gets new things first; RHEL is developed from it.",
+        "correct": true,
+        "rationale": "Fedora sits upstream of RHEL in the Enterprise Linux family."
+      },
+      {
+        "text": "Fedora is a free rebuild of RHEL that appears some weeks after each RHEL release.",
+        "correct": false,
+        "rationale": "Rebuilds are AlmaLinux and Rocky Linux; Fedora is upstream, not a copy."
+      },
+      {
+        "text": "Fedora is the paid support edition of RHEL that companies buy for their production servers, with a contract.",
+        "correct": false,
+        "rationale": "Support subscriptions are sold by Red Hat for RHEL; Fedora is a community project."
+      },
+      {
+        "text": "Fedora is a Debian derivative that only borrows RHEL’s installer and logo.",
+        "correct": false,
+        "rationale": "Fedora belongs to the Enterprise Linux family and uses `.rpm` packages."
+      }
+    ],
+    "explanation": "Fedora Linux tries new software first, CentOS Stream tracks the upcoming RHEL minor releases, and RHEL is the commercial product that follows.",
+    "sourceLinks": [
+      "https://docs.fedoraproject.org/en-US/releases/lifecycle/",
+      "https://www.centos.org/about/"
+    ]
+  },
+  {
+    "id": "011.1-010",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t3",
+      "011.1.t5"
+    ],
+    "stem": "Which statement about openSUSE Leap and openSUSE Tumbleweed is correct?",
+    "options": [
+      {
+        "text": "Both are rolling releases, and only SUSE Linux Enterprise has numbered versions, as a commercial product.",
+        "correct": false,
+        "rationale": "Only Tumbleweed is rolling; Leap has numbered releases."
+      },
+      {
+        "text": "Tumbleweed is the fixed release and Leap is the rolling one.",
+        "correct": false,
+        "rationale": "It is the other way round: Leap is fixed, Tumbleweed rolls."
+      },
+      {
+        "text": "Both are Debian-based and use `apt`.",
+        "correct": false,
+        "rationale": "The SUSE family uses `.rpm` packages and `zypper`."
+      },
+      {
+        "text": "Leap has numbered releases and shares its core with SLE; Tumbleweed is the rolling release.",
+        "correct": true,
+        "rationale": "Leap follows numbered releases, while Tumbleweed continuously delivers new snapshots."
+      }
+    ],
+    "explanation": "The SUSE family has the commercial SUSE Linux Enterprise (SLE) and two free openSUSE releases: Leap (fixed versions) and Tumbleweed (rolling, tested snapshots).",
+    "sourceLinks": [
+      "https://en.opensuse.org/Portal:Leap"
+    ]
+  },
+  {
+    "id": "011.1-011",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t4"
+    ],
+    "stem": "Mira wants the smallest possible base image for a container that runs a tiny game server. Which distribution is known for being tiny and uses `apk` as its package manager?",
+    "options": [
+      {
+        "text": "Rocky Linux",
+        "correct": false,
+        "rationale": "It is Enterprise Linux-based and uses `dnf`; its images are far bigger."
+      },
+      {
+        "text": "Alpine Linux",
+        "correct": true,
+        "rationale": "Alpine uses musl and BusyBox and is popular for small container images."
+      },
+      {
+        "text": "openSUSE Leap",
+        "correct": false,
+        "rationale": "It is SUSE-based and uses `zypper`."
+      },
+      {
+        "text": "Ubuntu",
+        "correct": false,
+        "rationale": "It is Debian-based and uses `apt`."
+      }
+    ],
+    "explanation": "Alpine Linux is a small, security-minded distribution with its own package manager `apk`, which makes it a favourite base for containers.",
+    "sourceLinks": [
+      "https://alpinelinux.org/about/"
+    ]
+  },
+  {
+    "id": "011.1-012",
+    "objectiveId": "011.1",
+    "kind": "output",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t1"
+    ],
+    "stem": "Mira checks which distribution the practice guest runs. What does this command print?",
+    "command": "grep ^ID= /etc/os-release",
+    "output": "ID=debian",
+    "mode": "type",
+    "explanation": "`/etc/os-release` describes the distribution. Its `ID=` line gives a short lowercase name, here `debian`, which is how Debian-based systems identify themselves."
+  },
+  {
+    "id": "011.1-013",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt3"
+    ],
+    "stem": "Jonas has used Linux Mint on his old laptop. Which family does it belong to?",
+    "options": [
+      {
+        "text": "The Enterprise Linux family, as a free rebuild of Red Hat’s commercial system.",
+        "correct": false,
+        "rationale": "Rebuilds of RHEL are AlmaLinux and Rocky Linux, not Mint."
+      },
+      {
+        "text": "The SUSE family, using `zypper`.",
+        "correct": false,
+        "rationale": "Mint uses apt like the rest of the Debian family."
+      },
+      {
+        "text": "The Debian family; it is built on Ubuntu, which is built on Debian.",
+        "correct": true,
+        "rationale": "Mint is based on Ubuntu, which is based on Debian."
+      },
+      {
+        "text": "The Alpine family, built on musl and BusyBox.",
+        "correct": false,
+        "rationale": "Alpine is a separate small distribution; Mint is a full desktop system."
+      }
+    ],
+    "explanation": "Linux Mint is a popular desktop distribution built on Ubuntu, so it uses the Debian family’s `.deb` packages and `apt`.",
+    "sourceLinks": [
+      "https://www.linuxmint.com/about.php"
+    ]
+  },
+  {
+    "id": "011.1-014",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt3"
+    ],
+    "stem": "What was Scientific Linux?",
+    "options": [
+      {
+        "text": "A RHEL-compatible distribution for research labs; it reached its end of life in 2024.",
+        "correct": true,
+        "rationale": "It was a RHEL-compatible distribution for science, and it is discontinued."
+      },
+      {
+        "text": "A Debian-based desktop distribution made for teaching programming to schoolchildren in classrooms.",
+        "correct": false,
+        "rationale": "It was RHEL-compatible, not Debian-based."
+      },
+      {
+        "text": "A rolling release from the SUSE family that ships recent scientific software.",
+        "correct": false,
+        "rationale": "It followed Red Hat Enterprise Linux, not SUSE."
+      },
+      {
+        "text": "A stripped-down distribution for routers and embedded boards in laboratories.",
+        "correct": false,
+        "rationale": "Its audience was laboratories and research institutes."
+      }
+    ],
+    "explanation": "Scientific Linux served labs that wanted a free system compatible with RHEL. Its version 7 reached end of life on 30 June 2024.",
+    "sourceLinks": [
+      "https://scientificlinux.org/category/uncategorized/scientific-linux-end-of-life/"
+    ]
+  },
+  {
+    "id": "011.1-015",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt2"
+    ],
+    "stem": "Ada reads that “CentOS Linux” has ended. What does the CentOS Project offer now under the CentOS name?",
+    "options": [
+      {
+        "text": "CentOS Rolling, a Debian-based fork of the old system.",
+        "correct": false,
+        "rationale": "No such Debian-based product exists; CentOS belongs to the Red Hat family."
+      },
+      {
+        "text": "A new commercial support product that replaces RHEL.",
+        "correct": false,
+        "rationale": "RHEL is still Red Hat’s commercial product."
+      },
+      {
+        "text": "Nothing; the project closed and removed its software.",
+        "correct": false,
+        "rationale": "CentOS Stream continues, and old releases stay available."
+      },
+      {
+        "text": "CentOS Stream, which sits between Fedora and RHEL.",
+        "correct": true,
+        "rationale": "CentOS Stream continues the name, while AlmaLinux and Rocky Linux took over the job of free RHEL-compatible distributions."
+      }
+    ],
+    "explanation": "CentOS Linux 8 reached end of life on 31 December 2021 and version 7 on 30 June 2024. CentOS Stream, the upstream of RHEL’s minor releases, is what continues.",
+    "sourceLinks": [
+      "https://www.centos.org/about/",
+      "https://centos.org/centos-linux-eol/"
+    ]
+  },
+  {
+    "id": "011.1-016",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt4"
+    ],
+    "stem": "Jonas finds an old tutorial that mentions “Raspbian”. What is Raspbian today?",
+    "options": [
+      {
+        "text": "A fork of Fedora for Raspberry Pi boards.",
+        "correct": false,
+        "rationale": "The system is Debian-based, not Fedora-based."
+      },
+      {
+        "text": "A cloud service that rents Raspberry Pi boards.",
+        "correct": false,
+        "rationale": "Raspbian was an operating system, not a service."
+      },
+      {
+        "text": "The former name of the Debian-based Raspberry Pi OS.",
+        "correct": true,
+        "rationale": "The Raspberry Pi Foundation renamed Raspbian to Raspberry Pi OS in 2020."
+      },
+      {
+        "text": "A Raspberry Pi model with a faster CPU.",
+        "correct": false,
+        "rationale": "The Raspberry Pi is the board; Raspbian ran on it."
+      }
+    ],
+    "explanation": "Raspbian was the Debian-based system for Raspberry Pi boards. Since May 2020 it is called Raspberry Pi OS.",
+    "sourceLinks": [
+      "https://www.raspberrypi.com/software/"
+    ]
+  },
+  {
+    "id": "011.1-017",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt1"
+    ],
+    "stem": "What does “LTS” mean in “Ubuntu 24.04 LTS”?",
+    "options": [
+      {
+        "text": "Latest Technology Snapshot: a daily build that carries the newest packages of the release.",
+        "correct": false,
+        "rationale": "Snapshots are not LTS; LTS is about long support."
+      },
+      {
+        "text": "Limited Test Series: an early version meant only for testers.",
+        "correct": false,
+        "rationale": "LTS releases are meant for production, not for testing."
+      },
+      {
+        "text": "Linux Terminal Server: a special edition for thin clients.",
+        "correct": false,
+        "rationale": "The letters stand for Long-Term Support."
+      },
+      {
+        "text": "Long-Term Support: it gets security updates for much longer than other releases.",
+        "correct": true,
+        "rationale": "LTS releases come every two years and have five years of standard security maintenance."
+      }
+    ],
+    "explanation": "Ubuntu publishes a new release every six months, and every two years one of them is a Long-Term Support release with five years of standard security maintenance.",
+    "sourceLinks": [
+      "https://ubuntu.com/about/release-cycle"
+    ]
+  },
+  {
+    "id": "011.1-018",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.3"
+    ],
+    "terms": [
+      "011.1.t5"
+    ],
+    "stem": "Mira reads that Debian keeps three lines at all times. Which description of Debian’s testing line is correct?",
+    "options": [
+      {
+        "text": "It holds packages being prepared for the next stable release.",
+        "correct": true,
+        "rationale": "Packages move from unstable into testing and the testing line becomes the next stable release."
+      },
+      {
+        "text": "It holds the current stable release, with security fixes only.",
+        "correct": false,
+        "rationale": "That is stable."
+      },
+      {
+        "text": "It holds packages that are broken on purpose, so that testers can find bugs.",
+        "correct": false,
+        "rationale": "Packages in testing are candidates for release, not deliberately broken."
+      },
+      {
+        "text": "It is a rolling release that never becomes a stable release.",
+        "correct": false,
+        "rationale": "Testing is where the next stable release takes shape."
+      }
+    ],
+    "explanation": "Debian keeps stable, testing and unstable (nicknamed sid). Software enters unstable first, then moves to testing, and testing turns into the next stable release.",
+    "sourceLinks": [
+      "https://www.debian.org/releases/"
+    ]
+  },
+  {
+    "id": "011.1-019",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.3"
+    ],
+    "terms": [
+      "011.1.t5",
+      "011.1.vt1"
+    ],
+    "stem": "Ada’s build server needs five years of security updates without a reinstall. Which kind of Ubuntu release should she choose?",
+    "options": [
+      {
+        "text": "The interim release from the spring",
+        "correct": false,
+        "rationale": "Interim releases are supported for only about nine months."
+      },
+      {
+        "text": "An LTS release",
+        "correct": true,
+        "rationale": "Long-Term Support releases get five years of standard security maintenance."
+      },
+      {
+        "text": "The daily development build",
+        "correct": false,
+        "rationale": "Development builds are for testers and change constantly."
+      },
+      {
+        "text": "A beta of the next release",
+        "correct": false,
+        "rationale": "A beta is a pre-release test version, not a supported one."
+      }
+    ],
+    "explanation": "Ubuntu’s interim releases are supported for only nine months. For servers that should run for years, choose an LTS release.",
+    "sourceLinks": [
+      "https://ubuntu.com/about/release-cycle"
+    ]
+  },
+  {
+    "id": "011.1-020",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.3"
+    ],
+    "terms": [
+      "011.1.t5"
+    ],
+    "stem": "What is a rolling release?",
+    "options": [
+      {
+        "text": "No numbered releases to upgrade between: you keep updating and get the newest packages.",
+        "correct": true,
+        "rationale": "Tumbleweed and Alpine’s edge branch are rolling."
+      },
+      {
+        "text": "A release that is supported for a much longer time than the normal releases are.",
+        "correct": false,
+        "rationale": "That describes Long-Term Support (LTS)."
+      },
+      {
+        "text": "A release that comes out every six months on a fixed date and has its own version number.",
+        "correct": false,
+        "rationale": "That is a regular fixed release cycle, as used by Ubuntu and Fedora."
+      },
+      {
+        "text": "A release that is only available to testers, before the public version is ready.",
+        "correct": false,
+        "rationale": "Alpha and beta versions are for testers; rolling releases are for everyday use."
+      }
+    ],
+    "explanation": "In a rolling release the system keeps moving forward with each update. That gives the newest software but less predictability than a stable or LTS release.",
+    "sourceLinks": [
+      "https://en.opensuse.org/Portal:Leap",
+      "https://alpinelinux.org/releases/"
+    ]
+  },
+  {
+    "id": "011.1-021",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.3"
+    ],
+    "terms": [
+      "011.1.t4",
+      "011.1.t5"
+    ],
+    "stem": "In Alpine Linux’s release scheme, what is *edge*?",
+    "options": [
+      {
+        "text": "The oldest stable branch, which has the longest support.",
+        "correct": false,
+        "rationale": "Stable branches are named like `v3.x`; edge is the development branch."
+      },
+      {
+        "text": "A repository that holds only proprietary firmware.",
+        "correct": false,
+        "rationale": "Edge is a branch, not a firmware repository."
+      },
+      {
+        "text": "The stable branch that is replaced by a newer one every six months, together with all its packages.",
+        "correct": false,
+        "rationale": "New stable branches appear about every six months, but edge is the rolling branch they are cut from."
+      },
+      {
+        "text": "The rolling branch that the next stable branches are cut from.",
+        "correct": true,
+        "rationale": "Edge has its own main and community repositories, plus a testing repository."
+      }
+    ],
+    "explanation": "Alpine has numbered stable branches (a new one about every six months) and edge, the rolling branch for development. The `main` repository of a stable branch gets about two years of support.",
+    "sourceLinks": [
+      "https://alpinelinux.org/releases/"
+    ]
+  },
+  {
+    "id": "011.1-022",
+    "objectiveId": "011.1",
+    "kind": "multi",
+    "areas": [
+      "011.1.3"
+    ],
+    "terms": [
+      "011.1.t5"
+    ],
+    "stem": "Which of these are rolling releases? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Debian stable",
+        "correct": false,
+        "rationale": "Debian stable is a fixed release that changes little."
+      },
+      {
+        "text": "Ubuntu LTS",
+        "correct": false,
+        "rationale": "Ubuntu LTS has fixed releases every two years."
+      },
+      {
+        "text": "openSUSE Tumbleweed",
+        "correct": true,
+        "rationale": "Tumbleweed continuously delivers new, automatically tested snapshots."
+      },
+      {
+        "text": "openSUSE Leap",
+        "correct": false,
+        "rationale": "Leap has numbered releases."
+      },
+      {
+        "text": "Alpine Linux edge",
+        "correct": true,
+        "rationale": "Edge is the rolling branch of Alpine."
+      }
+    ],
+    "explanation": "Rolling releases have no version to upgrade to. Tumbleweed and Alpine’s edge branch are the two in the exam list; Leap, Debian stable and Ubuntu LTS are fixed releases.",
+    "sourceLinks": [
+      "https://en.opensuse.org/Portal:Leap",
+      "https://alpinelinux.org/releases/"
+    ]
+  },
+  {
+    "id": "011.1-023",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.4",
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt5"
+    ],
+    "stem": "Which statement about Android and Linux is correct?",
+    "options": [
+      {
+        "text": "Android is a Debian-based distribution whose users install software with `apt`.",
+        "correct": false,
+        "rationale": "Android has its own userspace and no `apt` for users."
+      },
+      {
+        "text": "Android has no kernel of its own; its apps run directly on the hardware.",
+        "correct": false,
+        "rationale": "Every Android device runs a Linux-based kernel."
+      },
+      {
+        "text": "Android uses a Linux kernel, but not the usual GNU/Linux userspace.",
+        "correct": true,
+        "rationale": "Android’s kernels are built from upstream long-term-support kernels plus extra patches."
+      },
+      {
+        "text": "Android is the same as Ubuntu, only with a touch screen on top.",
+        "correct": false,
+        "rationale": "Ubuntu uses the GNU userspace, Android doesn’t."
+      }
+    ],
+    "explanation": "Android is built on the Linux kernel, but apps run in Android’s own runtime and there is no ordinary Linux userspace with `apt` or a shell for the user.",
+    "sourceLinks": [
+      "https://source.android.com/docs/core/architecture/kernel"
+    ]
+  },
+  {
+    "id": "011.1-024",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.4"
+    ],
+    "stem": "Jonas can run `sudo apt install gimp` on his Ubuntu laptop. Why won’t the same command work on his Android phone?",
+    "options": [
+      {
+        "text": "Android phones have no kernel at all, so no commands can run on them.",
+        "correct": false,
+        "rationale": "Android runs on a Linux kernel."
+      },
+      {
+        "text": "Android’s userspace has no `apt` and usually no shell; it has its own app system.",
+        "correct": true,
+        "rationale": "The kernel is Linux, but the software around it is different."
+      },
+      {
+        "text": "`apt` only works on desktops that have a mouse attached and a graphical login.",
+        "correct": false,
+        "rationale": "`apt` has nothing to do with the mouse; it needs a Debian-family userspace."
+      },
+      {
+        "text": "Android uses the Enterprise Linux family, so it needs `dnf`.",
+        "correct": false,
+        "rationale": "Android is not part of that family."
+      }
+    ],
+    "explanation": "Android is a Linux-kernel system with a different userspace, so you wouldn’t call it a Linux distribution in the desktop sense.",
+    "sourceLinks": [
+      "https://source.android.com/docs/core/architecture/kernel"
+    ]
+  },
+  {
+    "id": "011.1-025",
+    "objectiveId": "011.1",
+    "kind": "multi",
+    "areas": [
+      "011.1.4"
+    ],
+    "stem": "Which statements about Android are true? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Its kernel is based on the Linux kernel.",
+        "correct": true,
+        "rationale": "Android kernels come from upstream Linux kernels with additions."
+      },
+      {
+        "text": "It is the Red Hat family’s mobile edition.",
+        "correct": false,
+        "rationale": "Android is developed in the Android Open Source Project, not by Red Hat."
+      },
+      {
+        "text": "It runs only on x86 desktop processors.",
+        "correct": false,
+        "rationale": "Android phones mostly use ARM processors."
+      },
+      {
+        "text": "Its apps run in Android’s own runtime, not in a GNU userspace.",
+        "correct": true,
+        "rationale": "Android replaces the usual GNU userspace with its own."
+      },
+      {
+        "text": "It uses `.deb` packages managed with `dpkg`.",
+        "correct": false,
+        "rationale": "Android apps are installed as Android packages, not `.deb` files."
+      }
+    ],
+    "explanation": "Android shares the kernel with Linux distributions and nothing much else of the usual software stack.",
+    "sourceLinks": [
+      "https://source.android.com/docs/core/architecture/kernel"
+    ]
+  },
+  {
+    "id": "011.1-026",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.4"
+    ],
+    "stem": "Ada reads “most phones run Linux”. Which part of those phones is the Linux part?",
+    "options": [
+      {
+        "text": "The graphical app store.",
+        "correct": false,
+        "rationale": "The app store is Android software, not Linux."
+      },
+      {
+        "text": "The GNOME desktop.",
+        "correct": false,
+        "rationale": "Android doesn’t use GNOME."
+      },
+      {
+        "text": "The `apt` repositories.",
+        "correct": false,
+        "rationale": "Phones don’t use `apt` repositories."
+      },
+      {
+        "text": "The kernel, which manages the hardware and processes.",
+        "correct": true,
+        "rationale": "The kernel is the shared part; the rest differs from desktop distributions."
+      }
+    ],
+    "explanation": "It is the kernel that Android and distributions such as Debian and Ubuntu share.",
+    "sourceLinks": [
+      "https://source.android.com/docs/core/architecture/kernel"
+    ]
+  },
+  {
+    "id": "011.1-027",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.4"
+    ],
+    "stem": "Why is Android usually not called a Linux distribution like Ubuntu?",
+    "options": [
+      {
+        "text": "It uses the Linux kernel but not the GNU/Linux userspace and tools.",
+        "correct": true,
+        "rationale": "A distribution bundles kernel, userspace and package manager; Android’s userspace is different."
+      },
+      {
+        "text": "It is entirely closed source and owned by one company, with no public code.",
+        "correct": false,
+        "rationale": "Android’s base is the open source Android Open Source Project."
+      },
+      {
+        "text": "It runs only on servers, never on phones or tablets.",
+        "correct": false,
+        "rationale": "Android runs on phones and tablets."
+      },
+      {
+        "text": "It has no package format, so apps are plain unpackaged files.",
+        "correct": false,
+        "rationale": "Android apps are packages too; the point is that they aren’t the Linux userspace’s."
+      }
+    ],
+    "explanation": "Android is a different operating system built on the Linux kernel.",
+    "sourceLinks": [
+      "https://source.android.com/docs/core/architecture/kernel"
+    ]
+  },
+  {
+    "id": "011.1-028",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.4"
+    ],
+    "stem": "Which part of Android is described as built from upstream long-term-support kernels plus extra patches?",
+    "options": [
+      {
+        "text": "The app runtime",
+        "correct": false,
+        "rationale": "Apps run in Android’s own runtime, which is separate from the kernel."
+      },
+      {
+        "text": "The kernel",
+        "correct": true,
+        "rationale": "The Android project builds its kernels from upstream Linux LTS kernels and adds patches."
+      },
+      {
+        "text": "The package manager",
+        "correct": false,
+        "rationale": "Android has its own app installation system, not a kernel patch set."
+      },
+      {
+        "text": "The home screen",
+        "correct": false,
+        "rationale": "The home screen is an app of the user interface."
+      }
+    ],
+    "explanation": "Android’s link to Linux is the kernel. Everything above it, including the runtime and the apps, is Android’s own software.",
+    "sourceLinks": [
+      "https://source.android.com/docs/core/architecture/kernel"
+    ]
+  },
+  {
+    "id": "011.1-029",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v1"
+    ],
+    "stem": "Jonas’ smart thermostat has one fixed job and no keyboard or screen for a shell. What kind of computer is this?",
+    "options": [
+      {
+        "text": "A virtual machine hosted in the cloud.",
+        "correct": false,
+        "rationale": "A VM is a software computer, not a built-in device."
+      },
+      {
+        "text": "An HPC cluster.",
+        "correct": false,
+        "rationale": "HPC clusters are large collections of servers."
+      },
+      {
+        "text": "An embedded system: a small computer built into a device.",
+        "correct": true,
+        "rationale": "Embedded systems run one dedicated job inside a product."
+      },
+      {
+        "text": "A desktop workstation.",
+        "correct": false,
+        "rationale": "A workstation is a general-purpose computer with screen and keyboard."
+      }
+    ],
+    "explanation": "Embedded devices such as routers, TVs, cameras and thermostats often run Linux without the user ever seeing it."
+  },
+  {
+    "id": "011.1-030",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v1"
+    ],
+    "stem": "Why is Linux popular in embedded devices?",
+    "options": [
+      {
+        "text": "It is the only operating system that can run without a kernel.",
+        "correct": false,
+        "rationale": "Linux has a kernel; the argument is cost and flexibility."
+      },
+      {
+        "text": "It is free, can be shrunk to fit small hardware and runs on many processor types.",
+        "correct": true,
+        "rationale": "Those three properties suit makers of routers, TVs and similar devices."
+      },
+      {
+        "text": "It requires a monthly licence that includes support.",
+        "correct": false,
+        "rationale": "Linux is free to use."
+      },
+      {
+        "text": "It runs only on one type of processor, which keeps devices simple.",
+        "correct": false,
+        "rationale": "Linux runs on many processor types."
+      }
+    ],
+    "explanation": "Because the source is free, a manufacturer can trim Linux down and adapt it to its chip without paying per device."
+  },
+  {
+    "id": "011.1-031",
+    "objectiveId": "011.1",
+    "kind": "multi",
+    "areas": [
+      "011.1.v1"
+    ],
+    "stem": "Which of these are typical embedded Linux devices? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "A rack server in a data center",
+        "correct": false,
+        "rationale": "Servers are general-purpose computers."
+      },
+      {
+        "text": "A developer laptop",
+        "correct": false,
+        "rationale": "Laptops are general-purpose computers."
+      },
+      {
+        "text": "A home router",
+        "correct": true,
+        "rationale": "Routers commonly run Linux."
+      },
+      {
+        "text": "A smart TV",
+        "correct": true,
+        "rationale": "Many TVs run Linux inside."
+      },
+      {
+        "text": "A rented cloud instance",
+        "correct": false,
+        "rationale": "Cloud instances are virtual servers."
+      }
+    ],
+    "explanation": "An embedded system has one fixed job inside a product, such as a router or a television."
+  },
+  {
+    "id": "011.1-032",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v1",
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt4"
+    ],
+    "stem": "Ada builds a prototype for a sensor box on a Raspberry Pi. Which statement is correct?",
+    "options": [
+      {
+        "text": "It is a small board often used for embedded projects, and Raspberry Pi OS is its official system.",
+        "correct": true,
+        "rationale": "The board runs Linux, and Raspberry Pi OS is Debian-based."
+      },
+      {
+        "text": "It is a cloud service that rents out Linux servers for a monthly fee per board.",
+        "correct": false,
+        "rationale": "The Raspberry Pi is a physical board."
+      },
+      {
+        "text": "It cannot run Linux because it has an ARM processor instead of an Intel one.",
+        "correct": false,
+        "rationale": "Raspberry Pi OS and other Linux systems run on it."
+      },
+      {
+        "text": "It is a Linux distribution made by Red Hat.",
+        "correct": false,
+        "rationale": "The board is made by the Raspberry Pi company, and Red Hat is unrelated."
+      }
+    ],
+    "explanation": "A Raspberry Pi is a low-cost board that runs Linux and is popular for embedded and learning projects.",
+    "sourceLinks": [
+      "https://www.raspberrypi.com/software/"
+    ]
+  },
+  {
+    "id": "011.1-033",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v1"
+    ],
+    "stem": "A maker of smart speakers has little memory to spare in its devices. Which property of Linux helps most here?",
+    "options": [
+      {
+        "text": "It needs a minimum of 16 GB of memory, which keeps the devices fast.",
+        "correct": false,
+        "rationale": "Linux can be built to run in a tiny fraction of that memory."
+      },
+      {
+        "text": "It only runs on one processor type, so no adjustment is needed for the device.",
+        "correct": false,
+        "rationale": "Linux supports many processor types."
+      },
+      {
+        "text": "It always starts a full graphical desktop, so users see a friendly screen.",
+        "correct": false,
+        "rationale": "Embedded Linux devices usually have no desktop."
+      },
+      {
+        "text": "The kernel and tools can be trimmed to just the parts the device needs.",
+        "correct": true,
+        "rationale": "Because Linux is free and open, a maker can cut it down to fit."
+      }
+    ],
+    "explanation": "Linux can be shrunk, adapted to many chips and used without a per-device fee, which suits makers of routers, TVs and speakers."
+  },
+  {
+    "id": "011.1-034",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v2"
+    ],
+    "stem": "What is cloud computing?",
+    "options": [
+      {
+        "text": "Keeping all data on the user’s own USB sticks and external disks, with nothing on the network.",
+        "correct": false,
+        "rationale": "That is local storage, not cloud computing."
+      },
+      {
+        "text": "Running programs only on a supercomputer in the same room as the user.",
+        "correct": false,
+        "rationale": "The cloud is rented over the network."
+      },
+      {
+        "text": "Renting servers, storage and databases over the internet instead of owning them.",
+        "correct": true,
+        "rationale": "You pay for what you use."
+      },
+      {
+        "text": "A kind of weather simulation software that runs only on Linux.",
+        "correct": false,
+        "rationale": "It is a service model."
+      }
+    ],
+    "explanation": "Instead of buying machines, a company starts virtual servers in minutes and pays for the time they run."
+  },
+  {
+    "id": "011.1-035",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v2"
+    ],
+    "stem": "Which operating system do most of the servers rented in the cloud run?",
+    "options": [
+      {
+        "text": "Android",
+        "correct": false,
+        "rationale": "Android is for phones and tablets."
+      },
+      {
+        "text": "Linux",
+        "correct": true,
+        "rationale": "Most cloud servers run a Linux distribution chosen as the image."
+      },
+      {
+        "text": "Only embedded systems, never servers",
+        "correct": false,
+        "rationale": "Linux powers servers as well as embedded devices."
+      },
+      {
+        "text": "Windows, because Linux cannot run in virtual machines",
+        "correct": false,
+        "rationale": "Linux runs very well in virtual machines."
+      }
+    ],
+    "explanation": "In the cloud you pick a Linux distribution as the image, start the server and pay for the time it runs."
+  },
+  {
+    "id": "011.1-036",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v2"
+    ],
+    "stem": "Ada needs a test server for two hours before a release. Why is a cloud instance a good fit?",
+    "options": [
+      {
+        "text": "She has to buy a physical server and wait for its delivery.",
+        "correct": false,
+        "rationale": "That is the opposite of renting in the cloud."
+      },
+      {
+        "text": "It needs an annual contract that cannot be cancelled.",
+        "correct": false,
+        "rationale": "Cloud capacity is typically rented by time used."
+      },
+      {
+        "text": "Cloud servers cannot be removed once started.",
+        "correct": false,
+        "rationale": "They can be removed in minutes."
+      },
+      {
+        "text": "She can start it in minutes and pay only for the time it runs.",
+        "correct": true,
+        "rationale": "The cloud rents machines by use."
+      }
+    ],
+    "explanation": "The cloud lets you add and remove capacity as needed, and Linux is the usual system on those machines."
+  },
+  {
+    "id": "011.1-037",
+    "objectiveId": "011.1",
+    "kind": "multi",
+    "areas": [
+      "011.1.v2"
+    ],
+    "stem": "Which statements about running Linux in the cloud are true? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "The server only runs one distribution, chosen by the cloud provider.",
+        "correct": false,
+        "rationale": "You choose the image."
+      },
+      {
+        "text": "You pay for the time the server runs.",
+        "correct": true,
+        "rationale": "Usage-based pricing is typical."
+      },
+      {
+        "text": "You must buy the hardware first.",
+        "correct": false,
+        "rationale": "The provider owns the hardware."
+      },
+      {
+        "text": "You can choose a Linux distribution as the image of a new server.",
+        "correct": true,
+        "rationale": "Providers offer Linux images for new instances."
+      },
+      {
+        "text": "Cloud servers cannot be accessed over the network.",
+        "correct": false,
+        "rationale": "They are managed over the network."
+      }
+    ],
+    "explanation": "Cloud providers rent virtual servers over the internet and offer many Linux distributions as images."
+  },
+  {
+    "id": "011.1-038",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.v2"
+    ],
+    "stem": "Which of these is a typical use of Linux in the cloud?",
+    "options": [
+      {
+        "text": "Running as the single operating system of a rented physical phone in the provider’s office.",
+        "correct": false,
+        "rationale": "Phones are not what cloud providers rent out; they rent servers and storage."
+      },
+      {
+        "text": "Controlling the engine of one particular car.",
+        "correct": false,
+        "rationale": "That is an embedded use, not a cloud use."
+      },
+      {
+        "text": "Hosting web servers and databases in virtual machines or containers at a provider.",
+        "correct": true,
+        "rationale": "Most rented cloud servers run Linux."
+      },
+      {
+        "text": "Working only on a computer without any network connection.",
+        "correct": false,
+        "rationale": "Cloud computing is delivered over the network."
+      }
+    ],
+    "explanation": "Web and internet services, databases and containers all run in data centers, mostly on Linux."
+  }
+]
