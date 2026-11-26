@@ -1,0 +1,234 @@
+[
+  {
+    "id": "012.1-c01",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What is the shell, and which one does almost every Linux distribution use by default?",
+    "back": "A program that reads each line you type, works out what you mean, starts the right program and shows its output. Bash (Bourne Again SHell)."
+  },
+  {
+    "id": "012.1-c02",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What are the three jobs the shell does with a command line?",
+    "back": "It splits the line into words, expands special characters (`$HOME`, `~`, `*`) and runs the first word as the command with the others as input."
+  },
+  {
+    "id": "012.1-c03",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "How do you repeat the last command, command 42, or search old commands?",
+    "back": "`!!` repeats the last line, `!42` repeats line 42 of `history`, and Ctrl+R searches the history as you type. Bash stores it in `~/.bash_history`."
+  },
+  {
+    "id": "012.1-c04",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What do Tab, the up arrow and Ctrl+C do in Bash?",
+    "back": "Tab completes a name, the up arrow brings back the previous line and Ctrl+C stops a running program."
+  },
+  {
+    "id": "012.1-c05",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What is a builtin, and why must `cd` be one?",
+    "back": "A builtin is part of Bash itself (`cd`, `echo`, `export`, `type`, `history`). An external program could only change its own directory, never the shell’s."
+  },
+  {
+    "id": "012.1-c06",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What does `type NAME` tell you?",
+    "back": "Whether the name is a shell builtin, an external file (it shows the full path), an alias or a keyword. `type -t NAME` prints just `builtin`, `file`, `alias` or `keyword`."
+  },
+  {
+    "id": "012.1-c07",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "`echo` exists as a builtin and as `/usr/bin/echo`. Which one runs?",
+    "back": "The builtin, because the shell checks builtins first."
+  },
+  {
+    "id": "012.1-c08",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "Which directories hold executables on the exam list, and what do `/bin` and `/sbin` link to on modern Debian?",
+    "back": "`/bin`, `/usr/bin`, `/sbin` and `/usr/sbin`. On modern Debian `/bin` and `/sbin` are symbolic links to `/usr/bin` and `/usr/sbin`."
+  },
+  {
+    "id": "012.1-c09",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What do the `s` in `sbin` and the directory `/usr/local/bin` stand for?",
+    "back": "`sbin` means system administration programs, meant for the administrator. `/usr/local/bin` holds programs the administrator installed by hand."
+  },
+  {
+    "id": "012.1-c10",
+    "areas": [
+      "012.1.2"
+    ],
+    "front": "In `ls -l -a /usr/local/bin`, which word is the command, which are options and which is the argument?",
+    "back": "`ls` is the command, `-l` and `-a` are options and `/usr/local/bin` is the argument."
+  },
+  {
+    "id": "012.1-c11",
+    "areas": [
+      "012.1.2"
+    ],
+    "front": "Can short and long options be combined?",
+    "back": "Short options usually can: `ls -la` equals `ls -l -a`. Long options (`--all`) cannot be combined."
+  },
+  {
+    "id": "012.1-c12",
+    "areas": [
+      "012.1.2"
+    ],
+    "front": "What do `echo -n` and `echo -e` do?",
+    "back": "`-n` leaves out the final newline. `-e` turns backslash sequences like `\\t` (tab) and `\\n` (new line) into the real characters."
+  },
+  {
+    "id": "012.1-c13",
+    "areas": [
+      "012.1.2"
+    ],
+    "front": "What does a semicolon do on a command line?",
+    "back": "It separates commands that run one after the other: `echo first; echo second`."
+  },
+  {
+    "id": "012.1-c14",
+    "areas": [
+      "012.1.2"
+    ],
+    "front": "Why does `echo hello      world` print only one space between the words?",
+    "back": "The shell splits at every run of spaces, so the extra spaces vanish. Quotes make it one argument and keep them."
+  },
+  {
+    "id": "012.1-c15",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "How do you set a variable in Bash, and how do you read it?",
+    "back": "`game=Pixel` with no spaces around `=`; read it with a dollar sign: `echo $game`. Names are case sensitive."
+  },
+  {
+    "id": "012.1-c16",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "What is the difference between a local and an environment variable?",
+    "back": "A local variable is known only to this shell. After `export name` it becomes an environment variable, and programs started from the shell get a copy."
+  },
+  {
+    "id": "012.1-c17",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "Ada runs `RELEASE=0.9` and then starts her build, but the build can’t see it. What is missing?",
+    "back": "`export RELEASE=0.9` (or `export RELEASE`). Without it the variable stays local to the shell."
+  },
+  {
+    "id": "012.1-c18",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "Can a child program change a variable in the shell that started it?",
+    "back": "No. A copy goes down to child programs; changes never travel back up."
+  },
+  {
+    "id": "012.1-c19",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "What is the difference between `env` and `set`?",
+    "back": "`env` prints the environment variables only. `set` prints everything the shell knows, including local variables and functions, so it is much longer."
+  },
+  {
+    "id": "012.1-c20",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "What do `HOME`, `USER`, `SHELL` and `PATH` hold?",
+    "back": "`HOME`: your home directory. `USER`: your user name. `SHELL`: your login shell. `PATH`: the directories searched for commands."
+  },
+  {
+    "id": "012.1-c21",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "How does the shell use `PATH`?",
+    "back": "It looks in each listed directory, separated by colons and in order, and runs the first match. If none has it, you get `command not found`."
+  },
+  {
+    "id": "012.1-c22",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "Why does `run.sh` in the current directory give \"command not found\" while `./run.sh` works?",
+    "back": "The current directory `.` is deliberately not in `PATH`. `./run.sh` gives a path, so no search is needed."
+  },
+  {
+    "id": "012.1-c23",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "Jonas put a tool in `/home/jonas/bin` and gets `command not found`. How does he add the directory to `PATH` for this session?",
+    "back": "`PATH=\"$PATH:/home/jonas/bin\"`, which keeps the old value. To make it last, put it in a start-up file like `~/.bashrc`."
+  },
+  {
+    "id": "012.1-c24",
+    "areas": [
+      "012.1.3"
+    ],
+    "front": "How do you remove a variable?",
+    "back": "`unset name`, without a dollar sign."
+  },
+  {
+    "id": "012.1-c25",
+    "areas": [
+      "012.1.4"
+    ],
+    "front": "What are the three quoting tools in Bash?",
+    "back": "A backslash escapes the one next character. Single quotes make everything inside literal. Double quotes are literal except that `$` (variables) and a few others still work."
+  },
+  {
+    "id": "012.1-c26",
+    "areas": [
+      "012.1.4"
+    ],
+    "front": "With `name=Mira`, what do `echo \"$name\"`, `echo '$name'` and `echo \\$name` print?",
+    "back": "`Mira`, `$name` and `$name`. Only double quotes (and no quotes) expand the variable."
+  },
+  {
+    "id": "012.1-c27",
+    "areas": [
+      "012.1.4"
+    ],
+    "front": "A sprite is called `slime attack.png`. Why does `rm slime attack.png` go wrong?",
+    "back": "The space splits it into two arguments, so `rm` tries to delete two files. `rm \"slime attack.png\"` deletes one."
+  },
+  {
+    "id": "012.1-c28",
+    "areas": [
+      "012.1.4"
+    ],
+    "front": "What is command substitution, and does it work in single quotes?",
+    "back": "`$(command)` is replaced by what the command prints. It works in double quotes but not in single quotes."
+  },
+  {
+    "id": "012.1-c29",
+    "areas": [
+      "012.1.4"
+    ],
+    "front": "Why does `echo \"*\"` print a star while `echo *` lists file names?",
+    "back": "Quotes switch off the special meaning, so the shell does not expand the `*`. Unquoted, the shell replaces it with matching names."
+  }
+]

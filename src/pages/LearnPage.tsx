@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import { Inline } from '../components/Inline'
-import { EXAM_FORMAT, EXAM_IDS, OBJECTIVES, OBJECTIVE_BY_ID, SOURCES, TOPICS, linesFor, objectiveLabel, objectiveName, objectivesOf, topicName } from '../content/blueprint'
+import { EXAM_FORMAT, EXAM_IDS, OBJECTIVES, OBJECTIVE_BY_ID, SOURCES, TOPICS, itemInExam, linesFor, objectiveLabel, objectiveName, objectivesOf, topicName } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
+import { DRILL_DECKS } from '../content/drills'
 import { EXERCISES } from '../content/exercises'
+import { CARDS } from '../content/flashcards'
 import { LESSONS } from '../content/lessons'
 import { lessonComponents } from '../lessons/components'
 import { setLessonRead, useProgress } from '../progress/store'
@@ -78,6 +80,8 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
   const read = lessonsRead.includes(objectiveId)
   const practiceCount = ITEMS.filter((i) => i.objectiveId === objectiveId).length
   const exercises = EXERCISES.filter((e) => e.objectiveId === objectiveId)
+  const cardCount = CARDS.filter((c) => c.id.startsWith(`${objectiveId}-`) && itemInExam(c, track)).length
+  const drills = DRILL_DECKS.filter((d) => d.objectives.includes(objectiveId))
 
   return (
     <article className="space-y-6">
@@ -180,6 +184,16 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
             Try it in the terminal ({exercises.length} {exercises.length === 1 ? 'exercise' : 'exercises'})
           </Link>
         )}
+        {cardCount > 0 && (
+          <Link to={`/explore/flashcards/review?objective=${objectiveId}`} className="rounded border px-4 py-2">
+            Flashcards ({cardCount})
+          </Link>
+        )}
+        {drills.map((d) => (
+          <Link key={d.id} to={`/explore/drills/${d.id}`} className="rounded border px-4 py-2">
+            Drill: {d.title}
+          </Link>
+        ))}
         <Link to="/terminal" className="rounded border px-4 py-2">
           Open the terminal
         </Link>

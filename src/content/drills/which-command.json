@@ -1,0 +1,297 @@
+{
+  "id": "which-command",
+  "kind": "which",
+  "title": "Which command?",
+  "description": "Match a TuxPixel task to the command that does it, when the other three do something else.",
+  "objectives": [
+    "012.1",
+    "012.2",
+    "012.3",
+    "012.4",
+    "013.1",
+    "013.2",
+    "014.3",
+    "014.4",
+    "015.1",
+    "015.2",
+    "015.3",
+    "015.4"
+  ],
+  "cards": [
+    {
+      "id": "which-command-01",
+      "prompt": "Mira has lost track of where she is in the file tree and wants the full path of her current directory.",
+      "answer": "`pwd`",
+      "distractors": [
+        "`ls`",
+        "`cd`",
+        "`id`"
+      ],
+      "why": "`pwd` (print working directory) prints the absolute path of the directory you are in. `ls` lists its contents and `cd` moves you somewhere else."
+    },
+    {
+      "id": "which-command-02",
+      "prompt": "Jonas wants a new, empty directory called `levels`.",
+      "answer": "`mkdir levels`",
+      "distractors": [
+        "`touch levels`",
+        "`rmdir levels`",
+        "`cd levels`"
+      ],
+      "why": "`mkdir` makes directories. `touch` would create an empty file with that name, and `rmdir` removes a directory."
+    },
+    {
+      "id": "which-command-03",
+      "prompt": "Ada wants to delete the directory `old-art`, but only if it is empty, so nothing can be lost by accident.",
+      "answer": "`rmdir old-art`",
+      "distractors": [
+        "`mkdir old-art`",
+        "`mv old-art`",
+        "`touch old-art`"
+      ],
+      "why": "`rmdir` refuses to remove a directory that still holds files, which makes it the safe choice. `rm -r` would delete the contents as well."
+    },
+    {
+      "id": "which-command-04",
+      "prompt": "Jonas wants to rename `draft.txt` to `final.txt`, with no second copy left behind.",
+      "answer": "`mv draft.txt final.txt`",
+      "distractors": [
+        "`cp draft.txt final.txt`",
+        "`touch final.txt`",
+        "`ln draft.txt`"
+      ],
+      "why": "`mv` moves and renames in one step. `cp` would leave `draft.txt` in place as well."
+    },
+    {
+      "id": "which-command-05",
+      "prompt": "Mira has to list every `.png` file below `~/projects` by looking through the directories, not through a prepared index.",
+      "answer": "`find ~/projects -name \"*.png\"`",
+      "distractors": [
+        "`grep \"*.png\" ~/projects`",
+        "`ls ~/projects`",
+        "`which \"*.png\"`"
+      ],
+      "why": "`find` walks a directory tree and tests each file name. `grep` searches inside files, not for file names, and `which` only looks for programs in `PATH`."
+    },
+    {
+      "id": "which-command-06",
+      "prompt": "Ada wants to see only the lines that contain `ERROR` in `build.log`.",
+      "answer": "`grep ERROR build.log`",
+      "distractors": [
+        "`find ERROR build.log`",
+        "`sort ERROR build.log`",
+        "`cut ERROR build.log`"
+      ],
+      "why": "`grep` prints the lines of a file that match a pattern. `find` works on file names, and `sort` and `cut` do not search at all."
+    },
+    {
+      "id": "which-command-07",
+      "prompt": "Mira has a list of player names in `names.txt` and wants it in alphabetical order.",
+      "answer": "`sort names.txt`",
+      "distractors": [
+        "`uniq names.txt`",
+        "`wc names.txt`",
+        "`cut names.txt`"
+      ],
+      "why": "`sort` orders lines. `uniq` only removes neighbouring duplicates, and it does not sort."
+    },
+    {
+      "id": "which-command-08",
+      "prompt": "Mira wants to know how many lines `notes.txt` has.",
+      "answer": "`wc -l notes.txt`",
+      "distractors": [
+        "`sort -n notes.txt`",
+        "`cut -d, notes.txt`",
+        "`uniq notes.txt`"
+      ],
+      "why": "`wc` counts, and `-l` makes it count lines. Without an option it prints lines, words and bytes."
+    },
+    {
+      "id": "which-command-09",
+      "prompt": "Ada wants to read a very long build log one screen at a time, scrolling both ways.",
+      "answer": "`less build.log`",
+      "distractors": [
+        "`cat build.log`",
+        "`tail build.log`",
+        "`wc build.log`"
+      ],
+      "why": "`less` is a pager: space moves forward, `b` back, `q` quits. `cat` throws the whole file at the terminal and `tail` shows only the end."
+    },
+    {
+      "id": "which-command-10",
+      "prompt": "Jonas has `scores.csv` with comma-separated columns and wants only the third column.",
+      "answer": "`cut -d, -f3 scores.csv`",
+      "distractors": [
+        "`sort -k3 scores.csv`",
+        "`wc -w scores.csv`",
+        "`uniq -f3 scores.csv`"
+      ],
+      "why": "`cut` picks fields: `-d,` sets the comma as the separator and `-f3` selects the third field."
+    },
+    {
+      "id": "which-command-11",
+      "prompt": "Ada wants one `.tar.gz` file that bundles the directory `art/` with gzip compression.",
+      "answer": "`tar -czf art.tar.gz art/`",
+      "distractors": [
+        "`tar -xzf art.tar.gz`",
+        "`gzip art/`",
+        "`bzip2 art/`"
+      ],
+      "why": "`tar -czf` creates (`c`) a gzip-compressed (`z`) archive in the file (`f`) you name. `-x` extracts instead of creating, and `gzip` and `bzip2` compress single files."
+    },
+    {
+      "id": "which-command-12",
+      "prompt": "Jonas wants a `.zip` archive of the directory `press/`, including everything inside it.",
+      "answer": "`zip -r press.zip press/`",
+      "distractors": [
+        "`unzip press.zip`",
+        "`gzip -r press/`",
+        "`tar -czf press.tgz press/`"
+      ],
+      "why": "`zip -r` builds a zip archive and walks into the directory. `unzip` unpacks one, and the `tar` command writes a different format."
+    },
+    {
+      "id": "which-command-13",
+      "prompt": "Mira wants to read the full manual page of `ls`.",
+      "answer": "`man ls`",
+      "distractors": [
+        "`whatis ls`",
+        "`which ls`",
+        "`type ls`"
+      ],
+      "why": "`man` opens the whole manual page. `whatis` shows only its one-line description, and `which` and `type` say where or what the command is."
+    },
+    {
+      "id": "which-command-14",
+      "prompt": "Ada needs a command that compresses files but cannot remember its name, only that it has to do with the word \"compress\". She searches the short descriptions of all manual pages.",
+      "answer": "`apropos compress`",
+      "distractors": [
+        "`whatis compress`",
+        "`man compress`",
+        "`which compress`"
+      ],
+      "why": "`apropos` (the same as `man -k`) searches the manual page descriptions for a word. `whatis` and `man` need the exact name of a command."
+    },
+    {
+      "id": "which-command-15",
+      "prompt": "Jonas wants just the one-line description of `tar`.",
+      "answer": "`whatis tar`",
+      "distractors": [
+        "`which tar`",
+        "`type tar`",
+        "`ls tar`"
+      ],
+      "why": "`whatis` prints the short description from the manual page header. `which` prints a path and `type` says what kind of command it is."
+    },
+    {
+      "id": "which-command-16",
+      "prompt": "Ada has written `backup.sh` and wants to be able to start it with `./backup.sh`.",
+      "answer": "`chmod +x backup.sh`",
+      "distractors": [
+        "`chown ada backup.sh`",
+        "`chgrp ada backup.sh`",
+        "`touch backup.sh`"
+      ],
+      "why": "`chmod +x` adds the execute permission. `chown` and `chgrp` change who owns the file but not what it may do."
+    },
+    {
+      "id": "which-command-17",
+      "prompt": "Mira wants the group `artists` to own the directory `art`, and nothing else about it to change.",
+      "answer": "`chgrp artists art`",
+      "distractors": [
+        "`chmod artists art`",
+        "`groupadd artists`",
+        "`id artists`"
+      ],
+      "why": "`chgrp` changes a file’s group. `groupadd` would create the group, and `chmod` takes permission bits, not group names."
+    },
+    {
+      "id": "which-command-18",
+      "prompt": "Mira wants `assets` in her home directory to be a shortcut that points to `/srv/assets`, with no copy of the data.",
+      "answer": "`ln -s /srv/assets assets`",
+      "distractors": [
+        "`cp -r /srv/assets assets`",
+        "`mv /srv/assets assets`",
+        "`touch assets`"
+      ],
+      "why": "`ln -s TARGET LINK` makes a symbolic link. `cp -r` would duplicate the data, and `mv` would take the directory away from `/srv`."
+    },
+    {
+      "id": "which-command-19",
+      "prompt": "Mira wants to see the user ID and all groups of the account `jonas`.",
+      "answer": "`id jonas`",
+      "distractors": [
+        "`who`",
+        "`su jonas`",
+        "`passwd jonas`"
+      ],
+      "why": "`id` prints the UID, the primary group and the other groups of a user. `who` lists who is logged in, and `su` switches to that account."
+    },
+    {
+      "id": "which-command-20",
+      "prompt": "Mira, who is in the group `sudo`, wants to run a single command as root, using her own password.",
+      "answer": "`sudo`",
+      "distractors": [
+        "`su`",
+        "`passwd`",
+        "`id`"
+      ],
+      "why": "`sudo` runs one command with root rights after asking for your own password. `su` asks for the password of the account you switch to, which is root’s."
+    },
+    {
+      "id": "which-command-21",
+      "prompt": "Mira, as root, has to create an account for a new contractor and give it a home directory.",
+      "answer": "`useradd -m`",
+      "distractors": [
+        "`passwd`",
+        "`groupadd`",
+        "`su`"
+      ],
+      "why": "`useradd -m` creates the user and the home directory, filled from `/etc/skel`. `passwd` only sets a password, and `groupadd` makes groups."
+    },
+    {
+      "id": "which-command-22",
+      "prompt": "Ada wants to see how much memory is free and how much is used.",
+      "answer": "`free -h`",
+      "distractors": [
+        "`df -h`",
+        "`ps aux`",
+        "`uname -m`"
+      ],
+      "why": "`free` reports memory (and swap), and `-h` makes the sizes readable. `df` is about disk space instead."
+    },
+    {
+      "id": "which-command-23",
+      "prompt": "Mira wants a live, constantly updating view of the processes that use the most CPU.",
+      "answer": "`top`",
+      "distractors": [
+        "`ps`",
+        "`free`",
+        "`journalctl`"
+      ],
+      "why": "`top` refreshes on its own. `ps` prints one snapshot and then returns to the prompt."
+    },
+    {
+      "id": "which-command-24",
+      "prompt": "Ada wants to read the messages that systemd has collected for the `ssh` service.",
+      "answer": "`journalctl -u ssh`",
+      "distractors": [
+        "`dmesg`",
+        "`systemctl restart ssh`",
+        "`top`"
+      ],
+      "why": "`journalctl -u NAME` reads the journal for one service. `dmesg` shows the kernel’s messages, and `systemctl restart` would restart the service."
+    },
+    {
+      "id": "which-command-25",
+      "prompt": "Mira wants to know which IP address the name `build.tuxpixel.example` resolves to.",
+      "answer": "`host build.tuxpixel.example`",
+      "distractors": [
+        "`ip addr show`",
+        "`ss -t`",
+        "`uname -n`"
+      ],
+      "why": "`host` asks DNS and prints the address for a name. `ip addr show` lists the addresses of this machine’s own interfaces."
+    }
+  ]
+}

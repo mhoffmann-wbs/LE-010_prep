@@ -1,0 +1,241 @@
+[
+  {
+    "id": "013.2-c01",
+    "areas": [
+      "013.2.2"
+    ],
+    "front": "What is the difference between `>` and `>>`?",
+    "back": "`>` creates the file or replaces it (it empties it first); `>>` appends to the end. `>` has no “are you sure?”, so it can silently destroy data."
+  },
+  {
+    "id": "013.2-c02",
+    "areas": [
+      "013.2.2"
+    ],
+    "front": "Which stream numbers do stdin, stdout and stderr have?",
+    "back": "stdin is 0, stdout is 1 and stderr is 2. Plain `>` is short for `1>`, so it never catches error messages."
+  },
+  {
+    "id": "013.2-c03",
+    "areas": [
+      "013.2.2"
+    ],
+    "front": "Mira wants only the error messages of `make` in `err.txt`. Which command?",
+    "back": "`make 2> err.txt`. `2>` redirects stream 2 (stderr); normal output still appears on the screen."
+  },
+  {
+    "id": "013.2-c04",
+    "areas": [
+      "013.2.2"
+    ],
+    "front": "How do you send both stdout and stderr of `ls nothere build.log` into `both.txt`?",
+    "back": "`ls nothere build.log > both.txt 2>&1` (or bash’s short form `&>`). `2>&1` means “send stream 2 where stream 1 goes”."
+  },
+  {
+    "id": "013.2-c05",
+    "areas": [
+      "013.2.2"
+    ],
+    "front": "Why does `ls nothere 2>&1 > out.txt` still show the error on the screen?",
+    "back": "The shell reads left to right: stream 2 is first pointed where stream 1 is now (the screen), and only then stream 1 moves to the file. Write `> out.txt 2>&1`."
+  },
+  {
+    "id": "013.2-c06",
+    "areas": [
+      "013.2.2"
+    ],
+    "front": "What does `command 2> /dev/null` do?",
+    "back": "It throws the error messages away. `/dev/null` swallows everything written to it and always reads as empty."
+  },
+  {
+    "id": "013.2-c07",
+    "areas": [
+      "013.2.2"
+    ],
+    "front": "What does `wc -l < build.log` do differently from `wc -l build.log`?",
+    "back": "`<` lets the shell feed the file into stdin, so `wc` prints only the number. With the file name as an argument, `wc` prints the name too."
+  },
+  {
+    "id": "013.2-c08",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "What is the difference between `|` and `>`?",
+    "back": "`|` connects one command’s stdout to another command’s stdin. `>` sends stdout into a file. `ls | file.txt` is an error, because `file.txt` isn’t a command."
+  },
+  {
+    "id": "013.2-c09",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "Which pipeline counts the lines containing `ERROR` in `build.log`?",
+    "back": "`grep ERROR build.log | wc -l`. Each stage does one small job, and `wc -l` answers “how many?”."
+  },
+  {
+    "id": "013.2-c10",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "Does a pipe carry error messages from the left-hand command?",
+    "back": "No, only stdout. Errors still go to the screen unless you add `2>&1` to the left-hand command."
+  },
+  {
+    "id": "013.2-c11",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "What does `tee errors.txt` do in `grep ERROR build.log | tee errors.txt | wc -l`?",
+    "back": "`tee` copies its input into `errors.txt` and also passes it on, so you save the matching lines and still count them."
+  },
+  {
+    "id": "013.2-c12",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "Which command shows the last 20 lines of `/var/log/syslog`, and which shows the first 3 lines of `build.log`?",
+    "back": "`tail -n 20 /var/log/syslog` and `head -n 3 build.log`. Both show 10 lines by default."
+  },
+  {
+    "id": "013.2-c13",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "What does `wc` print without options, and which options pick one count?",
+    "back": "Lines, words and bytes, in that order. `-l` counts lines, `-w` words and `-c` bytes."
+  },
+  {
+    "id": "013.2-c14",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "A long log doesn’t fit on the screen. Which command lets you page through it, and how do you search and quit?",
+    "back": "`less build.log`. Type `/word` to search forward, `n` for the next match, Space for the next page and `q` to quit."
+  },
+  {
+    "id": "013.2-c15",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "Why does `sort` put `1100` before `700`, and how do you fix it?",
+    "back": "Without options `sort` compares text, and `1` comes before `7`. Add `-n` for a numeric sort; `-r` reverses the order."
+  },
+  {
+    "id": "013.2-c16",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "What do `-t,` and `-k3` mean in `sort -t, -k3 -n playtest.csv`?",
+    "back": "`-t,` makes the comma the field separator and `-k3` sorts by the third field. `-n` compares it as a number."
+  },
+  {
+    "id": "013.2-c17",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "Which command prints the first and third comma-separated fields of `playtest.csv`?",
+    "back": "`cut -d, -f1,3 playtest.csv`. `-d` sets the delimiter and `-f` picks the fields. The default delimiter is a Tab, not a comma."
+  },
+  {
+    "id": "013.2-c18",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t5"
+    ],
+    "front": "Why does `uniq` often fail to remove all duplicates, and what do you run first?",
+    "back": "`uniq` only collapses neighbouring duplicate lines. Run `sort` first: `sort names.txt | uniq`. `uniq -c` adds the count in front of each line."
+  },
+  {
+    "id": "013.2-c19",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "What do `grep -i`, `-v` and `-c` do?",
+    "back": "`-i` ignores case, `-v` prints the lines that do not match and `-c` prints only the number of matching lines."
+  },
+  {
+    "id": "013.2-c20",
+    "areas": [
+      "013.2.1"
+    ],
+    "front": "Which options of `grep` show line numbers and search a directory tree?",
+    "back": "`-n` puts the line number before each match, and `-r` searches every file below a directory, prefixing matches with the file name."
+  },
+  {
+    "id": "013.2-c21",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "front": "In a regular expression, what do `.` and `*` mean?",
+    "back": "`.` is any one character, and `*` means the item before it repeated zero or more times. So `.*` means “anything”. Don’t confuse this with file globs, where `*` alone is “anything”."
+  },
+  {
+    "id": "013.2-c22",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "front": "What does `grep '^[sb]' enemies.txt` match?",
+    "back": "Lines that start with `s` or `b`. `^` anchors the start of the line and `[sb]` is one character out of the set, case-sensitive."
+  },
+  {
+    "id": "013.2-c23",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "front": "What do `[a-z]` and `[^0-9]` match?",
+    "back": "`[a-z]` is one character from the range, and `[^0-9]` is one character that is not a digit. The `^` inside brackets negates the set."
+  },
+  {
+    "id": "013.2-c24",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "front": "How do `^` and `$` differ when used in `grep`?",
+    "back": "`^` matches the start of the line and `$` the end. `grep 't$'` finds lines that end with `t`."
+  },
+  {
+    "id": "013.2-c25",
+    "areas": [
+      "013.2.3"
+    ],
+    "front": "What does `grep -E 'ghosts?'` match, and why does plain `grep 'ghosts?'` find nothing?",
+    "back": "`-E` enables extended regular expressions, where `?` makes the `s` optional, so `ghost` and `ghosts` match. Plain `grep` treats `?` as a literal question mark."
+  },
+  {
+    "id": "013.2-c26",
+    "areas": [
+      "013.2.3"
+    ],
+    "front": "Which command finds lines containing either `bat` or `ghost`?",
+    "back": "`grep -E 'bat|ghost' enemies.txt`. In extended syntax `|` means “or”. Quote the pattern so the shell doesn’t treat the `|` as a pipe."
+  },
+  {
+    "id": "013.2-c27",
+    "areas": [
+      "013.2.3"
+    ],
+    "front": "What does `+` mean in `grep -E 'ro+t'`?",
+    "back": "One or more of the previous item, so it matches `rot`, `root` and `rooot`. `?` is zero or one, and `*` is zero or more."
+  },
+  {
+    "id": "013.2-c28",
+    "areas": [
+      "013.2.v1"
+    ],
+    "front": "On exam 010-160, how do you write an optional `s` with plain `grep`, as in `ghost` or `ghosts`?",
+    "back": "`grep 'ghosts\\?'`. In basic regular expressions GNU `grep` needs a backslash for `?`; a bare `?` is just a question mark. `.`, `[ ]` and `*` need no backslash."
+  },
+  {
+    "id": "013.2-c29",
+    "areas": [
+      "013.2.v1"
+    ],
+    "front": "What does `grep 'go*blin'` match, using basic regular expressions?",
+    "back": "`gblin`, `goblin`, `gooblin` and so on: `o*` means zero or more `o`. The `*` works in basic syntax without a backslash."
+  }
+]

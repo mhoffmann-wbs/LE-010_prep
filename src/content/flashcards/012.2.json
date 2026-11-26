@@ -1,0 +1,162 @@
+[
+  {
+    "id": "012.2-c01",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "What are the three places to look for help on a Linux system, from quickest to deepest?",
+    "back": "`command --help` for a usage summary, `man command` for the full manual page, and `/usr/share/doc/` for README files, change logs and examples."
+  },
+  {
+    "id": "012.2-c02",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "How do you search inside a man page, go to the next match and quit?",
+    "back": "Type `/word` and Enter to search, `n` for the next match (`N` for the previous) and `q` to quit. Space or `f` is the next page and `b` the previous."
+  },
+  {
+    "id": "012.2-c03",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "Name the man page sections NAME, SYNOPSIS and DESCRIPTION: what does each hold?",
+    "back": "NAME: the command and a one-line description. SYNOPSIS: how to call it. DESCRIPTION: what it does, with every option."
+  },
+  {
+    "id": "012.2-c04",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "In `cp [OPTION]... SOURCE DEST`, what do the square brackets, the dots and the capital letters mean?",
+    "back": "Square brackets: optional. Three dots: can be repeated. Capital letters: a placeholder you replace with a real name, such as a file."
+  },
+  {
+    "id": "012.2-c05",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "What do manual sections 1, 5 and 8 hold?",
+    "back": "1: user commands and programs. 5: file formats and configuration files such as `/etc/passwd`. 8: system administration commands, usually for root."
+  },
+  {
+    "id": "012.2-c06",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "`passwd` is both a command and a file format. How do you open the page about the file?",
+    "back": "`man 5 passwd`. Plain `man passwd` shows the first page it finds, section 1 (the command). The header shows the section, like `PASSWD(5)`."
+  },
+  {
+    "id": "012.2-c07",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "Mira doesn’t know which command changes passwords. How can she search the one-line descriptions?",
+    "back": "`man -k WORD` or `apropos WORD`, which search by keyword."
+  },
+  {
+    "id": "012.2-c08",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "What do `man -f NAME` and `whatis NAME` do?",
+    "back": "They list the short description of exactly that name, in every section where it exists."
+  },
+  {
+    "id": "012.2-c09",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "What does `man -w 5 passwd` print, and where do man pages live?",
+    "back": "The path of the page file: `/usr/share/man/man5/passwd.5.gz`. Pages live under `/usr/share/man/`, one folder per section, compressed with gzip."
+  },
+  {
+    "id": "012.2-c10",
+    "areas": [
+      "012.2.2"
+    ],
+    "front": "What are the two usual ways to get a quick usage summary from a command?",
+    "back": "`--help` (long form) and `-h` (short form). Many programs support both, some only one. The output starts with a `Usage:` line."
+  },
+  {
+    "id": "012.2-c11",
+    "areas": [
+      "012.2.2"
+    ],
+    "front": "Why is `-h` not always the way to ask for help?",
+    "back": "In `ls -lh` and `df -h` it means human-readable sizes. `--help` is the safe choice, and `--version` prints the version."
+  },
+  {
+    "id": "012.2-c12",
+    "areas": [
+      "012.2.2"
+    ],
+    "front": "Why does `man cd` not give a page of its own, and what do you use instead?",
+    "back": "`cd` is a Bash builtin, part of the shell. Use the builtin `help`, for example `help cd`."
+  },
+  {
+    "id": "012.2-c13",
+    "areas": [
+      "012.2.2"
+    ],
+    "front": "`cp --help` scrolls past too fast. What can Mira do?",
+    "back": "Pipe it: `cp --help | head -n 3` shows the start, `cp --help | less` lets her scroll."
+  },
+  {
+    "id": "012.2-c14",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "What does `/usr/share/doc/` contain?",
+    "back": "One directory per package, named after it, with README files, licence texts (`copyright`), change logs (`changelog.gz`) and often an `examples` folder."
+  },
+  {
+    "id": "012.2-c15",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "How can you read a documentation file ending in `.gz`?",
+    "back": "With `zcat` (print a gzip file) or `zless`, for example `zcat /usr/share/doc/bash/README.gz | head -n 3`."
+  },
+  {
+    "id": "012.2-c16",
+    "areas": [
+      "012.2.v1"
+    ],
+    "front": "What is an info page and which command reads it?",
+    "back": "Documentation, especially for GNU tools, organised as nodes with links between them. You read it with `info`, for example `info coreutils`."
+  },
+  {
+    "id": "012.2-c17",
+    "areas": [
+      "012.2.v1"
+    ],
+    "front": "Which keys move around in `info`, and how do you leave?",
+    "back": "`n`, `p` and `u` go to the next, previous and parent node, Enter follows a link, `/` searches and `q` quits."
+  },
+  {
+    "id": "012.2-c18",
+    "areas": [
+      "012.2.v1"
+    ],
+    "front": "How does `locate` find files, and what is its drawback?",
+    "back": "It searches a database of file names, rebuilt regularly (usually daily), so it is instant. It doesn’t know files created since the last update and still lists deleted ones."
+  },
+  {
+    "id": "012.2-c19",
+    "areas": [
+      "012.2.v1"
+    ],
+    "front": "What does `updatedb` do, and who can run it?",
+    "back": "It rebuilds the database that `locate` searches, and it needs root."
+  },
+  {
+    "id": "012.2-c20",
+    "areas": [
+      "012.2.v1"
+    ],
+    "front": "When should Mira use `find` instead of `locate`?",
+    "back": "When she needs a current result: `find` searches the real disk, which is slower but always up to date."
+  }
+]

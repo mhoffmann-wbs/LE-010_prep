@@ -1,0 +1,93 @@
+{
+  "id": "licences",
+  "kind": "sort",
+  "title": "Copyleft or permissive?",
+  "description": "Sort licences and licence descriptions by what they demand when someone passes the work on.",
+  "objectives": [
+    "011.3"
+  ],
+  "buckets": [
+    {
+      "id": "copyleft",
+      "label": "Copyleft (changes stay free)"
+    },
+    {
+      "id": "permissive",
+      "label": "Permissive (few or no conditions)"
+    }
+  ],
+  "items": [
+    {
+      "id": "licences-01",
+      "text": "GNU General Public License (GPL)",
+      "bucket": "copyleft",
+      "why": "The GPL is the best-known copyleft licence: anyone who passes on the software or a changed version must give the same freedoms and the source."
+    },
+    {
+      "id": "licences-02",
+      "text": "BSD licences",
+      "bucket": "permissive",
+      "why": "The BSD licences ask mostly that the copyright notice stays. A company may take BSD code and sell a version without sharing its changes."
+    },
+    {
+      "id": "licences-03",
+      "text": "GNU Lesser General Public License (LGPL)",
+      "bucket": "copyleft",
+      "why": "The LGPL is a weaker copyleft made for libraries. It is still a copyleft licence in the GNU family, just with fewer demands on programs that use the library."
+    },
+    {
+      "id": "licences-04",
+      "text": "MIT licence",
+      "bucket": "permissive",
+      "why": "The MIT licence lets you do almost anything, as long as the copyright notice and the licence text come along."
+    },
+    {
+      "id": "licences-05",
+      "text": "GNU Affero General Public License (AGPL)",
+      "bucket": "copyleft",
+      "why": "The AGPL extends the idea to network use: running a modified version as a web service still means sharing its source."
+    },
+    {
+      "id": "licences-06",
+      "text": "Apache License 2.0",
+      "bucket": "permissive",
+      "why": "Apache 2.0 is a permissive licence: changes may stay proprietary, and the main duties are credit and notices."
+    },
+    {
+      "id": "licences-07",
+      "text": "Creative Commons BY-SA",
+      "bucket": "copyleft",
+      "why": "SA means ShareAlike: adaptations must be shared under the same terms. That is copyleft for content such as Jonas’s art."
+    },
+    {
+      "id": "licences-08",
+      "text": "Creative Commons BY",
+      "bucket": "permissive",
+      "why": "CC BY only asks you to credit the creator. Anyone may reuse and remix the work and share the result on other terms."
+    },
+    {
+      "id": "licences-09",
+      "text": "Creative Commons CC0",
+      "bucket": "permissive",
+      "why": "CC0 gives up as many rights as the law allows, so anyone can use the work without conditions."
+    },
+    {
+      "id": "licences-10",
+      "text": "The licence that Ada picked so that other studios may build on the Pixel Raiders engine, even in commercial games, and keep their changes private.",
+      "bucket": "permissive",
+      "why": "A licence that lets others keep their changes private is permissive. A copyleft licence would have made them share."
+    },
+    {
+      "id": "licences-11",
+      "text": "The licence of the Linux kernel and many GNU tools, which makes everyone who distributes the software pass on the same freedoms.",
+      "bucket": "copyleft",
+      "why": "The kernel is under the GPL, a copyleft licence: modified versions that are distributed must stay free under the same terms."
+    },
+    {
+      "id": "licences-12",
+      "text": "The text in `/usr/share/common-licenses/GPL-3` on a Debian system.",
+      "bucket": "copyleft",
+      "why": "That file holds the GNU General Public License, version 3, a copyleft licence. Debian keeps copies of the common licences there."
+    }
+  ]
+}

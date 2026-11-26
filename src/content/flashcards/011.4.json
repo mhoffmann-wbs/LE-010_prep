@@ -1,0 +1,294 @@
+[
+  {
+    "id": "011.4-c01",
+    "areas": [
+      "011.4.1"
+    ],
+    "front": "Name five kinds of computers that run Linux.",
+    "back": "Desktops and laptops, mobile devices (Android), servers, virtual machines and cloud instances, embedded systems and HPC clusters."
+  },
+  {
+    "id": "011.4-c02",
+    "areas": [
+      "011.4.1"
+    ],
+    "front": "What is the difference between an embedded system and an HPC cluster?",
+    "back": "An embedded system is a small computer built into a product with one fixed job. An HPC (high-performance computing) cluster links many servers (nodes) to share one big job."
+  },
+  {
+    "id": "011.4-c03",
+    "areas": [
+      "011.4.1"
+    ],
+    "front": "What is a client and what is a server?",
+    "back": "A server waits for requests and provides a service; a client makes the request and uses the answer. One machine can be a client for one service and a server for another."
+  },
+  {
+    "id": "011.4-c04",
+    "areas": [
+      "011.4.1"
+    ],
+    "front": "Give two client and server pairs.",
+    "back": "A web browser and a web server (Apache, NGINX); an `ssh` command and an SSH server; a file manager and a Samba or NFS server."
+  },
+  {
+    "id": "011.4-c05",
+    "areas": [
+      "011.4.2"
+    ],
+    "front": "What is the main difference between a virtual machine and a container?",
+    "back": "A VM contains a whole operating system with its own kernel. A container packs one application and shares the host’s kernel, so it starts fast and is small."
+  },
+  {
+    "id": "011.4-c06",
+    "areas": [
+      "011.4.2"
+    ],
+    "front": "What is a hypervisor?",
+    "back": "A program that lets one physical machine host several virtual machines, giving each its own pretend hardware and its own complete operating system."
+  },
+  {
+    "id": "011.4-c07",
+    "areas": [
+      "011.4.2",
+      "011.4.v3"
+    ],
+    "front": "Which tools are well known for running containers?",
+    "back": "Docker and Podman. Ada uses containers so that the same build environment runs on every machine."
+  },
+  {
+    "id": "011.4-c08",
+    "areas": [
+      "011.4.2",
+      "011.4.v3"
+    ],
+    "front": "What do IaaS, PaaS and SaaS stand for, and what do you rent in each?",
+    "back": "IaaS: virtual servers, disks and networks. PaaS: a ready environment to run your code. SaaS: a finished application such as webmail."
+  },
+  {
+    "id": "011.4-c09",
+    "areas": [
+      "011.4.2",
+      "011.4.v3"
+    ],
+    "front": "What is cloud computing?",
+    "back": "Renting computing power (servers, storage, databases) as a service over the internet instead of owning it. You pay for what you use and can add or remove capacity quickly."
+  },
+  {
+    "id": "011.4-c10",
+    "areas": [
+      "011.4.3"
+    ],
+    "front": "How do you save and quit in nano?",
+    "back": "Press Ctrl+X, then answer the question about saving. The key list is at the bottom of the screen, where `^X` means Ctrl+X."
+  },
+  {
+    "id": "011.4-c11",
+    "areas": [
+      "011.4.3"
+    ],
+    "front": "Why is vi confusing for beginners, and how do you save and quit?",
+    "back": "It has modes: in normal mode keys are commands, in insert mode (press `i`) you type text, and Esc goes back. `:wq` and Enter saves and quits; `:q!` quits without saving."
+  },
+  {
+    "id": "011.4-c12",
+    "areas": [
+      "011.4.3"
+    ],
+    "front": "Why does Ada like vi on servers, and what is Vim?",
+    "back": "It is on almost every Linux and Unix system. Vim (Vi IMproved) is the fuller version, and many systems run `vi` as a small version of it."
+  },
+  {
+    "id": "011.4-c13",
+    "areas": [
+      "011.4.4"
+    ],
+    "front": "What are configuration management tools, and which are well known?",
+    "back": "Tools that describe the wanted state of machines in files and apply it to many of them repeatedly. Ansible, Puppet, Chef and Salt."
+  },
+  {
+    "id": "011.4-c14",
+    "areas": [
+      "011.4.4"
+    ],
+    "front": "What does \"infrastructure as code\" mean?",
+    "back": "The wanted state of servers is described in text files, so it can be kept in Git, reviewed and reused. Ada’s Ansible description lets her rebuild the build server in minutes."
+  },
+  {
+    "id": "011.4-c15",
+    "areas": [
+      "011.4.5"
+    ],
+    "front": "What makes a strong password?",
+    "back": "It is long (16 characters or more is a common recommendation), random or several unrelated words, and unique: never reused on two sites. Length beats cleverness."
+  },
+  {
+    "id": "011.4-c16",
+    "areas": [
+      "011.4.5"
+    ],
+    "front": "What does a password manager do?",
+    "back": "It keeps your passwords in an encrypted store opened with one strong master password, makes up random passwords and fills them in. KeePassXC and Bitwarden are open source examples."
+  },
+  {
+    "id": "011.4-c17",
+    "areas": [
+      "011.4.5"
+    ],
+    "front": "What are the three kinds of authentication factors?",
+    "back": "Something you know (password, PIN), something you have (phone, hardware key, authenticator app code) and something you are (fingerprint, face). MFA combines factors of different kinds."
+  },
+  {
+    "id": "011.4-c18",
+    "areas": [
+      "011.4.5"
+    ],
+    "front": "Which second factor is stronger: a text message code or an authenticator app or hardware key?",
+    "back": "App codes and hardware keys are stronger. Text message codes help but are the weaker choice."
+  },
+  {
+    "id": "011.4-c19",
+    "areas": [
+      "011.4.5"
+    ],
+    "front": "How does a passkey work, and why does it resist phishing?",
+    "back": "Your device makes a key pair: the site stores the public key and the private key stays on your device. You sign in by unlocking the device, so there is no password to steal or type into a fake site."
+  },
+  {
+    "id": "011.4-c20",
+    "areas": [
+      "011.4.6"
+    ],
+    "front": "What does HTTPS add to HTTP?",
+    "back": "Encryption (TLS) and a server certificate the browser checks. No one on the way can read or change the traffic, and you know the site is genuine."
+  },
+  {
+    "id": "011.4-c21",
+    "areas": [
+      "011.4.6"
+    ],
+    "front": "Why use `ssh` instead of the old telnet?",
+    "back": "telnet sends everything as plain text that anyone on the way can read. `ssh` encrypts the connection."
+  },
+  {
+    "id": "011.4-c22",
+    "areas": [
+      "011.4.6"
+    ],
+    "front": "How do you protect data at rest on a laptop or USB stick?",
+    "back": "With storage encryption, so the data is useless without the key or passphrase. On Linux the usual tool is LUKS, set up with `cryptsetup`. A strong passphrase matters."
+  },
+  {
+    "id": "011.4-c23",
+    "areas": [
+      "011.4.6"
+    ],
+    "front": "Someone left a USB stick at a game conference. What should Mira do with it?",
+    "back": "Never plug it into a studio machine. Unknown sticks can carry malware. Also scan unknown files, encrypt sticks with private data and eject before unplugging."
+  },
+  {
+    "id": "011.4-c24",
+    "areas": [
+      "011.4.6"
+    ],
+    "front": "Why eject a USB stick before pulling it out?",
+    "back": "Ejecting (unmounting) makes sure all data is fully written. Pulling it out early can lose data."
+  },
+  {
+    "id": "011.4-c25",
+    "areas": [
+      "011.4.v1"
+    ],
+    "front": "What are typical parts of a Linux desktop?",
+    "back": "Windows, a panel or menu to launch programs, a file manager, system settings and a software centre, a graphical front end to the package manager. GNOME, KDE Plasma and Xfce are desktop environments."
+  },
+  {
+    "id": "011.4-c26",
+    "areas": [
+      "011.4.v2"
+    ],
+    "front": "Name three ways to reach the command line.",
+    "back": "A terminal emulator window (for example Ctrl+Alt+T on many desktops), a virtual console (Ctrl+Alt+F1, F2 …) and remote login with `ssh`."
+  },
+  {
+    "id": "011.4-c27",
+    "areas": [
+      "011.4.v2"
+    ],
+    "front": "What is the difference between a terminal and a console?",
+    "back": "The console was originally the machine’s own keyboard and screen. A terminal is any text interface to a computer, and a terminal emulator is a program that pretends to be one inside a window."
+  },
+  {
+    "id": "011.4-c28",
+    "areas": [
+      "011.4.v2"
+    ],
+    "front": "Mira runs `tty` in a terminal window on her desktop. What kind of name does it print?",
+    "back": "A pseudo-terminal device such as `/dev/pts/0`. A terminal emulator is a software terminal, hence \"pseudo\"."
+  },
+  {
+    "id": "011.4-c29",
+    "areas": [
+      "011.4.v1"
+    ],
+    "front": "Does private (incognito) mode hide you from the website or your internet provider?",
+    "back": "No. It only avoids saving history and cookies on your computer afterwards. The site, your employer and your provider can still see you."
+  },
+  {
+    "id": "011.4-c30",
+    "areas": [
+      "011.4.v1"
+    ],
+    "front": "What are cookies and why do they matter for privacy?",
+    "back": "Small files a site stores in your browser, used to remember logins but also to track you across sites. You can block third-party cookies or delete them on exit."
+  },
+  {
+    "id": "011.4-c31",
+    "areas": [
+      "011.4.v1"
+    ],
+    "front": "What does a VPN do for privacy, and what is the catch?",
+    "back": "It hides your traffic from the local network and shows the VPN’s address to sites. The catch is that you now have to trust the VPN company."
+  },
+  {
+    "id": "011.4-c32",
+    "areas": [
+      "011.4.v3"
+    ],
+    "front": "Why do companies choose Linux?",
+    "back": "It is free to run, stable, secure, can be fixed by anyone with the skills and works on everything from tiny boards to mainframes."
+  },
+  {
+    "id": "011.4-c33",
+    "areas": [
+      "011.4.v3"
+    ],
+    "front": "Name typical industry uses of Linux.",
+    "back": "Web and internet services, cloud and data centers, Android phones, embedded devices, science and research supercomputers, and software development."
+  },
+  {
+    "id": "011.4-c34",
+    "areas": [
+      "011.4.v1"
+    ],
+    "front": "Jonas must make slides, a logo and a trailer clip with open source tools. Which programs fit?",
+    "back": "LibreOffice Impress for slides, Inkscape (or GIMP) for the logo and VLC to play the clip. Save a PDF that any computer opens."
+  },
+  {
+    "id": "011.4-c35",
+    "areas": [
+      "011.4.v2",
+      "011.4.v1"
+    ],
+    "front": "Which command prints your terminal type, and what value does the app’s terminal show?",
+    "back": "`echo $TERM` prints it. In this app’s terminal it is `xterm-256color`."
+  },
+  {
+    "id": "011.4-c36",
+    "areas": [
+      "011.4.4"
+    ],
+    "front": "Why does Ada prefer a configuration management tool to setting up twenty servers by hand?",
+    "back": "Hand work is slow and error-prone. A tool applies the same description to many machines, again and again, with the same result."
+  }
+]

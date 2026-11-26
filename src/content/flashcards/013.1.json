@@ -1,0 +1,116 @@
+[
+  {
+    "id": "013.1-c01",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "front": "Ada wants one file that holds the whole `assets` folder. Which command creates the archive `assets.tar`?",
+    "back": "`tar -cf assets.tar assets`. `-c` creates, and `-f` must come right before the archive’s name. Without a compression option the result is bundled but not smaller."
+  },
+  {
+    "id": "013.1-c02",
+    "areas": [
+      "013.1.1"
+    ],
+    "front": "What does `tar -tf release.tar` do?",
+    "back": "It lists the archive’s contents without extracting anything (`-t` is the table of contents). List first, then extract, so you know where the files will land."
+  },
+  {
+    "id": "013.1-c03",
+    "areas": [
+      "013.1.1"
+    ],
+    "front": "Mira runs `tar -xf assets-0.9.tar.gz -C out`. What does `-C out` do?",
+    "back": "It changes into the directory `out` before extracting, so the files are unpacked there instead of the current directory. The directory must already exist."
+  },
+  {
+    "id": "013.1-c04",
+    "areas": [
+      "013.1.1"
+    ],
+    "front": "Name the three main modes of `tar` and the option for each.",
+    "back": "`-c` creates an archive, `-t` lists its contents, `-x` extracts it. `tar` works in one mode at a time, and `-f FILE` names the archive."
+  },
+  {
+    "id": "013.1-c05",
+    "areas": [
+      "013.1.1"
+    ],
+    "front": "What does `-v` add to a `tar` command?",
+    "back": "It makes `tar` verbose: each file name is printed as it is processed. It never changes what ends up in the archive."
+  },
+  {
+    "id": "013.1-c06",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "Which `tar` option compresses with gzip, which with bzip2 and which with xz?",
+    "back": "`-z` is gzip (`.tar.gz`), `-j` is bzip2 (`.tar.bz2`) and `-J` is xz (`.tar.xz`, capital J)."
+  },
+  {
+    "id": "013.1-c07",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "Why is `tar -cfz backup.tar.gz dir` wrong?",
+    "back": "`-f` takes the next word as the archive name, so `tar` would use `z` as the file name. Write `-czf backup.tar.gz dir`."
+  },
+  {
+    "id": "013.1-c08",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "What is the difference between archiving and compressing?",
+    "back": "Archiving puts many files into one (`tar`); compressing makes one file smaller (`gzip`, `bzip2`, `xz`). A `.tar.gz` is both: bundled first, then compressed."
+  },
+  {
+    "id": "013.1-c09",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "Jonas runs `gzip fight.log`. What is left in the folder afterwards?",
+    "back": "Only `fight.log.gz`. By default `gzip` replaces the original. Add `-k` to keep it, and use `gunzip` or `gzip -d` to decompress."
+  },
+  {
+    "id": "013.1-c10",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "Which commands undo `bzip2 log.txt` and `xz log.txt`?",
+    "back": "`bunzip2 log.txt.bz2` (or `bzip2 -d`) and `unxz log.txt.xz` (or `xz -d`)."
+  },
+  {
+    "id": "013.1-c11",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "Roughly how do gzip, bzip2 and xz compare?",
+    "back": "`gzip` is the fastest, `bzip2` squeezes harder but is slower, and `xz` usually squeezes the most and is the slowest to compress."
+  },
+  {
+    "id": "013.1-c12",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "What happens when you run `gzip assets` on a directory?",
+    "back": "`gzip` refuses (“is a directory -- ignored”). The compressors handle single files only. Bundle the directory with `tar` first, or use `tar -czf`."
+  },
+  {
+    "id": "013.1-c13",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "front": "Ada must send a folder to a colleague who uses Windows. Which commands create and list a ZIP archive?",
+    "back": "`zip -r assets.zip assets` creates it (`-r` to include the directory’s contents) and `unzip -l assets.zip` lists it. `zip` archives and compresses in one tool and keeps the originals."
+  },
+  {
+    "id": "013.1-c14",
+    "areas": [
+      "013.1.2"
+    ],
+    "front": "How do you extract `assets.zip` into the existing folder `out`?",
+    "back": "`unzip assets.zip -d out`. `-d` plays the role that `-C` has in `tar`."
+  }
+]

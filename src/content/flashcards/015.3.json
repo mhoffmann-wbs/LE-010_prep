@@ -1,0 +1,130 @@
+[
+  {
+    "id": "015.3-c01",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "In `-rw-r----- 1 ada release 26 Nov  2 09:30 release-notes.txt`, who owns the file and what may each kind of person do?",
+    "back": "Ada owns it and may read and write. Members of the group `release` may only read it, and everybody else has no access."
+  },
+  {
+    "id": "015.3-c02",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What does the first character of an `ls -l` line mean?",
+    "back": "It is the file type: `-` ordinary file, `d` directory, `l` symbolic link. The next nine characters are the permissions for owner, group and others."
+  },
+  {
+    "id": "015.3-c03",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "In which order does Linux check owner, group and others?",
+    "back": "Owner first, then group, then others, and it uses the first match. If you are the owner, only the owner permissions apply to you. Root skips the checks."
+  },
+  {
+    "id": "015.3-c04",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What do `r`, `w` and `x` mean on a file and on a directory?",
+    "back": "File: read contents, change contents, run it. Directory: list its names, create, rename and delete entries (with `x`), and enter it (`cd`) and reach its files."
+  },
+  {
+    "id": "015.3-c05",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "Who decides whether you may delete a file?",
+    "back": "The permissions of the directory that contains it, not those of the file. You need `w` and `x` on the directory."
+  },
+  {
+    "id": "015.3-c06",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "A directory has `r` but not `x` for you. What can you do?",
+    "back": "You can list the names with `ls` but not open files in it or `cd` into it. With `x` but no `r` you can open a file whose name you know, but not list the directory."
+  },
+  {
+    "id": "015.3-c07",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What does `-rwxr-xr-x` mean as an octal mode?",
+    "back": "`755`: `rwx` is 7, `r-x` is 5, `r-x` is 5. It is the typical mode of a program or directory."
+  },
+  {
+    "id": "015.3-c08",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What numbers do r, w and x stand for in octal modes?",
+    "back": "r is 4, w is 2, x is 1, added up per triplet: 7 is `rwx`, 6 is `rw-`, 5 is `r-x`, 4 is `r--`. The digits are in the order user, group, others."
+  },
+  {
+    "id": "015.3-c09",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What does `chmod 640 draft.txt` set?",
+    "back": "`rw-` for the owner, `r--` for the group and `---` for others. It is the same as `chmod u=rw,g=r,o= draft.txt`."
+  },
+  {
+    "id": "015.3-c10",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "Which command makes `build.sh` executable for its owner and leaves other bits alone?",
+    "back": "`chmod u+x build.sh`. `+` adds, `-` removes and `=` sets exactly. Without a who, the change applies to all (`a`)."
+  },
+  {
+    "id": "015.3-c11",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What is the difference between `chmod g+w` and `chmod g=w`?",
+    "back": "`g+w` adds write to the group’s existing permissions. `g=w` replaces them, leaving the group with write only."
+  },
+  {
+    "id": "015.3-c12",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What does `chmod -R g+r art` do?",
+    "back": "It adds read permission for the group to `art` and everything inside it. `-R` means recursive."
+  },
+  {
+    "id": "015.3-c13",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "Which command changes both owner and group of `draft.txt`, and which only the group?",
+    "back": "`chown ada:release draft.txt` changes both. `chown :release draft.txt` or `chgrp release draft.txt` changes only the group."
+  },
+  {
+    "id": "015.3-c14",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "Who may run `chown` to give a file to another user?",
+    "back": "Only root. The owner may use `chmod`, and may change the group to one they are a member of."
+  },
+  {
+    "id": "015.3-c15",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What do `ls -l` and `ls -a` do, and what does `ls -la` combine?",
+    "back": "`-l` is the long listing with type, permissions, owner, group, size and date; `-a` includes hidden names starting with a dot. `-la` does both, including `.` and `..`."
+  },
+  {
+    "id": "015.3-c16",
+    "areas": [
+      "015.3.1"
+    ],
+    "front": "What is the umask?",
+    "back": "A mask of permission bits to remove from the maximum (666 for files, 777 for directories). With the usual `022`, new files are `644` and new directories `755`."
+  }
+]

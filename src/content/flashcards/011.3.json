@@ -1,0 +1,227 @@
+[
+  {
+    "id": "011.3-c01",
+    "areas": [
+      "011.3.1",
+      "011.3.4"
+    ],
+    "front": "What are the FSF’s four essential freedoms, by number?",
+    "back": "0: run the program for any purpose. 1: study and change it. 2: share copies. 3: share your changed versions."
+  },
+  {
+    "id": "011.3-c02",
+    "areas": [
+      "011.3.1",
+      "011.3.4"
+    ],
+    "front": "Which two of the four freedoms need access to the source code?",
+    "back": "Freedom 1 (study and change the program) and freedom 3 (share your changed versions)."
+  },
+  {
+    "id": "011.3-c03",
+    "areas": [
+      "011.3.1",
+      "011.3.4"
+    ],
+    "front": "Does \"free software\" mean it costs nothing?",
+    "back": "No. \"Free\" means freedom, not price. Free software can be sold, and software that costs nothing can still be proprietary."
+  },
+  {
+    "id": "011.3-c04",
+    "areas": [
+      "011.3.4",
+      "011.3.v2"
+    ],
+    "terms": [
+      "011.3.t7"
+    ],
+    "front": "Who started the Free Software Foundation (FSF), and around which project?",
+    "back": "Richard Stallman, around the GNU project. For the FSF, users’ freedom is an ethical matter."
+  },
+  {
+    "id": "011.3-c05",
+    "areas": [
+      "011.3.1",
+      "011.3.v2"
+    ],
+    "terms": [
+      "011.3.t8"
+    ],
+    "front": "What is the Open Source Initiative (OSI), and what does it maintain?",
+    "back": "The OSI, founded in the late 1990s, makes a practical case that open development gives better software. It maintains the Open Source Definition with ten criteria and approves open source licences."
+  },
+  {
+    "id": "011.3-c06",
+    "areas": [
+      "011.3.4"
+    ],
+    "front": "How do the Free Software and Open Source movements differ, and do they usually accept different programs?",
+    "back": "They differ in emphasis (ethics versus practical benefits), not mostly in programs. Nearly every free software licence is also an open source licence, and the other way round."
+  },
+  {
+    "id": "011.3-c07",
+    "areas": [
+      "011.3.4"
+    ],
+    "front": "What do FOSS and FLOSS stand for?",
+    "back": "FOSS is free and open source software; FLOSS is free/libre and open source software. \"Libre\" stresses \"free\" as in freedom, not price."
+  },
+  {
+    "id": "011.3-c08",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "front": "What is the difference between copyleft and permissive licences?",
+    "back": "Copyleft requires anyone who passes the software on to keep the same freedoms and licence. A permissive licence puts few conditions on reuse and even lets others make their changes proprietary."
+  },
+  {
+    "id": "011.3-c09",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "front": "Which licence covers the Linux kernel, and is it copyleft or permissive?",
+    "back": "The GPL (GNU General Public License), the best-known copyleft licence. Many GNU tools use it too."
+  },
+  {
+    "id": "011.3-c10",
+    "areas": [
+      "011.3.2"
+    ],
+    "front": "What are the LGPL and the AGPL?",
+    "back": "Both are copyleft variants. The LGPL is a weaker version made for libraries. The AGPL extends copyleft to programs people only use over a network."
+  },
+  {
+    "id": "011.3-c11",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "front": "What does a BSD licence mostly require?",
+    "back": "Keeping the copyright notice (and the licence text), and not using the authors’ names to promote your product. It is permissive, so a company may sell improved code without releasing it."
+  },
+  {
+    "id": "011.3-c12",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "front": "What do the Creative Commons elements BY, SA, NC and ND mean?",
+    "back": "BY: credit the creator (attribution). SA: share adaptations under the same terms. NC: non-commercial use only. ND: no derivatives, copy and share but don’t change."
+  },
+  {
+    "id": "011.3-c13",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "front": "Jonas publishes sprites under CC BY-SA. What may others do with them?",
+    "back": "Reuse and remix them, including commercially, if they credit Jonas and share their remixes under the same terms."
+  },
+  {
+    "id": "011.3-c14",
+    "areas": [
+      "011.3.2"
+    ],
+    "front": "Which Creative Commons licence is the most open, which the most restrictive, and what is CC0?",
+    "back": "CC BY is the most open and CC BY-NC-ND the most restrictive. CC0 gives up as many rights as the law allows, so anyone can use the work without conditions."
+  },
+  {
+    "id": "011.3-c15",
+    "areas": [
+      "011.3.2"
+    ],
+    "front": "Are Creative Commons licences meant for software?",
+    "back": "No. They are for content such as art, music, photos and manuals. For code, use a software licence."
+  },
+  {
+    "id": "011.3-c16",
+    "areas": [
+      "011.3.3"
+    ],
+    "front": "What is proprietary software?",
+    "back": "Software whose owner decides what you may do with it, typically a binary with a restrictive licence and no source code. It can be free of charge, so price is not the test; the freedoms are."
+  },
+  {
+    "id": "011.3-c17",
+    "areas": [
+      "011.3.3"
+    ],
+    "front": "What is digital autonomy?",
+    "back": "The ability of a person or organisation to decide for themselves which software they run, where their data is stored and whether they can leave a supplier."
+  },
+  {
+    "id": "011.3-c18",
+    "areas": [
+      "011.3.3"
+    ],
+    "front": "What is digital sovereignty, and how is it related to digital autonomy?",
+    "back": "The same idea at the level of a country, public body or company: control over their own digital infrastructure, data and rules. Open licences give control and the ability to leave."
+  },
+  {
+    "id": "011.3-c19",
+    "areas": [
+      "011.3.3"
+    ],
+    "front": "What is vendor lock-in?",
+    "back": "Dependence on one supplier’s proprietary product, so you can’t easily inspect, fix or switch away from it. Open source lets you read, change and move your software."
+  },
+  {
+    "id": "011.3-c20",
+    "areas": [
+      "011.3.3"
+    ],
+    "front": "Ada chose a self-hosted code forge over a proprietary hosting service. Which idea backs this argument?",
+    "back": "Digital autonomy: the studio controls its source code and can move it without asking anyone."
+  },
+  {
+    "id": "011.3-c21",
+    "areas": [
+      "011.3.v1"
+    ],
+    "front": "Name three ways open source companies earn money.",
+    "back": "Support and subscriptions (Red Hat, SUSE), services and consulting, hosting as a service. Also dual licensing, open core, donations and selling hardware."
+  },
+  {
+    "id": "011.3-c22",
+    "areas": [
+      "011.3.v1"
+    ],
+    "front": "What is the difference between dual licensing and open core?",
+    "back": "Dual licensing sells the same code under a free licence and a paid commercial one. Open core keeps the core free and sells extra features under a proprietary licence."
+  },
+  {
+    "id": "011.3-c23",
+    "areas": [
+      "011.3.2",
+      "011.3.v1"
+    ],
+    "front": "TuxPixel wants other small studios to use its engine even in commercial games. Which kind of licence fits?",
+    "back": "A permissive one. A copyleft licence would require others to share their changes too."
+  },
+  {
+    "id": "011.3-c24",
+    "areas": [
+      "011.3.2"
+    ],
+    "front": "Where does Debian keep copies of the common licences, and which one starts with \"GNU GENERAL PUBLIC LICENSE Version 3\"?",
+    "back": "In `/usr/share/common-licenses/`. The file `GPL-3` there is the GPL version 3."
+  },
+  {
+    "id": "011.3-c25",
+    "areas": [
+      "011.3.v2"
+    ],
+    "front": "Which organisation is behind the \"four essential freedoms\" and which behind the \"Open Source Definition\"?",
+    "back": "The Free Software Foundation (FSF) wrote the four freedoms. The Open Source Initiative (OSI) maintains the Open Source Definition."
+  },
+  {
+    "id": "011.3-c26",
+    "areas": [
+      "011.3.v2"
+    ],
+    "front": "Mira reads that a licence is \"OSI approved\". What does that tell her?",
+    "back": "It counts as an open source licence: the Open Source Initiative checked it against the ten criteria of the Open Source Definition."
+  }
+]

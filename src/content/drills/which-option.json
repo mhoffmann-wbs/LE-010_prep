@@ -1,0 +1,181 @@
+{
+  "id": "which-option",
+  "kind": "which",
+  "title": "Which option?",
+  "description": "Pick the option that makes the command do exactly what the task says.",
+  "objectives": [
+    "012.3",
+    "012.4",
+    "013.1",
+    "013.2",
+    "014.4",
+    "015.2"
+  ],
+  "cards": [
+    {
+      "id": "which-option-01",
+      "prompt": "Mira wants `ls` to show hidden files (names that start with a dot) as well.",
+      "answer": "`ls -a`",
+      "distractors": [
+        "`ls -l`",
+        "`ls -R`",
+        "`ls -d`"
+      ],
+      "why": "`-a` means all: it includes the names that start with a dot. `-l` is the long format and `-R` goes into subdirectories."
+    },
+    {
+      "id": "which-option-02",
+      "prompt": "Mira wants `ls` to list the contents of every subdirectory too.",
+      "answer": "`ls -R`",
+      "distractors": [
+        "`ls -a`",
+        "`ls -l`",
+        "`ls -d`"
+      ],
+      "why": "`-R` is recursive: `ls` descends into every directory below."
+    },
+    {
+      "id": "which-option-03",
+      "prompt": "Jonas wants a long listing with file sizes shown as `4.0K` or `1.2M` instead of bytes.",
+      "answer": "`ls -lh`",
+      "distractors": [
+        "`ls -la`",
+        "`ls -R`",
+        "`ls -d`"
+      ],
+      "why": "`-l` gives the long format and `-h` makes the sizes human-readable. `-a` would only add hidden files."
+    },
+    {
+      "id": "which-option-04",
+      "prompt": "Ada wants to copy the whole directory `art` with everything in it to `backup`.",
+      "answer": "`cp -r art backup`",
+      "distractors": [
+        "`cp -i art backup`",
+        "`cp art backup`",
+        "`ln -s art backup`"
+      ],
+      "why": "`-r` makes `cp` recursive, which a directory needs. Without it, `cp` refuses to copy a directory."
+    },
+    {
+      "id": "which-option-05",
+      "prompt": "Mira wants to create `a/b/c` in one go, even if `a` and `b` do not exist yet.",
+      "answer": "`mkdir -p a/b/c`",
+      "distractors": [
+        "`mkdir a/b/c`",
+        "`mkdir -m 755 a/b/c`",
+        "`touch a/b/c`"
+      ],
+      "why": "`mkdir -p` creates every missing parent directory. Without `-p`, `mkdir` fails when `a/b` does not exist."
+    },
+    {
+      "id": "which-option-06",
+      "prompt": "Ada wants to see what is inside `release.tar.gz` without unpacking it.",
+      "answer": "`tar -tf release.tar.gz`",
+      "distractors": [
+        "`tar -xf release.tar.gz`",
+        "`tar -cf release.tar.gz`",
+        "`tar -czf release.tar.gz`"
+      ],
+      "why": "`-t` lists the contents. `-x` extracts, and `-c` creates a new archive, which would overwrite the file."
+    },
+    {
+      "id": "which-option-07",
+      "prompt": "Ada wants to create a bzip2-compressed archive `art.tar.bz2` from `art/`.",
+      "answer": "`tar -cjf art.tar.bz2 art/`",
+      "distractors": [
+        "`tar -czf art.tar.bz2 art/`",
+        "`tar -cJf art.tar.bz2 art/`",
+        "`tar -xjf art.tar.bz2 art/`"
+      ],
+      "why": "`-j` selects bzip2. `-z` is gzip, `-J` is xz, and `-x` extracts instead of creating."
+    },
+    {
+      "id": "which-option-08",
+      "prompt": "Mira wants to find lines in `build.log` that contain `error`, whether it is written `error`, `Error` or `ERROR`.",
+      "answer": "`grep -i error build.log`",
+      "distractors": [
+        "`grep -v error build.log`",
+        "`grep -c error build.log`",
+        "`grep -n error build.log`"
+      ],
+      "why": "`-i` ignores case. `-v` inverts the match, `-c` only counts the lines and `-n` adds line numbers."
+    },
+    {
+      "id": "which-option-09",
+      "prompt": "Mira wants every line of `build.log` that does not contain `WARNING`.",
+      "answer": "`grep -v WARNING build.log`",
+      "distractors": [
+        "`grep -i WARNING build.log`",
+        "`grep -c WARNING build.log`",
+        "`grep -n WARNING build.log`"
+      ],
+      "why": "`-v` inverts the match and prints the lines that do not contain the pattern."
+    },
+    {
+      "id": "which-option-10",
+      "prompt": "Ada wants only the number of lines of `build.log` that contain `ERROR`.",
+      "answer": "`grep -c ERROR build.log`",
+      "distractors": [
+        "`grep -n ERROR build.log`",
+        "`grep -v ERROR build.log`",
+        "`grep -i ERROR build.log`"
+      ],
+      "why": "`-c` prints the count of matching lines instead of the lines."
+    },
+    {
+      "id": "which-option-11",
+      "prompt": "Ada wants every matching line of `build.log` with its line number in front.",
+      "answer": "`grep -n ERROR build.log`",
+      "distractors": [
+        "`grep -c ERROR build.log`",
+        "`grep -v ERROR build.log`",
+        "`grep -i ERROR build.log`"
+      ],
+      "why": "`-n` puts the line number before each match."
+    },
+    {
+      "id": "which-option-12",
+      "prompt": "Mira has a file of scores, one number per line, and wants them ordered by value, so that 9 comes before 10.",
+      "answer": "`sort -n scores.txt`",
+      "distractors": [
+        "`sort scores.txt`",
+        "`sort -r scores.txt`",
+        "`uniq -c scores.txt`"
+      ],
+      "why": "`-n` sorts numerically. A plain `sort` compares text, so `10` would come before `9`."
+    },
+    {
+      "id": "which-option-13",
+      "prompt": "Jonas wants to count how often each line occurs in a sorted file, with the count in front.",
+      "answer": "`uniq -c names.txt`",
+      "distractors": [
+        "`sort -u names.txt`",
+        "`wc -l names.txt`",
+        "`sort -r names.txt`"
+      ],
+      "why": "`uniq -c` prefixes each distinct line with its number of repeats. It only compares neighbouring lines, so the input should be sorted."
+    },
+    {
+      "id": "which-option-14",
+      "prompt": "Ada wants to watch new lines arrive at the end of a log file while the build is running.",
+      "answer": "`tail -f build.log`",
+      "distractors": [
+        "`tail -n 5 build.log`",
+        "`head -n 5 build.log`",
+        "`less build.log`"
+      ],
+      "why": "`-f` (follow) keeps `tail` running and prints new lines as they are appended."
+    },
+    {
+      "id": "which-option-15",
+      "prompt": "Mira wants to send exactly three ping requests to `198.51.100.7` and then stop.",
+      "answer": "`ping -c 3 198.51.100.7`",
+      "distractors": [
+        "`ping 198.51.100.7`",
+        "`ping -t 3 198.51.100.7`",
+        "`ping -n 3 198.51.100.7`"
+      ],
+      "why": "On Linux `-c` sets the count. A plain `ping` keeps sending until you press Ctrl+C."
+    }
+  ]
+}

@@ -159,6 +159,87 @@ export const lessonMetaSchema = z.object({
 
 export type LessonMeta = z.infer<typeof lessonMetaSchema>
 
+// Built-in flashcards (src/content/flashcards/<objectiveId>.json). Card ids are
+// `<objectiveId>-cNN` in file order and are stored in progress, so append, never
+// renumber. Their areas and terms decide which exam track shows them, as for items.
+export const cardSchema = z
+  .object({
+    id: z.string().regex(/^01[1-5]\.[1-4]-c\d{2}$/),
+    /** Key knowledge areas of the card's objective that it covers. */
+    areas: z.array(z.string().regex(AREA_ID)).min(1),
+    /** Listed files, terms and utilities it covers: tag one that only one exam lists, so the other track hides the card. */
+    terms: z.array(z.string().regex(TERM_ID)).optional(),
+    /** Text with `code` spans; a blank line starts a new paragraph. */
+    front: nonEmpty,
+    back: nonEmpty,
+  })
+  .superRefine((card, ctx) => {
+    const objectiveId = card.id.split('-')[0]!
+    for (const id of [...card.areas, ...(card.terms ?? [])])
+      if (!id.startsWith(`${objectiveId}.`)) ctx.addIssue({ code: 'custom', message: `${id} isn't a line of ${objectiveId}`, path: ['areas'] })
+  })
+
+export const cardFileSchema = z.array(cardSchema)
+
+export type Card = z.infer<typeof cardSchema>
+
+// Matcher drills (src/content/drills/<deckId>.json). Card ids are `<deckId>-NN`
+// and are stored in progress, so append, never renumber or reuse one.
+const drillBase = {
+  id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+  title: nonEmpty,
+  /** One sentence on what the deck drills. */
+  description: nonEmpty,
+  /** Objectives whose lessons link to the deck. */
+  objectives: z.array(z.string().regex(OBJECTIVE_ID)).min(1),
+}
+
+/** "Which command?" / "Which file?": a scenario and four answers (`code` spans allowed) to pick from. */
+const whichDeck = z.object({
+  ...drillBase,
+  kind: z.literal('which'),
+  cards: z
+    .array(
+      z.object({
+        id: z.string(),
+        prompt: nonEmpty,
+        answer: nonEmpty,
+        /** Exactly three answers that each miss the scenario. */
+        distractors: z.array(nonEmpty).length(3),
+        /** Why the answer fits, shown after the pick. */
+        why: nonEmpty,
+      }),
+    )
+    .min(8),
+})
+
+/** Sorter: put each item into one of 2–4 buckets. */
+const sortDeck = z.object({
+  ...drillBase,
+  kind: z.literal('sort'),
+  buckets: z.array(z.object({ id: nonEmpty, label: nonEmpty })).min(2).max(4),
+  items: z.array(z.object({ id: z.string(), text: nonEmpty, bucket: nonEmpty, why: nonEmpty })).min(8),
+})
+
+export const drillDeckSchema = z.discriminatedUnion('kind', [whichDeck, sortDeck]).superRefine((deck, ctx) => {
+  const ids = deck.kind === 'which' ? deck.cards.map((c) => c.id) : deck.items.map((i) => i.id)
+  ids.forEach((id, i) => {
+    const want = `${deck.id}-${String(i + 1).padStart(2, '0')}`
+    if (id !== want) ctx.addIssue({ code: 'custom', message: `card ${i + 1} must have id ${want}, not ${id}` })
+  })
+  if (deck.kind === 'which')
+    for (const c of deck.cards)
+      if (new Set([c.answer, ...c.distractors]).size !== 4) ctx.addIssue({ code: 'custom', message: `${c.id}: the four answers must differ` })
+  if (deck.kind === 'sort') {
+    const buckets = new Set(deck.buckets.map((b) => b.id))
+    for (const i of deck.items) if (!buckets.has(i.bucket)) ctx.addIssue({ code: 'custom', message: `${i.id}: unknown bucket ${i.bucket}` })
+  }
+})
+
+export type DrillDeck = z.infer<typeof drillDeckSchema>
+export type WhichDeck = Extract<DrillDeck, { kind: 'which' }>
+export type SortDeck = Extract<DrillDeck, { kind: 'sort' }>
+
 export type Item = z.infer<typeof itemSchema>
 export type ItemKind = Item['kind']
 

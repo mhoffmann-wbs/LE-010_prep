@@ -1,0 +1,138 @@
+{
+  "id": "distro-families",
+  "kind": "sort",
+  "title": "Which distribution family?",
+  "description": "Sort distributions, package tools and package formats into the four families the exam names.",
+  "objectives": [
+    "011.1",
+    "011.2"
+  ],
+  "buckets": [
+    {
+      "id": "debian",
+      "label": "Debian-based"
+    },
+    {
+      "id": "el",
+      "label": "Enterprise Linux (Red Hat)"
+    },
+    {
+      "id": "suse",
+      "label": "SUSE-based"
+    },
+    {
+      "id": "alpine",
+      "label": "Alpine"
+    }
+  ],
+  "items": [
+    {
+      "id": "distro-families-01",
+      "text": "Ubuntu",
+      "bucket": "debian",
+      "why": "Ubuntu is built on Debian and made by Canonical, so it belongs to the Debian family."
+    },
+    {
+      "id": "distro-families-02",
+      "text": "Red Hat Enterprise Linux (RHEL)",
+      "bucket": "el",
+      "why": "RHEL is the commercial product the Enterprise Linux family is named after."
+    },
+    {
+      "id": "distro-families-03",
+      "text": "openSUSE Leap",
+      "bucket": "suse",
+      "why": "Leap is the free community release that shares its core with SUSE Linux Enterprise."
+    },
+    {
+      "id": "distro-families-04",
+      "text": "Alpine Linux",
+      "bucket": "alpine",
+      "why": "Alpine is a small, security-minded distribution with musl, BusyBox and its own package manager. It forms a family of its own."
+    },
+    {
+      "id": "distro-families-05",
+      "text": "`apt`",
+      "bucket": "debian",
+      "why": "`apt` is the high-level package tool of Debian and Ubuntu. It fetches packages and their dependencies."
+    },
+    {
+      "id": "distro-families-06",
+      "text": "`dnf`",
+      "bucket": "el",
+      "why": "`dnf` is the high-level package tool of the Enterprise Linux family (Fedora, RHEL, AlmaLinux, Rocky Linux)."
+    },
+    {
+      "id": "distro-families-07",
+      "text": "`zypper`",
+      "bucket": "suse",
+      "why": "`zypper` is the package tool of openSUSE and SUSE Linux Enterprise."
+    },
+    {
+      "id": "distro-families-08",
+      "text": "`apk`",
+      "bucket": "alpine",
+      "why": "`apk` is Alpine’s own package manager, and its packages are `.apk` files."
+    },
+    {
+      "id": "distro-families-09",
+      "text": "Raspberry Pi OS",
+      "bucket": "debian",
+      "why": "The official system for Raspberry Pi boards is based on Debian."
+    },
+    {
+      "id": "distro-families-10",
+      "text": "Fedora Linux",
+      "bucket": "el",
+      "why": "Fedora is the community distribution that tries new things first. RHEL is developed from it, and it is listed in the Enterprise Linux family."
+    },
+    {
+      "id": "distro-families-11",
+      "text": "Linux Mint",
+      "bucket": "debian",
+      "why": "Mint is a beginner-friendly desktop distribution based on Ubuntu and Debian, so it is a Debian-family member."
+    },
+    {
+      "id": "distro-families-12",
+      "text": "Rocky Linux",
+      "bucket": "el",
+      "why": "Rocky Linux is a free, community-driven distribution that aims to be compatible with RHEL."
+    },
+    {
+      "id": "distro-families-13",
+      "text": "SUSE Linux Enterprise (SLE)",
+      "bucket": "suse",
+      "why": "SLE is SUSE’s commercial product, and openSUSE is its free community relative."
+    },
+    {
+      "id": "distro-families-14",
+      "text": "`.deb` packages",
+      "bucket": "debian",
+      "why": "The `.deb` format is installed with `dpkg` and `apt` on Debian and Ubuntu."
+    },
+    {
+      "id": "distro-families-15",
+      "text": "CentOS Stream",
+      "bucket": "el",
+      "why": "CentOS Stream sits between Fedora and RHEL, where the next RHEL minor releases take shape."
+    },
+    {
+      "id": "distro-families-16",
+      "text": "AlmaLinux",
+      "bucket": "el",
+      "why": "AlmaLinux is a free, RHEL-compatible community distribution, like Rocky Linux."
+    },
+    {
+      "id": "distro-families-17",
+      "text": "openSUSE Tumbleweed",
+      "bucket": "suse",
+      "why": "Tumbleweed is openSUSE’s rolling release with the newest software, and it uses `zypper` like Leap."
+    },
+    {
+      "id": "distro-families-18",
+      "text": "`dpkg`",
+      "bucket": "debian",
+      "why": "`dpkg` installs a single `.deb` file you already have. It does not fetch dependencies, which is why `apt` is used on top."
+    }
+  ]
+}

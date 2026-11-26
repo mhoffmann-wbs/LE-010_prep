@@ -1,0 +1,141 @@
+[
+  {
+    "id": "015.2-c01",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Which three files hold users, groups and password hashes?",
+    "back": "`/etc/passwd` (users), `/etc/group` (groups) and `/etc/shadow` (password hashes). Only `/etc/shadow` is restricted to root."
+  },
+  {
+    "id": "015.2-c02",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Name the seven fields of a line in `/etc/passwd`.",
+    "back": "Login name, password marker (`x`), UID, primary GID, comment (real name), home directory, login shell, separated by colons."
+  },
+  {
+    "id": "015.2-c03",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Why does `/etc/passwd` contain only an `x` in the password field?",
+    "back": "Everyone must be able to read `/etc/passwd`, because programs like `ls` use it to turn numbers into names. The hashes are in `/etc/shadow`."
+  },
+  {
+    "id": "015.2-c04",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "What do the fields of `/etc/group` hold?",
+    "back": "Four fields: group name, password placeholder (`x`), GID, and a comma-separated list of members."
+  },
+  {
+    "id": "015.2-c05",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "What does a `!` or `*` in the hash field of `/etc/shadow` mean?",
+    "back": "No password can match, so the account has no usable password. A `!` in front of a hash means the account is locked."
+  },
+  {
+    "id": "015.2-c06",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Which commands print only the user ID, and the group names, of the current user?",
+    "back": "`id -u` prints the user ID, and `id -Gn` (or `groups`) prints all group names. `-n` shows names instead of numbers."
+  },
+  {
+    "id": "015.2-c07",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "What is the difference between `who`, `w` and `last`?",
+    "back": "`who` lists who is logged in now, `w` adds what each user is running and the load, and `last` shows the history of logins and reboots, newest first."
+  },
+  {
+    "id": "015.2-c08",
+    "areas": [
+      "015.2.1"
+    ],
+    "terms": [
+      "015.2.t2"
+    ],
+    "front": "What does `wtmpdb last` do, and why does it exist?",
+    "back": "It lists past logins like `last`, but from an SQLite database. `last`’s file format stops working in 2038, and newer Debian dropped `last` in favour of `wtmpdb`."
+  },
+  {
+    "id": "015.2-c09",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Why does `useradd noah` create no home directory, and how do you fix it?",
+    "back": "Without `-m`, Debian’s `useradd` creates only the account. Use `useradd -m noah` to create the home and fill it from `/etc/skel`."
+  },
+  {
+    "id": "015.2-c10",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "What is `/etc/skel` for?",
+    "back": "Its files are copied into a new user’s home directory by `useradd -m`, which is where `.bashrc` and `.profile` come from. Changing it affects only users created afterwards."
+  },
+  {
+    "id": "015.2-c11",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Which options of `useradd` set the comment, shell and primary group?",
+    "back": "`-c \"Noah Kim\"` for the comment, `-s /bin/bash` for the login shell and `-g GROUP` for the primary group. `-G` adds supplementary groups and `-r` makes a system user."
+  },
+  {
+    "id": "015.2-c12",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Which command creates a group `playtest`, and how do you add Jonas to it?",
+    "back": "`groupadd playtest`, then `usermod -aG playtest jonas`. The user must log in again to get the new group."
+  },
+  {
+    "id": "015.2-c13",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "What is the difference between `usermod -G` and `usermod -aG`?",
+    "back": "`-G` alone replaces the user’s supplementary groups, while `-aG` appends to them. Always write `-aG` together."
+  },
+  {
+    "id": "015.2-c14",
+    "areas": [
+      "015.2.1"
+    ],
+    "front": "Which command sets Noah’s password as root, and which locks the account?",
+    "back": "`sudo passwd noah` sets it without knowing the old one. `passwd -l noah` locks the account, `-u` unlocks it and `-S` shows its status."
+  },
+  {
+    "id": "015.2-c15",
+    "areas": [
+      "015.2.2"
+    ],
+    "front": "Which UID ranges does Debian use?",
+    "back": "0 is root, 1 to 999 are system users, and 1000 and up are standard users. The limits are set in `/etc/login.defs`; older Red Hat systems used 500."
+  },
+  {
+    "id": "015.2-c16",
+    "areas": [
+      "015.2.2"
+    ],
+    "front": "What UID does the next new standard user get on Debian?",
+    "back": "The next free UID from 1000. If 1000 to 1002 are in use, the next user gets 1003."
+  },
+  {
+    "id": "015.2-c17",
+    "areas": [
+      "015.2.2"
+    ],
+    "front": "How does `ls -l` show the owner’s name if files only store numbers?",
+    "back": "It looks up the UID in `/etc/passwd` and the GID in `/etc/group`. Files store the numbers."
+  }
+]

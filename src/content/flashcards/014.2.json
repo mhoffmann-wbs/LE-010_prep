@@ -1,0 +1,156 @@
+[
+  {
+    "id": "014.2-c01",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "Which part of a computer runs the instructions, and which two processor families matter for Linux?",
+    "back": "The processor (CPU). The families are x86 (Intel and AMD, with the 64-bit variant `x86_64`) and ARM (phones, Apple chips, Raspberry Pi). A program built for one doesn’t run on the other."
+  },
+  {
+    "id": "014.2-c02",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "What is the difference between RAM and storage?",
+    "back": "RAM is fast, temporary memory for running programs and is lost at power-off. Storage (HDD, SSD, NVMe) keeps data permanently."
+  },
+  {
+    "id": "014.2-c03",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "What does the motherboard do?",
+    "back": "It is the main circuit board. The processor, memory, storage and other parts plug into it or sit on it. The power supply converts mains power to the voltages the parts need."
+  },
+  {
+    "id": "014.2-c04",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "Which command prints the processor family of the machine?",
+    "back": "`uname -m`. It prints `x86_64` on a typical PC, `aarch64` on a 64-bit Raspberry Pi and `i686` on a 32-bit x86 system."
+  },
+  {
+    "id": "014.2-c05",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t4"
+    ],
+    "front": "A Raspberry Pi: what processor and what storage does it use?",
+    "back": "An ARM processor, and it boots from an SD card (or USB or NVMe storage) holding an OS image, usually Raspberry Pi OS, which is Debian-based."
+  },
+  {
+    "id": "014.2-c06",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "Where do you look at a network interface such as `wlp2s0` on Linux?",
+    "back": "With `ip addr show` or in `/sys/class/net`. Network interfaces have no file under `/dev`, unlike disks."
+  },
+  {
+    "id": "014.2-c07",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t2"
+    ],
+    "front": "What do the names `eth0`, `enp3s0` and `wlp2s0` tell you?",
+    "back": "They are interface names. `en` means Ethernet and `wl` means wireless LAN (WiFi). The loopback interface, used for talking to itself, is `lo`."
+  },
+  {
+    "id": "014.2-c08",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "Which device file is the first partition of the second SATA/USB disk?",
+    "back": "`/dev/sdb1`. The letter after `sd` counts disks (`sda`, `sdb`) and the number counts partitions."
+  },
+  {
+    "id": "014.2-c09",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t3"
+    ],
+    "front": "How are NVMe disks and their partitions named?",
+    "back": "`/dev/nvme0n1` is the first NVMe drive, and its partitions are `/dev/nvme0n1p1`, `/dev/nvme0n1p2`: a `p` goes before the partition number."
+  },
+  {
+    "id": "014.2-c10",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "What is a kernel module, and which command lists the loaded ones?",
+    "back": "A piece of the kernel, often a driver, that can be loaded and removed while the system runs. `lsmod` lists them; `modprobe` loads one."
+  },
+  {
+    "id": "014.2-c11",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "What is a driver?",
+    "back": "Kernel code that knows how to talk to one kind of hardware. The kernel loads the matching module when you plug in a device."
+  },
+  {
+    "id": "014.2-c12",
+    "areas": [
+      "014.2.1",
+      "014.2.2"
+    ],
+    "front": "What do `/dev`, `/boot` and `/sys` contain?",
+    "back": "`/dev` holds the device files, `/boot` the kernel and boot loader files, and `/sys` a view of the kernel’s devices and drivers. The kernel generates `/dev` and `/sys` while running."
+  },
+  {
+    "id": "014.2-c13",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "Which command lists the disks and partitions of a real machine, and which shows how full the mounted ones are?",
+    "back": "`lsblk` lists disks and partitions, and `df -h` shows the usage of mounted filesystems."
+  },
+  {
+    "id": "014.2-c14",
+    "areas": [
+      "014.2.2"
+    ],
+    "front": "In a listing of `/dev`, what do a leading `b` and `c` mean?",
+    "back": "`b` is a block device (disks, read in blocks) and `c` is a character device (terminals, serial ports; data one byte at a time)."
+  },
+  {
+    "id": "014.2-c15",
+    "areas": [
+      "014.2.2"
+    ],
+    "front": "What happens when you write to `/dev/null` and when you read from it?",
+    "back": "Writing throws the data away, and reading gives end-of-file at once. Use `command > /dev/null` to hide output."
+  },
+  {
+    "id": "014.2-c16",
+    "areas": [
+      "014.2.2"
+    ],
+    "front": "What does reading from `/dev/zero` give you?",
+    "back": "An endless stream of zero bytes. It is handy for creating a file of a given size, for example `head -c 8 /dev/zero`."
+  },
+  {
+    "id": "014.2-c17",
+    "areas": [
+      "014.2.2"
+    ],
+    "front": "What does `/dev/urandom` provide, and what is it used for?",
+    "back": "An endless stream of random bytes, different every time. It is used for keys, passwords and test data."
+  },
+  {
+    "id": "014.2-c18",
+    "areas": [
+      "014.2.2"
+    ],
+    "front": "Do device files such as `/dev/sda` store data on a disk?",
+    "back": "No. They are doors to the kernel, so programs can use `cat`, `>` and other file tools on hardware. Pseudo-devices like `/dev/null` have no hardware at all."
+  }
+]

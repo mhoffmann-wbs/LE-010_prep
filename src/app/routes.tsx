@@ -11,6 +11,11 @@ const QuestionsPage = lazy(() => import('../pages/QuestionsPage'))
 const MockExamPage = lazy(() => import('../pages/MockExamPage'))
 const TerminalPage = lazy(() => import('../pages/TerminalPage'))
 const ExercisesPage = lazy(() => import('../pages/ExercisesPage'))
+const ExplorePage = lazy(() => import('../pages/ExplorePage'))
+const DrillsPage = lazy(() => import('../pages/DrillsPage'))
+const FlashcardsPage = lazy(() => import('../pages/FlashcardsPage'))
+const FlashcardReviewPage = lazy(() => import('../pages/FlashcardReviewPage'))
+const FlashcardDeckPage = lazy(() => import('../pages/FlashcardDeckPage'))
 const ProgressPage = lazy(() => import('../pages/ProgressPage'))
 
 export const routes: RouteObject[] = [
@@ -27,6 +32,12 @@ export const routes: RouteObject[] = [
       { path: 'terminal', element: <TerminalPage /> },
       { path: 'exercises', element: <ExercisesPage /> },
       { path: 'exercises/:exerciseId', element: <ExercisesPage /> },
+      { path: 'explore', element: <ExplorePage /> },
+      { path: 'explore/drills', element: <DrillsPage /> },
+      { path: 'explore/drills/:deckId', element: <DrillsPage /> },
+      { path: 'explore/flashcards', element: <FlashcardsPage /> },
+      { path: 'explore/flashcards/review', element: <FlashcardReviewPage /> },
+      { path: 'explore/flashcards/deck/:deckId', element: <FlashcardDeckPage /> },
       { path: 'progress', element: <ProgressPage /> },
       { path: '*', element: <h1 className="text-2xl font-semibold">Page not found</h1> },
     ],

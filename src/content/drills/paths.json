@@ -1,0 +1,105 @@
+{
+  "id": "paths",
+  "kind": "sort",
+  "title": "Absolute or relative path?",
+  "description": "Decide whether each path is absolute or relative.",
+  "objectives": [
+    "012.3"
+  ],
+  "buckets": [
+    {
+      "id": "absolute",
+      "label": "Absolute path"
+    },
+    {
+      "id": "relative",
+      "label": "Relative path"
+    }
+  ],
+  "items": [
+    {
+      "id": "paths-01",
+      "text": "`/etc/hosts`",
+      "bucket": "absolute",
+      "why": "It starts with `/`, so it describes the way from the root and means the same file wherever you are."
+    },
+    {
+      "id": "paths-02",
+      "text": "`../art`",
+      "bucket": "relative",
+      "why": "It does not start with `/`. `..` means the parent of the current directory, so the result depends on where you are."
+    },
+    {
+      "id": "paths-03",
+      "text": "`~/notes.txt`",
+      "bucket": "absolute",
+      "why": "It looks relative, but the shell replaces `~` with the home directory before the command runs. The command sees `/home/mira/notes.txt`, which starts with `/`."
+    },
+    {
+      "id": "paths-04",
+      "text": "`./build.sh`",
+      "bucket": "relative",
+      "why": "`.` means the current directory, so this path starts from where you are."
+    },
+    {
+      "id": "paths-05",
+      "text": "`.`",
+      "bucket": "relative",
+      "why": "A single dot is the current directory, which is relative by definition."
+    },
+    {
+      "id": "paths-06",
+      "text": "`art/hero.png`",
+      "bucket": "relative",
+      "why": "It does not start with `/`, so it is found starting from the current directory."
+    },
+    {
+      "id": "paths-07",
+      "text": "`/`",
+      "bucket": "absolute",
+      "why": "The root directory itself starts with `/`, so it is an absolute path."
+    },
+    {
+      "id": "paths-08",
+      "text": "`/home/jonas/art`",
+      "bucket": "absolute",
+      "why": "It starts at the root, so it points to the same directory from anywhere."
+    },
+    {
+      "id": "paths-09",
+      "text": "`..`",
+      "bucket": "relative",
+      "why": "Two dots mean \"one level up from here\", which depends on the current directory."
+    },
+    {
+      "id": "paths-10",
+      "text": "`etc/hosts`",
+      "bucket": "relative",
+      "why": "The first character is not `/`, so this is a path below the current directory. It only works if `etc` is there."
+    },
+    {
+      "id": "paths-11",
+      "text": "`/usr/share/doc`",
+      "bucket": "absolute",
+      "why": "It starts with `/`, so it is the same place from every directory."
+    },
+    {
+      "id": "paths-12",
+      "text": "`projects/website`",
+      "bucket": "relative",
+      "why": "Without the leading `/` it is read from the current directory: `/home/mira/projects/website` when Mira is in her home."
+    },
+    {
+      "id": "paths-13",
+      "text": "`~jonas/art`",
+      "bucket": "absolute",
+      "why": "The shell turns `~jonas` into Jonas’s home, so the command gets `/home/jonas/art`, an absolute path."
+    },
+    {
+      "id": "paths-14",
+      "text": "`docs/`",
+      "bucket": "relative",
+      "why": "The trailing slash only says it is a directory. It does not start with `/`, so it is relative."
+    }
+  ]
+}

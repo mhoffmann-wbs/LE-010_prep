@@ -1,0 +1,155 @@
+[
+  {
+    "id": "015.1-c01",
+    "areas": [
+      "015.1.1"
+    ],
+    "front": "What makes an account root?",
+    "back": "UID 0, not the name. Root’s home directory is `/root`, and no permission check stops it. Work as a standard user and borrow root’s power one command at a time."
+  },
+  {
+    "id": "015.1-c02",
+    "areas": [
+      "015.1.1"
+    ],
+    "front": "How do you tell a standard user’s prompt from root’s?",
+    "back": "A root shell usually ends its prompt with `#`, a standard user’s with `$`."
+  },
+  {
+    "id": "015.1-c03",
+    "areas": [
+      "015.1.1"
+    ],
+    "front": "Which UIDs do standard users have on Debian?",
+    "back": "1000 and up. Mira, as the first standard user on the machine, has UID 1000."
+  },
+  {
+    "id": "015.1-c04",
+    "areas": [
+      "015.1.2"
+    ],
+    "front": "What are system users, and what UIDs do they have?",
+    "back": "Accounts that belong to programs, not people, such as `www-data`. Their UIDs are below 1000 on Debian."
+  },
+  {
+    "id": "015.1-c05",
+    "areas": [
+      "015.1.2"
+    ],
+    "front": "Why do system users usually have `/usr/sbin/nologin` as their shell?",
+    "back": "Nobody can open an interactive session as them. They exist so that files and processes can be owned by something other than root."
+  },
+  {
+    "id": "015.1-c06",
+    "areas": [
+      "015.1.2"
+    ],
+    "front": "Why does a web server run as `www-data` instead of root?",
+    "back": "If the server is hacked, the attacker gets only that account’s few permissions, not root’s."
+  },
+  {
+    "id": "015.1-c07",
+    "areas": [
+      "015.1.3"
+    ],
+    "front": "Which password does `sudo` ask for, and which does `su` ask for?",
+    "back": "`sudo` asks for your own password. `su` asks for the password of the account you switch to, root’s if you give no name."
+  },
+  {
+    "id": "015.1-c08",
+    "areas": [
+      "015.1.3"
+    ],
+    "front": "Which group lets a user run `sudo` on Debian, and which file configures it?",
+    "back": "The group `sudo` on Debian and Ubuntu (`wheel` on Red Hat-family systems). The configuration is in `/etc/sudoers`."
+  },
+  {
+    "id": "015.1-c09",
+    "areas": [
+      "015.1.3"
+    ],
+    "front": "What is the difference between `su jonas` and `su - jonas`?",
+    "back": "`su - jonas` (or `su -l`) starts a full login shell with Jonas’s environment and home directory. Plain `su jonas` keeps most of your current environment. Leave with `exit`."
+  },
+  {
+    "id": "015.1-c10",
+    "areas": [
+      "015.1.3"
+    ],
+    "front": "Why do administrators prefer `sudo` over sharing root’s password?",
+    "back": "`sudo` runs a single command as root, uses each person’s own password and logs every use, so you can see who did what."
+  },
+  {
+    "id": "015.1-c11",
+    "areas": [
+      "015.1.4"
+    ],
+    "front": "Which command logs Ada in to `build.tuxpixel.example`, and what does it do?",
+    "back": "`ssh ada@build.tuxpixel.example`. It gives you a shell on the server over an encrypted connection; `exit` or Ctrl+D ends the session. The server listens on TCP port 22."
+  },
+  {
+    "id": "015.1-c12",
+    "areas": [
+      "015.1.4"
+    ],
+    "front": "How do you use another SSH port with `ssh` and with `scp`?",
+    "back": "`ssh -p 2222 host` (lower-case) and `scp -P 2222 file host:` (capital). In `scp`, lower-case `-p` means preserve times and modes."
+  },
+  {
+    "id": "015.1-c13",
+    "areas": [
+      "015.1.4"
+    ],
+    "front": "Which command copies `level1.txt` to `/home/ada/` on the build server?",
+    "back": "`scp level1.txt ada@build.tuxpixel.example:/home/ada/`. The remote side is the one with `host:`, and `-r` copies directories."
+  },
+  {
+    "id": "015.1-c14",
+    "areas": [
+      "015.1.4"
+    ],
+    "front": "Where does ssh store the keys of servers you have connected to?",
+    "back": "In `~/.ssh/known_hosts`. If a server’s key changes, ssh warns loudly, because someone might be pretending to be the server."
+  },
+  {
+    "id": "015.1-c15",
+    "areas": [
+      "015.1.5"
+    ],
+    "front": "Which command creates an SSH key pair, and what are the two files called?",
+    "back": "`ssh-keygen`, for example `ssh-keygen -t ed25519`. It writes the private key `~/.ssh/id_ed25519` and the public key `~/.ssh/id_ed25519.pub`."
+  },
+  {
+    "id": "015.1-c16",
+    "areas": [
+      "015.1.5"
+    ],
+    "front": "Which SSH key may you share, and where does it go?",
+    "back": "The public key. It goes on its own line in `~/.ssh/authorized_keys` of the account you log in to on the server. The private key never leaves your computer."
+  },
+  {
+    "id": "015.1-c17",
+    "areas": [
+      "015.1.5"
+    ],
+    "front": "Which helper copies your public key to a server?",
+    "back": "`ssh-copy-id ada@build.tuxpixel.example`. Afterwards you log in without the account password (or with the key’s passphrase, if you set one)."
+  },
+  {
+    "id": "015.1-c18",
+    "areas": [
+      "015.1.5"
+    ],
+    "front": "Which permissions does `sshd` expect for `~/.ssh` and `authorized_keys`?",
+    "back": "Usually `700` for the directory and `600` for the file. If other users can write to them, sshd ignores the file."
+  },
+  {
+    "id": "015.1-c19",
+    "areas": [
+      "015.1.1",
+      "015.1.2"
+    ],
+    "front": "Which command shows your UID, GID and groups?",
+    "back": "`id`. It tells you whether you are root, a standard user or a system user, and which groups you belong to."
+  }
+]

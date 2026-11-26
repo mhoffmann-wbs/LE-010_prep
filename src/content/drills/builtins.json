@@ -1,0 +1,129 @@
+{
+  "id": "builtins",
+  "kind": "sort",
+  "title": "Builtin or external program?",
+  "description": "Sort commands by whether bash runs them itself or starts a program file from disk.",
+  "objectives": [
+    "012.1"
+  ],
+  "buckets": [
+    {
+      "id": "builtin",
+      "label": "Shell builtin (bash runs it)"
+    },
+    {
+      "id": "external",
+      "label": "External program (a file on disk)"
+    }
+  ],
+  "items": [
+    {
+      "id": "builtins-01",
+      "text": "`cd`",
+      "bucket": "builtin",
+      "why": "`type -a cd` prints only \"cd is a shell builtin\". It has to be one, since a separate program could change only its own directory, never the shell’s."
+    },
+    {
+      "id": "builtins-02",
+      "text": "`ls`",
+      "bucket": "external",
+      "why": "`type -a ls` shows only paths: `/usr/bin/ls` and `/bin/ls`. It is a program file found through `PATH`."
+    },
+    {
+      "id": "builtins-03",
+      "text": "`pwd`",
+      "bucket": "builtin",
+      "why": "`type -a pwd` lists the shell builtin first, then `/usr/bin/pwd` and `/bin/pwd`. It exists in both forms, but bash runs the builtin."
+    },
+    {
+      "id": "builtins-04",
+      "text": "`cat`",
+      "bucket": "external",
+      "why": "`type -a cat` shows only `/usr/bin/cat` and `/bin/cat`. There is no builtin."
+    },
+    {
+      "id": "builtins-05",
+      "text": "`echo`",
+      "bucket": "builtin",
+      "why": "`type -a echo` lists the builtin first and then `/usr/bin/echo` and `/bin/echo`. It exists in both forms, but typing `echo` runs bash’s builtin."
+    },
+    {
+      "id": "builtins-06",
+      "text": "`grep`",
+      "bucket": "external",
+      "why": "`type -a grep` shows only paths, `/usr/bin/grep` and `/bin/grep`."
+    },
+    {
+      "id": "builtins-07",
+      "text": "`type`",
+      "bucket": "builtin",
+      "why": "`type` reports \"type is a shell builtin\". It has to be part of the shell, since the shell is what knows how commands are resolved."
+    },
+    {
+      "id": "builtins-08",
+      "text": "`mkdir`",
+      "bucket": "external",
+      "why": "`type -a mkdir` shows only `/usr/bin/mkdir` and `/bin/mkdir`."
+    },
+    {
+      "id": "builtins-09",
+      "text": "`export`",
+      "bucket": "builtin",
+      "why": "`export` says \"export is a shell builtin\". It changes the shell’s own variables, which no separate program could do."
+    },
+    {
+      "id": "builtins-10",
+      "text": "`which`",
+      "bucket": "external",
+      "why": "On Debian, `type -a which` shows `/usr/bin/which` and `/bin/which`. It is a separate program, so unlike `type` it does not know about builtins."
+    },
+    {
+      "id": "builtins-11",
+      "text": "`history`",
+      "bucket": "builtin",
+      "why": "`history` is \"a shell builtin\": it shows the command history that the running bash keeps."
+    },
+    {
+      "id": "builtins-12",
+      "text": "`man`",
+      "bucket": "external",
+      "why": "`type -a man` shows `/usr/bin/man` and `/bin/man`. It is a program that opens manual pages."
+    },
+    {
+      "id": "builtins-13",
+      "text": "`alias`",
+      "bucket": "builtin",
+      "why": "`alias` is \"a shell builtin\", since aliases are part of the shell’s own state."
+    },
+    {
+      "id": "builtins-14",
+      "text": "`sudo`",
+      "bucket": "external",
+      "why": "`type -a sudo` shows `/usr/bin/sudo` and `/bin/sudo`. It is a program that starts another command with other rights."
+    },
+    {
+      "id": "builtins-15",
+      "text": "`exit`",
+      "bucket": "builtin",
+      "why": "`exit` is \"a shell builtin\": it ends the shell itself."
+    },
+    {
+      "id": "builtins-16",
+      "text": "`tar`",
+      "bucket": "external",
+      "why": "`type -a tar` shows `/usr/bin/tar` and `/bin/tar`. It is a separate program."
+    },
+    {
+      "id": "builtins-17",
+      "text": "`read`",
+      "bucket": "builtin",
+      "why": "`read` is \"a shell builtin\" that reads a line into a shell variable. A separate program could not set the shell’s variables."
+    },
+    {
+      "id": "builtins-18",
+      "text": "`mv`",
+      "bucket": "external",
+      "why": "`type -a mv` shows `/usr/bin/mv` and `/bin/mv`."
+    }
+  ]
+}

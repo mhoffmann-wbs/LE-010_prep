@@ -1,0 +1,233 @@
+[
+  {
+    "id": "011.1-c01",
+    "areas": [
+      "011.1.1"
+    ],
+    "front": "In the strict sense, what is Linux, and what is userspace?",
+    "back": "Linux is only the kernel. Userspace is everything else you touch: the shell, `ls`, editors, the desktop, libraries and servers."
+  },
+  {
+    "id": "011.1-c02",
+    "areas": [
+      "011.1.1"
+    ],
+    "front": "What does the kernel do, and how do programs reach it?",
+    "back": "It talks to the hardware (CPU, memory, disks, network cards) and decides which program runs when. Programs ask it for work through system calls."
+  },
+  {
+    "id": "011.1-c03",
+    "areas": [
+      "011.1.1",
+      "011.1.2"
+    ],
+    "front": "Which parts together make up a Linux distribution?",
+    "back": "A kernel, userspace software, an installer, a package manager and a release policy (how often new versions appear and how long they get updates)."
+  },
+  {
+    "id": "011.1-c04",
+    "areas": [
+      "011.1.1"
+    ],
+    "front": "Mira runs `uname -s` and then `uname -o`. What do the two commands ask for?",
+    "back": "`uname -s` prints the kernel name, `Linux`. `uname -o` prints the operating system, `GNU/Linux`. The difference is exactly kernel versus whole system."
+  },
+  {
+    "id": "011.1-c05",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "Which family do Debian, Ubuntu and Raspberry Pi OS belong to, and which package tools do they use?",
+    "back": "The Debian-based family. Packages are `.deb` files, handled by `dpkg` (low level) and `apt` (high level)."
+  },
+  {
+    "id": "011.1-c06",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "Name the members of the Enterprise Linux family and its package tools.",
+    "back": "RHEL, AlmaLinux, Rocky Linux, Fedora Linux and CentOS Stream. Packages are `.rpm` files, handled by `rpm` and `dnf`."
+  },
+  {
+    "id": "011.1-c07",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "Which distributions are SUSE-based, and which tool installs their packages?",
+    "back": "SUSE Linux Enterprise (SLE), openSUSE Leap and openSUSE Tumbleweed. Packages are `.rpm` files; the high-level tool is `zypper`."
+  },
+  {
+    "id": "011.1-c08",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t4"
+    ],
+    "front": "Ada wants a very small container image. Which distribution, using which libc, shell tools and package manager, is popular for that?",
+    "back": "Alpine Linux. It uses musl instead of the GNU C library, BusyBox for its basic tools and `apk` for packages (`.apk` files)."
+  },
+  {
+    "id": "011.1-c09",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "Put Fedora, CentOS Stream and RHEL in order from newest software to commercial product.",
+    "back": "Fedora comes first (upstream), CentOS Stream sits between, and RHEL is the commercial product you pay support for."
+  },
+  {
+    "id": "011.1-c10",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "What are AlmaLinux and Rocky Linux?",
+    "back": "Free, community-driven distributions that aim to be compatible with RHEL, so software built for RHEL runs on them. They suit people who don’t need Red Hat’s paid support."
+  },
+  {
+    "id": "011.1-c11",
+    "areas": [
+      "011.1.3"
+    ],
+    "front": "In Debian, what is the difference between stable, testing and unstable?",
+    "back": "Stable is the tested release for real work. Testing holds packages being prepared for the next stable. Unstable (nicknamed `sid`) is where new software arrives first."
+  },
+  {
+    "id": "011.1-c12",
+    "areas": [
+      "011.1.3"
+    ],
+    "front": "What is a rolling release? Name two examples.",
+    "back": "A release with no version numbers to upgrade between: you keep updating and always get the newest packages. Examples: openSUSE Tumbleweed and Alpine `edge`."
+  },
+  {
+    "id": "011.1-c13",
+    "areas": [
+      "011.1.3"
+    ],
+    "front": "How often does Ubuntu release, and what makes an LTS release special?",
+    "back": "A new release comes every six months. Every two years one is an LTS (Long-Term Support) release with five years of standard security maintenance."
+  },
+  {
+    "id": "011.1-c14",
+    "areas": [
+      "011.1.3"
+    ],
+    "front": "Does a \"stable\" release mean it never crashes?",
+    "back": "No. Stable means it changes little apart from security and bug fixes. It trades new features for predictability, which is why Ada picks it for the build server."
+  },
+  {
+    "id": "011.1-c15",
+    "areas": [
+      "011.1.3"
+    ],
+    "front": "What is the difference between an alpha and a beta version?",
+    "back": "Both are early test versions released before a version is declared ready. Alpha is rougher and earlier than beta."
+  },
+  {
+    "id": "011.1-c16",
+    "areas": [
+      "011.1.3"
+    ],
+    "front": "Through which Debian lines does new software move before it ends up in a stable release?",
+    "back": "It enters unstable, moves to testing, and the testing line becomes the next stable release."
+  },
+  {
+    "id": "011.1-c17",
+    "areas": [
+      "011.1.4"
+    ],
+    "front": "Jonas says his Android phone runs Linux, so he can `apt install` things. Is that right?",
+    "back": "Half right. Android uses the Linux kernel, but its userspace is not GNU: apps run in Android’s own runtime, and there is no `apt` and usually no ordinary shell."
+  },
+  {
+    "id": "011.1-c18",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "Which distribution is the official system for Raspberry Pi boards, and what was it called before May 2020?",
+    "back": "Raspberry Pi OS, based on Debian. It was called Raspbian before the Raspberry Pi Foundation renamed it."
+  },
+  {
+    "id": "011.1-c19",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.vt3"
+    ],
+    "front": "Which distributions did the 010-160 exam list besides the families above, and which family is Linux Mint in?",
+    "back": "Linux Mint (a beginner-friendly desktop based on Ubuntu and Debian, so Debian family), CentOS, Scientific Linux, Red Hat, SUSE and Raspbian."
+  },
+  {
+    "id": "011.1-c20",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "What happened to CentOS Linux, and what took over its job?",
+    "back": "The CentOS Project ended CentOS Linux (version 8 on 31 December 2021, version 7 on 30 June 2024). CentOS Stream continues the name; AlmaLinux and Rocky Linux became the free RHEL-compatible choices."
+  },
+  {
+    "id": "011.1-c21",
+    "areas": [
+      "011.1.v1"
+    ],
+    "front": "What is an embedded system? Why is Linux popular for it?",
+    "back": "A small computer built into a device with one job, such as a router, TV or car dashboard. Linux is free, can be shrunk down and runs on many processor types."
+  },
+  {
+    "id": "011.1-c22",
+    "areas": [
+      "011.1.v1"
+    ],
+    "front": "Give three examples of embedded Linux, and say what the Raspberry Pi is.",
+    "back": "A router, a TV and a smart thermostat. The Raspberry Pi is a general-purpose board that is a common base for embedded projects, like TuxPixel’s wall status screen."
+  },
+  {
+    "id": "011.1-c23",
+    "areas": [
+      "011.1.v2"
+    ],
+    "front": "What does \"Linux in the cloud\" mean?",
+    "back": "Companies rent computing power (virtual servers, storage, databases) over the internet instead of buying machines. You choose a Linux image, start the server in minutes and pay for the time it runs."
+  },
+  {
+    "id": "011.1-c24",
+    "areas": [
+      "011.1.v2"
+    ],
+    "front": "Which operating system do most rented cloud servers run?",
+    "back": "Linux. You pick a distribution as the image when you create the server."
+  },
+  {
+    "id": "011.1-c25",
+    "areas": [
+      "011.1.v1"
+    ],
+    "front": "Why do users of an embedded Linux device often not know Linux is inside?",
+    "back": "The device has one fixed job and no visible desktop or shell. Linux is just the free, trimmed-down system underneath."
+  },
+  {
+    "id": "011.1-c26",
+    "areas": [
+      "011.1.v2"
+    ],
+    "front": "Why would Ada start a cloud server instead of buying a machine?",
+    "back": "Cloud servers are rented over the internet: they start in minutes, you pay for the time they run, and you can remove them when done."
+  },
+  {
+    "id": "011.1-c27",
+    "areas": [
+      "011.1.4"
+    ],
+    "front": "What does Android use from Linux, and what does it not use?",
+    "back": "It uses the Linux kernel, built from upstream long-term-support kernels plus extra patches. It doesn’t use the usual GNU userspace."
+  },
+  {
+    "id": "011.1-c28",
+    "areas": [
+      "011.1.4"
+    ],
+    "front": "Why is a typical Android phone not a Linux distribution in the desktop sense?",
+    "back": "Its userspace is Android’s own: apps run in Android’s runtime, there is no package manager like `apt` and usually no ordinary shell for the user."
+  }
+]

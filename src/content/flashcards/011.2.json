@@ -1,0 +1,257 @@
+[
+  {
+    "id": "011.2-c01",
+    "areas": [
+      "011.2.1"
+    ],
+    "front": "Jonas needs to paint pixel sprites, and Mira needs a vector logo that stays sharp on a poster. Which open source programs fit?",
+    "back": "GIMP for photo and pixel (raster) editing; Inkscape for vector graphics, whose shapes scale without getting blurry."
+  },
+  {
+    "id": "011.2-c02",
+    "areas": [
+      "011.2.1"
+    ],
+    "front": "Which open source programs are an office suite, an email client and a web browser?",
+    "back": "LibreOffice (documents, spreadsheets, presentations), Thunderbird (email, calendar and news) and Firefox."
+  },
+  {
+    "id": "011.2-c03",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "front": "What is the difference between Chromium and Chrome?",
+    "back": "Chromium is the open source browser. Chrome is Google’s browser built on it, with some proprietary parts added."
+  },
+  {
+    "id": "011.2-c04",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "front": "What is VSCodium?",
+    "back": "A build of the open source code behind Visual Studio Code, without Microsoft’s added branding and tracking. It is a code editor."
+  },
+  {
+    "id": "011.2-c05",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "front": "What are VLC and GPG (GnuPG) for?",
+    "back": "VLC plays almost any audio or video file. GPG encrypts and signs files and emails, and is a command line tool."
+  },
+  {
+    "id": "011.2-c06",
+    "areas": [
+      "011.2.2"
+    ],
+    "front": "Which programs are a media center, a video-meeting tool, a classroom web-conferencing tool and a learning platform?",
+    "back": "Kodi (media center), Jitsi (video meetings), BigBlueButton (virtual classrooms) and Moodle (courses, quizzes, grades)."
+  },
+  {
+    "id": "011.2-c07",
+    "areas": [
+      "011.2.2"
+    ],
+    "front": "Is Git a web application? How do GitLab, Forgejo and Gitea relate to it?",
+    "back": "No. Git is the command line tool that tracks changes to source code. GitLab, Forgejo and Gitea are web services built around Git repositories."
+  },
+  {
+    "id": "011.2-c08",
+    "areas": [
+      "011.2.3"
+    ],
+    "front": "Name two web servers and one common extra job of NGINX.",
+    "back": "Apache HTTPD and NGINX. NGINX is also often used as a reverse proxy in front of other programs."
+  },
+  {
+    "id": "011.2-c09",
+    "areas": [
+      "011.2.3"
+    ],
+    "front": "Which are the database servers in the exam list, and how are MariaDB and MySQL related?",
+    "back": "MariaDB, MySQL and PostgreSQL. MariaDB started as a fork of MySQL."
+  },
+  {
+    "id": "011.2-c10",
+    "areas": [
+      "011.2.3"
+    ],
+    "front": "NFS or Samba: which shares files with Linux machines, and which with Windows?",
+    "back": "NFS (Network File System) shares directories between Unix and Linux machines. Samba shares files and printers with Windows computers using their protocols."
+  },
+  {
+    "id": "011.2-c11",
+    "areas": [
+      "011.2.3"
+    ],
+    "front": "What do Nextcloud and ownCloud give you?",
+    "back": "Your own file sync and sharing \"cloud\", like Dropbox, with calendars and contacts, running on your own server."
+  },
+  {
+    "id": "011.2-c12",
+    "areas": [
+      "011.2.3"
+    ],
+    "front": "What does LAMP stand for?",
+    "back": "Linux, Apache, MariaDB or MySQL, and PHP: a well-known stack for running a website."
+  },
+  {
+    "id": "011.2-c13",
+    "areas": [
+      "011.2.4"
+    ],
+    "front": "What is the difference between compiled and interpreted languages? Give examples.",
+    "back": "Compiled languages (C, C++, Rust, Go) are translated into a machine-code program before running. Interpreted ones (Python, PHP, JavaScript, shell) are read by an interpreter. Java compiles to bytecode for a virtual machine."
+  },
+  {
+    "id": "011.2-c14",
+    "areas": [
+      "011.2.4"
+    ],
+    "front": "Which language is Linux itself mostly written in, and which memory-safe systems language is used more and more near the kernel?",
+    "back": "C is the language of Linux itself. Rust is the systems language with strong memory safety that is used more and more near the kernel."
+  },
+  {
+    "id": "011.2-c15",
+    "areas": [
+      "011.2.4"
+    ],
+    "front": "Which languages are typical for browsers, for server-side web pages like WordPress and Moodle, and for network services created at Google?",
+    "back": "JavaScript runs in browsers (and on servers through Node.js). PHP does server-side pages. Go is the fast, simple language from Google for network services and tools."
+  },
+  {
+    "id": "011.2-c16",
+    "areas": [
+      "011.2.4"
+    ],
+    "terms": [
+      "011.2.vt4"
+    ],
+    "front": "Which two extra languages did the 010-160 list include, and what are they?",
+    "back": "Perl, an older scripting language popular for text processing and system tasks, and shell (usually Bash), the command language of the terminal."
+  },
+  {
+    "id": "011.2-c17",
+    "areas": [
+      "011.2.5"
+    ],
+    "front": "What is the difference between a package and a repository?",
+    "back": "A package is one file with a program, its data files and metadata (name, version, dependencies). A repository is a server holding many packages with an index the package manager downloads."
+  },
+  {
+    "id": "011.2-c18",
+    "areas": [
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "front": "What is a dependency, and who resolves it for you?",
+    "back": "A dependency is another package a program needs, such as a library. The package manager resolves it, so installing one program also installs what it needs."
+  },
+  {
+    "id": "011.2-c19",
+    "areas": [
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "front": "Why can you trust software from your distribution’s repository?",
+    "back": "The distribution runs the official repositories and signs each package, so your system can check where it came from."
+  },
+  {
+    "id": "011.2-c20",
+    "areas": [
+      "011.2.5",
+      "011.2.v1"
+    ],
+    "front": "Why do you normally install software from repositories instead of downloading installers?",
+    "back": "One command installs, updates and removes software, resolves dependencies, and can update everything at once."
+  },
+  {
+    "id": "011.2-c21",
+    "areas": [
+      "011.2.6",
+      "011.2.v1"
+    ],
+    "front": "What is the difference between a low-level and a high-level package tool?",
+    "back": "The low-level tool (`dpkg`, `rpm`) handles one package file and fetches nothing. The high-level tool (`apt`, `dnf`, `zypper`) talks to repositories, downloads what is needed and resolves dependencies."
+  },
+  {
+    "id": "011.2-c22",
+    "areas": [
+      "011.2.6"
+    ],
+    "front": "Which package tools belong to Debian-based, Enterprise Linux, SUSE-based and Alpine systems?",
+    "back": "Debian-based: `dpkg`, `apt`, `apt-get`. Enterprise Linux: `rpm`, `dnf`. SUSE: `rpm`, `zypper`. Alpine: `apk`."
+  },
+  {
+    "id": "011.2-c23",
+    "areas": [
+      "011.2.6"
+    ],
+    "front": "What is the difference between `apt` and `apt-get`?",
+    "back": "`apt` is the friendlier, newer front end for people at the keyboard. `apt-get` is the older one with a very stable interface, which scripts often use."
+  },
+  {
+    "id": "011.2-c24",
+    "areas": [
+      "011.2.6"
+    ],
+    "front": "Mira downloads a `.deb` file and installs it with `dpkg`. Why might it fail where `apt` would work?",
+    "back": "`dpkg` installs one package file and does not fetch dependencies. `apt` downloads the packages it needs from the repository."
+  },
+  {
+    "id": "011.2-c25",
+    "areas": [
+      "011.2.6"
+    ],
+    "front": "Which commands refresh the package list, install `gimp` and remove it again on Debian?",
+    "back": "`sudo apt update`, `sudo apt install gimp` and `sudo apt remove gimp`. They need administrator rights, hence `sudo`."
+  },
+  {
+    "id": "011.2-c26",
+    "areas": [
+      "011.2.6"
+    ],
+    "front": "Which command lists installed packages on Debian, and which shows the package a file belongs to?",
+    "back": "`dpkg -l` lists installed packages. `dpkg -S /bin/ls` shows the owner of a file: `coreutils: /bin/ls`."
+  },
+  {
+    "id": "011.2-c27",
+    "areas": [
+      "011.2.6",
+      "011.2.v1"
+    ],
+    "terms": [
+      "011.2.vt5"
+    ],
+    "front": "Which package tool did the 010-160 exam list instead of `dnf`?",
+    "back": "`yum`, the Red Hat family’s high-level tool before `dnf` replaced it. It does the same job (`yum install gimp`)."
+  },
+  {
+    "id": "011.2-c28",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.vt1"
+    ],
+    "front": "Which office suite did the 010-160 list name next to LibreOffice, and how are they related?",
+    "back": "OpenOffice.org, the older suite from which LibreOffice was forked. It lives on as Apache OpenOffice."
+  },
+  {
+    "id": "011.2-c29",
+    "areas": [
+      "011.2.2"
+    ],
+    "front": "What is a web application?",
+    "back": "A program that runs on a server and that you use in your browser, so nothing is installed on your computer. Moodle, Jitsi and GitLab are examples."
+  }
+]

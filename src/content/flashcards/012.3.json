@@ -1,0 +1,219 @@
+[
+  {
+    "id": "012.3-c01",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "What is the root directory, and how does the Linux tree differ from Windows drive letters?",
+    "back": "The root directory is `/`, the top of one single tree. Every file on every disk and USB stick hangs below it, instead of separate drive letters."
+  },
+  {
+    "id": "012.3-c02",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "What does `pwd` print?",
+    "back": "The current working directory, for example `/home/mira`."
+  },
+  {
+    "id": "012.3-c03",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "What do `ls -a` and `ls -A` show?",
+    "back": "`-a` shows hidden names including `.` and `..`. `-A` (almost all) shows hidden names without `.` and `..`."
+  },
+  {
+    "id": "012.3-c04",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "Which option makes `ls -l` show sizes like 4.0K or 12M?",
+    "back": "`-h` (human-readable), combined with `-l`."
+  },
+  {
+    "id": "012.3-c05",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "What does `ls -R` do, and how does it differ from `cp -r`?",
+    "back": "`ls -R` lists a directory and everything below it, recursively. Note the capital R: `cp -r` and `rm -r` use a lower-case r."
+  },
+  {
+    "id": "012.3-c06",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "What does `ls -d` do?",
+    "back": "It lists a directory itself instead of its contents. It is often combined with `-l`, as in `ls -ld projects`, to see the directory’s own details."
+  },
+  {
+    "id": "012.3-c07",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "What do `ls -F`, `ls -t` and `ls -r` do?",
+    "back": "`-F` marks types (`/` for directories, `*` for programs). `-t` sorts by modification time, newest first. `-r` reverses the sort order."
+  },
+  {
+    "id": "012.3-c08",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "In `ls -l` output, what does the first letter of each line tell you?",
+    "back": "The type: `d` for a directory, `-` for an ordinary file and `l` for a symbolic link."
+  },
+  {
+    "id": "012.3-c09",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "Does Linux decide what a file is by its extension?",
+    "back": "No. `README.md` ends in `.md` only so people and editors know it is Markdown. To Linux it is just a name."
+  },
+  {
+    "id": "012.3-c10",
+    "areas": [
+      "012.3.2"
+    ],
+    "front": "What makes a file hidden on Linux?",
+    "back": "Only a leading dot in its name, such as `.bashrc`. There is no special attribute. To hide a file, rename it with a leading dot."
+  },
+  {
+    "id": "012.3-c11",
+    "areas": [
+      "012.3.2"
+    ],
+    "front": "Mira’s `ls` doesn’t show `.bashrc`. Which command shows it?",
+    "back": "`ls -a` (or `ls -A`). Plain `ls` skips every name that starts with a dot."
+  },
+  {
+    "id": "012.3-c12",
+    "areas": [
+      "012.3.2"
+    ],
+    "front": "Which hidden files hold Mira’s shell settings in her home directory?",
+    "back": "`.bashrc`, `.profile` and `.bash_logout`. Programs use hidden names for settings so home doesn’t fill with clutter."
+  },
+  {
+    "id": "012.3-c13",
+    "areas": [
+      "012.3.3"
+    ],
+    "front": "Where do home directories live, and where is root’s?",
+    "back": "Ordinary users’ homes are under `/home`, such as `/home/mira`. The administrator root’s home is `/root`."
+  },
+  {
+    "id": "012.3-c14",
+    "areas": [
+      "012.3.3"
+    ],
+    "front": "What do `~`, `~/notes.txt` and `~jonas` stand for?",
+    "back": "`~` is your own home directory, `~/notes.txt` is that file in it, and `~jonas` is Jonas’s home, whoever types it."
+  },
+  {
+    "id": "012.3-c15",
+    "areas": [
+      "012.3.3"
+    ],
+    "front": "Who replaces `~` by the home path: the shell or the command?",
+    "back": "The shell, before the command runs. `echo` only ever sees the full paths."
+  },
+  {
+    "id": "012.3-c16",
+    "areas": [
+      "012.3.3"
+    ],
+    "front": "Which three forms of `cd` take you to your home directory, and what does `cd -` do?",
+    "back": "`cd` with no path and `cd ~` go home. `cd -` returns to the directory you were in before, and `cd /` goes to the root."
+  },
+  {
+    "id": "012.3-c17",
+    "areas": [
+      "012.3.4"
+    ],
+    "front": "What is the difference between an absolute and a relative path?",
+    "back": "An absolute path starts with `/` and means the same wherever you are. A relative path starts from your current directory."
+  },
+  {
+    "id": "012.3-c18",
+    "areas": [
+      "012.3.4"
+    ],
+    "front": "What do `.` and `..` mean?",
+    "back": "`.` is the current directory and `..` is the parent, one level up. `../..` is two levels up, and the parent of `/` is `/` itself."
+  },
+  {
+    "id": "012.3-c19",
+    "areas": [
+      "012.3.4"
+    ],
+    "front": "Mira is in `/home/mira/projects/pixel-raiders/src`. Where does `cd ../docs` take her?",
+    "back": "To `/home/mira/projects/pixel-raiders/docs`: up one level, then into `docs`."
+  },
+  {
+    "id": "012.3-c20",
+    "areas": [
+      "012.3.1",
+      "012.3.4"
+    ],
+    "front": "Why is `cd` built into the shell instead of being a program?",
+    "back": "A separate program can’t change the current directory of the shell that started it."
+  },
+  {
+    "id": "012.3-c21",
+    "areas": [
+      "012.3.5"
+    ],
+    "front": "How does `find` differ from `ls`, and what is its basic pattern?",
+    "back": "`ls` shows one directory; `find` walks a whole tree and prints each path that matches your tests: `find WHERE TESTS`."
+  },
+  {
+    "id": "012.3-c22",
+    "areas": [
+      "012.3.5"
+    ],
+    "front": "Why must you put `*` patterns in quotes with `find -name`?",
+    "back": "So `find` gets the `*` itself and the shell doesn’t expand it first: `find projects -name \"*.md\"`."
+  },
+  {
+    "id": "012.3-c23",
+    "areas": [
+      "012.3.5"
+    ],
+    "front": "What is the difference between `-name` and `-iname`?",
+    "back": "`-name` matches case-sensitively. `-iname` ignores upper and lower case, so `-iname \"readme*\"` finds `README.md` too."
+  },
+  {
+    "id": "012.3-c24",
+    "areas": [
+      "012.3.5"
+    ],
+    "front": "What do `-type f` and `-type d` select?",
+    "back": "`-type f` selects ordinary files only and `-type d` directories only."
+  },
+  {
+    "id": "012.3-c25",
+    "areas": [
+      "012.3.5"
+    ],
+    "front": "How do you list every directory called `docs` below the current directory?",
+    "back": "`find . -type d -name docs`."
+  },
+  {
+    "id": "012.3-c26",
+    "areas": [
+      "012.3.5"
+    ],
+    "front": "Does `find ~ -name \"*.c\"` print relative or absolute paths?",
+    "back": "Absolute, such as `/home/mira/projects/pixel-raiders/src/main.c`, since `~` expands to an absolute path. `find` prints paths in the form you gave."
+  },
+  {
+    "id": "012.3-c27",
+    "areas": [
+      "012.3.5"
+    ],
+    "front": "What does `find projects` do with no tests?",
+    "back": "It lists everything below `projects`."
+  }
+]

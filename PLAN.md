@@ -185,7 +185,7 @@ Each simulator has "For the exam" takeaways and "Now you try" bank items, as in 
 Decks are data. Card ids are stored in progress, so append and never renumber. Best scores and misses are kept.
 
 ### 6e. Flashcards (`/explore/flashcards`)
-Leitner boxes 0–5 with Again/Good/Easy and intervals of 0/1/3/7/16/35 days, ported from AIF. Built-in cards are at least 2 per key knowledge area, giving about 250 cards. Learners can make their own decks and share them as validated JSON files.
+Leitner boxes 0–5 with Again/Good/Easy and intervals of 0/1/3/7/16/35 days, ported from AIF. Built-in cards are at least 2 per key knowledge area (a test enforces it); there are 434. Learners can make their own decks and share them as validated JSON files.
 
 ## 7. Architecture
 
@@ -248,6 +248,9 @@ Scripts:
    - 25 terminal exercises over the 10 hands-on objectives, at `/exercises` and `/exercises/:id`: the fixture is applied in the learner's own terminal, Check runs the check on that machine (`VmRunner.run(job, { keep: true })`), and Start over restores it. Hints one at a time, and a model solution.
    - `content:verify` proves each check twice (solved: passes; unsolved: fails); `vm:smoke` checks `keep`. Progress v3 records attempts and when each was solved.
    - Checked in headless Chrome, including a phone-width layout. The `/terminal` playground links to them.
-6. **Explore I**: flashcards and drills.
+6. **Explore I: drills and flashcards** (done 2026-11-26):
+   - 8 drill decks (`which-command`, `which-file`, `which-option`, and sorters for licences, distribution families, builtins, paths and devices; 132 cards) at `/explore/drills`, with best scores and replayable misses. Builtins were checked with `type -a` in the guest.
+   - 434 built-in flashcards, at least 3 per key knowledge area of both exams, in one deck per topic filtered by the exam track (cards carry `areas` and, for exam-only material, `terms`). Leitner review, own decks, and deck files to share, ported from AIF. Lessons link to their objective's cards and drills.
+   - Progress v4. Checked in headless Chrome at 360 px.
 7. **Explore II**: transcript capture, the five transcript simulators and the concept simulators.
 8. **Guides and polish**: the cheat sheet, the exam-day guide (format, pacing, price, booking via Pearson VUE/OnVUE), a mobile pass at 360 px, and accessibility (the terminal must work with a screen reader: xterm's screen-reader mode and a plain-text output mirror).

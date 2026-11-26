@@ -1,0 +1,81 @@
+{
+  "id": "devices",
+  "kind": "sort",
+  "title": "Physical or pseudo device?",
+  "description": "Sort device files by whether real hardware stands behind them or only kernel code.",
+  "objectives": [
+    "014.2"
+  ],
+  "buckets": [
+    {
+      "id": "physical",
+      "label": "Physical hardware"
+    },
+    {
+      "id": "pseudo",
+      "label": "Pseudo-device (no hardware)"
+    }
+  ],
+  "items": [
+    {
+      "id": "devices-01",
+      "text": "`/dev/sda`",
+      "bucket": "physical",
+      "why": "The first SATA, SCSI or USB disk: a real storage device."
+    },
+    {
+      "id": "devices-02",
+      "text": "`/dev/null`",
+      "bucket": "pseudo",
+      "why": "No hardware at all: reading gives nothing at once and everything written is thrown away."
+    },
+    {
+      "id": "devices-03",
+      "text": "`/dev/nvme0n1`",
+      "bucket": "physical",
+      "why": "The first NVMe SSD, a real drive."
+    },
+    {
+      "id": "devices-04",
+      "text": "`/dev/zero`",
+      "bucket": "pseudo",
+      "why": "Only kernel code: reading gives an endless stream of zero bytes."
+    },
+    {
+      "id": "devices-05",
+      "text": "`/dev/sr0`",
+      "bucket": "physical",
+      "why": "The first optical drive (CD, DVD or Blu-ray)."
+    },
+    {
+      "id": "devices-06",
+      "text": "`/dev/urandom`",
+      "bucket": "pseudo",
+      "why": "It produces random bytes in software, with no device behind it."
+    },
+    {
+      "id": "devices-07",
+      "text": "`/dev/sda1`",
+      "bucket": "physical",
+      "why": "The first partition on the disk `sda`. It is a part of a real disk."
+    },
+    {
+      "id": "devices-08",
+      "text": "`/dev/sdb`",
+      "bucket": "physical",
+      "why": "Disks get letters in the order the kernel finds them, so a USB stick plugged in later can become `sdb`."
+    },
+    {
+      "id": "devices-09",
+      "text": "`/dev/nvme0n1p2`",
+      "bucket": "physical",
+      "why": "The second partition of the first NVMe drive."
+    },
+    {
+      "id": "devices-10",
+      "text": "The device file you redirect to with `command > /dev/null` to silence output.",
+      "bucket": "pseudo",
+      "why": "It is the \"black hole\" `/dev/null`: no hardware, only the kernel throwing the data away."
+    }
+  ]
+}

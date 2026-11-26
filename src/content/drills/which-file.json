@@ -1,0 +1,238 @@
+{
+  "id": "which-file",
+  "kind": "which",
+  "title": "Which file or directory?",
+  "description": "Match a question about the system to the file or directory that answers it.",
+  "objectives": [
+    "012.3",
+    "014.1",
+    "014.2",
+    "014.3",
+    "014.4",
+    "015.1",
+    "015.2",
+    "015.4"
+  ],
+  "cards": [
+    {
+      "id": "which-file-01",
+      "prompt": "Mira wants the list of user accounts with their user IDs, home directories and login shells.",
+      "answer": "`/etc/passwd`",
+      "distractors": [
+        "`/etc/shadow`",
+        "`/etc/group`",
+        "`/etc/sudoers`"
+      ],
+      "why": "`/etc/passwd` has one line per account: name, `x`, UID, GID, comment, home and shell. It is readable by everyone."
+    },
+    {
+      "id": "which-file-02",
+      "prompt": "Which file keeps the password hashes, readable only by root?",
+      "answer": "`/etc/shadow`",
+      "distractors": [
+        "`/etc/passwd`",
+        "`/etc/group`",
+        "`/etc/login.defs`"
+      ],
+      "why": "Since the hashes moved out of `/etc/passwd` (where an `x` stands now), they live in `/etc/shadow` with strict permissions."
+    },
+    {
+      "id": "which-file-03",
+      "prompt": "Where does Mira find which users are members of the group `artists`?",
+      "answer": "`/etc/group`",
+      "distractors": [
+        "`/etc/passwd`",
+        "`/etc/shadow`",
+        "`/etc/hostname`"
+      ],
+      "why": "`/etc/group` has one line per group: name, `x`, GID and the list of members."
+    },
+    {
+      "id": "which-file-04",
+      "prompt": "Ada wants fixed name-to-address pairs that the system checks before it asks a DNS server.",
+      "answer": "`/etc/hosts`",
+      "distractors": [
+        "`/etc/resolv.conf`",
+        "`/etc/hostname`",
+        "`/etc/nsswitch.conf`"
+      ],
+      "why": "`/etc/hosts` maps names to addresses by hand. `/etc/nsswitch.conf` only sets the order of the lookup sources."
+    },
+    {
+      "id": "which-file-05",
+      "prompt": "Which file lists the DNS servers (`nameserver` lines) that the machine asks?",
+      "answer": "`/etc/resolv.conf`",
+      "distractors": [
+        "`/etc/hosts`",
+        "`/etc/hostname`",
+        "`/etc/nsswitch.conf`"
+      ],
+      "why": "`/etc/resolv.conf` names the DNS servers, one `nameserver` line each. `/etc/hosts` holds fixed pairs instead."
+    },
+    {
+      "id": "which-file-06",
+      "prompt": "Which file holds just the name of this machine?",
+      "answer": "`/etc/hostname`",
+      "distractors": [
+        "`/etc/hosts`",
+        "`/etc/resolv.conf`",
+        "`/etc/os-release`"
+      ],
+      "why": "`/etc/hostname` contains the machine’s name and nothing else. The guest’s name is `tuxpixel`."
+    },
+    {
+      "id": "which-file-07",
+      "prompt": "Mira wants to know which distribution and release this machine runs.",
+      "answer": "`/etc/os-release`",
+      "distractors": [
+        "`/proc/version`",
+        "`/etc/hostname`",
+        "`/boot`"
+      ],
+      "why": "`/etc/os-release` names the distribution and its version. `/proc/version` describes the kernel, not the distribution."
+    },
+    {
+      "id": "which-file-08",
+      "prompt": "Which file describes the processor: model, cores and speed?",
+      "answer": "`/proc/cpuinfo`",
+      "distractors": [
+        "`/proc/meminfo`",
+        "`/proc/uptime`",
+        "`/etc/os-release`"
+      ],
+      "why": "`/proc/cpuinfo` is built by the kernel when you read it, and lists each CPU core. It is not stored on disk."
+    },
+    {
+      "id": "which-file-09",
+      "prompt": "Which file shows the total and free memory, as the kernel sees it?",
+      "answer": "`/proc/meminfo`",
+      "distractors": [
+        "`/proc/cpuinfo`",
+        "`/proc/version`",
+        "`/etc/hostname`"
+      ],
+      "why": "`/proc/meminfo` lists memory figures such as `MemTotal` and `MemFree`. The command `free` reads the same numbers."
+    },
+    {
+      "id": "which-file-10",
+      "prompt": "Where do services such as the build daemon normally write their log files?",
+      "answer": "`/var/log`",
+      "distractors": [
+        "`/etc`",
+        "`/var/tmp`",
+        "`/proc`"
+      ],
+      "why": "`/var/log` holds the logs, for example `syslog` and `auth.log` on Debian. `/etc` holds settings, and `/proc` shows live kernel data."
+    },
+    {
+      "id": "which-file-11",
+      "prompt": "Jonas needs a scratch directory that every user may write to and that is cleared when the machine restarts.",
+      "answer": "`/tmp`",
+      "distractors": [
+        "`/var/tmp`",
+        "`/root`",
+        "`/boot`"
+      ],
+      "why": "`/tmp` is for short-lived files and is emptied at reboot (or sooner). `/var/tmp` keeps its files across reboots."
+    },
+    {
+      "id": "which-file-12",
+      "prompt": "Ada wants a temporary directory whose files must still be there after a reboot.",
+      "answer": "`/var/tmp`",
+      "distractors": [
+        "`/tmp`",
+        "`/var/log`",
+        "`/home`"
+      ],
+      "why": "`/var/tmp` is the temporary directory that survives a reboot. `/tmp` does not promise that."
+    },
+    {
+      "id": "which-file-13",
+      "prompt": "Mira wants to discard the output of a command completely, so she redirects it to a device file.",
+      "answer": "`/dev/null`",
+      "distractors": [
+        "`/dev/zero`",
+        "`/dev/urandom`",
+        "`/tmp`"
+      ],
+      "why": "`/dev/null` throws away everything written to it. `/dev/zero` and `/dev/urandom` are sources: they produce zeros and random bytes when read."
+    },
+    {
+      "id": "which-file-14",
+      "prompt": "Which device file delivers an endless stream of zero bytes when read?",
+      "answer": "`/dev/zero`",
+      "distractors": [
+        "`/dev/null`",
+        "`/dev/urandom`",
+        "`/dev/sda`"
+      ],
+      "why": "`/dev/zero` gives zero bytes forever. `/dev/null` gives nothing at all, and `/dev/urandom` gives random bytes."
+    },
+    {
+      "id": "which-file-15",
+      "prompt": "Which directory holds the kernel and the initial RAM disk that the machine needs to start?",
+      "answer": "`/boot`",
+      "distractors": [
+        "`/dev`",
+        "`/sys`",
+        "`/usr/bin`"
+      ],
+      "why": "`/boot` has the kernel (`vmlinuz-…`), the initial RAM disk and the boot loader’s files."
+    },
+    {
+      "id": "which-file-16",
+      "prompt": "What is the home directory of the administrator account `root`?",
+      "answer": "`/root`",
+      "distractors": [
+        "`/home`",
+        "`/`",
+        "`/etc`"
+      ],
+      "why": "Root’s home is `/root`, outside `/home`. The directory `/` is the top of the whole tree, which is something else again."
+    },
+    {
+      "id": "which-file-17",
+      "prompt": "Which file gets copied into a new user’s home when `useradd -m` creates it, as a template?",
+      "answer": "`/etc/skel`",
+      "distractors": [
+        "`/etc/passwd`",
+        "`/home`",
+        "`/root`"
+      ],
+      "why": "`/etc/skel` holds the default files, such as `.bashrc`, that every new home directory starts with."
+    },
+    {
+      "id": "which-file-18",
+      "prompt": "Where is it configured which users may run commands as root with `sudo`?",
+      "answer": "`/etc/sudoers`",
+      "distractors": [
+        "`/etc/login.defs`",
+        "`/etc/shadow`",
+        "`/etc/hosts`"
+      ],
+      "why": "`/etc/sudoers` holds the rules for `sudo`. On Debian, membership of the group `sudo` is allowed there too."
+    },
+    {
+      "id": "which-file-19",
+      "prompt": "Ada wants to log in to the build server with her key and no password. Which file on the server lists the public keys that are accepted?",
+      "answer": "`~/.ssh/authorized_keys`",
+      "distractors": [
+        "`~/.ssh/known_hosts`",
+        "`~/.ssh/id_ed25519`",
+        "`~/.bashrc`"
+      ],
+      "why": "The server reads `~/.ssh/authorized_keys` of the account you log in to. `known_hosts` is on the client and remembers servers, and `id_ed25519` is the private key."
+    },
+    {
+      "id": "which-file-20",
+      "prompt": "Which directory holds programs meant for the system administrator, such as `fdisk` and `ip`?",
+      "answer": "`/usr/sbin`",
+      "distractors": [
+        "`/usr/bin`",
+        "`/boot`",
+        "`/dev`"
+      ],
+      "why": "The `s` in `sbin` stands for system. On a current Debian, `/sbin` is only a link to `/usr/sbin`."
+    }
+  ]
+}

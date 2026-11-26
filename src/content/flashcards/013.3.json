@@ -1,0 +1,202 @@
+[
+  {
+    "id": "013.3-c01",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What is the first line of a bash script called, and what does it do?",
+    "back": "It is the shebang, `#!/bin/bash`. It tells Linux which interpreter runs the file when you start it directly with `./script.sh`."
+  },
+  {
+    "id": "013.3-c02",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "Why must the shebang name `/bin/bash` and not just `bash`?",
+    "back": "The shebang needs the absolute path of the interpreter, so write `#!/bin/bash`. Any other line starting with `#` is only a comment."
+  },
+  {
+    "id": "013.3-c03",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What is the difference between `bash hello.sh` and `./hello.sh`?",
+    "back": "`bash hello.sh` only needs read permission and ignores the shebang. `./hello.sh` runs the file as a program, which needs the execute bit (`chmod +x`) and uses the shebang."
+  },
+  {
+    "id": "013.3-c04",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "Mira’s new `hello.sh` gives “Permission denied” (status 126) with `./hello.sh`. What is missing?",
+    "back": "The execute permission. Run `chmod +x hello.sh`. A new file isn’t executable, though `bash hello.sh` would work without it."
+  },
+  {
+    "id": "013.3-c05",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "Why does `hello.sh` fail but `./hello.sh` work?",
+    "back": "The shell looks for commands only in the directories of `PATH`, and the current directory isn’t in it. `./` means “the file right here”."
+  },
+  {
+    "id": "013.3-c06",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "How do you set a variable `game` to `Pixel Raiders` in bash, and how do you read it?",
+    "back": "`game=\"Pixel Raiders\"` with no spaces around `=`, then `$game` to read it. The quotes are needed because the value contains a space."
+  },
+  {
+    "id": "013.3-c07",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What does `name = Mira` (with spaces) do in bash?",
+    "back": "It tries to run a command called `name` with the arguments `=` and `Mira`. Setting a variable needs `name=Mira` without spaces."
+  },
+  {
+    "id": "013.3-c08",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What is the difference between `echo \"Built by $who\"` and `echo 'Built by $who'`?",
+    "back": "Double quotes let the shell replace `$who` with its value; single quotes switch the replacement off and print `$who` literally."
+  },
+  {
+    "id": "013.3-c09",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What do `$0`, `$1`, `$#` and `$@` hold in a script?",
+    "back": "`$0` is the script’s name, `$1` the first argument, `$#` the number of arguments and `$@` all arguments. The first argument is `$1`, not `$0`."
+  },
+  {
+    "id": "013.3-c10",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "A script is started as `./args.sh slime bat ghost`. What is `$#` and what is `$2`?",
+    "back": "`$#` is 3 (three arguments) and `$2` is `bat`. An argument that wasn’t given is simply empty."
+  },
+  {
+    "id": "013.3-c11",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What does the exit status of a command mean, and where is it stored?",
+    "back": "0 means success and any other number means some kind of failure. The shell keeps the last command’s status in `$?`; read it at once, because the next command replaces it."
+  },
+  {
+    "id": "013.3-c12",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What does `exit 3` do inside a script?",
+    "back": "It stops the script immediately and returns status 3 to whoever started it. Without `exit`, the script returns the status of its last command."
+  },
+  {
+    "id": "013.3-c13",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "Which exit status does `grep` return when it finds no match?",
+    "back": "1. Status 0 means at least one line matched, and 2 means a real error such as a missing file."
+  },
+  {
+    "id": "013.3-c14",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "Write the layout of an `if` block that tests whether `$1` is a regular file.",
+    "back": "`if [ -f \"$1\" ]; then ... else ... fi`. `fi` closes the block, `else` is optional, and spaces after `[` and before `]` are required."
+  },
+  {
+    "id": "013.3-c15",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What do the tests `-e`, `-f` and `-d` check?",
+    "back": "`-e` is true if the path exists (anything), `-f` if it exists and is a regular file, and `-d` if it exists and is a directory."
+  },
+  {
+    "id": "013.3-c16",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "How do you compare two variables as text in `[ ]`?",
+    "back": "`[ \"$a\" = \"$b\" ]` for equal and `!=` for not equal, with quotes around the variables and spaces around the operator. `[ \"$a\"=\"$b\" ]` is one word and is always true."
+  },
+  {
+    "id": "013.3-c17",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "Write a `for` loop that prints each PNG in `art`.",
+    "back": "`for f in art/*.png; do echo \"$f\"; done`. The shell expands the glob first and the loop runs once per file. It ends with `done`, not `fi`."
+  },
+  {
+    "id": "013.3-c18",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "Which words start and end the body of a `for` loop, and what can the list be?",
+    "back": "`do` starts it and `done` ends it. The list can be words separated by spaces (`for x in a b c`) or a file glob such as `*.png`."
+  },
+  {
+    "id": "013.3-c19",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What does `files=$(ls /home)` do?",
+    "back": "It runs `ls /home` and stores the output in the variable `files`. This is called command substitution."
+  },
+  {
+    "id": "013.3-c20",
+    "areas": [
+      "013.3.1"
+    ],
+    "front": "What does `echo -n` do differently from plain `echo`?",
+    "back": "It leaves out the newline at the end. Plain `echo` prints its arguments followed by a newline."
+  },
+  {
+    "id": "013.3-c21",
+    "areas": [
+      "013.3.v1"
+    ],
+    "front": "On exam 010-160 you must know two terminal text editors. Which two?",
+    "back": "`vi` (usually `vim`) and `nano`. Both are started with the file name, for example `nano hello.sh`."
+  },
+  {
+    "id": "013.3-c22",
+    "areas": [
+      "013.3.v1"
+    ],
+    "front": "How do you save and exit in `nano`?",
+    "back": "`Ctrl+O` writes (saves) the file and `Ctrl+X` exits; `nano` asks whether to save if there are unsaved changes. Key hints are shown at the bottom of the screen."
+  },
+  {
+    "id": "013.3-c23",
+    "areas": [
+      "013.3.v1"
+    ],
+    "front": "You opened `vi` and typing does nothing useful. Why, and which key fixes it?",
+    "back": "`vi` starts in normal mode, where keys are commands. Press `i` to enter insert mode, type your text, and press `Esc` to go back."
+  },
+  {
+    "id": "013.3-c24",
+    "areas": [
+      "013.3.v1"
+    ],
+    "front": "How do you leave `vi` with and without saving?",
+    "back": "Press `Esc`, then `:wq` and Enter to save and quit, or `:q!` and Enter to quit and discard changes. `:q` alone works only when nothing changed."
+  },
+  {
+    "id": "013.3-c25",
+    "areas": [
+      "013.3.v1"
+    ],
+    "front": "Which `vi` commands save the file, delete the current line and search for a word?",
+    "back": "`:w` saves, `dd` deletes the current line in normal mode, and `/word` followed by Enter searches for `word`."
+  }
+]

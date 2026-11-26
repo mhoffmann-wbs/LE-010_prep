@@ -79,6 +79,36 @@ describe('pages', () => {
     expect(screen.getByText(/Hint 1:/)).toBeInTheDocument()
   })
 
+  it('plays a drill round and records it', async () => {
+    expect(await renderAt('/explore')).toHaveTextContent('Explore')
+    await userEvent.click(screen.getByRole('link', { name: 'Drills' }))
+    await screen.findByRole('heading', { level: 1, name: 'Drills' })
+    await userEvent.click(screen.getAllByRole('link', { name: /^Play a round/ })[0]!)
+    const choices = await screen.findByRole('group', { name: 'Choices' })
+    await userEvent.click(choices.querySelector('button')!)
+    expect(screen.getByRole('status')).toHaveTextContent(/Correct|It’s/)
+  })
+
+  it('reviews built-in flashcards and keeps their review state', async () => {
+    expect(await renderAt('/explore/flashcards')).toHaveTextContent('Flashcards')
+    await userEvent.click(screen.getAllByRole('link', { name: /^Review \d+/ })[0]!)
+    await userEvent.click(await screen.findByRole('button', { name: 'Show answer' }))
+    expect(screen.getByRole('region', { name: 'Answer' })).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /^Good/ }))
+    expect(Object.values(getProgress().cards)).toEqual([expect.objectContaining({ box: 1, reviews: 1 })])
+  })
+
+  it('makes an own flashcard deck', async () => {
+    await renderAt('/explore/flashcards')
+    await userEvent.type(screen.getByLabelText('New deck name'), 'Permissions')
+    await userEvent.click(screen.getByRole('button', { name: 'Create deck' }))
+    await userEvent.click(screen.getByRole('link', { name: 'Permissions' }))
+    await userEvent.type(await screen.findByLabelText('Front (the question)'), 'What does `chmod 600` give?')
+    await userEvent.type(screen.getByLabelText('Back (the answer)'), 'rw for the owner only.')
+    await userEvent.click(screen.getByRole('button', { name: 'Add card' }))
+    expect(getProgress().myCards.map((c) => c.back)).toEqual(['rw for the owner only.'])
+  })
+
   it('lists every topic on the practice picker', async () => {
     expect(await renderAt('/practice')).toHaveTextContent('Practice')
     expect(screen.getAllByText(/^Topic 01\d:/)).toHaveLength(5)

@@ -6,6 +6,7 @@ import {
   getProgress,
   importProgress,
   recordAnswer,
+  recordDrillRound,
   recordExerciseCheck,
   recordMockResult,
   reloadProgress,
@@ -66,7 +67,7 @@ describe('progress store', () => {
   it('migrates version 2 (no exercises), keeping the track', () => {
     localStorage.setItem('le010:progress', JSON.stringify({ version: 2, track: '010-160', outputInPractice: true, outputInMock: false, items: {}, mockResults: [], lessonsRead: [] }))
     reloadProgress()
-    expect(getProgress()).toMatchObject({ version: 3, track: '010-160', exercises: {} })
+    expect(getProgress()).toMatchObject({ version: 4, track: '010-160', exercises: {}, cards: {}, decks: [] })
   })
 
   it('counts exercise checks and keeps the first time one passed', () => {
@@ -78,6 +79,13 @@ describe('progress store', () => {
     resetProgress()
     importProgress(file)
     expect(getProgress().exercises['013.1-e01']?.solvedAt).toBe(2)
+  })
+
+  it('keeps the best drill round and the cards still missed', () => {
+    recordDrillRound('d', { correct: 3, total: 4, streak: 2, missed: ['d-01'], hit: ['d-02', 'd-03', 'd-04'] }, 1)
+    recordDrillRound('d', { correct: 1, total: 2, streak: 1, missed: ['d-02'], hit: ['d-01'] }, 2)
+    expect(getProgress().drills.d).toEqual({ rounds: 2, best: 75, bestStreak: 2, lastAt: 2 })
+    expect(getProgress().drillMisses).toEqual(['d-02'])
   })
 
   it('switches the exam track and keeps it', () => {
@@ -104,7 +112,7 @@ describe('progress store', () => {
     expect(getProgress().mockResults).toHaveLength(1)
     expect(() => importProgress('nope')).toThrow(/valid JSON/)
     expect(() => importProgress('{"app":"other","progress":{}}')).toThrow(/LE-010 Prep/)
-    expect(() => importProgress('{"app":"le-010-prep","progress":{"version":4}}')).toThrow(/newer version/)
+    expect(() => importProgress('{"app":"le-010-prep","progress":{"version":5}}')).toThrow(/newer version/)
     expect(() => importProgress('{"app":"le-010-prep","progress":{"version":1,"items":{"x":{"attempts":-1}}}}')).toThrow(/damaged/)
   })
 

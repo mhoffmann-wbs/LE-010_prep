@@ -1,0 +1,173 @@
+[
+  {
+    "id": "014.4-c01",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "How are IPv4 and IPv6 addresses written, and how long are they?",
+    "back": "IPv4 has 32 bits, as four numbers from 0 to 255 (`192.0.2.10`). IPv6 has 128 bits, as hexadecimal groups with colons (`2001:db8::10`)."
+  },
+  {
+    "id": "014.4-c02",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "How does `::` work in an IPv6 address?",
+    "back": "It replaces one run of zero groups, and only once per address. `2001:db8:0:0:0:0:0:10` becomes `2001:db8::10`. `::1` is the loopback address."
+  },
+  {
+    "id": "014.4-c03",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "What is a router and what is a default gateway?",
+    "back": "A router passes data between networks. The default gateway is the router a machine uses for everything that isn’t on its local network."
+  },
+  {
+    "id": "014.4-c04",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "What does `/24` mean in `192.0.2.10/24`?",
+    "back": "The prefix length: the first 24 bits name the network, and the rest names the machine within it. `192.0.2.1` to `192.0.2.254` are neighbours."
+  },
+  {
+    "id": "014.4-c05",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "Which IPv4 ranges are private?",
+    "back": "`10.0.0.0/8`, `172.16.0.0/12` and `192.168.0.0/16`. They are used inside LANs and never on the Internet."
+  },
+  {
+    "id": "014.4-c06",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "What is a port, and which ports do SSH, HTTP and HTTPS use?",
+    "back": "A number from 0 to 65535 that says which program gets the data. SSH uses 22, HTTP 80 and HTTPS 443."
+  },
+  {
+    "id": "014.4-c07",
+    "areas": [
+      "014.4.2"
+    ],
+    "front": "What does `/etc/hosts` contain?",
+    "back": "Fixed name-to-address pairs, one per line, checked first. It gives a name to a machine without a DNS entry."
+  },
+  {
+    "id": "014.4-c08",
+    "areas": [
+      "014.4.2"
+    ],
+    "front": "Which file lists the DNS servers a machine asks, and which keyword names them?",
+    "back": "`/etc/resolv.conf`, with one `nameserver` line per server. A `search` line lists domains appended to short names."
+  },
+  {
+    "id": "014.4-c09",
+    "areas": [
+      "014.4.2"
+    ],
+    "front": "Which file sets the order in which names are looked up (hosts file or DNS)?",
+    "back": "`/etc/nsswitch.conf`, in its `hosts:` line. Usually `files` comes before `dns`."
+  },
+  {
+    "id": "014.4-c10",
+    "areas": [
+      "014.4.2"
+    ],
+    "front": "Which command asks DNS for the address of a name, and what does it print?",
+    "back": "`host tuxpixel.example`. It prints `has address` lines (IPv4) and `has IPv6 address` lines. For an address it prints `domain name pointer` with the name."
+  },
+  {
+    "id": "014.4-c11",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4"
+    ],
+    "front": "What does `resolvectl` do?",
+    "back": "It is the front end of `systemd-resolved`. `resolvectl status` shows the DNS servers per interface, and `resolvectl query NAME` looks up a name."
+  },
+  {
+    "id": "014.4-c12",
+    "areas": [
+      "014.4.3"
+    ],
+    "front": "Which command lists the addresses of all interfaces, and what is its older counterpart?",
+    "back": "`ip addr show` (short `ip a`). The older tool is `ifconfig`, from the `net-tools` package."
+  },
+  {
+    "id": "014.4-c13",
+    "areas": [
+      "014.4.3"
+    ],
+    "front": "How do you recognise the default gateway in `ip route show`?",
+    "back": "It is the line that begins `default via`, followed by the router’s address. If it is missing, the machine reaches only its own LAN."
+  },
+  {
+    "id": "014.4-c14",
+    "areas": [
+      "014.4.3"
+    ],
+    "front": "Which commands show the IPv4 and IPv6 routing tables?",
+    "back": "`ip route show` and `ip -6 route show`. The old tool is `route` (or `route -n`)."
+  },
+  {
+    "id": "014.4-c15",
+    "areas": [
+      "014.4.3"
+    ],
+    "front": "What does `ss -tln` show?",
+    "back": "TCP sockets that are listening, with numbers instead of names. A listener on `0.0.0.0:22` is open to everybody; one on `127.0.0.1` is reachable only from the machine itself."
+  },
+  {
+    "id": "014.4-c16",
+    "areas": [
+      "014.4.3"
+    ],
+    "front": "What do `ss -u` and `ss -p` add?",
+    "back": "`-u` is UDP sockets, and `-p` shows the process that owns each socket (it needs root to see other users’ processes). `ss` replaces the older `netstat`."
+  },
+  {
+    "id": "014.4-c17",
+    "areas": [
+      "014.4.3"
+    ],
+    "front": "Mira can ping `198.51.100.7` but not `tuxpixel.example`. What is likely wrong?",
+    "back": "DNS. The network works, because the number answers, but the name isn’t being resolved. `ping -c 3` limits the number of packets."
+  },
+  {
+    "id": "014.4-c18",
+    "areas": [
+      "014.4.3"
+    ],
+    "front": "Why does `ping` keep running until you press Ctrl+C on Linux, and how do you stop at 3 packets?",
+    "back": "Linux sends echo requests until interrupted. Use `ping -c 3 host` for exactly three."
+  },
+  {
+    "id": "014.4-c19",
+    "areas": [
+      "014.4.4"
+    ],
+    "front": "How do machines get network settings automatically on IPv4, and what do they receive?",
+    "back": "DHCP: the server hands out an address on lease, the prefix length (netmask), the default gateway and the DNS servers."
+  },
+  {
+    "id": "014.4-c20",
+    "areas": [
+      "014.4.4"
+    ],
+    "front": "What is SLAAC?",
+    "back": "Stateless Address Autoconfiguration, the IPv6 way. A router announces the network prefix, and each machine builds its own address from it. No server keeps a list of addresses."
+  },
+  {
+    "id": "014.4-c21",
+    "areas": [
+      "014.4.4"
+    ],
+    "front": "What is the difference between SLAAC and DHCPv6?",
+    "back": "SLAAC is stateless: machines build their own address. DHCPv6 is stateful: a server hands out and tracks addresses, and can also just deliver extra settings such as DNS servers."
+  }
+]

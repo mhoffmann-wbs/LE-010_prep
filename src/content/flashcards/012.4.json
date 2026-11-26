@@ -1,0 +1,194 @@
+[
+  {
+    "id": "012.4-c01",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What does `touch NAME` do?",
+    "back": "It creates an empty file if the name doesn’t exist. If it does exist, `touch` only updates its modification time and leaves the content alone."
+  },
+  {
+    "id": "012.4-c02",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What does `mkdir -p levels/world1/boss` do that plain `mkdir` doesn’t?",
+    "back": "`-p` (parents) creates the whole chain of directories and doesn’t complain if one already exists. Plain `mkdir` fails when the parent is missing."
+  },
+  {
+    "id": "012.4-c03",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "When does `rmdir` work?",
+    "back": "Only on an empty directory, which makes it the safe way to clean up. For a directory with content you need `rm -r`."
+  },
+  {
+    "id": "012.4-c04",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What does `cp hero1.png backup` do when `backup` is an existing directory?",
+    "back": "It puts the copy inside the directory under the same name. If `backup` didn’t exist, it would be the name of a new file."
+  },
+  {
+    "id": "012.4-c05",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "Mira types `cp backup backup2` for a directory and gets an error. What is missing?",
+    "back": "`-r` (recursive): `cp -r backup backup2`. Without it `cp` omits directories."
+  },
+  {
+    "id": "012.4-c06",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What do `cp -i` and `cp -v` do?",
+    "back": "`-i` asks before overwriting an existing file. `-v` prints what is being done. Without `-i`, `cp` silently replaces an existing destination."
+  },
+  {
+    "id": "012.4-c07",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "How do you rename a file in Linux?",
+    "back": "With `mv`, for example `mv slime.png blob.png`. There is no separate rename command: `mv` moves it, or renames it when the destination is a new name in the same place."
+  },
+  {
+    "id": "012.4-c08",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "Does `mv` need `-r` for directories?",
+    "back": "No. It moves directories without options. Like `cp`, it overwrites an existing destination without asking unless you use `-i`."
+  },
+  {
+    "id": "012.4-c09",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What are `rm -r`, `rm -i` and `rm -f`?",
+    "back": "`-r` deletes directories and everything in them, `-i` asks before every removal and `-f` forces: it never asks and ignores missing files."
+  },
+  {
+    "id": "012.4-c10",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "Is there a trash can for `rm`?",
+    "back": "No. On the command line a deleted file is gone for good, and `rm -rf` removes a whole tree silently."
+  },
+  {
+    "id": "012.4-c11",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "How can Mira see what `rm *.png` would delete before running it?",
+    "back": "Put `echo` in front: `echo rm *.png` shows what the shell would pass and deletes nothing."
+  },
+  {
+    "id": "012.4-c12",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What does `rm somedir` print for a directory, and how do you remove it?",
+    "back": "`rm: cannot remove 'somedir': Is a directory`. Use `rm -r somedir` (or `rmdir` if it is empty)."
+  },
+  {
+    "id": "012.4-c13",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "Which commands create, copy, move, delete files and make or remove directories?",
+    "back": "`touch` creates a file, `cp` copies, `mv` moves or renames, `rm` deletes, `mkdir` makes a directory and `rmdir` removes an empty one."
+  },
+  {
+    "id": "012.4-c14",
+    "areas": [
+      "012.4.2"
+    ],
+    "front": "Are `notes.txt`, `Notes.txt` and `NOTES.TXT` the same file on Linux?",
+    "back": "No. File names are case sensitive, so these are three different names that can live side by side. The same goes for commands and options (`-r` and `-R` can differ)."
+  },
+  {
+    "id": "012.4-c15",
+    "areas": [
+      "012.4.2"
+    ],
+    "front": "`cat NOTES.TXT` says \"No such file or directory\", but `notes.txt` exists. Why?",
+    "back": "A name that is right except for the case doesn’t exist on Linux. Use the exact case."
+  },
+  {
+    "id": "012.4-c16",
+    "areas": [
+      "012.4.2"
+    ],
+    "front": "What happens if Mira runs `mv notes.txt Notes.txt` while both exist?",
+    "back": "`notes.txt` overwrites `Notes.txt` without asking, since they are different files. `mv -i` would ask first."
+  },
+  {
+    "id": "012.4-c17",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "What do `*` and `?` match in a glob?",
+    "back": "`*` matches any number of any characters, including none. `?` matches exactly one character."
+  },
+  {
+    "id": "012.4-c18",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "What do `[abc]`, `[a-z]` and `[!abc]` match?",
+    "back": "One character from the list, one character in the range, and one character that is not in the list."
+  },
+  {
+    "id": "012.4-c19",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "Which of `boss1.png`, `boss2.png` and `boss10.png` does `boss?.png` match?",
+    "back": "`boss1.png` and `boss2.png`, not `boss10.png`: the `?` is exactly one character."
+  },
+  {
+    "id": "012.4-c20",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "Which files does `hero[12].png` match among `hero1.png`, `hero2.png` and `hero3.png`?",
+    "back": "`hero1.png` and `hero2.png`, not `hero3.png`."
+  },
+  {
+    "id": "012.4-c21",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "Who expands a glob, the shell or the command?",
+    "back": "The shell, before the command runs, into all matching names sorted. The command never sees the pattern."
+  },
+  {
+    "id": "012.4-c22",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "What happens with `ls *.jpg` when no file matches?",
+    "back": "Bash passes the pattern unchanged, so `ls` complains: `cannot access '*.jpg': No such file or directory`."
+  },
+  {
+    "id": "012.4-c23",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "Do `*` and `?` match hidden files?",
+    "back": "No. They don’t match a leading dot, so hidden files stay out unless the dot is written explicitly."
+  },
+  {
+    "id": "012.4-c24",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "How do you stop the shell from expanding `*`?",
+    "back": "Quote it: `echo \"*\"` prints a star, which is how a pattern reaches a command that expands it itself."
+  }
+]

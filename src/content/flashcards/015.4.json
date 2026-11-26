@@ -1,0 +1,90 @@
+[
+  {
+    "id": "015.4-c01",
+    "areas": [
+      "015.4.1"
+    ],
+    "front": "What is the difference between `/tmp` and `/var/tmp`?",
+    "back": "`/tmp` is for short-lived files and may be cleared at any time and at reboot. `/var/tmp` keeps files across reboots. Neither is for data you want to keep for good."
+  },
+  {
+    "id": "015.4-c02",
+    "areas": [
+      "015.4.1"
+    ],
+    "front": "What does the `t` in `drwxrwxrwt` mean?",
+    "back": "The sticky bit. In a directory writable by everyone, users can still create files, but only the file’s owner, the directory’s owner or root may delete or rename them."
+  },
+  {
+    "id": "015.4-c03",
+    "areas": [
+      "015.4.1"
+    ],
+    "front": "Which octal mode has the sticky bit set on `/tmp`, and which commands set and remove it?",
+    "back": "`1777`. The `1` in front is the sticky bit. `chmod +t dir` sets it and `chmod -t dir` removes it."
+  },
+  {
+    "id": "015.4-c04",
+    "areas": [
+      "015.4.1"
+    ],
+    "front": "What is the difference between `t` and `T` in a mode like `drwxrwxrwT`?",
+    "back": "`t` means sticky plus execute for others, and `T` means sticky without execute for others."
+  },
+  {
+    "id": "015.4-c05",
+    "areas": [
+      "015.4.1"
+    ],
+    "front": "Mira tries `rm /tmp/jonas-sketch.txt` although the file is writable for everyone. Why does it fail?",
+    "back": "The sticky bit on `/tmp` allows only the file’s owner, the directory’s owner or root to delete it. The message is “Operation not permitted”."
+  },
+  {
+    "id": "015.4-c06",
+    "areas": [
+      "015.4.1"
+    ],
+    "front": "What does `ls -d /tmp` show that `ls /tmp` does not?",
+    "back": "`ls -d` lists the directory itself instead of its contents. `ls -ld /tmp` shows its own permissions, and `ls -d */` lists only the subdirectories."
+  },
+  {
+    "id": "015.4-c07",
+    "areas": [
+      "015.4.2"
+    ],
+    "front": "Which command makes the link `latest` point to `pixel-raiders-1.1.tar`?",
+    "back": "`ln -s pixel-raiders-1.1.tar latest`. The target comes first, then the name of the new link, like `cp SOURCE DEST`."
+  },
+  {
+    "id": "015.4-c08",
+    "areas": [
+      "015.4.2"
+    ],
+    "front": "How does `ls -l` show a symbolic link?",
+    "back": "The first character is `l`, and the name is followed by an arrow and the target: `latest -> pixel-raiders-1.1.tar`."
+  },
+  {
+    "id": "015.4-c09",
+    "areas": [
+      "015.4.2"
+    ],
+    "front": "What happens to a symlink if you delete its target?",
+    "back": "It stays but dangles: it points to a path that no longer exists, and opening it fails. Removing the link itself with `rm` leaves the target untouched."
+  },
+  {
+    "id": "015.4-c10",
+    "areas": [
+      "015.4.2"
+    ],
+    "front": "What is the difference between a symbolic link and a hard link?",
+    "back": "A symlink is a small file holding a path; it can point to directories and other filesystems and dangles when the target is gone. A hard link (`ln` without `-s`) is another name for the same data and survives deleting the other name."
+  },
+  {
+    "id": "015.4-c11",
+    "areas": [
+      "015.4.2"
+    ],
+    "front": "What command prints where a symbolic link points?",
+    "back": "`readlink latest`. `stat -c %F` names the file type, and `ls -F` marks links with an `@`."
+  }
+]

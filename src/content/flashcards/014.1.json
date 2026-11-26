@@ -1,0 +1,146 @@
+[
+  {
+    "id": "014.1-c01",
+    "areas": [
+      "014.1.1"
+    ],
+    "front": "What is the relationship between Linux and a distribution such as Debian?",
+    "back": "Linux is only the kernel. A distribution adds tools, a package manager, often a desktop, and an installer to make a whole system."
+  },
+  {
+    "id": "014.1-c02",
+    "areas": [
+      "014.1.1"
+    ],
+    "front": "How do Windows, macOS and Linux differ in licensing?",
+    "back": "Windows and macOS are proprietary, sold or tied to the vendor’s system. The Linux kernel and most distributions are open source and free to use and change."
+  },
+  {
+    "id": "014.1-c03",
+    "areas": [
+      "014.1.1"
+    ],
+    "front": "Name two things that differ between Linux and Windows in everyday use.",
+    "back": "Linux comes in many distributions, with several choices of desktop and package manager, and is run on servers mainly from the command line. Windows has one vendor and one desktop."
+  },
+  {
+    "id": "014.1-c04",
+    "areas": [
+      "014.1.2"
+    ],
+    "front": "What is an ISO file, and how do you use it to install Linux?",
+    "back": "An ISO is a single-file copy of an optical disc that holds the installer. Write it to a USB stick (or DVD), or attach it to a virtual machine, and boot from it."
+  },
+  {
+    "id": "014.1-c05",
+    "areas": [
+      "014.1.2"
+    ],
+    "front": "What is the difference between an ISO and an operating system image?",
+    "back": "An ISO is an installer you run once. An OS image is an already installed system that you copy to a disk or SD card and boot directly, such as a Raspberry Pi image or a cloud image."
+  },
+  {
+    "id": "014.1-c06",
+    "areas": [
+      "014.1.2"
+    ],
+    "front": "Why should you check the checksum of a downloaded ISO?",
+    "back": "The project publishes a checksum, and a match proves the file is not corrupt or tampered with. Also choose the right architecture (`amd64` for a PC, ARM for a Raspberry Pi)."
+  },
+  {
+    "id": "014.1-c07",
+    "areas": [
+      "014.1.2"
+    ],
+    "front": "Which part of an installation chooses what to load after power-on, and which is the usual Linux one?",
+    "back": "The boot loader, usually GRUB. It runs first and loads the kernel, and it shows a menu on a dual-boot machine."
+  },
+  {
+    "id": "014.1-c08",
+    "areas": [
+      "014.1.2"
+    ],
+    "front": "What is dual boot?",
+    "back": "Two operating systems on one computer, and you choose one at every start. Only one runs at a time, unlike in a virtual machine where both run together."
+  },
+  {
+    "id": "014.1-c09",
+    "areas": [
+      "014.1.2"
+    ],
+    "front": "Why would Jonas try Linux in a virtual machine first?",
+    "back": "A virtual machine runs Linux as a program inside his current system, so his real disk is untouched and he can throw the VM away. The cost is that it shares the real machine’s memory and CPU."
+  },
+  {
+    "id": "014.1-c10",
+    "areas": [
+      "014.1.2"
+    ],
+    "front": "What is WSL, and how does WSL 2 differ from WSL 1?",
+    "back": "The Windows Subsystem for Linux runs a Linux environment on Windows with no dual boot. WSL 2 runs a real Linux kernel in a lightweight VM; WSL 1 translates Linux calls to Windows."
+  },
+  {
+    "id": "014.1-c11",
+    "areas": [
+      "014.1.3"
+    ],
+    "front": "What is a cloud instance?",
+    "back": "A virtual server you rent from a cloud provider by the hour. You pick a size, an OS image and a region, and it starts from the image without an installer."
+  },
+  {
+    "id": "014.1-c12",
+    "areas": [
+      "014.1.3"
+    ],
+    "front": "Which tool applies your SSH key and accounts to a new cloud instance at first boot?",
+    "back": "`cloud-init`. It reads the user data you supplied and can create users, add an SSH public key, set the hostname and install software."
+  },
+  {
+    "id": "014.1-c13",
+    "areas": [
+      "014.1.3"
+    ],
+    "front": "How does Ada usually work on a Linux cloud instance?",
+    "back": "She connects with SSH and uses the command line. Servers rarely have a desktop, because the command line needs less memory and can be scripted."
+  },
+  {
+    "id": "014.1-c14",
+    "areas": [
+      "014.1.v1"
+    ],
+    "front": "Compare a GUI with the command line on a Linux server.",
+    "back": "A GUI uses windows and a mouse; the command line uses text commands. Servers are normally run from the command line: less memory, scriptable, works over a slow SSH link."
+  },
+  {
+    "id": "014.1-c15",
+    "areas": [
+      "014.1.v1"
+    ],
+    "front": "Is the desktop environment part of the distribution choice?",
+    "back": "No, it is a separate choice. GNOME, KDE Plasma and Xfce are common, and a distribution usually offers several. Settings are changed in the desktop’s settings program."
+  },
+  {
+    "id": "014.1-c16",
+    "areas": [
+      "014.1.v1"
+    ],
+    "front": "What is the difference between a stable and a beta release?",
+    "back": "A stable release is ready for production and gets only bug and security fixes. A beta is a pre-release for testing that may contain bugs, so keep it off the build server."
+  },
+  {
+    "id": "014.1-c17",
+    "areas": [
+      "014.1.v1"
+    ],
+    "front": "What is the difference between a fixed release and a rolling release?",
+    "back": "A fixed release (Debian stable, Ubuntu) comes in versions now and then, while a rolling release (such as Arch) is updated continuously and has no big version jump."
+  },
+  {
+    "id": "014.1-c18",
+    "areas": [
+      "014.1.v1"
+    ],
+    "front": "Why must you plan an upgrade before a release’s support ends?",
+    "back": "After the end of support there are no more security fixes. Ubuntu LTS releases get five years of updates and come every two years."
+  }
+]

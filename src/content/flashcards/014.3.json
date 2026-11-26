@@ -1,0 +1,231 @@
+[
+  {
+    "id": "014.3-c01",
+    "areas": [
+      "014.3.1"
+    ],
+    "front": "What is the difference between a program and a process?",
+    "back": "A program is a file on disk, for example `/usr/bin/ls`. A process is a running instance of it with its own PID. One program can have many processes."
+  },
+  {
+    "id": "014.3-c02",
+    "areas": [
+      "014.3.1"
+    ],
+    "front": "Where do system-wide configuration files live, and where do logs and changing data live?",
+    "back": "Configuration is in `/etc/` (plain text, edited as root), and logs and changing data are under `/var`, for example `/var/log/`."
+  },
+  {
+    "id": "014.3-c03",
+    "areas": [
+      "014.3.1"
+    ],
+    "front": "Where are settings that affect only one user stored?",
+    "back": "In hidden files (names starting with a dot) in that user’s home directory."
+  },
+  {
+    "id": "014.3-c04",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "What is PID 1?",
+    "back": "The first process the kernel starts. It starts all the others, so every process has a parent. On most modern distributions it is `systemd`."
+  },
+  {
+    "id": "014.3-c05",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "What does `ps` show without options, and what do `ps -e` and `ps -ef` show?",
+    "back": "Without options only your processes in the current terminal. `ps -e` shows every process, and `ps -ef` shows every process in the full format with PID and parent PID."
+  },
+  {
+    "id": "014.3-c06",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "What is the difference between `ps -ef` and `ps aux`?",
+    "back": "Both show every process. `ps -ef` is the System V style with PPID and start time; `ps aux` is the BSD style (no dash) with `%CPU` and `%MEM`."
+  },
+  {
+    "id": "014.3-c07",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "What is the difference between `ps` and `top`?",
+    "back": "`ps` is a snapshot, printed once. `top` is a live view that redraws every few seconds, sorted by CPU use, and shows the load average. Press `q` to quit."
+  },
+  {
+    "id": "014.3-c08",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "In `top`, what do the keys `q`, `k` and `M` do?",
+    "back": "`q` quits, `k` kills a process (it asks for the PID) and `M` sorts by memory. `P` sorts by CPU."
+  },
+  {
+    "id": "014.3-c09",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "Which command shows memory and swap, and what do `free -h` and the `available` column mean?",
+    "back": "`free`. `-h` prints human-readable sizes. `available` estimates what programs could use now; it is a better guide than `free`, which is often low because Linux uses spare RAM as cache."
+  },
+  {
+    "id": "014.3-c10",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "What is swap?",
+    "back": "Disk space the kernel uses as spare memory when RAM runs out. It is much slower than RAM."
+  },
+  {
+    "id": "014.3-c11",
+    "areas": [
+      "014.3.2",
+      "014.3.v1"
+    ],
+    "front": "What is `/proc`?",
+    "back": "A pseudo-filesystem made up by the kernel while the system runs. Each process has a numbered directory such as `/proc/1`, and files like `/proc/cpuinfo` and `/proc/meminfo` hold system facts."
+  },
+  {
+    "id": "014.3-c12",
+    "areas": [
+      "014.3.3"
+    ],
+    "front": "Which command starts, stops and checks the service `buildd` on a systemd system?",
+    "back": "`sudo systemctl start buildd`, `sudo systemctl stop buildd` and `systemctl status buildd`. Changing a service needs root."
+  },
+  {
+    "id": "014.3-c13",
+    "areas": [
+      "014.3.3"
+    ],
+    "front": "What does the `Active:` line of `systemctl status` tell you?",
+    "back": "The service’s state, such as `active (running)`, `inactive (dead)` or `failed`, and since when. The `Loaded:` line says where the unit file is and whether it is enabled."
+  },
+  {
+    "id": "014.3-c14",
+    "areas": [
+      "014.3.3"
+    ],
+    "front": "What is the difference between `systemctl start` and `systemctl enable`?",
+    "back": "`start` runs the service now, and `enable` makes it start at every boot. `start` alone does not survive a reboot."
+  },
+  {
+    "id": "014.3-c15",
+    "areas": [
+      "014.3.4"
+    ],
+    "front": "Why can’t you read the systemd journal with `cat` or `grep`, and what do you use?",
+    "back": "The journal is stored in a binary format, not plain text. Use `journalctl` to read it."
+  },
+  {
+    "id": "014.3-c16",
+    "areas": [
+      "014.3.4"
+    ],
+    "front": "What do `journalctl -u ssh` and `journalctl -b` show?",
+    "back": "`-u ssh` shows only messages of the `ssh` unit (service), and `-b` only messages since the current boot."
+  },
+  {
+    "id": "014.3-c17",
+    "areas": [
+      "014.3.4"
+    ],
+    "front": "Which `journalctl` options show the last 20 lines, follow new messages and filter by priority?",
+    "back": "`journalctl -n 20` shows the last 20 lines, `-f` follows new messages like `tail -f`, and `-p err` shows errors and more serious ones."
+  },
+  {
+    "id": "014.3-c18",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "front": "What does `dmesg` print?",
+    "back": "The kernel’s ring buffer: hardware found at boot, driver loading, USB devices plugged in and disk errors. It may need root. `journalctl -k` shows the same kernel messages."
+  },
+  {
+    "id": "014.3-c19",
+    "areas": [
+      "014.3.4"
+    ],
+    "front": "What is a ring buffer?",
+    "back": "A block of memory of fixed size where new lines overwrite the oldest. The kernel uses one for its messages, which `dmesg` prints."
+  },
+  {
+    "id": "014.3-c20",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "front": "Which directory holds plain-text log files, and which tools work on them?",
+    "back": "`/var/log/`. Because the files are text, `less`, `tail -f` and `grep` work. Typical files are `syslog`, `auth.log` and `dpkg.log` on Debian-based systems."
+  },
+  {
+    "id": "014.3-c21",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "front": "Which log file records logins and `sudo` use on Debian-based systems?",
+    "back": "`/var/log/auth.log`. Some files in `/var/log` can be read only by root."
+  },
+  {
+    "id": "014.3-c22",
+    "areas": [
+      "014.3.4",
+      "014.3.v3"
+    ],
+    "front": "What does logrotate do?",
+    "back": "It renames old log files (`syslog.1`, `syslog.2.gz`) and starts new ones, so logs don’t grow forever."
+  },
+  {
+    "id": "014.3-c23",
+    "areas": [
+      "014.3.v1"
+    ],
+    "front": "What is a memory address, and what does a process see?",
+    "back": "Every byte of RAM has a number, its address. The kernel gives each process its own virtual address space, so processes can’t read or overwrite each other’s memory."
+  },
+  {
+    "id": "014.3-c24",
+    "areas": [
+      "014.3.v1"
+    ],
+    "front": "In which file can you see the address ranges of a process, and in what notation?",
+    "back": "`/proc/<PID>/maps`. The addresses are written in hexadecimal, such as `7f3c2a000000`."
+  },
+  {
+    "id": "014.3-c25",
+    "areas": [
+      "014.3.v2"
+    ],
+    "front": "What does the syslog service do with a message?",
+    "back": "It sorts messages by facility (who sent it, such as `auth` or `kern`) and priority (how serious) and writes them to files in `/var/log/`, as set in `/etc/rsyslog.conf`."
+  },
+  {
+    "id": "014.3-c26",
+    "areas": [
+      "014.3.v2"
+    ],
+    "front": "Name the syslog priorities from least to most serious.",
+    "back": "`debug`, `info`, `notice`, `warning`, `err`, `crit`, `alert`, `emerg`."
+  },
+  {
+    "id": "014.3-c27",
+    "areas": [
+      "014.3.v3"
+    ],
+    "front": "Which file normally holds kernel messages, and what are the older exam’s directories to know?",
+    "back": "`/var/log/kern.log` holds kernel messages. `/etc/` has configuration, `/var/log/` logs, `/boot/` the kernel, `/proc/` process info, `/dev/` devices and `/sys/` devices and drivers."
+  },
+  {
+    "id": "014.3-c28",
+    "areas": [
+      "014.3.v2"
+    ],
+    "front": "Which log files hold general and authentication messages, depending on the distribution?",
+    "back": "General messages go to `/var/log/syslog` or `/var/log/messages`, and authentication messages to `/var/log/auth.log` or `/var/log/secure`. Kernel messages also reach syslog."
+  }
+]
