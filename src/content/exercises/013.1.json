@@ -1,0 +1,54 @@
+[
+  {
+    "id": "013.1-e01",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "title": "Pack the assets for Ada",
+    "prompt": "Ada needs Mira’s game assets for the 0.9 build, as one compressed file she can download.\n\nIn Mira’s home directory, pack the folder `assets` into a tar archive named `assets-0.9.tar.bz2`, compressed with bzip2. The archive must hold the folder itself, so that unpacking it creates `assets/`.",
+    "fixture": "assets",
+    "hints": [
+      "`tar` creates an archive with `-c` and names the archive file with `-f`. Another option picks the compression.",
+      "`-z` is gzip, `-j` is bzip2 and `-J` is xz.",
+      "Give `tar` the folder name, `assets`, not the files inside it, so the paths in the archive start with `assets/`."
+    ],
+    "solution": "tar -cjf assets-0.9.tar.bz2 assets",
+    "check": "f=assets-0.9.tar.bz2\nif [ ! -f \"$f\" ]; then no \"There is no $f in Mira’s home directory yet.\"; exit 1; fi\nok \"$f exists.\"\nif file -b \"$f\" | grep -q '^bzip2'; then ok \"It is compressed with bzip2.\"; else no \"It isn’t compressed with bzip2: file says “$(file -b \"$f\")”.\"; fi\nif tar -tf \"$f\" 2>/dev/null | grep -qx 'assets/sprites/hero.png'; then ok \"It holds the assets folder, with paths starting at assets/.\"; else no \"It doesn’t hold assets/sprites/hero.png. Pack the folder assets itself.\"; fi"
+  },
+  {
+    "id": "013.1-e02",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2",
+      "013.1.1"
+    ],
+    "title": "Unpack into a separate folder",
+    "prompt": "Mira wants to compare her `assets` folder with the archive `assets-0.9.tar.gz` without overwriting anything.\n\nCreate a folder `restore` in her home directory and unpack `assets-0.9.tar.gz` into it, so that the files end up in `restore/assets/…`.",
+    "fixture": "assets",
+    "hints": [
+      "`tar -x` extracts; `-z` reads gzip; `-f` names the archive. `tar -tzf` lists the contents first, without extracting.",
+      "By default `tar` extracts into the current directory. The option `-C` changes into another directory first.",
+      "`tar -xzf assets-0.9.tar.gz -C restore`, after `mkdir restore`."
+    ],
+    "solution": "mkdir restore\ntar -xzf assets-0.9.tar.gz -C restore",
+    "check": "if [ -d restore ]; then ok \"~/restore exists.\"; else no \"There is no folder ~/restore yet.\"; exit 1; fi\nif [ -f restore/assets/levels/level1.txt ] && cmp -s restore/assets/sprites/hero.png assets/sprites/hero.png; then ok \"The archive is unpacked in restore/assets.\"\nelse no \"restore/assets/levels/level1.txt isn’t there. Unpack the archive inside restore.\"; fi\nif [ ! -e restore/restore ] && [ ! -e assets/assets ]; then ok \"Nothing was unpacked in the wrong place.\"; else no \"Some files were unpacked in the wrong place.\"; fi"
+  },
+  {
+    "id": "013.1-e03",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.2"
+    ],
+    "title": "A zip file for the level designer",
+    "prompt": "A freelance level designer works on Windows and asks for the level files as a `.zip`.\n\nCreate `levels.zip` in Mira’s home directory, holding the folder `assets/levels` and everything in it.",
+    "fixture": "assets",
+    "hints": [
+      "The tool is called `zip`. Its first argument is the archive to create, then the files to put in.",
+      "Like `cp`, `zip` needs `-r` to include a folder with what is inside it.",
+      "`zip -r levels.zip assets/levels`, then check with `unzip -l levels.zip`."
+    ],
+    "solution": "zip -r levels.zip assets/levels",
+    "check": "if [ ! -e levels.zip ]; then no \"There is no levels.zip yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"levels.zip exists.\"\nif file -b levels.zip | grep -q '^Zip archive'; then ok \"It is a zip archive.\"; else no \"It isn’t a zip archive: file says “$(file -b levels.zip)”.\"; exit 1; fi\nif unzip -l levels.zip | grep -q 'assets/levels/level1.txt'; then ok \"It holds assets/levels/level1.txt.\"; else no \"It doesn’t hold assets/levels/level1.txt. Did you add the folder with -r?\"; fi"
+  }
+]

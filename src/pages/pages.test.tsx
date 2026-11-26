@@ -69,6 +69,16 @@ describe('pages', () => {
     expect(await screen.findByText(/isn’t built yet/)).toBeInTheDocument()
   })
 
+  it('lists the exercises and opens one with its prompt and hints', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(null, { status: 404 })))
+    expect(await renderAt('/exercises')).toHaveTextContent('Exercises')
+    await userEvent.click(screen.getByRole('link', { name: 'Pack the assets for Ada' }))
+    expect(await screen.findByRole('heading', { level: 1, name: /Pack the assets for Ada/ })).toBeInTheDocument()
+    expect(await screen.findByText(/isn’t built yet/)).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /Show hint 1/ }))
+    expect(screen.getByText(/Hint 1:/)).toBeInTheDocument()
+  })
+
   it('lists every topic on the practice picker', async () => {
     expect(await renderAt('/practice')).toHaveTextContent('Practice')
     expect(screen.getAllByText(/^Topic 01\d:/)).toHaveLength(5)

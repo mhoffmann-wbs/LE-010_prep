@@ -10,6 +10,7 @@ const PracticePage = lazy(() => import('../pages/PracticePage'))
 const QuestionsPage = lazy(() => import('../pages/QuestionsPage'))
 const MockExamPage = lazy(() => import('../pages/MockExamPage'))
 const TerminalPage = lazy(() => import('../pages/TerminalPage'))
+const ExercisesPage = lazy(() => import('../pages/ExercisesPage'))
 const ProgressPage = lazy(() => import('../pages/ProgressPage'))
 
 export const routes: RouteObject[] = [
@@ -24,6 +25,8 @@ export const routes: RouteObject[] = [
       { path: 'questions/:itemId', element: <QuestionsPage /> },
       { path: 'mock', element: <MockExamPage /> },
       { path: 'terminal', element: <TerminalPage /> },
+      { path: 'exercises', element: <ExercisesPage /> },
+      { path: 'exercises/:exerciseId', element: <ExercisesPage /> },
       { path: 'progress', element: <ProgressPage /> },
       { path: '*', element: <h1 className="text-2xl font-semibold">Page not found</h1> },
     ],

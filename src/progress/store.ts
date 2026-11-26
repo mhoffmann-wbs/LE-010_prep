@@ -6,7 +6,7 @@ import type { ExamId } from '../content/blueprint'
 // migration in `load()` and `importProgress()` whenever the shape changes, and
 // keep ProgressSchema in step; never read localStorage elsewhere.
 const STORAGE_KEY = 'le010:progress'
-const VERSION = 2
+const VERSION = 3
 
 export interface ItemStat {
   attempts: number
@@ -15,6 +15,13 @@ export interface ItemStat {
   lastAt: number
   /** Consecutive correct answers; a wrong answer resets it to 0. */
   streak: number
+}
+
+export interface ExerciseStat {
+  /** How often the learner pressed Check. */
+  attempts: number
+  /** When a check first passed, or null. */
+  solvedAt: number | null
 }
 
 export interface ScoreRowRecord {
@@ -50,12 +57,14 @@ export interface Progress {
   mockResults: MockResult[]
   /** Objective ids whose lesson the learner marked as read. */
   lessonsRead: string[]
+  /** Terminal exercises by id. */
+  exercises: Record<string, ExerciseStat>
 }
 
 export type Toggle = 'outputInPractice' | 'outputInMock'
 
 function empty(): Progress {
-  return { version: VERSION, track: '010-200', outputInPractice: true, outputInMock: false, items: {}, mockResults: [], lessonsRead: [] }
+  return { version: VERSION, track: '010-200', outputInPractice: true, outputInMock: false, items: {}, mockResults: [], lessonsRead: [], exercises: {} }
 }
 
 function load(): Progress {
@@ -70,11 +79,14 @@ function load(): Progress {
   }
 }
 
-/** Version 1 had no exam track: everything was 010-200. */
-function migrate(data: { version?: unknown; mockResults?: unknown }) {
-  if (data.version !== 1) return data
-  const mockResults = Array.isArray(data.mockResults) ? data.mockResults.map((r: object) => ({ exam: '010-200', ...r })) : data.mockResults
-  return { ...data, version: 2, track: '010-200', mockResults }
+/** Version 1 had no exam track (everything was 010-200); version 2 had no exercises. */
+function migrate(data: { version?: unknown; mockResults?: unknown; [key: string]: unknown }) {
+  if (data.version === 1) {
+    const mockResults = Array.isArray(data.mockResults) ? data.mockResults.map((r: object) => ({ exam: '010-200', ...r })) : data.mockResults
+    data = { ...data, version: 2, track: '010-200', mockResults }
+  }
+  if (data.version === 2) data = { ...data, version: 3, exercises: {} }
+  return data
 }
 
 let state: Progress = load()
@@ -137,6 +149,12 @@ export function setLessonRead(objectiveId: string, read: boolean) {
   commit({ ...state, lessonsRead: read ? [...others, objectiveId] : others })
 }
 
+export function recordExerciseCheck(exerciseId: string, passed: boolean, at: number = Date.now()) {
+  const prev = state.exercises[exerciseId] ?? { attempts: 0, solvedAt: null }
+  const solvedAt = prev.solvedAt ?? (passed ? at : null)
+  commit({ ...state, exercises: { ...state.exercises, [exerciseId]: { attempts: prev.attempts + 1, solvedAt } } })
+}
+
 // Imports come from files people pick, so they are validated in full before replacing anything.
 const count = z.number().int().nonnegative()
 const row = z.object({ id: z.string(), correct: count, total: count })
@@ -163,6 +181,7 @@ const ProgressSchema = z.object({
     }),
   ),
   lessonsRead: z.array(z.string()),
+  exercises: z.record(z.string(), z.object({ attempts: count, solvedAt: z.number().nullable() })),
 })
 
 const EXPORT_APP = 'le-010-prep'

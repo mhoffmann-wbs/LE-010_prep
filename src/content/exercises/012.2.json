@@ -1,0 +1,34 @@
+[
+  {
+    "id": "012.2-e01",
+    "objectiveId": "012.2",
+    "areas": [
+      "012.2.1"
+    ],
+    "title": "What does rmdir do?",
+    "prompt": "Jonas keeps a cheat sheet of commands. Save the one-line description of `rmdir` from its manual page, the line that starts with `rmdir (1)`, into a file `rmdir.txt` in Mira’s home directory.\n\nDon’t copy it by hand: let a command print it and redirect that into the file.",
+    "hints": [
+      "Every man page starts with a NAME section: the command and a one-line description. Some commands print just that line.",
+      "`whatis` and `man -f` print the NAME line of a manual page.",
+      "Redirect the output into the file with `> rmdir.txt`."
+    ],
+    "solution": "whatis rmdir > rmdir.txt",
+    "check": "if [ ! -e rmdir.txt ]; then no \"There is no rmdir.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"rmdir.txt exists.\"\nif grep -q '^rmdir (1) *- remove empty directories' rmdir.txt; then ok \"It holds the NAME line of rmdir’s man page.\"\nelse no \"It doesn’t hold the line “rmdir (1) - remove empty directories” as whatis or man -f print it.\"; fi"
+  },
+  {
+    "id": "012.2-e02",
+    "objectiveId": "012.2",
+    "areas": [
+      "012.2.2"
+    ],
+    "title": "The usage line of mkdir",
+    "prompt": "Most GNU tools print a short help text with `--help`. Its first line is the usage line, which shows how to call the tool.\n\nSave only the first line of the help text of `mkdir` into `usage.txt` in Mira’s home directory.",
+    "hints": [
+      "Try `mkdir --help` first and look at its first line.",
+      "`head -n 1` keeps only the first line of whatever it reads.",
+      "Join the two with a pipe, `|`, and redirect the result with `> usage.txt`."
+    ],
+    "solution": "mkdir --help | head -n 1 > usage.txt",
+    "check": "if [ ! -e usage.txt ]; then no \"There is no usage.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"usage.txt exists.\"\nwant=$(mkdir --help | head -n 1)\nif [ \"$(cat usage.txt)\" = \"$want\" ]; then ok \"It holds exactly the usage line: $want\"\nelif grep -qF \"$want\" usage.txt; then no \"It holds the usage line, but other lines too. Keep only the first line.\"\nelse no \"It doesn’t hold the first line of mkdir --help.\"; fi"
+  }
+]

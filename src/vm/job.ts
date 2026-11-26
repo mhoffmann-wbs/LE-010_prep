@@ -89,7 +89,7 @@ function ancestors(path: string): string[] {
 }
 
 /** Debian's /etc/login.defs: what PATH a login shell gets. */
-const PATHS = {
+export const PATHS = {
   user: '/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games',
   root: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
 }

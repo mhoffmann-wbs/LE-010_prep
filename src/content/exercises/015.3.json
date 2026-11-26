@@ -1,0 +1,53 @@
+[
+  {
+    "id": "015.3-e01",
+    "objectiveId": "015.3",
+    "areas": [
+      "015.3.1"
+    ],
+    "title": "Only Mira runs the build",
+    "prompt": "`studio/build.sh` is executable by everyone. Change its permissions so that only its owner, Mira, may run it. Everyone may still read it, and only Mira may change it:\n\n```\n-rwxr--r--\n```\n\nLook at it with `ls -l studio` before and after.",
+    "fixture": "sec-perms",
+    "hints": [
+      "Read the permissions in three groups of three: owner, group, others.",
+      "In octal, read is 4, write 2 and execute 1, added up for each group.",
+      "`chmod 744 studio/build.sh`, or `chmod go-x studio/build.sh`."
+    ],
+    "solution": "chmod 744 studio/build.sh",
+    "check": "m=$(stat -c %a studio/build.sh)\nif [ \"$m\" = 744 ]; then ok \"studio/build.sh is -rwxr--r-- (744).\"; else no \"studio/build.sh is $(stat -c %a studio/build.sh) ($(stat -c %A studio/build.sh)), not -rwxr--r-- (744).\"; fi\nif [ \"$(stat -c %U studio/build.sh)\" = mira ]; then ok \"Mira still owns it.\"; else no \"Its owner changed; Mira should still own it.\"; fi"
+  },
+  {
+    "id": "015.3-e02",
+    "objectiveId": "015.3",
+    "areas": [
+      "015.3.1"
+    ],
+    "title": "Pass through, but don’t look",
+    "prompt": "On a directory, read permission lets you list its names and execute permission lets you enter it and reach the files inside.\n\nChange `studio/private` so that Mira keeps full access, while her group and everyone else may enter it but not list it: `drwx--x--x`. Don’t change the files inside.",
+    "fixture": "sec-perms",
+    "hints": [
+      "For the group and others you want only execute: that is 1 in octal.",
+      "The owner keeps read, write and execute: 7.",
+      "`chmod 711 studio/private`"
+    ],
+    "solution": "chmod 711 studio/private",
+    "check": "m=$(stat -c %a studio/private)\nif [ \"$m\" = 711 ]; then ok \"studio/private is drwx--x--x (711).\"; else no \"studio/private is $(stat -c %a studio/private) ($(stat -c %A studio/private)), not drwx--x--x (711).\"; fi\nif [ \"$(stat -c %a studio/private/ideas.txt)\" = 600 ]; then ok \"ideas.txt inside it is unchanged (600).\"; else no \"ideas.txt changed to $(stat -c %a studio/private/ideas.txt) ($(stat -c %A studio/private/ideas.txt)); leave the files inside as they were.\"; fi\nif runuser -u jonas -- bash -c 'cd /home/mira/studio/private' 2> /dev/null; then ok \"Jonas can enter it.\"; else no \"Jonas can’t enter it: the others need execute permission.\"; fi\nif runuser -u jonas -- ls studio/private > /dev/null 2>&1; then no \"Jonas can still list it.\"; else ok \"Jonas can’t list it.\"; fi"
+  },
+  {
+    "id": "015.3-e03",
+    "objectiveId": "015.3",
+    "areas": [
+      "015.3.1"
+    ],
+    "title": "Take away the group’s write access",
+    "prompt": "The folder `studio/art` belongs to Mira and the group `design`, and the group may write to it. Take away only the group’s write permission, and leave every other permission as it is, with a symbolic mode (letters, not digits). Don’t change `studio/art/hero.png`.",
+    "fixture": "sec-perms",
+    "hints": [
+      "Symbolic modes name who (`u`, `g`, `o`, `a`), an operator (`+`, `-`, `=`) and the permissions (`r`, `w`, `x`).",
+      "`-` takes permissions away and leaves the rest alone.",
+      "`chmod g-w studio/art`"
+    ],
+    "solution": "chmod g-w studio/art",
+    "check": "m=$(stat -c %a studio/art)\nif [ \"$m\" = 755 ]; then ok \"studio/art is drwxr-xr-x (755): the group lost write and kept the rest.\"; else no \"studio/art is $(stat -c %a studio/art) ($(stat -c %A studio/art)), not drwxr-xr-x (755).\"; fi\nif [ \"$(stat -c %a studio/art/hero.png)\" = 664 ]; then ok \"hero.png is unchanged.\"; else no \"hero.png changed to $(stat -c %a studio/art/hero.png) ($(stat -c %A studio/art/hero.png)). Change only the folder, without -R.\"; fi"
+  }
+]

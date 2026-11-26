@@ -42,8 +42,9 @@ for (const { command, expect } of CHECKS) {
   if (!ok) failed++
 }
 
-// The job runner: each run starts from the snapshot, fixtures apply, statuses come back.
-const RUNNER_CHECKS: { name: string; job: Job; expect: { exit: number; output: RegExp } }[] = [
+// The job runner: each run starts from the snapshot unless it keeps the machine,
+// fixtures apply, statuses come back.
+const RUNNER_CHECKS: { name: string; job: Job; keep?: boolean; expect: { exit: number; output: RegExp } }[] = [
   { name: 'a run as mira', job: { command: 'touch /tmp/left-behind; whoami; pwd; tty' }, expect: { exit: 0, output: /^mira\n\/home\/mira\n\/dev\/pts\/\d+$/ } },
   { name: 'the next run starts clean', job: { command: 'ls /tmp/left-behind' }, expect: { exit: 2, output: /No such file/ } },
   {
@@ -51,12 +52,14 @@ const RUNNER_CHECKS: { name: string; job: Job; expect: { exit: number; output: R
     job: { command: 'ls -l /srv/x', user: 'jonas', fixture: { description: 'smoke', groups: [], entries: [{ path: '/srv/x/a.txt', type: 'file', content: 'a\n', owner: 'jonas', mode: '640' }] } },
     expect: { exit: 0, output: /^total \d+\n-rw-r----- 1 jonas jonas 2 Nov  2 09:30 a\.txt$/ },
   },
+  { name: 'an exercise starts', job: { command: 'touch /home/mira/made-by-learner' }, expect: { exit: 0, output: /^$/ } },
+  { name: 'its check sees the machine as it was left', job: { command: 'ls /home/mira/made-by-learner', user: 'root' }, keep: true, expect: { exit: 0, output: /made-by-learner/ } },
   { name: 'exit status', job: { command: 'false' }, expect: { exit: 1, output: /^$/ } },
   { name: 'a command that hangs is killed', job: { command: 'sleep 60' }, expect: { exit: 124, output: /^$/ } },
 ]
-for (const { name, job, expect } of RUNNER_CHECKS) {
+for (const { name, job, keep, expect } of RUNNER_CHECKS) {
   const t = performance.now()
-  const r = await runner.run(job)
+  const r = await runner.run(job, { keep })
   const ok = r.exit === expect.exit && expect.output.test(r.output)
   console.log(`${ok ? 'ok  ' : 'FAIL'} runner: ${name} (${(performance.now() - t).toFixed(0)} ms)${ok ? '' : `\n${JSON.stringify(r)}`}`)
   if (!ok) failed++

@@ -1,7 +1,8 @@
 // Runs jobs (src/vm/job.ts) in a v86 guest over le-init's root control channel
 // on the second serial port, one at a time. Every run after the first restores
-// the snapshot, so each starts from the same clean machine. Used by lesson cells
-// in the browser and by the v86 spot check in Node (scripts/vm/smoke.ts).
+// the snapshot, so each starts from the same clean machine, unless it asks to
+// keep the machine as it is (an exercise's check after the learner's session).
+// Used by lesson cells and exercises in the browser, and by the scripts in Node.
 //
 // Scripts import this file with Node, so runtime imports carry their extension.
 import type { V86 } from 'v86'
@@ -54,15 +55,18 @@ export class VmRunner {
     emulator.add_listener('serial1-output-byte', (byte: number) => this.receive(byte))
   }
 
-  /** Queues a job; resolves with its output, or rejects with a RunError. */
-  run(job: Job): Promise<RunResult> {
-    const result = this.queue.then(() => this.exec(job))
+  /**
+   * Queues a job; resolves with its output, or rejects with a RunError.
+   * With `keep`, the job runs on the machine as it is, without the reset.
+   */
+  run(job: Job, { keep = false }: { keep?: boolean } = {}): Promise<RunResult> {
+    const result = this.queue.then(() => this.exec(job, keep))
     this.queue = result.catch(() => {})
     return result
   }
 
-  private async exec(job: Job): Promise<RunResult> {
-    if (this.dirty) {
+  private async exec(job: Job, keep: boolean): Promise<RunResult> {
+    if (this.dirty && !keep) {
       await this.emulator.restore_state(this.snapshot)
       syncClock(this.emulator)
     }

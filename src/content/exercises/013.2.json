@@ -1,0 +1,55 @@
+[
+  {
+    "id": "013.2-e01",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1",
+      "013.2.2"
+    ],
+    "title": "Every enemy once",
+    "prompt": "`enemies.txt` lists the enemies the play-testers met, one per line, with many repeats. Save a sorted list with every name only once into `enemies-sorted.txt`.\n\nNames that differ in case, such as `Skeleton` and `skeleton`, count as different names.",
+    "fixture": "data-playtest",
+    "hints": [
+      "`sort` sorts lines. `uniq` drops a line that repeats the line right before it, which is why it usually comes after `sort`.",
+      "`sort enemies.txt | uniq` prints each name once. `sort -u` does both in one step.",
+      "Redirect the result with `> enemies-sorted.txt`."
+    ],
+    "solution": "sort enemies.txt | uniq > enemies-sorted.txt",
+    "check": "if [ ! -e enemies-sorted.txt ]; then no \"There is no enemies-sorted.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"enemies-sorted.txt exists.\"\nif [ \"$(cat enemies-sorted.txt)\" = \"$(sort -u enemies.txt)\" ]; then ok \"It holds every enemy once, sorted.\"\nelif [ \"$(sort enemies-sorted.txt)\" = \"$(sort -u enemies.txt)\" ]; then no \"It has every name once, but not sorted.\"\nelse no \"It doesn’t hold each name of enemies.txt exactly once. Compare it with sort enemies.txt.\"; fi\nif [ \"$(wc -l < enemies.txt)\" = 11 ]; then ok \"enemies.txt itself is unchanged.\"; else no \"enemies.txt changed. Write the result to a new file.\"; fi"
+  },
+  {
+    "id": "013.2-e02",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1",
+      "013.2.2"
+    ],
+    "title": "What went wrong in the build?",
+    "prompt": "Ada’s nightly build wrote `build.log`. Mira wants two files for the stand-up meeting:\n\n1. `errors.txt`: every line of `build.log` that contains `ERROR`, in the original order.\n2. `error-count.txt`: just the number of those lines.",
+    "fixture": "data-buildlog",
+    "hints": [
+      "`grep ERROR build.log` prints the matching lines.",
+      "`grep -c` counts matching lines instead of printing them; `wc -l` counts the lines it reads.",
+      "`grep ERROR build.log > errors.txt` and `grep -c ERROR build.log > error-count.txt`."
+    ],
+    "solution": "grep ERROR build.log > errors.txt\ngrep -c ERROR build.log > error-count.txt",
+    "check": "if [ ! -e errors.txt ]; then no \"There is no errors.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"errors.txt exists.\"\nif [ \"$(cat errors.txt)\" = \"$(grep ERROR build.log)\" ]; then ok \"errors.txt holds exactly the ERROR lines.\"\nelse no \"errors.txt doesn’t hold exactly the lines of build.log that contain ERROR.\"; fi\nif [ ! -e error-count.txt ]; then no \"There is no error-count.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"error-count.txt exists.\"\nif [ \"$(tr -d ' \\n' < error-count.txt)\" = \"$(grep -c ERROR build.log)\" ]; then ok \"error-count.txt holds the right number.\"\nelse no \"error-count.txt holds “$(head -c 40 error-count.txt)”, which isn’t the number of ERROR lines.\"; fi"
+  },
+  {
+    "id": "013.2-e03",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "title": "Output here, errors there",
+    "prompt": "Jonas’s checklist script runs `ls art music` to list two folders, but `music` doesn’t exist yet, so `ls` complains.\n\nRun that same command once, so that the normal listing goes into `listing.txt` and the error message goes into `errors.txt`. Neither file may hold the other one’s text.",
+    "fixture": "data-art",
+    "hints": [
+      "Programs write normal output to standard output (stream 1) and error messages to standard error (stream 2).",
+      "`>` redirects stream 1; `2>` redirects stream 2. One command can have both.",
+      "`ls art music > listing.txt 2> errors.txt`"
+    ],
+    "solution": "ls art music > listing.txt 2> errors.txt",
+    "check": "if [ ! -e listing.txt ]; then no \"There is no listing.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"listing.txt exists.\"\nif [ ! -e errors.txt ]; then no \"There is no errors.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"errors.txt exists.\"\nif grep -q 'hero.png' listing.txt && ! grep -q 'No such file' listing.txt; then ok \"listing.txt holds the listing of art and no error.\"\nelse no \"listing.txt should hold the listing of art (hero.png …) and no error message.\"; fi\nif grep -q \"music.*No such file\" errors.txt && ! grep -q 'hero.png' errors.txt; then ok \"errors.txt holds the error about music, and nothing else.\"\nelse no \"errors.txt should hold only the error message about music.\"; fi"
+  }
+]

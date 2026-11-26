@@ -6,6 +6,7 @@ import {
   getProgress,
   importProgress,
   recordAnswer,
+  recordExerciseCheck,
   recordMockResult,
   reloadProgress,
   resetProgress,
@@ -57,8 +58,26 @@ describe('progress store', () => {
     expect(getProgress().items['012.1-001']?.attempts).toBe(2)
     expect(getProgress().mockResults[0]?.exam).toBe('010-200')
     expect(getProgress().outputInPractice).toBe(false)
+    expect(getProgress().exercises).toEqual({})
     importProgress(JSON.stringify({ app: 'le-010-prep', progress: v1 }))
     expect(getProgress().mockResults[0]?.exam).toBe('010-200')
+  })
+
+  it('migrates version 2 (no exercises), keeping the track', () => {
+    localStorage.setItem('le010:progress', JSON.stringify({ version: 2, track: '010-160', outputInPractice: true, outputInMock: false, items: {}, mockResults: [], lessonsRead: [] }))
+    reloadProgress()
+    expect(getProgress()).toMatchObject({ version: 3, track: '010-160', exercises: {} })
+  })
+
+  it('counts exercise checks and keeps the first time one passed', () => {
+    recordExerciseCheck('013.1-e01', false, 1)
+    recordExerciseCheck('013.1-e01', true, 2)
+    recordExerciseCheck('013.1-e01', false, 3)
+    expect(getProgress().exercises['013.1-e01']).toEqual({ attempts: 3, solvedAt: 2 })
+    const file = exportProgress()
+    resetProgress()
+    importProgress(file)
+    expect(getProgress().exercises['013.1-e01']?.solvedAt).toBe(2)
   })
 
   it('switches the exam track and keeps it', () => {
@@ -85,7 +104,7 @@ describe('progress store', () => {
     expect(getProgress().mockResults).toHaveLength(1)
     expect(() => importProgress('nope')).toThrow(/valid JSON/)
     expect(() => importProgress('{"app":"other","progress":{}}')).toThrow(/LE-010 Prep/)
-    expect(() => importProgress('{"app":"le-010-prep","progress":{"version":3}}')).toThrow(/newer version/)
+    expect(() => importProgress('{"app":"le-010-prep","progress":{"version":4}}')).toThrow(/newer version/)
     expect(() => importProgress('{"app":"le-010-prep","progress":{"version":1,"items":{"x":{"attempts":-1}}}}')).toThrow(/damaged/)
   })
 

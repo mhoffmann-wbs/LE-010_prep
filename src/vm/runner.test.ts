@@ -37,6 +37,16 @@ describe('VmRunner', () => {
     expect(guest.sent.filter((l) => l.startsWith('clock '))).toHaveLength(2)
   })
 
+  it('runs a job that keeps the machine without restoring it', async () => {
+    const guest = fakeGuest(() => ({ exit: 0, output: '' }))
+    const runner = new VmRunner(guest.emulator, new ArrayBuffer(8))
+    await runner.run({ command: 'setup' })
+    await runner.run({ command: 'check' }, { keep: true })
+    expect(guest.restore).not.toHaveBeenCalled()
+    await runner.run({ command: 'again' })
+    expect(guest.restore).toHaveBeenCalledTimes(1)
+  })
+
   it('reports a fixture that fails to apply', async () => {
     const guest = fakeGuest(() => ({ exit: FIXTURE_FAILED, output: 'le-job: fixture failed at line 4' }))
     await expect(new VmRunner(guest.emulator, new ArrayBuffer(8)).run({ command: 'x' })).rejects.toMatchObject({ reason: 'fixture' })

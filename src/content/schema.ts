@@ -10,7 +10,7 @@ const nonEmpty = z.string().trim().min(1)
 
 export const OBJECTIVE_ID = /^01[1-5]\.[1-4]$/
 /** 2.0 ids ("013.2.3", "013.2.t5") and v1.6-only ones ("013.2.v1", "013.2.vt1"). */
-const AREA_ID = /^01[1-5]\.[1-4]\.v?\d+$/
+export const AREA_ID = /^01[1-5]\.[1-4]\.v?\d+$/
 const TERM_ID = /^01[1-5]\.[1-4]\.v?t\d+$/
 
 const option = z.object({

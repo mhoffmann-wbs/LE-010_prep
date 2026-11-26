@@ -1,0 +1,34 @@
+[
+  {
+    "id": "014.2-e01",
+    "objectiveId": "014.2",
+    "areas": [
+      "014.2.1"
+    ],
+    "title": "Which processor is this?",
+    "prompt": "Mira documents the machine she works on. The kernel describes the processor in `/proc/cpuinfo`.\n\nSave the line that gives the processor’s model name (it starts with `model name`) into `cpu.txt` in her home directory, exactly as `/proc/cpuinfo` shows it.",
+    "hints": [
+      "`/proc/cpuinfo` is a text file the kernel makes up when it is read: `less /proc/cpuinfo` shows it.",
+      "`grep` picks out the lines that contain a text.",
+      "`grep 'model name' /proc/cpuinfo > cpu.txt`"
+    ],
+    "solution": "grep 'model name' /proc/cpuinfo > cpu.txt",
+    "check": "if [ ! -e cpu.txt ]; then no \"There is no cpu.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"cpu.txt exists.\"\nwant=$(grep -m 1 'model name' /proc/cpuinfo)\nif [ \"$(head -n 1 cpu.txt)\" = \"$want\" ]; then ok \"It holds the model name line: $(printf '%s' \"$want\" | tr -s '\\t ' ' ')\"\nelse no \"It doesn’t start with the model name line of /proc/cpuinfo.\"; fi"
+  },
+  {
+    "id": "014.2-e02",
+    "objectiveId": "014.2",
+    "areas": [
+      "014.2.2"
+    ],
+    "title": "A megabyte of zeros",
+    "prompt": "To test a disk tool, Ada needs an empty disk image: a file `blank.img` in Mira’s home directory that holds exactly 1 MiB (1048576 bytes), all of them zero bytes.\n\nMake it from the device file that produces zero bytes.",
+    "hints": [
+      "`/dev/zero` is a virtual device: reading it gives an endless stream of zero bytes.",
+      "`head -c 1M` stops after 1 MiB. `dd` can do it too: `bs` is the block size and `count` the number of blocks.",
+      "`head -c 1M /dev/zero > blank.img`, or `dd if=/dev/zero of=blank.img bs=1024 count=1024`."
+    ],
+    "solution": "head -c 1M /dev/zero > blank.img",
+    "check": "if [ ! -e blank.img ]; then no \"There is no blank.img yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"blank.img exists.\"\nsize=$(stat -c %s blank.img)\nif [ \"$size\" = 1048576 ]; then ok \"It is exactly 1048576 bytes.\"; else no \"It is $size bytes, not 1048576.\"; fi\nif [ \"$size\" -gt 0 ] && cmp -s -n \"$size\" blank.img /dev/zero; then ok \"Every byte is zero.\"; else no \"Not all of its bytes are zero bytes.\"; fi"
+  }
+]

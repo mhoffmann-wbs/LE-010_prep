@@ -1,0 +1,55 @@
+[
+  {
+    "id": "012.4-e01",
+    "objectiveId": "012.4",
+    "areas": [
+      "012.4.1",
+      "012.4.3"
+    ],
+    "title": "Collect the sprites for the release",
+    "prompt": "The 1.0 release needs every sprite from Mira’s `art` folder.\n\n1. Create the folder `release/1.0/sprites` in Mira’s home directory, with all the folders on the way, in one command.\n2. Copy every `.png` file from `art` into it, and nothing else.",
+    "fixture": "basics-art",
+    "hints": [
+      "`mkdir` creates missing parent folders with the option `-p`.",
+      "The glob `*.png` matches every name ending in `.png`.",
+      "`cp art/*.png release/1.0/sprites/` copies all of them at once."
+    ],
+    "solution": "mkdir -p release/1.0/sprites\ncp art/*.png release/1.0/sprites/",
+    "check": "d=release/1.0/sprites\nif [ -d $d ]; then ok \"~/$d exists.\"; else no \"There is no folder ~/$d yet.\"; exit 1; fi\nn=$(ls $d | grep -c '\\.png$')\nif [ \"$n\" = 7 ]; then ok \"It holds all 7 PNG sprites.\"; else no \"It holds $n PNG files; art has 7.\"; fi\nother=$(ls $d | grep -vc '\\.png$')\nif [ \"$other\" = 0 ]; then ok \"It holds nothing but PNG files.\"; else no \"It holds $other file(s) that aren’t PNG sprites.\"; fi"
+  },
+  {
+    "id": "012.4-e02",
+    "objectiveId": "012.4",
+    "areas": [
+      "012.4.3"
+    ],
+    "title": "Only the single-digit bosses",
+    "prompt": "In `art` there are three boss sprites: `boss1.png`, `boss2.png` and `boss10.png`. Move only `boss1.png` and `boss2.png` into `art/backup`, with one `mv` command that uses a glob, so that `boss10.png` stays where it is.",
+    "fixture": "basics-art",
+    "hints": [
+      "`*` matches any number of characters, so `boss*.png` would catch `boss10.png` too.",
+      "`?` matches exactly one character.",
+      "`mv art/boss?.png art/backup/`"
+    ],
+    "solution": "mv art/boss?.png art/backup/",
+    "check": "if [ -f art/backup/boss1.png ] && [ -f art/backup/boss2.png ]; then ok \"boss1.png and boss2.png are in art/backup.\"; else no \"boss1.png and boss2.png aren’t both in art/backup.\"; fi\nif [ ! -e art/boss1.png ] && [ ! -e art/boss2.png ]; then ok \"They are gone from art: moved, not copied.\"; else no \"art still has boss1.png or boss2.png. Move them, don’t copy them.\"; fi\nif [ -f art/boss10.png ] && [ ! -e art/backup/boss10.png ]; then ok \"boss10.png stayed in art.\"; else no \"boss10.png should stay in art.\"; fi"
+  },
+  {
+    "id": "012.4-e03",
+    "objectiveId": "012.4",
+    "areas": [
+      "012.4.2",
+      "012.4.1"
+    ],
+    "title": "Notes and notes",
+    "prompt": "The `art` folder has two notes files whose names differ only in case: `notes.txt` and `Notes.txt`. On Linux they are two separate files.\n\nRename the capitalised one, `Notes.txt`, to `notes-old.txt` in the same folder. Leave `notes.txt` as it is. Look at both with `cat` first.",
+    "fixture": "basics-art",
+    "hints": [
+      "Linux file names are case-sensitive: `notes.txt` and `Notes.txt` are different names.",
+      "`mv` renames a file when the target is a new name in the same folder.",
+      "`mv art/Notes.txt art/notes-old.txt`"
+    ],
+    "solution": "mv art/Notes.txt art/notes-old.txt",
+    "check": "if [ \"$(cat art/notes-old.txt 2> /dev/null)\" = 'Capitalised notes' ]; then ok \"art/notes-old.txt holds the capitalised notes.\"; else no \"art/notes-old.txt doesn’t hold the contents of Notes.txt.\"; fi\nif [ ! -e art/Notes.txt ]; then ok \"art/Notes.txt is gone.\"; else no \"art/Notes.txt is still there.\"; fi\nif [ \"$(cat art/notes.txt 2> /dev/null)\" = 'lower-case notes' ]; then ok \"art/notes.txt is unchanged.\"; else no \"art/notes.txt changed or is gone; it should stay as it was.\"; fi"
+  }
+]

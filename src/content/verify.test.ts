@@ -5,6 +5,7 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ITEMS } from './bank'
+import { EXERCISES } from './exercises'
 import { FIXTURES } from './fixtureBank'
 import { checkClaim, collectRunnables } from './runnables'
 import { guestHash, jobKey, readVerified } from './verify'
@@ -17,7 +18,7 @@ const mdx = Object.fromEntries(
     .map((f) => [`lesson ${f.replace(/\.mdx$/, '')}`, readFileSync(join(dir, f), 'utf8')]),
 )
 
-const { runnables, problems } = collectRunnables({ items: ITEMS, fixtures: FIXTURES, mdx })
+const { runnables, problems } = collectRunnables({ items: ITEMS, fixtures: FIXTURES, exercises: EXERCISES, mdx })
 const verified = readVerified()
 const guest = guestHash()
 

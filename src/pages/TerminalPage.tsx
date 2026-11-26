@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
+import { Link } from 'react-router'
 import { vmAvailable } from '../vm/emulator'
 
 const Terminal = lazy(() => import('../vm/Terminal'))
@@ -15,7 +16,12 @@ export default function TerminalPage() {
       <h1 className="text-3xl font-bold">Terminal</h1>
       <p className="text-slate-700">
         A real Debian Linux running inside your browser. You are logged in as <code>mira</code> at TuxPixel Studio (password{' '}
-        <code>tuxpixel</code>). Nothing you do here leaves your browser, and reloading the page starts a fresh machine.
+        <code>tuxpixel</code>). Nothing you do here leaves your browser, and reloading the page starts a fresh machine. For tasks that
+        are checked for you, try the{' '}
+        <Link to="/exercises" className="text-brand-dark underline">
+          exercises
+        </Link>
+        .
       </p>
       {available === null && <p className="text-slate-500">Checking for the Linux image…</p>}
       {available === false && (

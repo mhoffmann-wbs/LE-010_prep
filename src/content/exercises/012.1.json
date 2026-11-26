@@ -1,0 +1,35 @@
+[
+  {
+    "id": "012.1-e01",
+    "objectiveId": "012.1",
+    "areas": [
+      "012.1.4"
+    ],
+    "title": "Quote the price tag",
+    "prompt": "The shop page needs a tagline file. In Mira’s home directory, create `tagline.txt` holding exactly this one line, dollar sign and double quotes included:\n\n```\nPixel Raiders costs $5 for \"early birds\"\n```\n\nUse `echo` and a redirection, and check the file with `cat tagline.txt`.",
+    "hints": [
+      "`echo text > tagline.txt` writes a line into a file, replacing what was there.",
+      "Inside double quotes the shell still expands `$5` (to nothing) and the inner double quotes end the string early.",
+      "Single quotes keep everything inside them exactly as typed, so they protect both the `$` and the `\"`."
+    ],
+    "solution": "echo 'Pixel Raiders costs $5 for \"early birds\"' > tagline.txt",
+    "check": "if [ ! -e tagline.txt ]; then no \"There is no tagline.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"tagline.txt exists.\"\nwant='Pixel Raiders costs $5 for \"early birds\"'\ngot=$(cat tagline.txt)\nif [ \"$got\" = \"$want\" ]; then ok \"It holds the line exactly, with the dollar sign and the double quotes.\"\nelse no \"It holds “$(head -c 200 tagline.txt)”. Compare it with the line asked for: a dollar sign or quotes went missing.\"; fi"
+  },
+  {
+    "id": "012.1-e02",
+    "objectiveId": "012.1",
+    "areas": [
+      "012.1.3",
+      "012.1.1"
+    ],
+    "title": "A variable in every new shell",
+    "prompt": "Mira’s build scripts read the studio’s name from the environment variable `STUDIO`. Set it up so that `STUDIO` has the value `TuxPixel` in every new shell Mira opens, and in the programs those shells start.\n\nThen try it: open a new shell with `bash` and run `echo $STUDIO`, then leave that shell with `exit`.",
+    "hints": [
+      "Bash reads `~/.bashrc` each time it starts an interactive shell, so a line added there runs in every new shell.",
+      "A plain `STUDIO=TuxPixel` stays inside the shell; `export` passes the variable on to the programs the shell starts.",
+      "Append a line with `>>`, which adds to the end of a file instead of replacing it (`>` would wipe `.bashrc`)."
+    ],
+    "solution": "echo 'export STUDIO=TuxPixel' >> ~/.bashrc",
+    "check": "v=$(runuser -u mira -- env -i HOME=/home/mira TERM=dumb bash -i -c 'printf %s \"$STUDIO\"' < /dev/null 2> /dev/null)\nif [ \"$v\" = TuxPixel ]; then ok \"A new shell has STUDIO=TuxPixel.\"\nelse no \"A new interactive shell doesn’t have STUDIO=TuxPixel (it has “$v”). Add a line to ~/.bashrc.\"; exit 1; fi\nc=$(runuser -u mira -- env -i HOME=/home/mira TERM=dumb bash -i -c 'bash -c \"printf %s \\\"\\$STUDIO\\\"\"' < /dev/null 2> /dev/null)\nif [ \"$c\" = TuxPixel ]; then ok \"Programs the shell starts see it too: it is exported.\"\nelse no \"Programs started from the shell don’t see STUDIO: the variable is set but not exported.\"; fi\nif [ \"$(wc -l < .bashrc)\" -gt 20 ]; then ok \"The rest of .bashrc is still there.\"\nelse no \"Most of .bashrc is gone. Did you use > instead of >>? Start over and append with >>.\"; fi"
+  }
+]

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router'
 import { Inline } from '../components/Inline'
 import { EXAM_FORMAT, EXAM_IDS, OBJECTIVES, OBJECTIVE_BY_ID, SOURCES, TOPICS, linesFor, objectiveLabel, objectiveName, objectivesOf, topicName } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
+import { EXERCISES } from '../content/exercises'
 import { LESSONS } from '../content/lessons'
 import { lessonComponents } from '../lessons/components'
 import { setLessonRead, useProgress } from '../progress/store'
@@ -76,6 +77,7 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
   const otherOnly = [...onOtherOnly('areas'), ...onOtherOnly('terms')]
   const read = lessonsRead.includes(objectiveId)
   const practiceCount = ITEMS.filter((i) => i.objectiveId === objectiveId).length
+  const exercises = EXERCISES.filter((e) => e.objectiveId === objectiveId)
 
   return (
     <article className="space-y-6">
@@ -171,6 +173,11 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
         {practiceCount > 0 && (
           <Link to={`/questions?objective=${objectiveId}`} className="rounded border px-4 py-2">
             Browse its questions
+          </Link>
+        )}
+        {exercises.length > 0 && (
+          <Link to={`/exercises/${exercises[0]!.id}`} className="rounded border px-4 py-2">
+            Try it in the terminal ({exercises.length} {exercises.length === 1 ? 'exercise' : 'exercises'})
           </Link>
         )}
         <Link to="/terminal" className="rounded border px-4 py-2">

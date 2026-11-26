@@ -1,0 +1,38 @@
+[
+  {
+    "id": "012.3-e01",
+    "objectiveId": "012.3",
+    "areas": [
+      "012.3.5",
+      "012.3.4"
+    ],
+    "title": "Every Markdown file in the projects",
+    "prompt": "Mira wants a list of all the documentation in her projects. Find every file whose name ends in `.md` anywhere below `~/projects`, and save the list, one path per line, into `markdown.txt` in her home directory.\n\nRelative paths (`projects/…`) and absolute paths (`/home/mira/projects/…`) are both fine.",
+    "fixture": "projects",
+    "hints": [
+      "`find` searches a directory and everything below it.",
+      "`-name` matches file names with a glob. Quote the pattern, so the shell doesn’t expand it first.",
+      "`find projects -name '*.md'` prints the paths; add `> markdown.txt`."
+    ],
+    "solution": "find projects -name '*.md' > markdown.txt",
+    "check": "if [ ! -e markdown.txt ]; then no \"There is no markdown.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"markdown.txt exists.\"\nnorm() { sed -e 's#^/home/mira/##' -e 's#^~/##' -e 's#^\\./##' \"$@\" | sort; }\nif [ \"$(norm markdown.txt)\" = \"$(find projects -name '*.md' | norm)\" ]; then ok \"It lists all four Markdown files, and nothing else.\"\nelse\n  missing=$(comm -13 <(norm markdown.txt) <(find projects -name '*.md' | norm) | wc -l)\n  extra=$(comm -23 <(norm markdown.txt) <(find projects -name '*.md' | norm) | wc -l)\n  no \"$missing Markdown file(s) are missing from the list, and $extra line(s) aren’t Markdown files below projects.\"\nfi"
+  },
+  {
+    "id": "012.3-e02",
+    "objectiveId": "012.3",
+    "areas": [
+      "012.3.2",
+      "012.3.1"
+    ],
+    "title": "A hidden backup",
+    "prompt": "Before Mira edits the studio website, she wants a copy of its start page out of sight.\n\nCreate a hidden directory named `.backup` inside `~/projects/website`, and copy `index.html` from `~/projects/website` into it. Then compare what `ls` and `ls -a` show in `~/projects/website`.",
+    "fixture": "projects",
+    "hints": [
+      "A file or directory is hidden when its name starts with a dot.",
+      "`mkdir` creates the directory and `cp` copies the file.",
+      "`cp projects/website/index.html projects/website/.backup/` copies the file into the directory."
+    ],
+    "solution": "mkdir projects/website/.backup\ncp projects/website/index.html projects/website/.backup/",
+    "check": "d=projects/website/.backup\nif [ -d $d ]; then ok \"The hidden directory ~/$d exists.\"; else no \"There is no directory ~/$d yet.\"; exit 1; fi\nif cmp -s $d/index.html projects/website/index.html; then ok \"It holds a copy of index.html.\"\nelse no \"There is no copy of index.html in ~/$d.\"; fi\nif [ -f projects/website/index.html ]; then ok \"The original index.html is still in place.\"; else no \"The original index.html is gone: copy it, don’t move it.\"; fi"
+  }
+]

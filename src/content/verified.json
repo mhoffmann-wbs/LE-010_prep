@@ -1499,6 +1499,306 @@
     "exit": 0,
     "output": "rm: cannot remove '/tmp/jonas-sketch.txt': Operation not permitted\nstatus 1"
   },
+  "05a751959298a8d8": {
+    "id": "exercise 012.1-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\necho 'Pixel Raiders costs $5 for \"early birds\"' > tagline.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e tagline.txt ]; then no \"There is no tagline.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"tagline.txt exists.\"\nwant='Pixel Raiders costs $5 for \"early birds\"'\ngot=$(cat tagline.txt)\nif [ \"$got\" = \"$want\" ]; then ok \"It holds the line exactly, with the dollar sign and the double quotes.\"\nelse no \"It holds “$(head -c 200 tagline.txt)”. Compare it with the line asked for: a dollar sign or quotes went missing.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ tagline.txt exists.\n✓ It holds the line exactly, with the dollar sign and the double quotes."
+  },
+  "0ca7fb523e6ee51c": {
+    "id": "exercise 012.1-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e tagline.txt ]; then no \"There is no tagline.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"tagline.txt exists.\"\nwant='Pixel Raiders costs $5 for \"early birds\"'\ngot=$(cat tagline.txt)\nif [ \"$got\" = \"$want\" ]; then ok \"It holds the line exactly, with the dollar sign and the double quotes.\"\nelse no \"It holds “$(head -c 200 tagline.txt)”. Compare it with the line asked for: a dollar sign or quotes went missing.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no tagline.txt yet. Create it in Mira’s home directory."
+  },
+  "30dfcef3db295e11": {
+    "id": "exercise 012.1-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\necho 'export STUDIO=TuxPixel' >> ~/.bashrc\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nv=$(runuser -u mira -- env -i HOME=/home/mira TERM=dumb bash -i -c 'printf %s \"$STUDIO\"' < /dev/null 2> /dev/null)\nif [ \"$v\" = TuxPixel ]; then ok \"A new shell has STUDIO=TuxPixel.\"\nelse no \"A new interactive shell doesn’t have STUDIO=TuxPixel (it has “$v”). Add a line to ~/.bashrc.\"; exit 1; fi\nc=$(runuser -u mira -- env -i HOME=/home/mira TERM=dumb bash -i -c 'bash -c \"printf %s \\\"\\$STUDIO\\\"\"' < /dev/null 2> /dev/null)\nif [ \"$c\" = TuxPixel ]; then ok \"Programs the shell starts see it too: it is exported.\"\nelse no \"Programs started from the shell don’t see STUDIO: the variable is set but not exported.\"; fi\nif [ \"$(wc -l < .bashrc)\" -gt 20 ]; then ok \"The rest of .bashrc is still there.\"\nelse no \"Most of .bashrc is gone. Did you use > instead of >>? Start over and append with >>.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ A new shell has STUDIO=TuxPixel.\n✓ Programs the shell starts see it too: it is exported.\n✓ The rest of .bashrc is still there."
+  },
+  "ed2532ce2b6e7b70": {
+    "id": "exercise 012.1-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nv=$(runuser -u mira -- env -i HOME=/home/mira TERM=dumb bash -i -c 'printf %s \"$STUDIO\"' < /dev/null 2> /dev/null)\nif [ \"$v\" = TuxPixel ]; then ok \"A new shell has STUDIO=TuxPixel.\"\nelse no \"A new interactive shell doesn’t have STUDIO=TuxPixel (it has “$v”). Add a line to ~/.bashrc.\"; exit 1; fi\nc=$(runuser -u mira -- env -i HOME=/home/mira TERM=dumb bash -i -c 'bash -c \"printf %s \\\"\\$STUDIO\\\"\"' < /dev/null 2> /dev/null)\nif [ \"$c\" = TuxPixel ]; then ok \"Programs the shell starts see it too: it is exported.\"\nelse no \"Programs started from the shell don’t see STUDIO: the variable is set but not exported.\"; fi\nif [ \"$(wc -l < .bashrc)\" -gt 20 ]; then ok \"The rest of .bashrc is still there.\"\nelse no \"Most of .bashrc is gone. Did you use > instead of >>? Start over and append with >>.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ A new interactive shell doesn’t have STUDIO=TuxPixel (it has “”). Add a line to ~/.bashrc."
+  },
+  "a2375abaae2067c6": {
+    "id": "exercise 012.2-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nwhatis rmdir > rmdir.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e rmdir.txt ]; then no \"There is no rmdir.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"rmdir.txt exists.\"\nif grep -q '^rmdir (1) *- remove empty directories' rmdir.txt; then ok \"It holds the NAME line of rmdir’s man page.\"\nelse no \"It doesn’t hold the line “rmdir (1) - remove empty directories” as whatis or man -f print it.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ rmdir.txt exists.\n✓ It holds the NAME line of rmdir’s man page."
+  },
+  "c4ba272e4dfe42a2": {
+    "id": "exercise 012.2-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e rmdir.txt ]; then no \"There is no rmdir.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"rmdir.txt exists.\"\nif grep -q '^rmdir (1) *- remove empty directories' rmdir.txt; then ok \"It holds the NAME line of rmdir’s man page.\"\nelse no \"It doesn’t hold the line “rmdir (1) - remove empty directories” as whatis or man -f print it.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no rmdir.txt yet. Create it in Mira’s home directory."
+  },
+  "02112f7d21c6ac27": {
+    "id": "exercise 012.2-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nmkdir --help | head -n 1 > usage.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e usage.txt ]; then no \"There is no usage.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"usage.txt exists.\"\nwant=$(mkdir --help | head -n 1)\nif [ \"$(cat usage.txt)\" = \"$want\" ]; then ok \"It holds exactly the usage line: $want\"\nelif grep -qF \"$want\" usage.txt; then no \"It holds the usage line, but other lines too. Keep only the first line.\"\nelse no \"It doesn’t hold the first line of mkdir --help.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ usage.txt exists.\n✓ It holds exactly the usage line: Usage: mkdir [OPTION]... DIRECTORY..."
+  },
+  "287c57cf33caeb25": {
+    "id": "exercise 012.2-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e usage.txt ]; then no \"There is no usage.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"usage.txt exists.\"\nwant=$(mkdir --help | head -n 1)\nif [ \"$(cat usage.txt)\" = \"$want\" ]; then ok \"It holds exactly the usage line: $want\"\nelif grep -qF \"$want\" usage.txt; then no \"It holds the usage line, but other lines too. Keep only the first line.\"\nelse no \"It doesn’t hold the first line of mkdir --help.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no usage.txt yet. Create it in Mira’s home directory."
+  },
+  "d45e97a757c0fa01": {
+    "id": "exercise 012.3-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nfind projects -name '*.md' > markdown.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e markdown.txt ]; then no \"There is no markdown.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"markdown.txt exists.\"\nnorm() { sed -e 's#^/home/mira/##' -e 's#^~/##' -e 's#^\\./##' \"$@\" | sort; }\nif [ \"$(norm markdown.txt)\" = \"$(find projects -name '*.md' | norm)\" ]; then ok \"It lists all four Markdown files, and nothing else.\"\nelse\n  missing=$(comm -13 <(norm markdown.txt) <(find projects -name '*.md' | norm) | wc -l)\n  extra=$(comm -23 <(norm markdown.txt) <(find projects -name '*.md' | norm) | wc -l)\n  no \"$missing Markdown file(s) are missing from the list, and $extra line(s) aren’t Markdown files below projects.\"\nfi\nexit $status",
+    "exit": 0,
+    "output": "✓ markdown.txt exists.\n✓ It lists all four Markdown files, and nothing else."
+  },
+  "51127f4b00fc0137": {
+    "id": "exercise 012.3-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e markdown.txt ]; then no \"There is no markdown.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"markdown.txt exists.\"\nnorm() { sed -e 's#^/home/mira/##' -e 's#^~/##' -e 's#^\\./##' \"$@\" | sort; }\nif [ \"$(norm markdown.txt)\" = \"$(find projects -name '*.md' | norm)\" ]; then ok \"It lists all four Markdown files, and nothing else.\"\nelse\n  missing=$(comm -13 <(norm markdown.txt) <(find projects -name '*.md' | norm) | wc -l)\n  extra=$(comm -23 <(norm markdown.txt) <(find projects -name '*.md' | norm) | wc -l)\n  no \"$missing Markdown file(s) are missing from the list, and $extra line(s) aren’t Markdown files below projects.\"\nfi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no markdown.txt yet. Create it in Mira’s home directory."
+  },
+  "0abd5a15fc9fab8e": {
+    "id": "exercise 012.3-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nmkdir projects/website/.backup\ncp projects/website/index.html projects/website/.backup/\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nd=projects/website/.backup\nif [ -d $d ]; then ok \"The hidden directory ~/$d exists.\"; else no \"There is no directory ~/$d yet.\"; exit 1; fi\nif cmp -s $d/index.html projects/website/index.html; then ok \"It holds a copy of index.html.\"\nelse no \"There is no copy of index.html in ~/$d.\"; fi\nif [ -f projects/website/index.html ]; then ok \"The original index.html is still in place.\"; else no \"The original index.html is gone: copy it, don’t move it.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ The hidden directory ~/projects/website/.backup exists.\n✓ It holds a copy of index.html.\n✓ The original index.html is still in place."
+  },
+  "05ede85c978f6de3": {
+    "id": "exercise 012.3-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nd=projects/website/.backup\nif [ -d $d ]; then ok \"The hidden directory ~/$d exists.\"; else no \"There is no directory ~/$d yet.\"; exit 1; fi\nif cmp -s $d/index.html projects/website/index.html; then ok \"It holds a copy of index.html.\"\nelse no \"There is no copy of index.html in ~/$d.\"; fi\nif [ -f projects/website/index.html ]; then ok \"The original index.html is still in place.\"; else no \"The original index.html is gone: copy it, don’t move it.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no directory ~/projects/website/.backup yet."
+  },
+  "6e893dbd2c04cea1": {
+    "id": "exercise 012.4-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nmkdir -p release/1.0/sprites\ncp art/*.png release/1.0/sprites/\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nd=release/1.0/sprites\nif [ -d $d ]; then ok \"~/$d exists.\"; else no \"There is no folder ~/$d yet.\"; exit 1; fi\nn=$(ls $d | grep -c '\\.png$')\nif [ \"$n\" = 7 ]; then ok \"It holds all 7 PNG sprites.\"; else no \"It holds $n PNG files; art has 7.\"; fi\nother=$(ls $d | grep -vc '\\.png$')\nif [ \"$other\" = 0 ]; then ok \"It holds nothing but PNG files.\"; else no \"It holds $other file(s) that aren’t PNG sprites.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ ~/release/1.0/sprites exists.\n✓ It holds all 7 PNG sprites.\n✓ It holds nothing but PNG files."
+  },
+  "7cfd8fb391e2acd1": {
+    "id": "exercise 012.4-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nd=release/1.0/sprites\nif [ -d $d ]; then ok \"~/$d exists.\"; else no \"There is no folder ~/$d yet.\"; exit 1; fi\nn=$(ls $d | grep -c '\\.png$')\nif [ \"$n\" = 7 ]; then ok \"It holds all 7 PNG sprites.\"; else no \"It holds $n PNG files; art has 7.\"; fi\nother=$(ls $d | grep -vc '\\.png$')\nif [ \"$other\" = 0 ]; then ok \"It holds nothing but PNG files.\"; else no \"It holds $other file(s) that aren’t PNG sprites.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no folder ~/release/1.0/sprites yet."
+  },
+  "63960a557fe9df02": {
+    "id": "exercise 012.4-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nmv art/boss?.png art/backup/\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -f art/backup/boss1.png ] && [ -f art/backup/boss2.png ]; then ok \"boss1.png and boss2.png are in art/backup.\"; else no \"boss1.png and boss2.png aren’t both in art/backup.\"; fi\nif [ ! -e art/boss1.png ] && [ ! -e art/boss2.png ]; then ok \"They are gone from art: moved, not copied.\"; else no \"art still has boss1.png or boss2.png. Move them, don’t copy them.\"; fi\nif [ -f art/boss10.png ] && [ ! -e art/backup/boss10.png ]; then ok \"boss10.png stayed in art.\"; else no \"boss10.png should stay in art.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ boss1.png and boss2.png are in art/backup.\n✓ They are gone from art: moved, not copied.\n✓ boss10.png stayed in art."
+  },
+  "a4859bbd40300c67": {
+    "id": "exercise 012.4-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -f art/backup/boss1.png ] && [ -f art/backup/boss2.png ]; then ok \"boss1.png and boss2.png are in art/backup.\"; else no \"boss1.png and boss2.png aren’t both in art/backup.\"; fi\nif [ ! -e art/boss1.png ] && [ ! -e art/boss2.png ]; then ok \"They are gone from art: moved, not copied.\"; else no \"art still has boss1.png or boss2.png. Move them, don’t copy them.\"; fi\nif [ -f art/boss10.png ] && [ ! -e art/backup/boss10.png ]; then ok \"boss10.png stayed in art.\"; else no \"boss10.png should stay in art.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ boss1.png and boss2.png aren’t both in art/backup.\n✗ art still has boss1.png or boss2.png. Move them, don’t copy them.\n✓ boss10.png stayed in art."
+  },
+  "3df542300a178263": {
+    "id": "exercise 012.4-e03 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nmv art/Notes.txt art/notes-old.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ \"$(cat art/notes-old.txt 2> /dev/null)\" = 'Capitalised notes' ]; then ok \"art/notes-old.txt holds the capitalised notes.\"; else no \"art/notes-old.txt doesn’t hold the contents of Notes.txt.\"; fi\nif [ ! -e art/Notes.txt ]; then ok \"art/Notes.txt is gone.\"; else no \"art/Notes.txt is still there.\"; fi\nif [ \"$(cat art/notes.txt 2> /dev/null)\" = 'lower-case notes' ]; then ok \"art/notes.txt is unchanged.\"; else no \"art/notes.txt changed or is gone; it should stay as it was.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ art/notes-old.txt holds the capitalised notes.\n✓ art/Notes.txt is gone.\n✓ art/notes.txt is unchanged."
+  },
+  "73c9add5cf61595f": {
+    "id": "exercise 012.4-e03 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ \"$(cat art/notes-old.txt 2> /dev/null)\" = 'Capitalised notes' ]; then ok \"art/notes-old.txt holds the capitalised notes.\"; else no \"art/notes-old.txt doesn’t hold the contents of Notes.txt.\"; fi\nif [ ! -e art/Notes.txt ]; then ok \"art/Notes.txt is gone.\"; else no \"art/Notes.txt is still there.\"; fi\nif [ \"$(cat art/notes.txt 2> /dev/null)\" = 'lower-case notes' ]; then ok \"art/notes.txt is unchanged.\"; else no \"art/notes.txt changed or is gone; it should stay as it was.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ art/notes-old.txt doesn’t hold the contents of Notes.txt.\n✗ art/Notes.txt is still there.\n✓ art/notes.txt is unchanged."
+  },
+  "0561600baad4fc07": {
+    "id": "exercise 013.1-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\ntar -cjf assets-0.9.tar.bz2 assets\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nf=assets-0.9.tar.bz2\nif [ ! -f \"$f\" ]; then no \"There is no $f in Mira’s home directory yet.\"; exit 1; fi\nok \"$f exists.\"\nif file -b \"$f\" | grep -q '^bzip2'; then ok \"It is compressed with bzip2.\"; else no \"It isn’t compressed with bzip2: file says “$(file -b \"$f\")”.\"; fi\nif tar -tf \"$f\" 2>/dev/null | grep -qx 'assets/sprites/hero.png'; then ok \"It holds the assets folder, with paths starting at assets/.\"; else no \"It doesn’t hold assets/sprites/hero.png. Pack the folder assets itself.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ assets-0.9.tar.bz2 exists.\n✓ It is compressed with bzip2.\n✓ It holds the assets folder, with paths starting at assets/."
+  },
+  "22efa2e2784de7d2": {
+    "id": "exercise 013.1-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nf=assets-0.9.tar.bz2\nif [ ! -f \"$f\" ]; then no \"There is no $f in Mira’s home directory yet.\"; exit 1; fi\nok \"$f exists.\"\nif file -b \"$f\" | grep -q '^bzip2'; then ok \"It is compressed with bzip2.\"; else no \"It isn’t compressed with bzip2: file says “$(file -b \"$f\")”.\"; fi\nif tar -tf \"$f\" 2>/dev/null | grep -qx 'assets/sprites/hero.png'; then ok \"It holds the assets folder, with paths starting at assets/.\"; else no \"It doesn’t hold assets/sprites/hero.png. Pack the folder assets itself.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no assets-0.9.tar.bz2 in Mira’s home directory yet."
+  },
+  "29eb376c92cdaabd": {
+    "id": "exercise 013.1-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nmkdir restore\ntar -xzf assets-0.9.tar.gz -C restore\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -d restore ]; then ok \"~/restore exists.\"; else no \"There is no folder ~/restore yet.\"; exit 1; fi\nif [ -f restore/assets/levels/level1.txt ] && cmp -s restore/assets/sprites/hero.png assets/sprites/hero.png; then ok \"The archive is unpacked in restore/assets.\"\nelse no \"restore/assets/levels/level1.txt isn’t there. Unpack the archive inside restore.\"; fi\nif [ ! -e restore/restore ] && [ ! -e assets/assets ]; then ok \"Nothing was unpacked in the wrong place.\"; else no \"Some files were unpacked in the wrong place.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ ~/restore exists.\n✓ The archive is unpacked in restore/assets.\n✓ Nothing was unpacked in the wrong place."
+  },
+  "b77c359f907227ad": {
+    "id": "exercise 013.1-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -d restore ]; then ok \"~/restore exists.\"; else no \"There is no folder ~/restore yet.\"; exit 1; fi\nif [ -f restore/assets/levels/level1.txt ] && cmp -s restore/assets/sprites/hero.png assets/sprites/hero.png; then ok \"The archive is unpacked in restore/assets.\"\nelse no \"restore/assets/levels/level1.txt isn’t there. Unpack the archive inside restore.\"; fi\nif [ ! -e restore/restore ] && [ ! -e assets/assets ]; then ok \"Nothing was unpacked in the wrong place.\"; else no \"Some files were unpacked in the wrong place.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no folder ~/restore yet."
+  },
+  "edec762bb6bcb724": {
+    "id": "exercise 013.1-e03 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nzip -r levels.zip assets/levels\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e levels.zip ]; then no \"There is no levels.zip yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"levels.zip exists.\"\nif file -b levels.zip | grep -q '^Zip archive'; then ok \"It is a zip archive.\"; else no \"It isn’t a zip archive: file says “$(file -b levels.zip)”.\"; exit 1; fi\nif unzip -l levels.zip | grep -q 'assets/levels/level1.txt'; then ok \"It holds assets/levels/level1.txt.\"; else no \"It doesn’t hold assets/levels/level1.txt. Did you add the folder with -r?\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ levels.zip exists.\n✓ It is a zip archive.\n✓ It holds assets/levels/level1.txt."
+  },
+  "7b4f2c3d3ebf5bcf": {
+    "id": "exercise 013.1-e03 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e levels.zip ]; then no \"There is no levels.zip yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"levels.zip exists.\"\nif file -b levels.zip | grep -q '^Zip archive'; then ok \"It is a zip archive.\"; else no \"It isn’t a zip archive: file says “$(file -b levels.zip)”.\"; exit 1; fi\nif unzip -l levels.zip | grep -q 'assets/levels/level1.txt'; then ok \"It holds assets/levels/level1.txt.\"; else no \"It doesn’t hold assets/levels/level1.txt. Did you add the folder with -r?\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no levels.zip yet. Create it in Mira’s home directory."
+  },
+  "fcc76bebc42fa9cf": {
+    "id": "exercise 013.2-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nsort enemies.txt | uniq > enemies-sorted.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e enemies-sorted.txt ]; then no \"There is no enemies-sorted.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"enemies-sorted.txt exists.\"\nif [ \"$(cat enemies-sorted.txt)\" = \"$(sort -u enemies.txt)\" ]; then ok \"It holds every enemy once, sorted.\"\nelif [ \"$(sort enemies-sorted.txt)\" = \"$(sort -u enemies.txt)\" ]; then no \"It has every name once, but not sorted.\"\nelse no \"It doesn’t hold each name of enemies.txt exactly once. Compare it with sort enemies.txt.\"; fi\nif [ \"$(wc -l < enemies.txt)\" = 11 ]; then ok \"enemies.txt itself is unchanged.\"; else no \"enemies.txt changed. Write the result to a new file.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ enemies-sorted.txt exists.\n✓ It holds every enemy once, sorted.\n✓ enemies.txt itself is unchanged."
+  },
+  "421fb31bd31e2c9b": {
+    "id": "exercise 013.2-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e enemies-sorted.txt ]; then no \"There is no enemies-sorted.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"enemies-sorted.txt exists.\"\nif [ \"$(cat enemies-sorted.txt)\" = \"$(sort -u enemies.txt)\" ]; then ok \"It holds every enemy once, sorted.\"\nelif [ \"$(sort enemies-sorted.txt)\" = \"$(sort -u enemies.txt)\" ]; then no \"It has every name once, but not sorted.\"\nelse no \"It doesn’t hold each name of enemies.txt exactly once. Compare it with sort enemies.txt.\"; fi\nif [ \"$(wc -l < enemies.txt)\" = 11 ]; then ok \"enemies.txt itself is unchanged.\"; else no \"enemies.txt changed. Write the result to a new file.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no enemies-sorted.txt yet. Create it in Mira’s home directory."
+  },
+  "7eb623019e6bc09f": {
+    "id": "exercise 013.2-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\ngrep ERROR build.log > errors.txt\ngrep -c ERROR build.log > error-count.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e errors.txt ]; then no \"There is no errors.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"errors.txt exists.\"\nif [ \"$(cat errors.txt)\" = \"$(grep ERROR build.log)\" ]; then ok \"errors.txt holds exactly the ERROR lines.\"\nelse no \"errors.txt doesn’t hold exactly the lines of build.log that contain ERROR.\"; fi\nif [ ! -e error-count.txt ]; then no \"There is no error-count.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"error-count.txt exists.\"\nif [ \"$(tr -d ' \\n' < error-count.txt)\" = \"$(grep -c ERROR build.log)\" ]; then ok \"error-count.txt holds the right number.\"\nelse no \"error-count.txt holds “$(head -c 40 error-count.txt)”, which isn’t the number of ERROR lines.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ errors.txt exists.\n✓ errors.txt holds exactly the ERROR lines.\n✓ error-count.txt exists.\n✓ error-count.txt holds the right number."
+  },
+  "55650aceca09b1b5": {
+    "id": "exercise 013.2-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e errors.txt ]; then no \"There is no errors.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"errors.txt exists.\"\nif [ \"$(cat errors.txt)\" = \"$(grep ERROR build.log)\" ]; then ok \"errors.txt holds exactly the ERROR lines.\"\nelse no \"errors.txt doesn’t hold exactly the lines of build.log that contain ERROR.\"; fi\nif [ ! -e error-count.txt ]; then no \"There is no error-count.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"error-count.txt exists.\"\nif [ \"$(tr -d ' \\n' < error-count.txt)\" = \"$(grep -c ERROR build.log)\" ]; then ok \"error-count.txt holds the right number.\"\nelse no \"error-count.txt holds “$(head -c 40 error-count.txt)”, which isn’t the number of ERROR lines.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no errors.txt yet. Create it in Mira’s home directory."
+  },
+  "344c3eb4fe617c15": {
+    "id": "exercise 013.2-e03 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nls art music > listing.txt 2> errors.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e listing.txt ]; then no \"There is no listing.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"listing.txt exists.\"\nif [ ! -e errors.txt ]; then no \"There is no errors.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"errors.txt exists.\"\nif grep -q 'hero.png' listing.txt && ! grep -q 'No such file' listing.txt; then ok \"listing.txt holds the listing of art and no error.\"\nelse no \"listing.txt should hold the listing of art (hero.png …) and no error message.\"; fi\nif grep -q \"music.*No such file\" errors.txt && ! grep -q 'hero.png' errors.txt; then ok \"errors.txt holds the error about music, and nothing else.\"\nelse no \"errors.txt should hold only the error message about music.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ listing.txt exists.\n✓ errors.txt exists.\n✓ listing.txt holds the listing of art and no error.\n✓ errors.txt holds the error about music, and nothing else."
+  },
+  "ee7bc6f637538fd8": {
+    "id": "exercise 013.2-e03 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e listing.txt ]; then no \"There is no listing.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"listing.txt exists.\"\nif [ ! -e errors.txt ]; then no \"There is no errors.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"errors.txt exists.\"\nif grep -q 'hero.png' listing.txt && ! grep -q 'No such file' listing.txt; then ok \"listing.txt holds the listing of art and no error.\"\nelse no \"listing.txt should hold the listing of art (hero.png …) and no error message.\"; fi\nif grep -q \"music.*No such file\" errors.txt && ! grep -q 'hero.png' errors.txt; then ok \"errors.txt holds the error about music, and nothing else.\"\nelse no \"errors.txt should hold only the error message about music.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no listing.txt yet. Create it in Mira’s home directory."
+  },
+  "98aa6d6a44eff06f": {
+    "id": "exercise 013.3-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\ncat > hello.sh <<'EOF'\n#!/bin/bash\necho \"Hello from TuxPixel\"\nEOF\nchmod +x hello.sh\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e hello.sh ]; then no \"There is no hello.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"hello.sh exists.\"\nif head -n 1 hello.sh | grep -Eq '^#! ?(/usr)?/bin/(env )?(ba)?sh'; then ok \"It starts with a shebang line.\"; else no \"Its first line isn’t a shebang such as #!/bin/bash.\"; fi\nif runuser -u mira -- test -x hello.sh; then ok \"Mira may execute it.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./hello.sh' < /dev/null 2>&1)\nif [ \"$out\" = 'Hello from TuxPixel' ]; then ok \"./hello.sh prints “Hello from TuxPixel”.\"; else no \"./hello.sh prints “$out”.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ hello.sh exists.\n✓ It starts with a shebang line.\n✓ Mira may execute it.\n✓ ./hello.sh prints “Hello from TuxPixel”."
+  },
+  "8cd42401810d29ca": {
+    "id": "exercise 013.3-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e hello.sh ]; then no \"There is no hello.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"hello.sh exists.\"\nif head -n 1 hello.sh | grep -Eq '^#! ?(/usr)?/bin/(env )?(ba)?sh'; then ok \"It starts with a shebang line.\"; else no \"Its first line isn’t a shebang such as #!/bin/bash.\"; fi\nif runuser -u mira -- test -x hello.sh; then ok \"Mira may execute it.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./hello.sh' < /dev/null 2>&1)\nif [ \"$out\" = 'Hello from TuxPixel' ]; then ok \"./hello.sh prints “Hello from TuxPixel”.\"; else no \"./hello.sh prints “$out”.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no hello.sh yet. Create it in Mira’s home directory."
+  },
+  "5f98e5bb12517e2f": {
+    "id": "exercise 013.3-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\ncat > welcome.sh <<'EOF'\n#!/bin/bash\nif [ -z \"$1\" ]; then\n  echo \"Usage: welcome.sh NAME\"\n  exit 1\nfi\necho \"Welcome, $1!\"\nEOF\nchmod +x welcome.sh\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e welcome.sh ]; then no \"There is no welcome.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"welcome.sh exists.\"\nif runuser -u mira -- test -x welcome.sh; then ok \"It is executable.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh Ada' < /dev/null 2>&1)\nif [ \"$out\" = 'Welcome, Ada!' ]; then ok \"./welcome.sh Ada prints “Welcome, Ada!”.\"; else no \"./welcome.sh Ada prints “$out”, not “Welcome, Ada!”.\"; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh Jonas' < /dev/null 2>&1)\nif [ \"$out\" = 'Welcome, Jonas!' ]; then ok \"It works for other names too.\"; else no \"./welcome.sh Jonas prints “$out”. Use the argument, don’t type the name.\"; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh' < /dev/null 2>&1); st=$?\nif printf '%s\\n' \"$out\" | head -n 1 | grep -q '^Usage:'; then ok \"Without an argument it prints a usage line.\"; else no \"Without an argument it prints “$out”, not a line starting with Usage:.\"; fi\nif [ \"$st\" = 1 ]; then ok \"Without an argument it exits with the status 1.\"; else no \"Without an argument it exits with the status $st, not 1.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ welcome.sh exists.\n✓ It is executable.\n✓ ./welcome.sh Ada prints “Welcome, Ada!”.\n✓ It works for other names too.\n✓ Without an argument it prints a usage line.\n✓ Without an argument it exits with the status 1."
+  },
+  "a15cac7a4f1efa30": {
+    "id": "exercise 013.3-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e welcome.sh ]; then no \"There is no welcome.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"welcome.sh exists.\"\nif runuser -u mira -- test -x welcome.sh; then ok \"It is executable.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh Ada' < /dev/null 2>&1)\nif [ \"$out\" = 'Welcome, Ada!' ]; then ok \"./welcome.sh Ada prints “Welcome, Ada!”.\"; else no \"./welcome.sh Ada prints “$out”, not “Welcome, Ada!”.\"; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh Jonas' < /dev/null 2>&1)\nif [ \"$out\" = 'Welcome, Jonas!' ]; then ok \"It works for other names too.\"; else no \"./welcome.sh Jonas prints “$out”. Use the argument, don’t type the name.\"; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh' < /dev/null 2>&1); st=$?\nif printf '%s\\n' \"$out\" | head -n 1 | grep -q '^Usage:'; then ok \"Without an argument it prints a usage line.\"; else no \"Without an argument it prints “$out”, not a line starting with Usage:.\"; fi\nif [ \"$st\" = 1 ]; then ok \"Without an argument it exits with the status 1.\"; else no \"Without an argument it exits with the status $st, not 1.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no welcome.sh yet. Create it in Mira’s home directory."
+  },
+  "116702e9f06f5a93": {
+    "id": "exercise 013.3-e03 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\ncat > backup.sh <<'EOF'\n#!/bin/bash\nmkdir -p ~/backup\nfor f in ~/art/*.png; do\n  cp \"$f\" ~/backup/\n  echo \"$f\"\ndone\nEOF\nchmod +x backup.sh\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e backup.sh ]; then no \"There is no backup.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"backup.sh exists.\"\nif runuser -u mira -- test -x backup.sh; then ok \"It is executable.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nif grep -Eq '^\\s*for\\b' backup.sh; then ok \"It uses a for loop.\"; else no \"It doesn’t use a for loop.\"; fi\nrm -rf backup\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./backup.sh' < /dev/null 2>&1); st=$?\nif [ \"$st\" = 0 ] && [ \"$(ls backup 2> /dev/null | tr '\\n' ' ')\" = 'bat.png hero.png slime.png ' ]; then ok \"Run on a clean home, it copies the three PNG files, and only those.\"\nelse no \"Run on a clean home, ~/backup holds “$(ls backup 2> /dev/null | tr '\\n' ' ')” (exit status $st), not the three PNG files.\"; fi\nif printf '%s\\n' \"$out\" | grep -q hero.png && printf '%s\\n' \"$out\" | grep -q slime.png && printf '%s\\n' \"$out\" | grep -q bat.png; then ok \"It prints the name of each file it copies.\"; else no \"It doesn’t print the name of each file it copies.\"; fi\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./backup.sh' < /dev/null > /dev/null 2>&1; st=$?\nif [ \"$st\" = 0 ]; then ok \"A second run works too.\"; else no \"A second run fails with the status $st. Does mkdir fail when ~/backup exists?\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ backup.sh exists.\n✓ It is executable.\n✓ It uses a for loop.\n✓ Run on a clean home, it copies the three PNG files, and only those.\n✓ It prints the name of each file it copies.\n✓ A second run works too."
+  },
+  "7f5e90ec79fa5c5b": {
+    "id": "exercise 013.3-e03 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e backup.sh ]; then no \"There is no backup.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"backup.sh exists.\"\nif runuser -u mira -- test -x backup.sh; then ok \"It is executable.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nif grep -Eq '^\\s*for\\b' backup.sh; then ok \"It uses a for loop.\"; else no \"It doesn’t use a for loop.\"; fi\nrm -rf backup\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./backup.sh' < /dev/null 2>&1); st=$?\nif [ \"$st\" = 0 ] && [ \"$(ls backup 2> /dev/null | tr '\\n' ' ')\" = 'bat.png hero.png slime.png ' ]; then ok \"Run on a clean home, it copies the three PNG files, and only those.\"\nelse no \"Run on a clean home, ~/backup holds “$(ls backup 2> /dev/null | tr '\\n' ' ')” (exit status $st), not the three PNG files.\"; fi\nif printf '%s\\n' \"$out\" | grep -q hero.png && printf '%s\\n' \"$out\" | grep -q slime.png && printf '%s\\n' \"$out\" | grep -q bat.png; then ok \"It prints the name of each file it copies.\"; else no \"It doesn’t print the name of each file it copies.\"; fi\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./backup.sh' < /dev/null > /dev/null 2>&1; st=$?\nif [ \"$st\" = 0 ]; then ok \"A second run works too.\"; else no \"A second run fails with the status $st. Does mkdir fail when ~/backup exists?\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no backup.sh yet. Create it in Mira’s home directory."
+  },
+  "def506da783fb052": {
+    "id": "exercise 014.2-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\ngrep 'model name' /proc/cpuinfo > cpu.txt\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e cpu.txt ]; then no \"There is no cpu.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"cpu.txt exists.\"\nwant=$(grep -m 1 'model name' /proc/cpuinfo)\nif [ \"$(head -n 1 cpu.txt)\" = \"$want\" ]; then ok \"It holds the model name line: $(printf '%s' \"$want\" | tr -s '\\t ' ' ')\"\nelse no \"It doesn’t start with the model name line of /proc/cpuinfo.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ cpu.txt exists.\n✓ It holds the model name line: model name : Pentium III (Katmai)"
+  },
+  "a15fe18e155dc51f": {
+    "id": "exercise 014.2-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e cpu.txt ]; then no \"There is no cpu.txt yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"cpu.txt exists.\"\nwant=$(grep -m 1 'model name' /proc/cpuinfo)\nif [ \"$(head -n 1 cpu.txt)\" = \"$want\" ]; then ok \"It holds the model name line: $(printf '%s' \"$want\" | tr -s '\\t ' ' ')\"\nelse no \"It doesn’t start with the model name line of /proc/cpuinfo.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no cpu.txt yet. Create it in Mira’s home directory."
+  },
+  "a3aa7d289a4df3ce": {
+    "id": "exercise 014.2-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nhead -c 1M /dev/zero > blank.img\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e blank.img ]; then no \"There is no blank.img yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"blank.img exists.\"\nsize=$(stat -c %s blank.img)\nif [ \"$size\" = 1048576 ]; then ok \"It is exactly 1048576 bytes.\"; else no \"It is $size bytes, not 1048576.\"; fi\nif [ \"$size\" -gt 0 ] && cmp -s -n \"$size\" blank.img /dev/zero; then ok \"Every byte is zero.\"; else no \"Not all of its bytes are zero bytes.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ blank.img exists.\n✓ It is exactly 1048576 bytes.\n✓ Every byte is zero."
+  },
+  "4e2d805b4e2cd81a": {
+    "id": "exercise 014.2-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ ! -e blank.img ]; then no \"There is no blank.img yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"blank.img exists.\"\nsize=$(stat -c %s blank.img)\nif [ \"$size\" = 1048576 ]; then ok \"It is exactly 1048576 bytes.\"; else no \"It is $size bytes, not 1048576.\"; fi\nif [ \"$size\" -gt 0 ] && cmp -s -n \"$size\" blank.img /dev/zero; then ok \"Every byte is zero.\"; else no \"Not all of its bytes are zero bytes.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no blank.img yet. Create it in Mira’s home directory."
+  },
+  "3a803b3b8c3062b1": {
+    "id": "exercise 015.3-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nchmod 744 studio/build.sh\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nm=$(stat -c %a studio/build.sh)\nif [ \"$m\" = 744 ]; then ok \"studio/build.sh is -rwxr--r-- (744).\"; else no \"studio/build.sh is $(stat -c %a studio/build.sh) ($(stat -c %A studio/build.sh)), not -rwxr--r-- (744).\"; fi\nif [ \"$(stat -c %U studio/build.sh)\" = mira ]; then ok \"Mira still owns it.\"; else no \"Its owner changed; Mira should still own it.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ studio/build.sh is -rwxr--r-- (744).\n✓ Mira still owns it."
+  },
+  "51b74086c3497946": {
+    "id": "exercise 015.3-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nm=$(stat -c %a studio/build.sh)\nif [ \"$m\" = 744 ]; then ok \"studio/build.sh is -rwxr--r-- (744).\"; else no \"studio/build.sh is $(stat -c %a studio/build.sh) ($(stat -c %A studio/build.sh)), not -rwxr--r-- (744).\"; fi\nif [ \"$(stat -c %U studio/build.sh)\" = mira ]; then ok \"Mira still owns it.\"; else no \"Its owner changed; Mira should still own it.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ studio/build.sh is 755 (-rwxr-xr-x), not -rwxr--r-- (744).\n✓ Mira still owns it."
+  },
+  "ffea03bc51bf1d6b": {
+    "id": "exercise 015.3-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nchmod 711 studio/private\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nm=$(stat -c %a studio/private)\nif [ \"$m\" = 711 ]; then ok \"studio/private is drwx--x--x (711).\"; else no \"studio/private is $(stat -c %a studio/private) ($(stat -c %A studio/private)), not drwx--x--x (711).\"; fi\nif [ \"$(stat -c %a studio/private/ideas.txt)\" = 600 ]; then ok \"ideas.txt inside it is unchanged (600).\"; else no \"ideas.txt changed to $(stat -c %a studio/private/ideas.txt) ($(stat -c %A studio/private/ideas.txt)); leave the files inside as they were.\"; fi\nif runuser -u jonas -- bash -c 'cd /home/mira/studio/private' 2> /dev/null; then ok \"Jonas can enter it.\"; else no \"Jonas can’t enter it: the others need execute permission.\"; fi\nif runuser -u jonas -- ls studio/private > /dev/null 2>&1; then no \"Jonas can still list it.\"; else ok \"Jonas can’t list it.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ studio/private is drwx--x--x (711).\n✓ ideas.txt inside it is unchanged (600).\n✓ Jonas can enter it.\n✓ Jonas can’t list it."
+  },
+  "672a35fc194c093f": {
+    "id": "exercise 015.3-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nm=$(stat -c %a studio/private)\nif [ \"$m\" = 711 ]; then ok \"studio/private is drwx--x--x (711).\"; else no \"studio/private is $(stat -c %a studio/private) ($(stat -c %A studio/private)), not drwx--x--x (711).\"; fi\nif [ \"$(stat -c %a studio/private/ideas.txt)\" = 600 ]; then ok \"ideas.txt inside it is unchanged (600).\"; else no \"ideas.txt changed to $(stat -c %a studio/private/ideas.txt) ($(stat -c %A studio/private/ideas.txt)); leave the files inside as they were.\"; fi\nif runuser -u jonas -- bash -c 'cd /home/mira/studio/private' 2> /dev/null; then ok \"Jonas can enter it.\"; else no \"Jonas can’t enter it: the others need execute permission.\"; fi\nif runuser -u jonas -- ls studio/private > /dev/null 2>&1; then no \"Jonas can still list it.\"; else ok \"Jonas can’t list it.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ studio/private is 700 (drwx------), not drwx--x--x (711).\n✓ ideas.txt inside it is unchanged (600).\n✗ Jonas can’t enter it: the others need execute permission.\n✓ Jonas can’t list it."
+  },
+  "859a21586e72ac34": {
+    "id": "exercise 015.3-e03 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nchmod g-w studio/art\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nm=$(stat -c %a studio/art)\nif [ \"$m\" = 755 ]; then ok \"studio/art is drwxr-xr-x (755): the group lost write and kept the rest.\"; else no \"studio/art is $(stat -c %a studio/art) ($(stat -c %A studio/art)), not drwxr-xr-x (755).\"; fi\nif [ \"$(stat -c %a studio/art/hero.png)\" = 664 ]; then ok \"hero.png is unchanged.\"; else no \"hero.png changed to $(stat -c %a studio/art/hero.png) ($(stat -c %A studio/art/hero.png)). Change only the folder, without -R.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ studio/art is drwxr-xr-x (755): the group lost write and kept the rest.\n✓ hero.png is unchanged."
+  },
+  "ea3e9a85179781db": {
+    "id": "exercise 015.3-e03 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nm=$(stat -c %a studio/art)\nif [ \"$m\" = 755 ]; then ok \"studio/art is drwxr-xr-x (755): the group lost write and kept the rest.\"; else no \"studio/art is $(stat -c %a studio/art) ($(stat -c %A studio/art)), not drwxr-xr-x (755).\"; fi\nif [ \"$(stat -c %a studio/art/hero.png)\" = 664 ]; then ok \"hero.png is unchanged.\"; else no \"hero.png changed to $(stat -c %a studio/art/hero.png) ($(stat -c %A studio/art/hero.png)). Change only the folder, without -R.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ studio/art is 775 (drwxrwxr-x), not drwxr-xr-x (755).\n✓ hero.png is unchanged."
+  },
+  "1812c920025a0557": {
+    "id": "exercise 015.4-e01 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nln -s pixel-raiders-1.1.tar builds/latest.tar\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -L builds/latest.tar ]; then ok \"builds/latest.tar is a symbolic link.\"\nelif [ -e builds/latest.tar ]; then no \"builds/latest.tar is a regular file, not a symbolic link. Delete it and use ln -s.\"; exit 1\nelse no \"There is no builds/latest.tar yet.\"; exit 1; fi\nt=$(readlink builds/latest.tar)\nif [ \"$t\" = pixel-raiders-1.1.tar ] || [ \"$t\" = ./pixel-raiders-1.1.tar ]; then ok \"It points to pixel-raiders-1.1.tar, relative to its folder.\"\nelif [ \"$t\" = /home/mira/builds/pixel-raiders-1.1.tar ]; then no \"It points to an absolute path, $t, which breaks when the folder moves.\"\nelse no \"It points to “$t”, which isn’t pixel-raiders-1.1.tar in the same folder.\"; fi\nif cmp -s builds/latest.tar builds/pixel-raiders-1.1.tar; then ok \"Reading it gives the 1.1 build.\"; else no \"Reading it doesn’t give the 1.1 build: the link is broken.\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ builds/latest.tar is a symbolic link.\n✓ It points to pixel-raiders-1.1.tar, relative to its folder.\n✓ Reading it gives the 1.1 build."
+  },
+  "cffc9eec799b291d": {
+    "id": "exercise 015.4-e01 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -L builds/latest.tar ]; then ok \"builds/latest.tar is a symbolic link.\"\nelif [ -e builds/latest.tar ]; then no \"builds/latest.tar is a regular file, not a symbolic link. Delete it and use ln -s.\"; exit 1\nelse no \"There is no builds/latest.tar yet.\"; exit 1; fi\nt=$(readlink builds/latest.tar)\nif [ \"$t\" = pixel-raiders-1.1.tar ] || [ \"$t\" = ./pixel-raiders-1.1.tar ]; then ok \"It points to pixel-raiders-1.1.tar, relative to its folder.\"\nelif [ \"$t\" = /home/mira/builds/pixel-raiders-1.1.tar ]; then no \"It points to an absolute path, $t, which breaks when the folder moves.\"\nelse no \"It points to “$t”, which isn’t pixel-raiders-1.1.tar in the same folder.\"; fi\nif cmp -s builds/latest.tar builds/pixel-raiders-1.1.tar; then ok \"Reading it gives the 1.1 build.\"; else no \"Reading it doesn’t give the 1.1 build: the link is broken.\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no builds/latest.tar yet."
+  },
+  "c9a2f8b80e200589": {
+    "id": "exercise 015.4-e02 solved",
+    "command": "cat > /run/le-solution <<'LE_SOLUTION_EOF'\numask 022\nmkdir dropbox\nchmod 1777 dropbox\nLE_SOLUTION_EOF\nchmod 644 /run/le-solution\ncd /home/mira\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira SHELL=/bin/bash PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games LANG=en_US.UTF-8 TERM=xterm-256color bash /run/le-solution > /dev/null 2>&1\nstatus=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -d dropbox ]; then ok \"~/dropbox exists.\"; else no \"There is no folder ~/dropbox yet.\"; exit 1; fi\nm=$(stat -c %a dropbox)\nif [ \"$m\" = 1777 ]; then ok \"It is drwxrwxrwt (1777), like /tmp.\"\nelif [ \"$m\" = 777 ]; then no \"Everyone may write to it, but the sticky bit is missing, so anyone could delete anyone’s files.\"\nelse no \"It is $(stat -c %a dropbox) ($(stat -c %A dropbox)), not drwxrwxrwt (1777).\"; fi\nexit $status",
+    "exit": 0,
+    "output": "✓ ~/dropbox exists.\n✓ It is drwxrwxrwt (1777), like /tmp."
+  },
+  "c9b37ebfb39965e8": {
+    "id": "exercise 015.4-e02 unsolved",
+    "command": "status=0\nok() { printf '✓ %s\\n' \"$*\"; }\nno() { printf '✗ %s\\n' \"$*\"; status=1; }\ncd /home/mira\nif [ -d dropbox ]; then ok \"~/dropbox exists.\"; else no \"There is no folder ~/dropbox yet.\"; exit 1; fi\nm=$(stat -c %a dropbox)\nif [ \"$m\" = 1777 ]; then ok \"It is drwxrwxrwt (1777), like /tmp.\"\nelif [ \"$m\" = 777 ]; then no \"Everyone may write to it, but the sticky bit is missing, so anyone could delete anyone’s files.\"\nelse no \"It is $(stat -c %a dropbox) ($(stat -c %A dropbox)), not drwxrwxrwt (1777).\"; fi\nexit $status",
+    "exit": 1,
+    "output": "✗ There is no folder ~/dropbox yet."
+  },
   "09ff9a817c8bdef9": {
     "id": "lesson 011.1:151",
     "command": "uname -s\nuname -o",

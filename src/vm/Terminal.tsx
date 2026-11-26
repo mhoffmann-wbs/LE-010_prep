@@ -3,15 +3,21 @@ import { Terminal as XTerm } from '@xterm/xterm'
 import '@xterm/xterm/css/xterm.css'
 import { useEffect, useRef, useState } from 'react'
 import type { V86 } from 'v86'
-import { startVm } from './emulator'
+import { type Vm, startVm } from './emulator'
+
+/** Lets the page that owns the terminal redraw it after it changed the machine (a reset). */
+export type TerminalControls = { refresh(): void }
 
 type Status = { state: 'loading' } | { state: 'ready'; seconds: number } | { state: 'error'; message: string }
 
 /**
  * The learner's terminal: xterm.js wired to the guest's first serial port.
  * The guest runs a login shell for mira, so this is a real bash session.
+ * `onStart` runs once the machine is up and before the learner can type, e.g.
+ * to apply an exercise's fixture. A new `onStart` starts a new machine, so keep it
+ * stable (useCallback).
  */
-export default function Terminal() {
+export default function Terminal({ onStart }: { onStart?: (vm: Vm, controls: TerminalControls) => Promise<void> }) {
   const container = useRef<HTMLDivElement>(null)
   const [status, setStatus] = useState<Status>({ state: 'loading' })
 
@@ -42,21 +48,27 @@ export default function Terminal() {
     }
 
     startVm()
-      .then(({ emulator: vm }) => {
+      .then(async (vm) => {
         if (disposed) {
-          void vm.destroy()
+          void vm.emulator.destroy()
           return
         }
-        emulator = vm
-        vm.add_listener('serial0-output-byte', (byte: number) => {
+        emulator = vm.emulator
+        vm.emulator.add_listener('serial0-output-byte', (byte: number) => {
           pending.push(byte)
           if (!frame) frame = requestAnimationFrame(flush)
         })
-        term.onData((data) => vm.serial0_send(data))
         // Tell bash the window size, then ask for a fresh prompt.
-        vm.serial0_send(`stty cols ${term.cols} rows ${term.rows}; clear\n`)
+        const refresh = () => {
+          term.reset()
+          vm.emulator.serial0_send(`stty cols ${term.cols} rows ${term.rows}; clear\n`)
+          term.focus()
+        }
+        await onStart?.(vm, { refresh })
+        if (disposed) return
+        term.onData((data) => vm.emulator.serial0_send(data))
+        refresh()
         setStatus({ state: 'ready', seconds: (performance.now() - started) / 1000 })
-        term.focus()
       })
       .catch((e: unknown) => setStatus({ state: 'error', message: e instanceof Error ? e.message : String(e) }))
 
@@ -66,7 +78,7 @@ export default function Terminal() {
       void emulator?.destroy()
       term.dispose()
     }
-  }, [])
+  }, [onStart])
 
   return (
     <div className="space-y-2">

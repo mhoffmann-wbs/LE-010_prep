@@ -1,0 +1,35 @@
+[
+  {
+    "id": "015.4-e01",
+    "objectiveId": "015.4",
+    "areas": [
+      "015.4.2"
+    ],
+    "title": "Always the latest build",
+    "prompt": "The download page always offers `builds/latest.tar`. Make it a symbolic link in `builds` that points to `pixel-raiders-1.1.tar` in the same folder, with a relative target, so the link keeps working when the whole `builds` folder moves.\n\nCheck it with `ls -l builds`.",
+    "fixture": "sec-links",
+    "hints": [
+      "`ln -s TARGET LINK` creates a symbolic link; without `-s`, `ln` makes a hard link.",
+      "A relative target is resolved from the folder the link is in, not from where you run `ln`.",
+      "`ln -s pixel-raiders-1.1.tar builds/latest.tar`"
+    ],
+    "solution": "ln -s pixel-raiders-1.1.tar builds/latest.tar",
+    "check": "if [ -L builds/latest.tar ]; then ok \"builds/latest.tar is a symbolic link.\"\nelif [ -e builds/latest.tar ]; then no \"builds/latest.tar is a regular file, not a symbolic link. Delete it and use ln -s.\"; exit 1\nelse no \"There is no builds/latest.tar yet.\"; exit 1; fi\nt=$(readlink builds/latest.tar)\nif [ \"$t\" = pixel-raiders-1.1.tar ] || [ \"$t\" = ./pixel-raiders-1.1.tar ]; then ok \"It points to pixel-raiders-1.1.tar, relative to its folder.\"\nelif [ \"$t\" = /home/mira/builds/pixel-raiders-1.1.tar ]; then no \"It points to an absolute path, $t, which breaks when the folder moves.\"\nelse no \"It points to “$t”, which isn’t pixel-raiders-1.1.tar in the same folder.\"; fi\nif cmp -s builds/latest.tar builds/pixel-raiders-1.1.tar; then ok \"Reading it gives the 1.1 build.\"; else no \"Reading it doesn’t give the 1.1 build: the link is broken.\"; fi"
+  },
+  {
+    "id": "015.4-e02",
+    "objectiveId": "015.4",
+    "areas": [
+      "015.4.1"
+    ],
+    "title": "A drop box like /tmp",
+    "prompt": "The studio wants a shared drop box in Mira’s home directory, `dropbox`, that works like `/tmp`: everyone may create files in it, but people may delete or rename only their own files.\n\nCreate it with the right permissions. Compare with `ls -ld /tmp`.",
+    "hints": [
+      "Everyone needs read, write and execute on the folder: 777.",
+      "The sticky bit stops people deleting other people’s files in a folder everyone may write to. In `ls -l` it shows as a `t` in the last place.",
+      "`mkdir dropbox` and `chmod 1777 dropbox` (or `chmod a+rwx,+t dropbox`)."
+    ],
+    "solution": "mkdir dropbox\nchmod 1777 dropbox",
+    "check": "if [ -d dropbox ]; then ok \"~/dropbox exists.\"; else no \"There is no folder ~/dropbox yet.\"; exit 1; fi\nm=$(stat -c %a dropbox)\nif [ \"$m\" = 1777 ]; then ok \"It is drwxrwxrwt (1777), like /tmp.\"\nelif [ \"$m\" = 777 ]; then no \"Everyone may write to it, but the sticky bit is missing, so anyone could delete anyone’s files.\"\nelse no \"It is $(stat -c %a dropbox) ($(stat -c %A dropbox)), not drwxrwxrwt (1777).\"; fi"
+  }
+]

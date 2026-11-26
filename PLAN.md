@@ -176,7 +176,7 @@ Copy and parameters are data in `src/content/sims/<simId>.json`. The interactive
 Each simulator has "For the exam" takeaways and "Now you try" bank items, as in AIF.
 
 ### 6c. Terminal exercises (`/exercises`)
-`src/content/exercises/<objectiveId>.json`, with 1–3 per objective that has hands-on content (012.x, 013.x, 014.2, 015.3 and 015.4). Each has `prompt`, `fixture`, optional `user`, 1–3 `hints`, `solution` (commands) and `check`: a bash script run in the VM after the learner's session, printing pass/fail messages. Examples: "Archive `~/builds/0.9` as `builds-0.9.tar.xz`", "Make `deploy.sh` executable for its owner only", "Write `backup.sh` that loops over `*.png` and copies each to `/srv/backup`". `content:verify` checks that the solution passes and the untouched fixture fails. There is a "Free terminal" playground at `/terminal`.
+`src/content/exercises/<objectiveId>.json`, with 1–3 per objective that has hands-on content (012.x, 013.x, 014.2, 015.3 and 015.4). Each has `title`, `prompt`, `areas`, an optional `fixture`, 1–3 `hints`, a `solution` (commands mira types) and a `check`: bash run as root in mira's home on the learner's machine as they left it, reporting each requirement with `ok "…"` or `no "…"`. Exercises run as mira only, the user of the terminal. `content:verify` checks that the solution passes and the untouched fixture fails. There is a "Free terminal" playground at `/terminal`.
 
 ### 6d. Matcher drills (`/explore/drills`)
 - **Which command?** and **Which file/path?** rounds.
@@ -244,7 +244,10 @@ Scripts:
    - 666 items (target 600): every objective at or over target, and every area at 5 or more and every term tested, on both exams. Concept objectives overshoot so each exam's own lines count on that exam.
    - Kind mix: 58% single, 13% multi, 15% fill, 15% output. 518 runnable claims verified in the guest.
    - The `q014-dns` and `q013-scripts` fixtures were added for items.
-5. **Exercises**: terminal exercises with checks, plus the `/terminal` playground.
+5. **Exercises** (done 2026-11-26):
+   - 25 terminal exercises over the 10 hands-on objectives, at `/exercises` and `/exercises/:id`: the fixture is applied in the learner's own terminal, Check runs the check on that machine (`VmRunner.run(job, { keep: true })`), and Start over restores it. Hints one at a time, and a model solution.
+   - `content:verify` proves each check twice (solved: passes; unsolved: fails); `vm:smoke` checks `keep`. Progress v3 records attempts and when each was solved.
+   - Checked in headless Chrome, including a phone-width layout. The `/terminal` playground links to them.
 6. **Explore I**: flashcards and drills.
 7. **Explore II**: transcript capture, the five transcript simulators and the concept simulators.
 8. **Guides and polish**: the cheat sheet, the exam-day guide (format, pacing, price, booking via Pearson VUE/OnVUE), a mobile pass at 360 px, and accessibility (the terminal must work with a screen reader: xterm's screen-reader mode and a plain-text output mirror).

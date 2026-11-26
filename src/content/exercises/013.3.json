@@ -1,0 +1,51 @@
+[
+  {
+    "id": "013.3-e01",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "title": "Your first script",
+    "prompt": "Write a script `hello.sh` in Mira’s home directory that prints exactly this line:\n\n```\nHello from TuxPixel\n```\n\nIt must start with a shebang line for Bash and be executable, so that Mira can run it as `./hello.sh`. Use `nano hello.sh` (save with Ctrl+O, Enter, leave with Ctrl+X), or `cat > hello.sh` and Ctrl+D.",
+    "hints": [
+      "The first line, the shebang, names the interpreter: `#!/bin/bash`.",
+      "The second line can be `echo \"Hello from TuxPixel\"`.",
+      "`chmod +x hello.sh` makes it executable; then run `./hello.sh`."
+    ],
+    "solution": "cat > hello.sh <<'EOF'\n#!/bin/bash\necho \"Hello from TuxPixel\"\nEOF\nchmod +x hello.sh",
+    "check": "if [ ! -e hello.sh ]; then no \"There is no hello.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"hello.sh exists.\"\nif head -n 1 hello.sh | grep -Eq '^#! ?(/usr)?/bin/(env )?(ba)?sh'; then ok \"It starts with a shebang line.\"; else no \"Its first line isn’t a shebang such as #!/bin/bash.\"; fi\nif runuser -u mira -- test -x hello.sh; then ok \"Mira may execute it.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./hello.sh' < /dev/null 2>&1)\nif [ \"$out\" = 'Hello from TuxPixel' ]; then ok \"./hello.sh prints “Hello from TuxPixel”.\"; else no \"./hello.sh prints “$out”.\"; fi"
+  },
+  {
+    "id": "013.3-e02",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "title": "Welcome, whoever you are",
+    "prompt": "Write an executable Bash script `welcome.sh` in Mira’s home directory that greets the name given as its first argument:\n\n```\n$ ./welcome.sh Ada\nWelcome, Ada!\n```\n\nWithout an argument it must print a line that starts with `Usage:` (for example `Usage: welcome.sh NAME`) and exit with the status 1.",
+    "hints": [
+      "Inside a script, `$1` is the first argument and `exit 1` ends the script with the status 1.",
+      "`if [ -z \"$1\" ]; then … fi` runs its commands when `$1` is empty.",
+      "Test it with `./welcome.sh Ada`, `./welcome.sh` and `echo $?`, which shows the last exit status."
+    ],
+    "solution": "cat > welcome.sh <<'EOF'\n#!/bin/bash\nif [ -z \"$1\" ]; then\n  echo \"Usage: welcome.sh NAME\"\n  exit 1\nfi\necho \"Welcome, $1!\"\nEOF\nchmod +x welcome.sh",
+    "check": "if [ ! -e welcome.sh ]; then no \"There is no welcome.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"welcome.sh exists.\"\nif runuser -u mira -- test -x welcome.sh; then ok \"It is executable.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh Ada' < /dev/null 2>&1)\nif [ \"$out\" = 'Welcome, Ada!' ]; then ok \"./welcome.sh Ada prints “Welcome, Ada!”.\"; else no \"./welcome.sh Ada prints “$out”, not “Welcome, Ada!”.\"; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh Jonas' < /dev/null 2>&1)\nif [ \"$out\" = 'Welcome, Jonas!' ]; then ok \"It works for other names too.\"; else no \"./welcome.sh Jonas prints “$out”. Use the argument, don’t type the name.\"; fi\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./welcome.sh' < /dev/null 2>&1); st=$?\nif printf '%s\\n' \"$out\" | head -n 1 | grep -q '^Usage:'; then ok \"Without an argument it prints a usage line.\"; else no \"Without an argument it prints “$out”, not a line starting with Usage:.\"; fi\nif [ \"$st\" = 1 ]; then ok \"Without an argument it exits with the status 1.\"; else no \"Without an argument it exits with the status $st, not 1.\"; fi"
+  },
+  {
+    "id": "013.3-e03",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "title": "Back up the sprites with a loop",
+    "prompt": "Write an executable Bash script `backup.sh` in Mira’s home directory that:\n\n1. creates the folder `~/backup` if it doesn’t exist yet,\n2. copies each `.png` file from `~/art` into it with a `for` loop,\n3. and prints the name of every file it copies.\n\nRun it twice: the second run must work too.",
+    "fixture": "data-art",
+    "hints": [
+      "`mkdir -p ~/backup` creates the folder, and does nothing (without an error) when it already exists.",
+      "`for f in ~/art/*.png; do … done` runs the body once for each PNG file, with its path in `$f`.",
+      "In the body, `cp \"$f\" ~/backup/` and `echo \"$f\"`."
+    ],
+    "solution": "cat > backup.sh <<'EOF'\n#!/bin/bash\nmkdir -p ~/backup\nfor f in ~/art/*.png; do\n  cp \"$f\" ~/backup/\n  echo \"$f\"\ndone\nEOF\nchmod +x backup.sh",
+    "check": "if [ ! -e backup.sh ]; then no \"There is no backup.sh yet. Create it in Mira’s home directory.\"; exit 1; fi\nok \"backup.sh exists.\"\nif runuser -u mira -- test -x backup.sh; then ok \"It is executable.\"; else no \"It isn’t executable. Use chmod.\"; exit 1; fi\nif grep -Eq '^\\s*for\\b' backup.sh; then ok \"It uses a for loop.\"; else no \"It doesn’t use a for loop.\"; fi\nrm -rf backup\nout=$(runuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./backup.sh' < /dev/null 2>&1); st=$?\nif [ \"$st\" = 0 ] && [ \"$(ls backup 2> /dev/null | tr '\\n' ' ')\" = 'bat.png hero.png slime.png ' ]; then ok \"Run on a clean home, it copies the three PNG files, and only those.\"\nelse no \"Run on a clean home, ~/backup holds “$(ls backup 2> /dev/null | tr '\\n' ' ')” (exit status $st), not the three PNG files.\"; fi\nif printf '%s\\n' \"$out\" | grep -q hero.png && printf '%s\\n' \"$out\" | grep -q slime.png && printf '%s\\n' \"$out\" | grep -q bat.png; then ok \"It prints the name of each file it copies.\"; else no \"It doesn’t print the name of each file it copies.\"; fi\nrunuser -u mira -- env -i HOME=/home/mira USER=mira LOGNAME=mira PATH=/usr/local/bin:/usr/bin:/bin LANG=en_US.UTF-8 timeout 5 bash -c 'cd ~ && ./backup.sh' < /dev/null > /dev/null 2>&1; st=$?\nif [ \"$st\" = 0 ]; then ok \"A second run works too.\"; else no \"A second run fails with the status $st. Does mkdir fail when ~/backup exists?\"; fi"
+  }
+]
