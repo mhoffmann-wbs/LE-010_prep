@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
 import { OutputItemsToggle } from '../components/OutputItemsToggle'
 import { Inline } from '../components/Inline'
-import { OBJECTIVES, TOPICS, objectivesOf } from '../content/blueprint'
+import { OBJECTIVES, TOPICS, objectiveName, objectivesOf, topicName } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
 import { type Item, itemSummary } from '../content/schema'
 import { MASTERY_LEVELS, type Mastery, masteryOf } from '../progress/readiness'
@@ -24,7 +24,7 @@ function topicPool(params: URLSearchParams, progress: Progress): Item[] {
   const objectiveId = params.get('objective')
   const topicId = params.get('topic')
   const kind = params.get('kind')
-  return practicePool(ITEMS, progress.outputInPractice).filter(
+  return practicePool(ITEMS, progress.track, progress.outputInPractice).filter(
     (i) =>
       (objectiveId ? i.objectiveId === objectiveId : topicId ? i.objectiveId.startsWith(`${topicId}.`) : true) && (!kind || i.kind === kind),
   )
@@ -48,7 +48,7 @@ function ItemIndex() {
   const shown = filtered(params, progress)
   const mastery = params.get('mastery')
   const topic = params.get('objective') ? `objective=${params.get('objective')}` : params.get('topic') ? `topic=${params.get('topic')}` : ''
-  const all = practicePool(ITEMS, progress.outputInPractice)
+  const all = practicePool(ITEMS, progress.track, progress.outputInPractice)
   const kinds = (Object.keys(KIND_LABELS) as Item['kind'][]).filter((k) => all.some((i) => i.kind === k))
 
   function update(key: string, value: string | null) {
@@ -85,11 +85,11 @@ function ItemIndex() {
             <select value={topic} onChange={(e) => setTopic(e.target.value)} className="w-full min-w-0 rounded border border-slate-300 bg-white px-2 py-1 sm:w-auto sm:max-w-md">
               <option value="">All topics ({all.length})</option>
               {TOPICS.map((t) => (
-                <optgroup key={t.id} label={`Topic ${t.id}: ${t.title}`}>
-                  <option value={`topic=${t.id}`}>All of topic {t.id}</option>
+                <optgroup key={t.id} label={topicName(t.id, progress.track)}>
+                  <option value={`topic=${t.id}`}>All of {topicName(t.id, progress.track).split(':')[0]}</option>
                   {objectivesOf(t.id).map((o) => (
                     <option key={o.id} value={`objective=${o.id}`}>
-                      {o.id} {o.title}
+                      {objectiveName(o.id, progress.track)}
                     </option>
                   ))}
                 </optgroup>
@@ -138,9 +138,7 @@ function ItemIndex() {
         if (items.length === 0) return null
         return (
           <section key={o.id} className="rounded-lg border border-slate-200 bg-white p-4">
-            <h2 className="font-semibold">
-              {o.id} {o.title}
-            </h2>
+            <h2 className="font-semibold">{objectiveName(o.id, progress.track)}</h2>
             <ul className="mt-2 divide-y divide-slate-100">
               {items.map((i) => (
                 <li key={i.id}>

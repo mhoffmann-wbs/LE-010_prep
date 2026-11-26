@@ -1,0 +1,19 @@
+{
+  "description": "Pixel Raiders studio folder with files of different owners, groups and modes, for reading ls -l and changing permissions (015.3).",
+  "groups": [
+    { "name": "design", "members": ["mira", "jonas"] },
+    { "name": "release", "members": ["mira", "ada"] }
+  ],
+  "entries": [
+    { "path": "/home/mira/studio", "type": "dir" },
+    { "path": "/home/mira/studio/level1.txt", "content": "Level 1: the pixel forest.\n", "mode": "644" },
+    { "path": "/home/mira/studio/build.sh", "content": "#!/bin/sh\necho building Pixel Raiders\n", "mode": "755" },
+    { "path": "/home/mira/studio/passwords.txt", "content": "staging-server: not-a-real-password\n", "mode": "600" },
+    { "path": "/home/mira/studio/art", "type": "dir", "group": "design", "mode": "775" },
+    { "path": "/home/mira/studio/art/hero.png", "content": "PNG-placeholder\n", "owner": "jonas", "group": "design", "mode": "664" },
+    { "path": "/home/mira/studio/release-notes.txt", "content": "v1.0: first public build.\n", "owner": "ada", "group": "release", "mode": "640" },
+    { "path": "/home/mira/studio/private", "type": "dir", "mode": "700" },
+    { "path": "/home/mira/studio/private/ideas.txt", "content": "Boss fight in the lava cave.\n", "mode": "600" },
+    { "path": "/home/mira/studio/draft.txt", "content": "Draft story.\n", "mode": "644" }
+  ]
+}

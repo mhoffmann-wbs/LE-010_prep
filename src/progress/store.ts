@@ -1,11 +1,12 @@
 import { useSyncExternalStore } from 'react'
 import { z } from 'zod'
+import type { ExamId } from '../content/blueprint'
 
 // All persisted learner state lives behind this module. Bump VERSION and add a
 // migration in `load()` and `importProgress()` whenever the shape changes, and
 // keep ProgressSchema in step; never read localStorage elsewhere.
 const STORAGE_KEY = 'le010:progress'
-const VERSION = 1
+const VERSION = 2
 
 export interface ItemStat {
   attempts: number
@@ -24,6 +25,8 @@ export interface ScoreRowRecord {
 
 export interface MockResult {
   at: number
+  /** The exam it was a mock of. */
+  exam: ExamId
   /** "Predict the output" items were included. */
   output: boolean
   correct: number
@@ -37,6 +40,8 @@ export interface MockResult {
 
 export interface Progress {
   version: typeof VERSION
+  /** The exam the learner prepares for; it filters practice, the mock exam, readiness and lessons. */
+  track: ExamId
   /** Include "predict the output" items in practice and the question bank. */
   outputInPractice: boolean
   /** Include them in the mock exam. */
@@ -50,19 +55,26 @@ export interface Progress {
 export type Toggle = 'outputInPractice' | 'outputInMock'
 
 function empty(): Progress {
-  return { version: VERSION, outputInPractice: true, outputInMock: false, items: {}, mockResults: [], lessonsRead: [] }
+  return { version: VERSION, track: '010-200', outputInPractice: true, outputInMock: false, items: {}, mockResults: [], lessonsRead: [] }
 }
 
 function load(): Progress {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return empty()
-    const parsed = JSON.parse(raw) as { version?: number }
+    const parsed = migrate(JSON.parse(raw))
     if (parsed.version !== VERSION) return empty()
     return { ...empty(), ...parsed } as Progress
   } catch {
     return empty()
   }
+}
+
+/** Version 1 had no exam track: everything was 010-200. */
+function migrate(data: { version?: unknown; mockResults?: unknown }) {
+  if (data.version !== 1) return data
+  const mockResults = Array.isArray(data.mockResults) ? data.mockResults.map((r: object) => ({ exam: '010-200', ...r })) : data.mockResults
+  return { ...data, version: 2, track: '010-200', mockResults }
 }
 
 let state: Progress = load()
@@ -116,6 +128,10 @@ export function setToggle(which: Toggle, on: boolean) {
   commit({ ...state, [which]: on })
 }
 
+export function setTrack(track: ExamId) {
+  commit({ ...state, track })
+}
+
 export function setLessonRead(objectiveId: string, read: boolean) {
   const others = state.lessonsRead.filter((id) => id !== objectiveId)
   commit({ ...state, lessonsRead: read ? [...others, objectiveId] : others })
@@ -126,6 +142,7 @@ const count = z.number().int().nonnegative()
 const row = z.object({ id: z.string(), correct: count, total: count })
 const ProgressSchema = z.object({
   version: z.literal(VERSION),
+  track: z.enum(['010-200', '010-160']),
   outputInPractice: z.boolean(),
   outputInMock: z.boolean(),
   items: z.record(
@@ -135,6 +152,7 @@ const ProgressSchema = z.object({
   mockResults: z.array(
     z.object({
       at: z.number(),
+      exam: z.enum(['010-200', '010-160']),
       output: z.boolean(),
       correct: count,
       total: count,
@@ -159,7 +177,7 @@ export function exportProgress(at: Date = new Date()): string {
  * Throws an Error with a message for the learner if the file isn't a usable export.
  */
 export function importProgress(json: string) {
-  let doc: { app?: unknown; progress?: { version?: unknown } }
+  let doc: { app?: unknown; progress?: { version?: unknown; mockResults?: unknown } }
   try {
     doc = JSON.parse(json)
   } catch {
@@ -172,7 +190,7 @@ export function importProgress(json: string) {
   if (typeof version === 'number' && version > VERSION) {
     throw new Error('This export comes from a newer version of the app. Reload the app, then import it again.')
   }
-  const result = ProgressSchema.safeParse({ ...empty(), ...doc.progress })
+  const result = ProgressSchema.safeParse({ ...empty(), ...migrate(doc.progress) })
   if (!result.success) throw new Error('This export is damaged or incomplete, so nothing was imported.')
   commit(result.data)
 }

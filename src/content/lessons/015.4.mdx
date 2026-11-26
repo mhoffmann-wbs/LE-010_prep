@@ -1,0 +1,301 @@
+export const meta = {
+  objectiveId: '015.4',
+  updated: '2026-11-26',
+  tldr: '`/tmp` and `/var/tmp` are directories where every user may create files. `/tmp` is cleared at reboot (or sooner); `/var/tmp` keeps files longer, across reboots. Both have the sticky bit set (`drwxrwxrwt`, mode `1777`): you may delete only your own files there. A symbolic link is a small file that points to another path; `ln -s TARGET LINK` makes one, `ls -l` shows `link -> target`, and `rm link` removes only the link. If the target goes away, the link is left dangling. `ls -d` lists a directory itself.',
+  areasCovered: ['015.4.1', '015.4.2'],
+  termsCovered: ['015.4.t1', '015.4.t2', '015.4.t3'],
+  links: [
+    { title: 'Filesystem Hierarchy Standard 3.0: /tmp', url: 'https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s18.html' },
+    { title: 'Filesystem Hierarchy Standard 3.0: /var/tmp', url: 'https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch05s15.html' },
+    { title: 'inode(7): the sticky bit (restricted deletion flag)', url: 'https://man7.org/linux/man-pages/man7/inode.7.html' },
+    { title: 'chmod(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/chmod.1.html' },
+    { title: 'ln(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/ln.1.html' },
+    { title: 'ls(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/ls.1.html' },
+    { title: 'symlink(7): symbolic links', url: 'https://man7.org/linux/man-pages/man7/symlink.7.html' },
+  ],
+}
+
+## Big idea
+
+Two special things are on the table here. First, **temporary directories**: a place where *every* user may drop files, which needs an extra rule so that users can't delete each other's files. Second, **symbolic links**: a file whose only content is the path of another file, like a shortcut on a desktop.
+
+## Walkthrough
+
+### Temporary files: /tmp and /var/tmp
+
+Programs and people constantly need a scratch place: a download in progress, a half-finished export, the lock file of a program. Linux provides two for **all** users:
+
+| Directory | For | Lifetime |
+|---|---|---|
+| `/tmp` | short-lived files | **may be deleted at any time, and is cleared at reboot** (on many systems it is a RAM disk or is emptied at boot) |
+| `/var/tmp` | temporary files that must **survive a reboot** | kept longer; the system only removes them after a much longer time, if at all |
+
+The standard behind this (the Filesystem Hierarchy Standard) tells programs not to count on `/tmp` files still being there the next time they run, while the files in `/var/tmp` are not deleted when the system boots. Which one to use? Anything you could lose, even after a restart, goes in `/tmp`; a large file you want to keep for a few days belongs in `/var/tmp`. Neither is a place for things you want to keep for good: use your home directory for those.
+
+Because both are open to everybody, you can see what's in them. In this course's terminal, there is a sketch of Jonas's in `/tmp`:
+
+```bash fixture=sec-links
+ls -d /tmp /var/tmp
+ls -A /tmp
+```
+
+```output
+/tmp  /var/tmp
+jonas-sketch.txt
+```
+
+Now `ls -d`. Without `-d`, `ls /tmp` would show the **contents** of `/tmp`. `ls -d /tmp` shows the directory **itself**, as one name. It is most useful with `-l` (to see a directory's own permissions) or with a pattern. `ls -d */` lists only the directories in the current directory:
+
+```bash fixture=sec-perms
+cd studio
+ls -d */
+ls -d art
+```
+
+```output
+art/  private/
+art
+```
+
+`*/` matches every name that ends with a slash, which means directories only. You can also combine it with `-l`: `ls -ld /tmp` shows the mode and owner of `/tmp` itself. Let's look at that mode with `stat`, which prints exactly the parts you ask for (`%A` is the permissions, `%U` and `%G` are owner and group):
+
+```bash
+stat -c '%A %U %G %n' /tmp /var/tmp
+```
+
+```output
+drwxrwxrwt root root /tmp
+drwxrwxrwt root root /var/tmp
+```
+
+### The sticky bit
+
+Look at the end of `drwxrwxrwt`: the last character is `t` where "others" would show `x`. That is the **sticky bit**. The directory is writable by everyone (`rwxrwxrwx`), and normally write permission on a directory means you may delete **any** file in it, whoever owns it (see [lesson 015.3](/learn/015.3)). With the sticky bit set, a file in the directory can be deleted or renamed **only by**:
+
+- the **owner of the file**,
+- the **owner of the directory**, or
+- **root**.
+
+Everyone can still create files in `/tmp`, but nobody can remove the files of others. Here Jonas's file allows writing by everyone (mode `666`), and still Mira can't delete it:
+
+```bash fixture=sec-links
+ls -l /tmp/jonas-sketch.txt
+rm /tmp/jonas-sketch.txt
+```
+
+```output
+-rw-rw-rw- 1 jonas jonas 24 Nov  2 09:30 /tmp/jonas-sketch.txt
+rm: cannot remove '/tmp/jonas-sketch.txt': Operation not permitted
+```
+
+The file's own permissions allow Mira to change its content, but the **directory's sticky bit** decides who may delete it. Note the error is "Operation not permitted", not "Permission denied".
+
+The sticky bit is the fourth permission digit, in front of the usual three: **`1`**. So `/tmp` is mode **`1777`**. You set it with `chmod`, in number form or with `+t`:
+
+```bash fixture=sec-links
+mkdir shared
+chmod 1777 shared
+stat -c '%A %a' shared
+chmod -t shared
+stat -c '%A %a' shared
+chmod +t shared
+stat -c '%A %a' shared
+```
+
+```output
+drwxrwxrwt 1777
+drwxrwxrwx 777
+drwxrwxrwt 1777
+```
+
+A capital **`T`** means the sticky bit is set but "others" have no execute permission (for instance `drwxrwxrw-` with sticky shows as `drwxrwxrwT`). Don't confuse them: `t` includes execute for others, `T` doesn't. The sticky bit has no meaning on ordinary files today. It is the same idea that other special bits have (the `s` in `/usr/bin/passwd`, the "set user ID" bit, lets a program run with its owner's rights), but the exam only asks about the sticky bit on directories.
+
+### Symbolic links
+
+A **symbolic link** (symlink, soft link) is a tiny special file whose content is a **path**. When a program opens the link, Linux follows the path to the **target**. Mira keeps her game builds in `~/builds`, and wants a stable name, `latest`, that always points to the newest one. **`ln -s TARGET LINKNAME`** creates it: the **target comes first**, then the name of the new link.
+
+```bash fixture=sec-links
+cd builds
+ln -s pixel-raiders-1.1.tar latest
+readlink latest
+cat latest
+stat -c '%F' latest pixel-raiders-1.1.tar
+```
+
+```output
+pixel-raiders-1.1.tar
+build 1.1
+symbolic link
+regular file
+```
+
+`cat latest` printed the contents of `pixel-raiders-1.1.tar`, because the link led there. `readlink` prints where a link points, and `stat -c %F` names the file type. `ls -F` marks links with an `@`:
+
+```bash fixture=sec-links
+cd builds
+ln -s pixel-raiders-1.1.tar latest
+ls -1F
+```
+
+```output
+latest@
+pixel-raiders-1.0.tar
+pixel-raiders-1.1.tar
+```
+
+`ls -l` shows a link by its **first character `l`**, and by an arrow after the name: `latest -> pixel-raiders-1.1.tar`. The permissions of a link itself show as `rwxrwxrwx`, because the permissions of the **target** are the ones that count. (This course's terminal doesn't draw the mode bits of links as a real system does, so try it on a real machine to see it.)
+
+A link's target is stored **exactly as you typed it**. `ln -s pixel-raiders-1.1.tar latest` is a **relative** link, found from the directory the link is in. A link to `/home/mira/builds/pixel-raiders-1.1.tar` is **absolute**. A relative target is resolved from the link's own directory, not from where you are when you open it. Links can also point to **directories**, and to files on other disks, which hard links can't.
+
+### Deleting a link and dangling links
+
+**`rm` on a link deletes the link only. The target is untouched.** Test it:
+
+```bash fixture=sec-links
+cd builds
+ln -s pixel-raiders-1.0.tar current
+rm current
+ls -1
+cat pixel-raiders-1.0.tar
+```
+
+```output
+pixel-raiders-1.0.tar
+pixel-raiders-1.1.tar
+build 1.0
+```
+
+The other way round is different. If you delete or rename the **target**, the link stays, but it now points to nothing. It is a **dangling** (or broken) link:
+
+```bash fixture=sec-links
+cd builds
+ln -s pixel-raiders-0.9.tar old
+cat old
+readlink old
+```
+
+```output
+cat: old: No such file or directory
+pixel-raiders-0.9.tar
+```
+
+The message sounds as if `old` doesn't exist. What it means is that the thing `old` points to doesn't. The link itself is still there. Remove a dangling link with plain `rm old`. And if you later create a file with the target's name, the link works again.
+
+### Symbolic links versus hard links
+
+Linux has a second kind of link, the **hard link**, made with `ln` **without** `-s`. A hard link is not a pointer to a name. It is a **second name for the same data**. Both names are equal, and the count in the second column of `ls -l` shows how many names a file has. The data is freed only when the last name is removed:
+
+```bash fixture=sec-links
+cd builds
+echo a > a.txt
+ln a.txt b.txt
+stat -c '%h %n' a.txt b.txt
+rm a.txt
+cat b.txt
+```
+
+```output
+2 a.txt
+2 b.txt
+a
+```
+
+| | Symbolic link (`ln -s`) | Hard link (`ln`) |
+|---|---|---|
+| What it is | a small file holding a path | another name for the same file |
+| If the target is deleted | the link **dangles** | the data stays, the other name still works |
+| Can point to a directory | yes | no |
+| Can cross to another filesystem | yes | no |
+| `ls -l` shows | `l`, and `link -> target` | an ordinary file, with a link count above 1 |
+
+You need to create and recognise symbolic links for the exam. For hard links, knowing the difference is enough.
+
+## At TuxPixel
+
+- **`latest` always works.** The build server has `~/builds/latest` pointing at the newest archive. Ada just changes the link after each build (`ln -sf NEW latest`, where `-f` replaces the old link), and the nightly test script uses `latest` without ever changing.
+- **Scratch space.** Jonas exports a video into `/tmp` while editing; if his laptop restarts, nothing is lost that matters. For the huge animation render that must survive a reboot, he uses `/var/tmp`.
+- **No tampering in a shared place.** Because `/tmp` has the sticky bit, Ada's temporary build files can't be deleted by someone else's cleanup script. Only Ada (or Mira, as root) can.
+- **A broken link.** After Mira renames `pixel-raiders-1.1.tar`, `cat latest` says "No such file or directory". `readlink latest` shows the old name, and she fixes the link.
+
+## Predict the output
+
+<Predict>
+
+```bash fixture=sec-links
+cd builds
+ln -s pixel-raiders-1.0.tar current
+rm pixel-raiders-1.0.tar
+cat current
+```
+
+```output
+cat: current: No such file or directory
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+mkdir drop
+chmod 1777 drop
+stat -c '%a %A' drop
+```
+
+```output
+1777 drwxrwxrwt
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=sec-links
+cd builds
+ln -s ../notes.txt n
+cat n
+rm n
+cat ../notes.txt
+```
+
+```output
+Remember: tag the release.
+Remember: tag the release.
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="/tmp is cleared, /var/tmp survives">
+  <p>`/tmp` may be emptied at any time and at reboot; `/var/tmp` is meant to keep files across reboots. Both are writable by every user. Neither is a place for data you want to keep.</p>
+</Callout>
+
+<Callout title="Sticky bit: the t, +t and the 1 in 1777">
+  <p>The sticky bit shows as a `t` in the others-execute position (`drwxrwxrwt`) and as the leading **1** in the octal mode (`1777`). It lets users create files in a shared directory but delete only their own. `chmod +t dir` sets it, `chmod -t dir` removes it.</p>
+</Callout>
+
+<Callout title="ln -s: the target comes first">
+  <p>`ln -s TARGET LINKNAME`, like `cp SOURCE DEST`. `ln -s /var/tmp/big.iso ~/big.iso` makes `~/big.iso` point to the file. Without `-s` you make a hard link instead.</p>
+</Callout>
+
+<Callout title="Removing links and targets">
+  <p>`rm link` removes the link and leaves the target. Removing the target leaves a dangling link. `ls -l` shows a link as `l...` followed by `name -> target`.</p>
+</Callout>
+
+<Callout title="ls -d shows the directory itself">
+  <p>`ls /tmp` lists what is inside; `ls -d /tmp` lists `/tmp` itself; `ls -ld /tmp` shows its permissions, with the `t`. `ls -d */` lists only the subdirectories of the current directory.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal):
+
+1. Run `ls -ld /tmp /var/tmp`. What does the last letter of the permissions mean? What is the octal mode (`stat -c %a /tmp`)?
+2. Create `~/scratch`, put a file in it, and run `ln -s ~/scratch/hello.txt ~/hello-link` (after creating `hello.txt` with `echo hello > ~/scratch/hello.txt`). Read it with `cat ~/hello-link`, then run `ls -l ~/hello-link` and find the `->`.
+3. Remove `~/scratch/hello.txt` and run `cat ~/hello-link`. What is the link called now? Fix it by recreating the file.
+4. Run `rm ~/hello-link` and check that the target survives.
+5. Run `ls -d ~/*/` and compare with `ls ~`.
+6. Make a shared directory with `mkdir ~/dropbox` and `chmod 1777 ~/dropbox`. Does `ls -ld ~/dropbox` show a `t`? Remove it again with `chmod -t ~/dropbox` and compare.
+
+When you're ready, [practise this objective](/practice?objective=015.4). That was the last lesson: put everything to the test in a [mock exam](/mock).

@@ -1,0 +1,6 @@
+{
+  "description": "A short build log from Ada's nightly build of Pixel Raiders.",
+  "entries": [
+    { "path": "/home/mira/build.log", "content": "INFO compiling src/main.c\nINFO compiling src/player.c\nWARN texture hero.png is not 32x32\nINFO linking pixel-raiders\nERROR missing file sounds/boom.ogg\nINFO compiling src/enemy.c\nWARN unused variable speed in enemy.c\nERROR link failed: undefined reference to player_jump\nINFO build finished with 2 errors\n" }
+  ]
+}

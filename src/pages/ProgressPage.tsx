@@ -1,7 +1,8 @@
 import { type ChangeEvent, useState } from 'react'
 import { Link } from 'react-router'
+import { ExamSettings } from '../components/ExamSettings'
 import { OutputItemsToggle } from '../components/OutputItemsToggle'
-import { EXAM_FORMAT, OBJECTIVES, OBJECTIVE_BY_ID, TOPICS } from '../content/blueprint'
+import { EXAM_FORMAT, OBJECTIVES, OBJECTIVE_BY_ID, TOPICS, objectiveLabel, topicLabel } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
 import { objectiveReadiness, weightedReadiness } from '../progress/readiness'
 import { exportProgress, importProgress, useProgress } from '../progress/store'
@@ -11,20 +12,21 @@ const pct = (n: number) => `${Math.round(n * 100)}%`
 
 export default function ProgressPage() {
   const progress = useProgress()
-  const pool = practicePool(ITEMS, progress.outputInPractice)
+  const pool = practicePool(ITEMS, progress.track, progress.outputInPractice)
   const weights = objectiveWeights()
   const rows = objectiveReadiness(OBJECTIVES, pool, progress)
-  const topics = TOPICS.map((t) => ({ ...t, readiness: weightedReadiness(rows.filter((r) => r.objectiveId.startsWith(`${t.id}.`)), weights) }))
+  const topics = TOPICS.map((t) => ({ ...t, label: topicLabel(t, progress.track), readiness: weightedReadiness(rows.filter((r) => r.objectiveId.startsWith(`${t.id}.`)), weights) }))
   const weakest = rows.filter((r) => pool.some((i) => i.objectiveId === r.objectiveId)).sort((a, b) => a.readiness - b.readiness).slice(0, 5)
-  const lastMock = progress.mockResults.at(-1)
+  const mocks = progress.mockResults.filter((m) => m.exam === progress.track)
+  const lastMock = mocks.at(-1)
 
   return (
     <div className="space-y-8">
       <section className="space-y-2">
         <h1 className="text-3xl font-bold">Progress</h1>
         <p className="text-slate-600">
-          Readiness is the share of each objective's questions you can currently answer, weighted like the exam. It's a study guide, not a
-          score prediction.
+          Readiness for exam {progress.track} is the share of each objective's questions you can currently answer, weighted like the exam.
+          It's a study guide, not a score prediction.
         </p>
       </section>
 
@@ -32,7 +34,7 @@ export default function ProgressPage() {
         <Stat label="Weighted readiness" value={pct(weightedReadiness(rows, weights))} />
         <Stat label="Last mock (estimate)" value={lastMock ? String(lastMock.scaled) : '–'} hint={`pass at ${EXAM_FORMAT.passScore}`} />
         <Stat label="Questions answered" value={String(pool.filter((i) => progress.items[i.id]).length)} hint={`of ${pool.length}`} />
-        <Stat label="Mocks taken" value={String(progress.mockResults.length)} />
+        <Stat label="Mocks taken" value={String(mocks.length)} />
       </section>
 
       <section className="rounded-lg border border-slate-200 bg-white p-4">
@@ -42,7 +44,7 @@ export default function ProgressPage() {
             <li key={t.id}>
               <div className="flex justify-between gap-4 text-sm">
                 <span>
-                  {t.id} {t.title}
+                  {t.label.id} {t.label.title}
                 </span>
                 <span className="font-mono">{pct(t.readiness)}</span>
               </div>
@@ -66,7 +68,7 @@ export default function ProgressPage() {
           {weakest.map((r) => (
             <li key={r.objectiveId} className="flex justify-between gap-4">
               <Link to={`/practice?objective=${r.objectiveId}`} className="text-brand-dark hover:underline">
-                {r.objectiveId} {OBJECTIVE_BY_ID.get(r.objectiveId)!.title}
+                {Object.values(objectiveLabel(OBJECTIVE_BY_ID.get(r.objectiveId)!, progress.track)).join(' ')}
               </Link>
               <span className="shrink-0 text-slate-500">
                 {pct(r.coverage)} seen · {pct(r.accuracy)} right
@@ -74,6 +76,10 @@ export default function ProgressPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="rounded-lg border border-slate-200 bg-white p-4">
+        <ExamSettings />
       </section>
 
       <section className="space-y-3 rounded-lg border border-slate-200 bg-white p-4">

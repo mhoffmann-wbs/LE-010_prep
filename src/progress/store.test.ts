@@ -10,6 +10,7 @@ import {
   reloadProgress,
   resetProgress,
   setLessonRead,
+  setTrack,
   setToggle,
 } from './store'
 
@@ -48,6 +49,25 @@ describe('progress store', () => {
     expect(getProgress().items).toEqual({})
   })
 
+  it('migrates version 1 (no exam track) to 010-200, keeping answers and mock results', () => {
+    const v1 = { version: 1, outputInPractice: false, outputInMock: false, items: { '012.1-001': { attempts: 2, correct: 1, lastCorrect: true, lastAt: 5, streak: 1 } }, mockResults: [{ at: 1, output: false, correct: 30, total: 40, percent: 75, scaled: 578, passed: true, topics: [] }], lessonsRead: ['012.3'] }
+    localStorage.setItem('le010:progress', JSON.stringify(v1))
+    reloadProgress()
+    expect(getProgress().track).toBe('010-200')
+    expect(getProgress().items['012.1-001']?.attempts).toBe(2)
+    expect(getProgress().mockResults[0]?.exam).toBe('010-200')
+    expect(getProgress().outputInPractice).toBe(false)
+    importProgress(JSON.stringify({ app: 'le-010-prep', progress: v1 }))
+    expect(getProgress().mockResults[0]?.exam).toBe('010-200')
+  })
+
+  it('switches the exam track and keeps it', () => {
+    expect(getProgress().track).toBe('010-200')
+    setTrack('010-160')
+    reloadProgress()
+    expect(getProgress().track).toBe('010-160')
+  })
+
   it('marks lessons read and unread', () => {
     setLessonRead('012.1', true)
     setLessonRead('013.3', true)
@@ -57,7 +77,7 @@ describe('progress store', () => {
 
   it('round-trips an export and rejects files that are not exports', () => {
     recordAnswer('015.3-001', true)
-    recordMockResult({ at: 1, output: false, correct: 30, total: 40, percent: 75, scaled: 578, passed: true, topics: [{ id: '011', correct: 5, total: 7 }] })
+    recordMockResult({ at: 1, exam: '010-200', output: false, correct: 30, total: 40, percent: 75, scaled: 578, passed: true, topics: [{ id: '011', correct: 5, total: 7 }] })
     const file = exportProgress()
     resetProgress()
     importProgress(file)
@@ -65,7 +85,7 @@ describe('progress store', () => {
     expect(getProgress().mockResults).toHaveLength(1)
     expect(() => importProgress('nope')).toThrow(/valid JSON/)
     expect(() => importProgress('{"app":"other","progress":{}}')).toThrow(/LE-010 Prep/)
-    expect(() => importProgress('{"app":"le-010-prep","progress":{"version":2}}')).toThrow(/newer version/)
+    expect(() => importProgress('{"app":"le-010-prep","progress":{"version":3}}')).toThrow(/newer version/)
     expect(() => importProgress('{"app":"le-010-prep","progress":{"version":1,"items":{"x":{"attempts":-1}}}}')).toThrow(/damaged/)
   })
 

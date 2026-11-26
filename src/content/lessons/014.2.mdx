@@ -1,0 +1,287 @@
+export const meta = {
+  objectiveId: '014.2',
+  updated: '2026-11-26',
+  tldr: 'A computer is a motherboard with a processor (x86 or ARM), memory, storage, network cards and peripherals, fed by a power supply. The kernel talks to hardware through drivers (kernel modules, see `lsmod`) and shows devices as files: `/dev/sda` or `/dev/nvme0n1` for disks, `/dev/null`, `/dev/zero` and `/dev/urandom` for pseudo-devices. `/boot` holds the kernel and `/sys` describes the hardware.',
+  areasCovered: ['014.2.1', '014.2.2'],
+  termsCovered: ['014.2.t1', '014.2.t2', '014.2.t3', '014.2.t4', '014.2.t5', '014.2.t6', '014.2.t7', '014.2.vt1', '014.2.vt2', '014.2.vt3'],
+  links: [
+    { title: 'null(4), zero(4), random(4) manual pages (/dev/null, /dev/zero, /dev/urandom)', url: 'https://man7.org/linux/man-pages/man4/null.4.html' },
+    { title: 'random(4) manual page (/dev/random, /dev/urandom)', url: 'https://man7.org/linux/man-pages/man4/random.4.html' },
+    { title: 'hier(7): description of the filesystem hierarchy', url: 'https://man7.org/linux/man-pages/man7/hier.7.html' },
+    { title: 'sysfs(5) manual page', url: 'https://man7.org/linux/man-pages/man5/sysfs.5.html' },
+    { title: 'lsmod(8) manual page', url: 'https://man7.org/linux/man-pages/man8/lsmod.8.html' },
+    { title: 'Linux kernel documentation: allocated devices (names and numbers)', url: 'https://www.kernel.org/doc/html/latest/admin-guide/devices.html' },
+    { title: 'Raspberry Pi documentation', url: 'https://www.raspberrypi.com/documentation/' },
+  ],
+}
+
+## Big idea
+
+Hardware is the physical part of a computer. Software needs it, but cannot talk to it directly. On Linux the **kernel** sits in between. It has a **driver** for each kind of device, and it shows the devices to programs in a familiar way: as **files** under `/dev`. Reading from or writing to the right file is how a program uses a disk, a terminal or a random number source.
+
+The parts you should be able to name:
+
+| Part | What it does |
+|---|---|
+| **Motherboard** | The main circuit board. Everything plugs into it or sits on it. |
+| **Processor** (CPU) | Runs the instructions. Two families matter: **x86** (Intel and AMD, in most PCs, laptops and servers; 64-bit variant `x86_64`) and **ARM** (phones, tablets, Apple's chips, many servers and the Raspberry Pi). A program built for one family does not run on the other. |
+| **Memory** (RAM) | Fast, temporary storage for running programs. Its contents are lost at power-off. |
+| **Storage** | Keeps data permanently: a **hard disk drive** (spinning, cheap), a **solid state disk** (SSD, flash, fast) or an NVMe drive. |
+| **Power supply** | Turns mains power into the voltages the parts need. |
+| **Optical drive** | Reads and writes CD, DVD or Blu-ray discs. Rare today, but still a device. |
+| **Peripherals** | Everything you plug in: keyboard, mouse, monitor, printer, USB stick, drawing tablet. |
+
+Ask the guest which processor family it pretends to have:
+
+```bash
+uname -m
+```
+
+```output
+i686
+```
+
+That `i686` is a 32-bit x86 CPU, which is what the browser emulator can run. A real laptop prints `x86_64`, and a Raspberry Pi prints `aarch64`.
+
+## Walkthrough
+
+### Network interface cards
+
+A **network interface card** (NIC) connects the machine to a network. **Ethernet** uses a cable, **WiFi** is wireless. On a laptop both are usually built into the motherboard. Linux gives each one an **interface name** (such as `eth0`, `enp3s0` or `wlp2s0`, where `en` means Ethernet and `wl` means wireless LAN). Interfaces are not files under `/dev`; you see them with `ip addr show` ([lesson 014.4](/learn/014.4)) or in `/sys/class/net`:
+
+```bash
+ls /sys/class/net
+```
+
+```output
+lo
+```
+
+This practice VM has no network card, only `lo`, the **loopback** interface a computer uses to talk to itself.
+
+### Block storage and partitions
+
+A disk is a **block device**: it is read and written in blocks, at any position. A disk is usually split into **partitions**, parts that act like separate disks, and each partition holds a filesystem. The kernel names them like this:
+
+| Device file | Meaning |
+|---|---|
+| `/dev/sda` | the first SATA, SCSI or USB disk (`sdb` is the second, and so on) |
+| `/dev/sda1` | the first partition on `sda` |
+| `/dev/nvme0n1` | the first NVMe SSD (namespace 1 of controller 0) |
+| `/dev/nvme0n1p2` | the second partition on that NVMe drive |
+| `/dev/sr0` | the first optical drive |
+
+The `sd` stands for "SCSI disk", an old name that stuck. Disks get their letter in the order the kernel finds them, so a USB stick plugged in later can become `/dev/sdb`. This practice VM has no such disk, so a test shows nothing:
+
+```bash
+ls -d /dev/sd* /dev/nvme* 2>/dev/null | wc -l
+```
+
+```output
+0
+```
+
+On a real machine `lsblk` lists the disks and partitions, and `df -h` shows how full the mounted ones are.
+
+### Device files
+
+In a listing of `/dev`, a file's first character shows the kind. A `b` is a **block device** (disks) and a `c` is a **character device** (a terminal, a keyboard, a serial port: data goes one byte at a time):
+
+```bash
+stat -c "%n is a %F" /dev/null /dev/tty
+```
+
+```output
+/dev/null is a character special file
+/dev/tty is a character special file
+```
+
+Device files don't hold data on a disk. They are doors to the kernel, so that programs can use `cat`, `>` and the other file tools on hardware. Some are **pseudo-devices**: no hardware behind them, only kernel code.
+
+<ExamOnly exam="010-200">
+
+### Three pseudo-devices to know
+
+| Device | What reading gives you | What writing does |
+|---|---|---|
+| `/dev/null` | nothing: end of file at once | the data is thrown away |
+| `/dev/zero` | an endless stream of zero bytes | the data is thrown away |
+| `/dev/urandom` | an endless stream of random bytes | feeds the random pool |
+
+`/dev/null` is the "black hole". Use it to silence output (`command > /dev/null`) or to throw away error messages (`command 2> /dev/null`, [lesson 013.2](/learn/013.2) explains the redirections):
+
+```bash
+echo "this vanishes" > /dev/null
+wc -c < /dev/null
+```
+
+```output
+0
+```
+
+`/dev/zero` is an infinite supply of zeros, handy to create a file of a given size. `head -c 8` takes the first 8 bytes, and `od -c` prints them readably (`\0` is the zero byte):
+
+```bash
+head -c 8 /dev/zero | od -c
+```
+
+```output
+0000000  \0  \0  \0  \0  \0  \0  \0  \0
+0000010
+```
+
+`/dev/urandom` gives random bytes, different every time, which is why this lesson doesn't show them. They are used for keys and passwords. Count what you get:
+
+```bash
+head -c 16 /dev/urandom | wc -c
+```
+
+```output
+16
+```
+
+</ExamOnly>
+
+### Drivers and kernel modules
+
+A **driver** is the kernel code that knows how to talk to one kind of hardware. Linux ships most of them with the kernel. Rather than load all of them all the time, many are **kernel modules**: pieces of the kernel that can be loaded and removed while the machine runs. When you plug in a device, the kernel loads the matching module.
+
+`lsmod` lists the loaded modules. Its first line is a header, and the rest show each module's name, size and what uses it:
+
+```bash
+lsmod | head -1
+```
+
+```output
+Module                  Size  Used by
+```
+
+Modules live under `/lib/modules/<kernel version>/`. `modprobe` loads one (as root) and `modprobe -r` removes it. Most of the time you never do this by hand.
+
+### /dev, /boot and /sys
+
+| Directory | Contains |
+|---|---|
+| `/dev` | the device files |
+| `/boot` | what the machine needs to start: the kernel (`vmlinuz-…`), the initial RAM disk (`initrd.img-…`) and the boot loader's files. Names end in the kernel version. |
+| `/sys` | **sysfs**, a view of the kernel's devices, drivers and settings, made on the fly. Files inside show facts about the hardware, such as `/sys/class/net/` for network interfaces and `/sys/block/` for disks. |
+
+```bash
+ls /boot | cut -d- -f1
+```
+
+```output
+config
+initrd.img
+System.map
+vmlinuz
+```
+
+`/dev` and `/sys` are not stored on the disk: the kernel generates them while the system runs, as `/proc` does ([lesson 014.3](/learn/014.3)). Don't edit `/boot` files by hand.
+
+<ExamOnly exam="010-200">
+
+### Raspberry Pi
+
+A **Raspberry Pi** is a small, cheap, single-board computer with an **ARM** processor. There is no case, but there are USB ports, HDMI, WiFi and Ethernet, and a row of GPIO pins to connect electronics. It has no hard disk; it boots from an **SD card** (or USB or NVMe storage) that holds an OS image, usually the Raspberry Pi OS, a Debian-based distribution. It is popular for learning, home servers and small projects. Because it is ARM, it needs software built for ARM, and `uname -m` prints `aarch64` (64-bit) or `armv7l` (32-bit). On the Pi, the SD card shows up as `/dev/mmcblk0`.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **The ARM Pi in the office** runs the studio's wall display of nightly build results. When Ada compiled the display tool on her x86 laptop, it didn't run on the Pi, so she had to build it for ARM.
+- **Replacing a disk.** Mira plugs a spare SSD into the asset file server, runs `lsblk` and sees `sdb` and `sdb1`, so she knows it's not the system disk `sda`.
+- **Silencing a cron job.** The nightly sprite-optimiser prints progress that nobody reads, so Jonas ends the command with `> /dev/null`.
+- **Wiping a test file.** Mira makes a 1 MB placeholder file for upload tests with `head -c 1000000 /dev/zero > blob.bin`.
+- **Which drivers?** After a new WiFi card arrived, Mira checks with `lsmod` that its module loaded.
+
+## Predict the output
+
+<Predict>
+
+```bash
+head -c 3 /dev/zero | wc -c
+```
+
+```output
+3
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+echo "Pixel Raiders" | cat > /dev/null
+echo $?
+```
+
+```output
+0
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+stat -c "%n %F" /dev/zero /dev/urandom
+```
+
+```output
+/dev/zero character special file
+/dev/urandom character special file
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Names: sd, nvme, and the partition number">
+  <p>`/dev/sda` is a whole disk, `/dev/sda1` is its first partition. For NVMe drives it is `/dev/nvme0n1` and `/dev/nvme0n1p1`, with a `p` before the partition number. A letter after `sd` counts disks, a number counts partitions.</p>
+</Callout>
+
+<Callout title="null, zero, urandom">
+  <p>`/dev/null` discards what you write and reads as empty. `/dev/zero` reads as endless zero bytes. `/dev/urandom` reads as endless random bytes. None of them stores anything.</p>
+</Callout>
+
+<Callout title="Network cards are not in /dev">
+  <p>A disk has a device file such as `/dev/sda`, but a network interface (`eth0`, `wlp2s0`) does not. You look at it with `ip addr show`, or in `/sys/class/net`.</p>
+</Callout>
+
+<Callout title="Where things live">
+  <p>`/boot` has the kernel, `/dev` the device files, `/sys` information about devices and drivers. The last two are generated by the kernel while it runs, they are not files on the disk.</p>
+</Callout>
+
+<Callout title="Modules are parts of the kernel">
+  <p>A kernel module is a driver that can be loaded and unloaded while the system runs. `lsmod` lists the loaded ones. And x86 versus ARM is about the processor: programs built for one don't run on the other.</p>
+</Callout>
+
+<ExamOnly exam="010-160">
+
+<Callout title="Only /dev/sd* on the older exam">
+  <p>Exam 010-160 mentions hard drives, SSDs and partitions with `/dev/sd*`. The NVMe names, the Raspberry Pi and the pseudo-devices are not on its list, but kernel drivers are.</p>
+</Callout>
+
+</ExamOnly>
+
+<ExamOnly exam="010-200">
+
+<Callout title="Raspberry Pi means ARM">
+  <p>The Raspberry Pi is an ARM single-board computer that boots from an SD card. A normal laptop or server is x86.</p>
+</Callout>
+
+</ExamOnly>
+
+## Try it
+
+Open the [terminal](/terminal) and explore the hardware this VM has:
+
+1. Run `ls /dev | head -20`. Which of these are terminals (`tty…`)?
+2. Run `cat /proc/cpuinfo | head -5` to see the processor's details, then `head -3 /proc/meminfo` for memory.
+3. Run `lsmod`. Which module belongs to the 9p filesystem?
+4. Run `ls /sys/class`, then `ls /sys/class/net`.
+5. Create 1 KB of zeros with `head -c 1024 /dev/zero > zeros.bin`, then check with `ls -l zeros.bin`.
+6. Run `echo test > /dev/null` and `cat /dev/null`. What do you see?
+
+When you're ready, [practise this objective](/practice?objective=014.2). Next, learn about running programs in [lesson 014.3](/learn/014.3).

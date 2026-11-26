@@ -9,8 +9,9 @@ import { FIXTURE_NAME } from './fixture.ts'
 const nonEmpty = z.string().trim().min(1)
 
 export const OBJECTIVE_ID = /^01[1-5]\.[1-4]$/
-const AREA_ID = /^01[1-5]\.[1-4]\.\d+$/
-const TERM_ID = /^01[1-5]\.[1-4]\.t\d+$/
+/** 2.0 ids ("013.2.3", "013.2.t5") and v1.6-only ones ("013.2.v1", "013.2.vt1"). */
+const AREA_ID = /^01[1-5]\.[1-4]\.v?\d+$/
+const TERM_ID = /^01[1-5]\.[1-4]\.v?t\d+$/
 
 const option = z.object({
   text: nonEmpty,
@@ -28,7 +29,7 @@ const base = {
   /** `${objectiveId}-NNN`, e.g. "013.2-014". Stored in progress: never renumber or reuse. */
   id: z.string().regex(/^01[1-5]\.[1-4]-\d{3}$/),
   objectiveId: z.string().regex(OBJECTIVE_ID),
-  /** Key knowledge area ids the item tests, e.g. ["013.2.3"]. */
+  /** Key knowledge area ids the item tests, e.g. ["013.2.3"]. They decide which exams it is on (`itemInExam`). */
   areas: z.array(z.string().regex(AREA_ID)).min(1),
   /** Ids of the objective's listed files, terms and utilities the item tests. */
   terms: z.array(z.string().regex(TERM_ID)).optional(),
@@ -140,6 +141,23 @@ export const itemSchema = z.discriminatedUnion('kind', [single, multi, fill, out
 })
 
 export const itemFileSchema = z.array(itemSchema)
+
+/** A lesson (src/content/lessons/<objectiveId>.mdx) exports this as `meta`. */
+export const lessonMetaSchema = z.object({
+  objectiveId: z.string().regex(OBJECTIVE_ID),
+  /** Date the lesson's facts were last checked. */
+  updated: z.iso.date(),
+  /** One or two sentences: what the learner must take away. */
+  tldr: nonEmpty,
+  /** Key knowledge area ids the lesson teaches; a content test requires all of the objective's. */
+  areasCovered: z.array(z.string().regex(AREA_ID)).min(1),
+  /** Term ids the lesson teaches; a content test requires all of the objective's. */
+  termsCovered: z.array(z.string().regex(TERM_ID)).min(1),
+  /** Sources for the lesson's facts (man pages, distribution docs). The LPI materials are linked on every lesson page. */
+  links: z.array(z.object({ title: nonEmpty, url: z.url() })).min(1),
+})
+
+export type LessonMeta = z.infer<typeof lessonMetaSchema>
 
 export type Item = z.infer<typeof itemSchema>
 export type ItemKind = Item['kind']

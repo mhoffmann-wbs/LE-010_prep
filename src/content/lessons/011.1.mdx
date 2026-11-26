@@ -1,0 +1,227 @@
+export const meta = {
+  objectiveId: '011.1',
+  updated: '2026-11-26',
+  tldr: 'Linux is the kernel; a distribution adds userspace tools, a package manager and a release policy. The main families are Debian-based (Debian, Ubuntu, Raspberry Pi OS), Enterprise Linux (RHEL, AlmaLinux, Rocky Linux, Fedora, CentOS Stream), SUSE-based (SLE, openSUSE Leap and Tumbleweed) and Alpine. Releases come as stable, testing, unstable, LTS or rolling. Android uses the Linux kernel but not the usual GNU userspace.',
+  areasCovered: ['011.1.1', '011.1.2', '011.1.3', '011.1.4', '011.1.v1', '011.1.v2'],
+  termsCovered: ['011.1.t1', '011.1.t2', '011.1.t3', '011.1.t4', '011.1.t5', '011.1.vt1', '011.1.vt2', '011.1.vt3', '011.1.vt4', '011.1.vt5'],
+  links: [
+    { title: 'Debian: releases (stable, testing, unstable) and life cycle', url: 'https://www.debian.org/releases/' },
+    { title: 'Ubuntu: release cycle', url: 'https://ubuntu.com/about/release-cycle' },
+    { title: 'CentOS Project: about CentOS Stream', url: 'https://www.centos.org/about/' },
+    { title: 'CentOS Linux end of life', url: 'https://centos.org/centos-linux-eol/' },
+    { title: 'AlmaLinux OS', url: 'https://almalinux.org/' },
+    { title: 'Rocky Linux: about', url: 'https://rockylinux.org/about' },
+    { title: 'Fedora: release life cycle', url: 'https://docs.fedoraproject.org/en-US/releases/lifecycle/' },
+    { title: 'openSUSE: Leap portal', url: 'https://en.opensuse.org/Portal:Leap' },
+    { title: 'Alpine Linux: about', url: 'https://alpinelinux.org/about/' },
+    { title: 'Alpine Linux: releases and branches', url: 'https://alpinelinux.org/releases/' },
+    { title: 'Alpine Linux handbook: repositories and branches', url: 'https://docs.alpinelinux.org/user-handbook/0.1a/Working/apk.html' },
+    { title: 'Raspberry Pi OS', url: 'https://www.raspberrypi.com/software/' },
+    { title: 'Linux Mint: about', url: 'https://www.linuxmint.com/about.php' },
+    { title: 'Scientific Linux end of life', url: 'https://scientificlinux.org/category/uncategorized/scientific-linux-end-of-life/' },
+    { title: 'Android Open Source Project: the Android kernel', url: 'https://source.android.com/docs/core/architecture/kernel' },
+  ],
+}
+
+## Big idea
+
+Strictly speaking, **Linux** is only one program: the **kernel**. The kernel talks to the hardware (CPU, memory, disks, network cards) and decides which program gets to run when. On its own it is useless: you can't log in to a kernel.
+
+Everything you actually touch is **userspace**: the shell, `ls`, `cp`, the editors, the desktop, the web server, the libraries they use. Most of the basic tools come from the GNU project, which is why the whole system is sometimes called **GNU/Linux**.
+
+A **Linux distribution** ("distro") is a ready-made bundle: a kernel, userspace software, an installer, a **package manager** and a **release policy** (how often there is a new version, and how long it gets updates). Different distros make different choices, so they feel different, but they all run the same kernel family and the same kind of tools.
+
+You can see both names on a running system. `uname -s` asks for the kernel's name, and `uname -o` asks for the operating system:
+
+```bash
+uname -s
+uname -o
+```
+
+```output
+Linux
+GNU/Linux
+```
+
+## Walkthrough
+
+<ExamOnly exam="010-200">
+
+### Kernel and userspace
+
+| Part | Examples | Job |
+|---|---|---|
+| **Kernel** | Linux | Hardware, memory, processes, filesystems, networking |
+| **Userspace** | Bash, `ls`, `grep`, a desktop, a web browser | Everything you start and use |
+
+A program in userspace never touches the hardware directly. It asks the kernel, through **system calls**, and the kernel does the work. Because the kernel is the shared part, one distro can often run on very different machines: a laptop, a server, a small board.
+
+</ExamOnly>
+
+### Families of distributions
+
+Hundreds of distros exist, but most belong to a few **families**. Members of a family share the same package format and package tools, and many packages work across the family. The exam names four families.
+
+| Family | Package format and tools | Members to know |
+|---|---|---|
+| **Debian-based** | `.deb`, `dpkg`, `apt` | Debian GNU/Linux, Ubuntu, Raspberry Pi OS |
+| **Enterprise Linux** (Red Hat family) | `.rpm`, `rpm`, `dnf` | Red Hat Enterprise Linux (RHEL), AlmaLinux, Rocky Linux, Fedora Linux, CentOS Stream |
+| **SUSE-based** | `.rpm`, `rpm`, `zypper` | SUSE Linux Enterprise (SLE), openSUSE Leap, openSUSE Tumbleweed |
+| **Alpine** | `.apk`, `apk` | Alpine Linux |
+
+**Debian-based.** *Debian GNU/Linux* is a community project run by volunteers. *Ubuntu* is built on Debian and is made by the company Canonical. *Raspberry Pi OS* is the official system for Raspberry Pi boards and is based on Debian. The guest in this app's terminal is a Debian system.
+
+**Enterprise Linux.** *Red Hat Enterprise Linux* (RHEL) is a commercial product: you pay for support and updates. The family tree around it matters:
+
+- **Fedora Linux** is the community distribution that tries new things first. RHEL is developed from it, so it sits upstream.
+- **CentOS Stream** sits between Fedora and RHEL. Its project describes it as the place where the next RHEL minor releases take shape, and it is developed in the open.
+- **AlmaLinux** and **Rocky Linux** are free, community-driven distributions that aim to be compatible with RHEL, so software built for RHEL runs on them. They are a free alternative when you don't need Red Hat's paid support.
+
+**SUSE-based.** *SUSE Linux Enterprise* (SLE) is SUSE's commercial product. *openSUSE Leap* is the free community release that shares its core with SLE; *openSUSE Tumbleweed* is the free rolling release with the newest software.
+
+**Alpine Linux.** A tiny, security-minded distribution. It uses *musl* instead of the usual GNU C library and *BusyBox* for its basic tools, and its own package manager `apk`. A container image based on it can be very small, so it is popular in containers.
+
+<ExamOnly exam="010-200">
+
+### Distribution life cycle management
+
+Every distro has to answer two questions: *how often does a new version come out?* and *how long does an old version get security fixes?* The words you must know:
+
+| Term | Meaning |
+|---|---|
+| **Stable** | A tested release meant for real work. It changes little, apart from security and bug fixes. |
+| **Testing** | Packages being prepared for the next stable release. Newer, but not yet fully tested. |
+| **Unstable** | Where new software arrives first. It is for developers and brave users, and things can break. |
+| **LTS** (Long-Term Support) | A release that is supported for much longer than a normal one |
+| **Rolling release** | There are no version numbers to upgrade between. You keep updating and always get the newest packages. |
+| **Alpha, beta** | Early test versions of a release, before it is declared ready. Alpha is rougher than beta. |
+
+How the families use them (checked against each project's own pages, which are linked above):
+
+- **Debian** keeps three lines at all times: *stable*, *testing* and *unstable* (nicknamed *sid*). Software enters unstable, moves to testing, and the testing line becomes the next stable release. Each stable release gets a five-year life: about three years of regular support, then Debian's LTS phase.
+- **Ubuntu** puts out a new release every six months, and every two years one of them is an **LTS** release with five years of standard security maintenance. The in-between releases are supported for only nine months. Paid options extend LTS support further.
+- **Fedora** has a new release about every six months, and each is maintained for roughly 13 months. It is made for people who want fresh software and don't mind upgrading often.
+- **CentOS Stream** and **RHEL** are supported for long periods; RHEL is the one you pay for. AlmaLinux and Rocky follow RHEL's releases.
+- **openSUSE Leap** is a fixed-version release, and **Tumbleweed** is a rolling release. Tumbleweed snapshots only go out after they pass automated testing.
+- **Alpine** has stable branches (named like `v3.x`), a new one about every six months. Its `main` repository gets about two years of support; its `community` repository is supported until the next stable release. **edge** is the rolling branch that new releases are cut from. It has its own `main` and `community`, plus a `testing` repository that exists only there.
+
+So "stable" does not mean "never crashes". It means "doesn't change much". Stable and LTS releases trade new features for predictability, and rolling releases do the opposite.
+
+</ExamOnly>
+
+### Android and Linux
+
+**Android** runs on top of the **Linux kernel**: the Android project builds its kernels from upstream Linux long-term-support kernels, plus extra patches. But its userspace is not the GNU/Linux you know. Apps run in Android's own runtime, and there is no `apt` and usually no ordinary shell for the user. So Android is a Linux-kernel system, but you wouldn't call it a Linux distribution in the desktop sense.
+
+<ExamOnly exam="010-160">
+
+### More distributions on the 010-160 list
+
+Exam 010-160 names a few more distributions. Treat them as "family members":
+
+- **Linux Mint** is a beginner-friendly desktop distribution, based on Ubuntu and Debian. It is a Debian-family member.
+- **CentOS** (the older **CentOS Linux**) was a free rebuild of RHEL. The CentOS Project ended CentOS Linux: version 8 reached its end of life on 31 December 2021 and version 7 on 30 June 2024. CentOS Stream is what continues under the name. AlmaLinux and Rocky Linux took over the job of free RHEL-compatible distributions.
+- **Scientific Linux** was a distribution for research labs, built to be compatible with RHEL. Its last release, version 7, reached its end of life on 30 June 2024.
+- **Red Hat** and **SUSE** are the companies behind RHEL and SUSE Linux Enterprise. **openSUSE** is the community counterpart to SUSE.
+- **Raspbian** was the earlier name of the Raspberry Pi board's Debian-based system. The Raspberry Pi Foundation renamed it **Raspberry Pi OS** in May 2020.
+- **Debian** and **Ubuntu (LTS)** work as above.
+
+### Embedded systems
+
+An **embedded system** is a small computer built into a device that has one job: a router, a TV, a car's dashboard, a smart thermostat. Linux is popular here because it is free, can be shrunk down, and runs on many processor types. Users of such devices often don't know that Linux is inside. The Raspberry Pi is a general-purpose board, and a common way to build embedded projects.
+
+### Linux in the cloud
+
+In the **cloud**, companies rent computing power (virtual servers, storage, databases) over the internet instead of buying machines. Most of those rented servers run Linux. You pick a Linux distribution as the image, start the server in minutes and pay for the time it runs. [Lesson 011.4](/learn/011.4) covers virtualization and the cloud in more detail.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **Build server (Ada):** the studio needs the same compiler and tools next year as today, and builds must not break after a surprise update. Ada runs a **stable** or **LTS** release: Debian stable, Ubuntu LTS, or an Enterprise Linux rebuild such as AlmaLinux. These are all fair choices, and the studio picks one and sticks with it.
+- **Laptops (Mira and Jonas):** a Debian-based desktop distribution with a friendly installer. Jonas wants current graphics tools, so he reads the release notes before big upgrades.
+- **The office Raspberry Pi:** it shows build status on a wall screen and runs **Raspberry Pi OS**, because it is made for that board.
+- **Small test containers:** Ada uses **Alpine** images when she needs a tiny container, and remembers that Alpine's tools differ a little (`apk`, `musl`).
+- **A new game engine release:** Mira tests it on a **rolling** or fast-moving distribution first (for instance Fedora or openSUSE Tumbleweed), because that shows problems with new libraries early. She never runs the production server on it.
+
+## Predict the output
+
+<Predict>
+
+```bash
+uname -s
+uname -o
+```
+
+```output
+Linux
+GNU/Linux
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+grep -E "^(ID|NAME)=" /etc/os-release
+```
+
+```output
+NAME="Debian GNU/Linux"
+ID=debian
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+for t in apt dnf zypper apk; do command -v $t || echo "no $t"; done
+```
+
+```output
+/usr/bin/apt
+no dnf
+no zypper
+no apk
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Linux is the kernel">
+  <p>"Linux" in the strict sense is the kernel only. A distribution = kernel + userspace + package manager + release policy. Android uses the Linux kernel, but not the GNU userspace of a typical distribution.</p>
+</Callout>
+
+<Callout title="Know the families and their tools">
+  <p>Debian, Ubuntu and Raspberry Pi OS are Debian-based (`dpkg`, `apt`). RHEL, AlmaLinux, Rocky Linux, Fedora and CentOS Stream are the Enterprise Linux family (`rpm`, `dnf`). SLE and openSUSE are SUSE-based (`rpm`, `zypper`). Alpine uses `apk`.</p>
+</Callout>
+
+<Callout title="Where Fedora and CentOS Stream sit">
+  <p>Fedora comes first, CentOS Stream is the step before RHEL, and RHEL is the commercial product. AlmaLinux and Rocky Linux are free distributions that aim to be compatible with RHEL.</p>
+</Callout>
+
+<Callout title="Stable is not the same as newest">
+  <p>Stable and LTS releases favour predictability over new features. Rolling releases (openSUSE Tumbleweed, Alpine edge) get new software continuously instead of in big version jumps. Debian's unstable line is nicknamed sid, and its testing line becomes the next stable release.</p>
+</Callout>
+
+<Callout title="Alpine main and edge">
+  <p>Alpine has numbered stable branches, and edge is the rolling branch. Its tools are musl, BusyBox and `apk`.</p>
+</Callout>
+
+<Callout title="Ubuntu LTS cadence">
+  <p>A new Ubuntu release arrives every six months, and every second year it is an LTS release with five years of standard support. Non-LTS releases are supported for far less time.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal) and look around the distribution you are running:
+
+1. Run `cat /etc/os-release`. Which distribution is it, and what does the `ID` line say?
+2. Run `uname -r` and `uname -m`. Which kernel version and machine type do you see?
+3. Which package tools exist here? Try `command -v apt dnf zypper apk`. Which family does that point to?
+4. Visit the websites of Debian, Ubuntu and Fedora. Can you find out which release is the newest stable one, and how long it will be supported?
+5. List one rolling and one fixed-release distribution, and say who you would give each to at TuxPixel.
+
+When you're ready, [practise this objective](/practice?objective=011.1). Next, learn which applications run on these systems in [lesson 011.2](/learn/011.2).

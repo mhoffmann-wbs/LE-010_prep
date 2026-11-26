@@ -1,0 +1,328 @@
+export const meta = {
+  objectiveId: '014.3',
+  updated: '2026-11-26',
+  tldr: 'A program is a file; a process is a running copy of it, with a PID. `ps` lists processes, `top` shows them live and `free` shows memory. On systemd systems, services are controlled with `systemctl start|stop|status` and their messages read with `journalctl`; the kernel ring buffer is read with `dmesg`. Settings live in `/etc/`, logs in `/var/log/` and live kernel data in `/proc/`.',
+  areasCovered: ['014.3.1', '014.3.2', '014.3.3', '014.3.4', '014.3.v1', '014.3.v2', '014.3.v3'],
+  termsCovered: ['014.3.t1', '014.3.t2', '014.3.t3', '014.3.t4', '014.3.t5', '014.3.t6', '014.3.vt1', '014.3.vt2', '014.3.vt3'],
+  links: [
+    { title: 'ps(1) manual page', url: 'https://man7.org/linux/man-pages/man1/ps.1.html' },
+    { title: 'top(1) manual page', url: 'https://man7.org/linux/man-pages/man1/top.1.html' },
+    { title: 'free(1) manual page', url: 'https://man7.org/linux/man-pages/man1/free.1.html' },
+    { title: 'proc(5) manual page', url: 'https://man7.org/linux/man-pages/man5/proc.5.html' },
+    { title: 'dmesg(1) manual page', url: 'https://man7.org/linux/man-pages/man1/dmesg.1.html' },
+    { title: 'systemctl(1) manual page (freedesktop.org)', url: 'https://www.freedesktop.org/software/systemd/man/latest/systemctl.html' },
+    { title: 'journalctl(1) manual page (freedesktop.org)', url: 'https://www.freedesktop.org/software/systemd/man/latest/journalctl.html' },
+    { title: 'hier(7): filesystem hierarchy (/etc, /var/log, /proc)', url: 'https://man7.org/linux/man-pages/man7/hier.7.html' },
+    { title: 'syslog(3) manual page: syslog facilities and levels', url: 'https://man7.org/linux/man-pages/man3/syslog.3.html' },
+  ],
+}
+
+## Big idea
+
+Two questions come up when a machine misbehaves: **what is running?** and **what has it been saying?**
+
+A **program** is a file on disk, for example `/usr/bin/ls`. A **process** is a copy of a program that is running. Start `ls` twice and you have two processes of one program. Every process gets a number, its **PID** (process ID). The first process the kernel starts has PID 1. It starts all the others, so every process has a parent.
+
+A **service** (also called a daemon) is a process that runs in the background and waits for work: a web server, an SSH server, a build daemon. Most modern distributions use **systemd** as PID 1, which starts and watches services.
+
+Programs and processes say what they are doing by writing **log messages**: lines of text with a time, a source and a message. Reading them is the best way to find out why something failed.
+
+Ask the guest what its PID 1 is (`comm=` prints just the command name, without a header):
+
+```bash
+ps -o comm= -p 1
+```
+
+```output
+le-init
+```
+
+On a normal Debian system this would print `systemd`. The practice VM has no systemd, only a tiny script called `le-init`, so the `systemctl` and `journalctl` commands in this lesson are shown, not run.
+
+## Walkthrough
+
+### Programs and configuration
+
+A program's files are in a few places: programs in `/usr/bin` and `/usr/sbin`, **configuration** (settings) in `/etc/`, and changing data and logs under `/var`. The configuration files are plain text, which you can read and edit as root. Here is the build server's settings file:
+
+```bash fixture=admin-logs
+cat /etc/tuxpixel/buildd.conf
+```
+
+```output
+# Settings for the Pixel Raiders build daemon
+workers=4
+artifact_dir=/srv/builds
+```
+
+Lines that start with `#` are comments. Settings that affect only one user live in hidden files in their home directory instead.
+
+### Listing processes with ps
+
+`ps` shows a **snapshot** of processes. Without options it shows only yours in the current terminal. These forms are the ones to know:
+
+| Command | Shows |
+|---|---|
+| `ps` | the processes in this terminal |
+| `ps -e` or `ps -A` | every process |
+| `ps -f` | a full format: user, PID, parent PID (PPID), start time, command |
+| `ps -ef` | every process in the full format (the System V style) |
+| `ps aux` | every process, with CPU and memory use (the BSD style, no dash) |
+| `ps -p 1` | one process, picked by PID |
+| `ps -o pid,user,comm` | only the columns you ask for |
+
+The common columns: `PID`, `USER`, `%CPU` and `%MEM` (share of CPU time and memory), `VSZ` and `RSS` (virtual size and real memory in kilobytes), `TTY` (terminal), `STAT` (state: `R` running, `S` sleeping, `Z` zombie) and `COMMAND`. Run it in the guest. The numbers change every time, so no output is shown here, but the command must succeed:
+
+```bash
+ps -ef
+```
+
+Look at a single line to see the columns, here for PID 1:
+
+```bash
+ps -o pid,user,comm -p 1
+```
+
+```output
+  PID USER     COMMAND
+    1 root     le-init
+```
+
+### Watching processes with top
+
+`top` is a live version of `ps`: it redraws every few seconds and sorts by CPU use. The top lines give the time, how long the machine has been up, the **load average** (how busy the CPU is over 1, 5 and 15 minutes), the number of tasks and memory use. Below is a table of processes. Keys inside `top`: `q` quits, `k` kills a process (it asks for the PID), `M` sorts by memory, `P` by CPU and `h` shows help. Press `q` to leave. For a one-time print you can use `top -b -n 1`, where `-b` is batch mode.
+
+```bash static
+top
+```
+
+### Memory with free
+
+`free` shows how much RAM and **swap** the system has. Swap is disk space the kernel uses as spare memory when RAM runs out; it is much slower. The columns:
+
+| Column | Meaning |
+|---|---|
+| `total` | all memory |
+| `used` | memory in use |
+| `free` | memory not used at all |
+| `buff/cache` | memory used to keep disk data handy; the kernel gives it back when programs need it |
+| `available` | what programs could use now, a better guide than `free` |
+
+`free -h` prints human-readable sizes (`2.1Gi`), and `free -m` megabytes. Only the header line is predictable:
+
+```bash
+free | head -1
+```
+
+```output
+               total        used        free      shared  buff/cache   available
+```
+
+A low `free` number is normal: Linux puts spare memory to use as cache. Watch `available` and swap instead.
+
+### The /proc directory
+
+`/proc` is a **pseudo-filesystem**: the kernel makes it up while the system runs. There is no disk behind it. It has a numbered directory for each running process, such as `/proc/1`, and files with system facts. Because they are files, `cat` and `grep` work on them. `ps`, `top` and `free` read their data from here.
+
+```bash
+head -1 /proc/meminfo | cut -d: -f1
+```
+
+```output
+MemTotal
+```
+
+```bash
+cat /proc/1/comm
+```
+
+```output
+le-init
+```
+
+Other useful files: `/proc/cpuinfo` (processor details), `/proc/meminfo` (memory), `/proc/uptime` and `/proc/version` (the kernel).
+
+### Logs in /var/log
+
+Most services write their messages to text files under `/var/log/`. Typical files on Debian-based systems: `/var/log/syslog` (general messages), `/var/log/auth.log` (logins and `sudo`), `/var/log/dpkg.log` (installed packages) and one directory or file per service. Plain text tools work on them: `less`, `tail -n 20`, `tail -f` (follow new lines) and `grep`.
+
+TuxPixel's build daemon writes to `/var/log/tuxpixel-build.log`. Each line has a time, the host name, the program with its PID and the message:
+
+```bash fixture=admin-logs
+grep ERROR /var/log/tuxpixel-build.log
+```
+
+```output
+Nov 25 22:09:12 build01 buildd[311]: ERROR: link failed: undefined reference to player_jump
+```
+
+```bash fixture=admin-logs
+tail -n 2 /var/log/tuxpixel-build.log
+```
+
+```output
+Nov 26 22:01:02 build01 buildd[402]: starting nightly build of pixel-raiders
+Nov 26 22:08:55 build01 buildd[402]: build finished with 0 errors
+```
+
+Log files grow, so a tool called **logrotate** renames old ones (`syslog.1`, `syslog.2.gz`) and starts a new file. Reading `/var/log` normally needs no special rights, but some files, such as `auth.log`, can only be read by root.
+
+<ExamOnly exam="010-200">
+
+### Services with systemctl
+
+On a systemd system, a service is described by a **unit** file, named like `ssh.service`. `systemctl` controls them. You need root rights to change a service, so these use `sudo`. Mira runs these on the build server (shown, not run here):
+
+```bash static
+systemctl status ssh
+sudo systemctl stop buildd
+sudo systemctl start buildd
+```
+
+`systemctl status` prints a summary: a line starting `Loaded:` (where the unit file is and whether it is enabled at boot), a line starting `Active:` (such as `active (running)`, `inactive (dead)` or `failed`, and since when), the main PID and the last few log lines. `start` and `stop` change the state right now and print nothing on success.
+
+Two related things, both beyond what the exam needs in detail: `restart` stops and starts a service, and `enable` makes it start at every boot (`start` alone does not survive a reboot).
+
+### The systemd journal and journalctl
+
+systemd's logging service, `systemd-journald`, collects the messages of all services and the kernel in one binary **journal**. You read it with `journalctl`. The journal is not plain text, so `cat` and `grep` on the files don't work; use `journalctl`. Common forms (shown, not run):
+
+```bash static
+journalctl
+journalctl -u ssh
+journalctl -b
+journalctl -n 20
+journalctl -f
+journalctl -p err
+journalctl --since "1 hour ago"
+```
+
+| Option | Does |
+|---|---|
+| `-u NAME` | only messages of that unit (service) |
+| `-b` | only messages since this boot |
+| `-n N` | only the last N lines |
+| `-f` | follow: keep showing new messages, as `tail -f` |
+| `-p LEVEL` | only this priority and more serious ones, for example `err` |
+| `--since`, `--until` | only messages in a time range |
+| `-k` | only kernel messages |
+
+The journal is kept in memory only (`/run/log/journal`) unless the system is set up to store it permanently (`/var/log/journal`). Reading it as an ordinary user may need membership of a group such as `systemd-journal` or `adm`, or `sudo`.
+
+</ExamOnly>
+
+### Kernel messages with dmesg
+
+The kernel keeps its own messages in a **ring buffer**: a block of memory of fixed size where new lines overwrite the oldest. These record hardware found at boot, driver loading, USB devices plugged in, disk errors. `dmesg` prints it. Many systems limit it to root, and the practice VM does: the command prints an error ("Operation not permitted") for Mira, so try it as `sudo dmesg` on a real machine. Shown, not run:
+
+```bash static
+sudo dmesg
+sudo dmesg | tail -n 5
+dmesg --level=err,warn
+```
+
+`journalctl -k` shows the same kernel messages.
+
+<ExamOnly exam="010-160">
+
+### Memory addresses (exam 010-160)
+
+Every byte of RAM has a number, its **address**. A process doesn't see these real addresses. The kernel gives each process its own **virtual address space**, so processes can't read or overwrite each other's memory, and the kernel can move data to **swap** when RAM is full. That is why a crashing program doesn't take the others with it. You can see the address ranges of a process in `/proc/<PID>/maps`. The numbers are written in **hexadecimal**, like `7f3c2a000000`.
+
+### System messaging and syslog (exam 010-160)
+
+The older exam covers how messages travel. Programs hand messages to the **syslog** service (today often `rsyslog`), which sorts them by **facility** (who sent it: `auth`, `kern`, `mail`, `daemon`…) and **priority** (how serious: `debug`, `info`, `notice`, `warning`, `err`, `crit`, `alert`, `emerg`) and writes them to files in `/var/log/` as set in `/etc/rsyslog.conf`. The kernel's own messages go to the ring buffer and are also passed on to syslog. Typical files: `/var/log/syslog` or `/var/log/messages` (general), `/var/log/auth.log` or `/var/log/secure` (authentication) and `/var/log/kern.log` (kernel).
+
+### The directories to know (exam 010-160)
+
+| Directory | Holds |
+|---|---|
+| `/etc/` | system configuration files |
+| `/var/log/` | log files |
+| `/boot/` | the kernel and boot loader files |
+| `/proc/` | kernel and process information, made up on the fly |
+| `/dev/` | device files |
+| `/sys/` | devices and drivers, made up on the fly |
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **A stuck build.** The nightly build hasn't finished. Ada runs `ps aux | grep buildd` to see if it is running, then `top` to see that it uses all the CPU.
+- **Out of memory.** The asset server was slow. Mira ran `free -h`, saw that `available` was low and swap almost full, and added RAM.
+- **After a failed deploy.** Mira runs `systemctl status pixel-raiders-server` to see the `Active:` line, then `journalctl -u pixel-raiders-server -n 50` for the last 50 messages.
+- **Kernel complaints.** When a USB drive disconnected by itself, `sudo dmesg | tail` showed the kernel's messages about the USB port.
+- **Settings.** The build daemon reads `/etc/tuxpixel/buildd.conf`. After changing `workers=4`, Ada restarts the service for the change to take effect.
+
+## Predict the output
+
+<Predict>
+
+```bash fixture=admin-logs
+grep -c WARNING /var/log/tuxpixel-build.log
+```
+
+```output
+1
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=admin-logs
+tail -n 1 /var/log/tuxpixel-build.log | cut -d" " -f6-
+```
+
+```output
+build finished with 0 errors
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+ps -p 1 -o comm=,user=
+```
+
+```output
+le-init         root
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Program versus process">
+  <p>A program is a file on disk. A process is a running instance of it, with a PID. One program can have many processes.</p>
+</Callout>
+
+<Callout title="ps, top and free">
+  <p>`ps` is a snapshot of processes, `top` is a live view, `free` shows memory and swap. A small `free` column is normal because Linux uses spare RAM as cache. Look at `available`.</p>
+</Callout>
+
+<Callout title="start is not enable">
+  <p>`systemctl start` runs the service now, `stop` ends it now, `status` shows its state (the `Active:` line). None of them changes what happens at boot; `enable` does.</p>
+</Callout>
+
+<Callout title="Where messages are">
+  <p>Service messages: `journalctl` (add `-u NAME` for one service). Kernel messages: `dmesg`. Plain log files: `/var/log/`. Settings: `/etc/`. Live system data from the kernel: `/proc/`.</p>
+</Callout>
+
+<Callout title="The journal is not a text file">
+  <p>You can't read the systemd journal with `cat` or `less`. Use `journalctl`. Log files in `/var/log/` are text, so `less`, `tail` and `grep` work.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal) and look around:
+
+1. Run `ps -ef`. Which process has PID 1? Which one is your shell (`bash`)?
+2. Run `free -h` and find the `total` and `available` columns.
+3. Run `cat /proc/cpuinfo | head -5` and `head -3 /proc/meminfo`. These are not on disk: the kernel builds them when you read them.
+4. Run `ls /var/log`, then `cat /var/log/dpkg.log | head`. This file shows what was installed in the image.
+5. Run `dmesg`. What does the error say? Why does the kernel buffer need protection?
+6. Run `ls /etc | head -20`, then `cat /etc/hostname`.
+
+When you're ready, [practise this objective](/practice?objective=014.3). Next, learn how computers talk to each other in [lesson 014.4](/learn/014.4).

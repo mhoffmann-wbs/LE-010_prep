@@ -17,7 +17,7 @@ export function ScoreTable({ rows, heading }: { rows: readonly ScoreRow[]; headi
           .map((r) => (
             <tr key={r.id} className="border-b border-slate-100">
               <td className="py-1 pr-2">
-                {r.id} {r.label}
+                {r.label}
               </td>
               <td className="py-1 text-right font-mono">
                 {r.correct}/{r.total}

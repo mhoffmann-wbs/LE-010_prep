@@ -1,14 +1,21 @@
 // Never trust a hand-written output (PLAN.md §5c): every claim the content makes
 // about the guest must match what content:verify recorded for exactly that job.
 // Offline and fast; run `npm run content:verify` when a check here fails.
+import { readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { ITEMS } from './bank'
 import { FIXTURES } from './fixtureBank'
 import { checkClaim, collectRunnables } from './runnables'
 import { guestHash, jobKey, readVerified } from './verify'
 
-const lessons = import.meta.glob<string>('./lessons/*.mdx', { eager: true, query: '?raw', import: 'default' })
-const mdx = Object.fromEntries(Object.entries(lessons).map(([path, text]) => [`lesson ${path.replace(/^.*\/(.+)\.mdx$/, '$1')}`, text]))
+// Read the raw MDX from disk: the MDX plugin would compile a `?raw` import.
+const dir = join(import.meta.dirname, 'lessons')
+const mdx = Object.fromEntries(
+  readdirSync(dir)
+    .filter((f) => f.endsWith('.mdx'))
+    .map((f) => [`lesson ${f.replace(/\.mdx$/, '')}`, readFileSync(join(dir, f), 'utf8')]),
+)
 
 const { runnables, problems } = collectRunnables({ items: ITEMS, fixtures: FIXTURES, mdx })
 const verified = readVerified()

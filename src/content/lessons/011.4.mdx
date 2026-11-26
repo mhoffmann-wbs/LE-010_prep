@@ -1,0 +1,301 @@
+export const meta = {
+  objectiveId: '011.4',
+  updated: '2026-11-26',
+  tldr: 'Linux runs on desktops, laptops, phones, servers, virtual machines, cloud instances, embedded devices and HPC clusters. A client asks and a server answers. vi and nano are common text editors. Configuration management tools such as Ansible set up many machines from a description. Protect accounts with long unique passwords in a password manager, multi-factor authentication and passkeys; protect data with HTTPS and storage encryption; handle USB sticks with care.',
+  areasCovered: ['011.4.1', '011.4.2', '011.4.3', '011.4.4', '011.4.5', '011.4.6', '011.4.v1', '011.4.v2', '011.4.v3'],
+  termsCovered: ['011.4.t1', '011.4.t2', '011.4.t3', '011.4.t4', '011.4.t5', '011.4.t6', '011.4.t7', '011.4.t8', '011.4.vt1', '011.4.vt2', '011.4.vt3', '011.4.vt4', '011.4.vt5'],
+  links: [
+    { title: 'GNU nano', url: 'https://www.nano-editor.org/' },
+    { title: 'Vim', url: 'https://www.vim.org/' },
+    { title: 'Ansible documentation', url: 'https://docs.ansible.com/' },
+    { title: 'Puppet', url: 'https://www.puppet.com/' },
+    { title: 'Podman', url: 'https://podman.io/' },
+    { title: 'Docker documentation: what is a container?', url: 'https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/' },
+    { title: 'CISA: use strong passwords', url: 'https://www.cisa.gov/secure-our-world/require-strong-passwords' },
+    { title: 'CISA: turn on multifactor authentication', url: 'https://www.cisa.gov/secure-our-world/turn-mfa' },
+    { title: 'FIDO Alliance: passkeys', url: 'https://fidoalliance.org/passkeys/' },
+    { title: 'Mozilla: HTTPS and the lock icon', url: 'https://support.mozilla.org/en-US/kb/how-do-i-tell-if-my-connection-is-secure' },
+    { title: 'Cryptsetup and LUKS', url: 'https://gitlab.com/cryptsetup/cryptsetup/-/wikis/home' },
+    { title: 'CISA: using caution with USB drives', url: 'https://www.cisa.gov/news-events/news/using-caution-usb-drives' },
+    { title: 'Raspberry Pi', url: 'https://www.raspberrypi.com/' },
+  ],
+}
+
+## Big idea
+
+Linux is everywhere, and this objective is about **using it sensibly**: knowing what kinds of computers run it, what tools administrators use, and how to keep your accounts and data safe.
+
+Three ideas hold the lesson together:
+
+1. **One system, many machines.** The same Linux runs on a laptop, a rack server, a virtual machine, a tiny device in a router and a supercomputer.
+2. **Clients ask, servers answer.** Most of what you do online is one computer requesting a service from another.
+3. **Security is mostly habits.** Long unique passwords, a second factor, encrypted connections and careful handling of USB sticks stop most everyday attacks.
+
+You will meet your first piece of working Linux right away. Your terminal in this app is a **pseudo-terminal**, a software terminal window, and the command `tty` prints its device name:
+
+```bash
+tty
+```
+
+```output
+/dev/pts/0
+```
+
+## Walkthrough
+
+<ExamOnly exam="010-200">
+
+### Types of computers that run Linux
+
+| Type | Examples | Notes |
+|---|---|---|
+| **Desktop computers and laptops** | Debian, Ubuntu, Fedora, Linux Mint with a graphical desktop | For everyday work, writing code, art and gaming |
+| **Mobile devices** | Phones and tablets, mostly Android (which uses the Linux kernel) | Touch screens, small batteries |
+| **Servers** | Web, database, file and build servers | Often no screen or keyboard, managed remotely |
+| **Virtual machines (VMs)** | Cloud servers, test machines | A "computer" that is software |
+| **Cloud instances** | A server rented by the hour from a cloud provider | Created and removed in minutes |
+| **Embedded systems** | Routers, TVs, cars, cameras, smart home devices, Raspberry Pi projects | One fixed job, small, often no visible Linux |
+| **HPC clusters** | Supercomputers for weather, science and AI | Thousands of linked machines that share one big job |
+
+An **embedded system** is a computer built into a product. Linux is popular for it because it's free, can be trimmed down and runs on many chip types. **HPC** (high-performance computing) joins many servers, called *nodes*, into a **cluster**. The vast majority of the world's biggest supercomputers run Linux.
+
+</ExamOnly>
+
+### Virtualization, containers and cloud computing
+
+**Virtualization** lets one physical machine host several **virtual machines**. A program called a **hypervisor** gives each VM its own pretend hardware and its own complete operating system with its own kernel. VMs are isolated from each other, which makes them good for testing and for running many servers on a few machines. (This app's terminal is a small VM too: it runs a whole Linux in your browser.)
+
+**Containers** are lighter. A container packs one application with the files it needs, but it **shares the host's kernel**, so it starts in a moment and takes little space. Docker and Podman are well-known tools. The rule of thumb: a VM contains a whole operating system, a container contains an application.
+
+**Cloud computing** means renting computing power as a service over the internet instead of owning it: servers, storage, databases. You pay for what you use and can add or remove capacity quickly. The mainstream types:
+
+| Level | You rent | Example |
+|---|---|---|
+| **IaaS** (infrastructure as a service) | Virtual servers, disks, networks | A cloud instance running Debian |
+| **PaaS** (platform as a service) | A ready environment to run your code | A managed database or app platform |
+| **SaaS** (software as a service) | A finished application | Webmail, an online office suite |
+
+Cloud servers mostly run Linux, and most containers do as well.
+
+<ExamOnly exam="010-160">
+
+### Industry uses of Linux, the cloud and virtualization
+
+Why do companies choose Linux? It is free to run, stable, secure, can be fixed by anyone with the skills, and works on everything from tiny boards to mainframes. Typical uses:
+
+- **Web and internet services:** a large share of web servers run Linux.
+- **Cloud and data centers:** virtual machines and containers run on Linux, and public clouds offer Linux images.
+- **Mobile:** Android phones and tablets.
+- **Embedded:** routers, TVs, cars, industrial control.
+- **Science and research:** supercomputers and labs.
+- **Development:** the programming tools and the servers that build software.
+
+**Virtualization** helps companies save money, since one machine runs many VMs. **Cloud computing** lets them start and stop servers as needed, and pay only for use. Both are covered above.
+
+</ExamOnly>
+
+<ExamOnly exam="010-200">
+
+### Client and server roles
+
+A **server** is a program (and by extension the computer that runs it) that waits for requests and provides a service. A **client** is the program that makes the request and uses the answer. Both can run on the same machine, and the same machine can be a client for one service and a server for another.
+
+| Client | Server | Service |
+|---|---|---|
+| Web browser | Web server (Apache, NGINX) | Web pages |
+| Email program | Mail server | Email |
+| `ssh` command | SSH server | Remote login |
+| File manager | Samba or NFS server | Shared files |
+
+A "server computer" is just a computer that is set up to run server programs, often without a screen. Any Linux laptop can be a server too.
+
+### Awareness of common text editors
+
+Configuration on Linux is stored in text files, so you will edit text. Two editors that run **in the terminal** are on every administrator's list:
+
+| Editor | Character | How to leave |
+|---|---|---|
+| **nano** | Easy. Type text as usual. The keys are listed at the bottom, where `^X` means Ctrl+X. | Ctrl+X, then answer to save |
+| **vi** | Powerful and found on almost every Linux and Unix system. It has **modes**: in *normal* mode keys are commands, in *insert* mode (press `i`) you type text. Press Esc to go back. | `:wq` + Enter saves and quits, `:q!` quits without saving |
+
+Many systems run `vi` as a small version of **Vim** (*Vi IMproved*). Both editors may be installed here:
+
+```bash
+type vi nano
+```
+
+```output
+vi is /usr/bin/vi
+nano is /usr/bin/nano
+```
+
+The exam asks only for awareness, not for the usage in detail: know which editors exist, that nano is the beginner-friendly one, and that vi is modal and almost always available.
+
+### Awareness of configuration management tools
+
+A new server needs software installed, files in place and services running. Doing that by hand on twenty machines is slow and error-prone. **Configuration management tools** let you describe the wanted state in files, then apply it to many machines, again and again, with the same result. Well-known examples are **Ansible**, **Puppet**, **Chef** and **Salt**. Because the description is a text file, it can be kept in Git, reviewed and reused: this is often called "infrastructure as code". You don't need to learn their syntax for the exam.
+
+</ExamOnly>
+
+### Secure handling of credentials
+
+**Credentials** are what proves you are you: a user name and password, a code, a key. Protect them.
+
+**Strong passwords.** Length beats cleverness. A **strong password** is long (at least 16 characters is a common recommendation), random or made from several unrelated words, and **unique**: never reused on two sites. Don't use names, birthdays or "Password123", and change factory defaults on new devices.
+
+**Password managers.** Nobody can remember dozens of long unique passwords, so you use a **password manager**: an encrypted store of your passwords that you open with one strong master password. It makes up random passwords and fills them in for you. Open source ones exist (for example KeePassXC and Bitwarden).
+
+**Multi-factor authentication (MFA).** A password alone can leak. MFA asks for **another factor** as well. Factors fall into three kinds: something you **know** (password, PIN), something you **have** (phone, hardware key, code from an authenticator app) and something you **are** (fingerprint, face). Two factors from different kinds are far safer than one. Codes sent by text message help, but app codes and hardware keys are stronger. A thief who steals the password still can't get in.
+
+**Passkeys.** A **passkey** replaces the password. Your device makes a pair of keys using **public-key cryptography**: the website stores the public key and the private one stays on your device (or in your passkey manager). You sign in by unlocking the device with a fingerprint, face or PIN. There is no password to steal or to type into a fake site, so passkeys resist **phishing**. They can be synced between your devices, or tied to one hardware key.
+
+### Secure transfer and storage of data
+
+**Data in transit.** Plain text sent over the network can be read by anyone on the way. **HTTPS** is HTTP wrapped in encryption (TLS). The browser checks the server's **certificate**, so you know you're talking to the real site and no one can read or change the traffic. Look for `https://` and the lock symbol before entering a password. Other protocols have encrypted versions too: `ssh` replaces the old plaintext telnet.
+
+**Data at rest.** A lost laptop or USB stick exposes everything on it. **Storage encryption** scrambles the data on the disk so that it's useless without the key or passphrase. On Linux the usual tool is **LUKS** (set up with `cryptsetup`), and installers can offer full-disk encryption. A strong passphrase matters, as the encryption is only as strong as that.
+
+**Secure handling of USB devices.** A USB stick can carry malware, and a stick or cable that looks harmless can be a trick. So:
+
+- Do not plug in a USB device you found or were handed by a stranger.
+- Scan files from unknown sticks and don't run programs from them.
+- Encrypt sticks that carry private data, and keep backups, since sticks are easy to lose.
+- Eject (unmount) a stick before pulling it out, so the data is fully written.
+- Turn off auto-running where you can.
+
+<ExamOnly exam="010-160">
+
+### Desktop skills
+
+A Linux desktop works like others: windows, a panel or menu to launch programs, a file manager and settings. Several desktop environments exist (GNOME, KDE Plasma, Xfce and others), and they look different, but you will find the same things: a launcher, a way to switch windows, a file manager, system settings (network, display, sound, language), and the ability to install programs from a software centre, which is a graphical front end to the package manager.
+
+### Getting to the command line
+
+You have several ways to reach the shell:
+
+- **Terminal emulator:** a window on your desktop that runs a shell. Look for a program named Terminal or Console, or press a shortcut such as Ctrl+Alt+T on many desktops.
+- **Virtual console:** text-only screens that the kernel provides. Switch between them with Ctrl+Alt+F1, F2 and so on. On many systems one of them shows the desktop.
+- **Remote login:** over the network with `ssh`.
+
+The words **terminal** and **console** overlap. The *console* was originally the physical keyboard and screen of the machine; a *terminal* is any text interface to a computer. A *terminal emulator* is a program that pretends to be one inside a window. In this app, the terminal runs in a **pseudo-terminal**, as you saw with `tty`.
+
+You can see what kind of terminal your shell thinks it has:
+
+```bash
+echo $TERM
+```
+
+```output
+xterm-256color
+```
+
+### Using a browser and privacy concerns
+
+Everyday browser skills are part of the objective: open and switch between **tabs**, **bookmark** pages, use the **search bar** and good search terms (put exact phrases in quotes), **save** pages, images or files, and manage **downloads**. Settings let you choose the home page, the default search engine, the language and which cookies to accept.
+
+Privacy matters because sites track you:
+
+- **Cookies** are small files that a site stores in your browser, used to remember logins, but also to track you across sites. You can block third-party cookies or delete cookies on exit.
+- **Private (incognito) mode** doesn't save history or cookies on your computer afterwards. It does **not** hide you from the website, your employer or your internet provider.
+- **Tracking protection** and **content blockers** reduce tracking and ads.
+- A **VPN** hides your traffic from the local network and shows the VPN's address to sites, and moves your trust to the VPN company.
+- Search engines may record your searches; some promise not to.
+- Check that a page uses HTTPS and think before you allow location, camera or microphone.
+
+### Password issues and privacy tools
+
+Typical password problems are weak or short passwords, **reuse** of one password everywhere, writing them on notes, sharing them, and entering them on a fake site (**phishing**). The cures are those described above: a password manager, unique passwords and MFA. Never send a password by email or chat.
+
+Privacy tools include a password manager, a browser with tracking protection, an encrypted messenger, **GPG** for signing and encrypting email ([lesson 011.2](/learn/011.2)), disk encryption, and a VPN. Keep your system and browser **updated**, since updates close security holes.
+
+### Open source applications in presentations and projects
+
+For school, work and clubs you can do all of it with open source programs: **LibreOffice Impress** for slides, **Writer** for reports and **Calc** for spreadsheets, **GIMP** and **Inkscape** for pictures and diagrams, **Thunderbird** for mail, **Firefox** for the web, and **VLC** for audio and video. They read and write common formats, and they can save a **PDF** that any computer opens. Cite sources, and check the licence of pictures you reuse ([lesson 011.3](/learn/011.3)).
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **Machines:** Mira and Jonas work on Linux **laptops**. Ada's **build server** is a physical machine in the back room. The **asset file server** is a Linux box, too. The **office Raspberry Pi** is a small **embedded** board that shows build status. A few **cloud instances** host the studio's website and test builds.
+- **VMs and containers:** Ada tests the game on several distributions in **virtual machines**, and packs the build tools into **containers**, so the same environment runs on every machine.
+- **Editors:** Mira edits her code in an IDE, but edits server config files in **nano**, and Ada is happy with **vi** because it's on every server. Nobody edits system files in a word processor.
+- **Configuration management:** Ada keeps an **Ansible** description of the build server in Git. If it fails, she can recreate it in minutes.
+- **Studio password policy:** everyone uses the same **password manager**, with one strong master passphrase. Every account has a long unique password. **MFA** is required on the code forge and the cloud console, and **passkeys** are used wherever a service offers them.
+- **Data:** the laptops use **full-disk encryption**, so a stolen laptop is a nuisance but not a leak. Backups go to an encrypted disk. Unknown USB sticks, like the one someone left at the game conference, are never plugged into a studio machine.
+
+## Predict the output
+
+<Predict>
+
+```bash
+type vi nano
+```
+
+```output
+vi is /usr/bin/vi
+nano is /usr/bin/nano
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+tty
+```
+
+```output
+/dev/pts/0
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+echo $TERM
+```
+
+```output
+xterm-256color
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="VM versus container">
+  <p>A virtual machine has its own kernel and a whole operating system, started by a hypervisor. A container shares the host's kernel and packs just an application. Containers are smaller and start faster, but are less isolated.</p>
+</Callout>
+
+<Callout title="Client and server are roles">
+  <p>A server is not a special kind of hardware. It is a program that answers requests, and the machine that runs it. The client asks. One computer can be both.</p>
+</Callout>
+
+<Callout title="vi has modes, nano shows its keys">
+  <p>In vi, keys are commands until you press `i` for insert mode. Esc returns to command mode, `:wq` saves and quits, `:q!` quits and throws changes away. In nano you just type, and `^X` (Ctrl+X) exits.</p>
+</Callout>
+
+<Callout title="Long and unique beats complex">
+  <p>The best password advice is long, unique per site and kept in a password manager. MFA adds a second factor from a different kind: know, have or are. Passkeys use public-key cryptography, so there is no password to phish.</p>
+</Callout>
+
+<Callout title="HTTPS protects the connection, not the site">
+  <p>HTTPS encrypts the traffic between you and the server, and checks the server's certificate. It does not prove that the site is honest. Storage encryption (such as LUKS) protects data at rest, HTTPS protects data in transit.</p>
+</Callout>
+
+<Callout title="Config management describes, not types">
+  <p>Ansible, Puppet, Chef and Salt apply a described state to many machines. They are not editors and not package managers, though they can use both.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal):
+
+1. Run `tty` and `echo $TERM`. What does the first tell you about the terminal you're using?
+2. Run `type vi nano`, then `nano --version`. Which editors do you have?
+3. List five kinds of computers that run Linux, and say which one runs your terminal here.
+4. For one of your own accounts, check: is the password unique and long? Is MFA turned on? Could you use a passkey?
+5. Explain to a friend, in two sentences, the difference between HTTPS and disk encryption.
+
+When you're ready, [practise this objective](/practice?objective=011.4). That finishes topic 011. Move on to the command line in [lesson 012.1](/learn/012.1).

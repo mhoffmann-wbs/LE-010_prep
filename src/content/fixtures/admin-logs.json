@@ -1,0 +1,8 @@
+{
+  "description": "The build server's log and settings: a syslog-style log under /var/log and a small config file under /etc, both readable by everyone.",
+  "entries": [
+    { "path": "/etc/tuxpixel", "type": "dir", "mode": "755" },
+    { "path": "/etc/tuxpixel/buildd.conf", "content": "# Settings for the Pixel Raiders build daemon\nworkers=4\nartifact_dir=/srv/builds\n", "mode": "644" },
+    { "path": "/var/log/tuxpixel-build.log", "content": "Nov 25 22:01:03 build01 buildd[311]: starting nightly build of pixel-raiders\nNov 25 22:04:47 build01 buildd[311]: WARNING: texture atlas is larger than 4096 pixels\nNov 25 22:09:12 build01 buildd[311]: ERROR: link failed: undefined reference to player_jump\nNov 25 22:09:13 build01 buildd[311]: build finished with 1 error\nNov 26 22:01:02 build01 buildd[402]: starting nightly build of pixel-raiders\nNov 26 22:08:55 build01 buildd[402]: build finished with 0 errors\n", "mode": "644" }
+  ]
+}

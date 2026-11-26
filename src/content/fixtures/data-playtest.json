@@ -1,0 +1,7 @@
+{
+  "description": "Mira's play-test notes: a CSV of scores per player and level, and a list of enemy names with duplicates.",
+  "entries": [
+    { "path": "/home/mira/playtest.csv", "content": "player,level,score,deaths\nmira,1,1200,2\njonas,1,950,5\nada,2,1800,1\nmira,2,1500,3\njonas,2,700,9\nada,1,2100,0\nmira,3,2600,4\njonas,3,1100,7\n" },
+    { "path": "/home/mira/enemies.txt", "content": "slime\nbat\ngoblin\nslime\nSkeleton\nbat\nslime\nghost\nghosts\ngoblin\nskeleton\n" }
+  ]
+}

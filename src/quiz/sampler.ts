@@ -1,9 +1,10 @@
 // Builds practice sets and mock exams from the question bank.
-import { MOCK, TOPICS, mockQuota, objectivesOf } from '../content/blueprint'
+import { type ExamId, MOCK, TOPICS, itemInExam, mockQuota, objectivesOf } from '../content/blueprint'
 import type { Item } from '../content/schema'
 import { type Rng, shuffle } from './random'
 
 export interface MockExam {
+  exam: ExamId
   /** "Predict the output" items were included. */
   output: boolean
   items: Item[]
@@ -24,8 +25,14 @@ const freshFirst = (items: readonly Item[], seen: ReadonlySet<string>, rng: Rng)
  * objective's pool is short, the rest of its topic fills in; when the bank is
  * short overall, the time limit is scaled to the real pace.
  */
-export function buildMockExam(pool: readonly Item[], output: boolean, seen: ReadonlySet<string> = new Set(), rng: Rng = Math.random): MockExam {
-  const usable = output ? pool : pool.filter((i) => i.kind !== 'output')
+export function buildMockExam(
+  pool: readonly Item[],
+  exam: ExamId,
+  output: boolean,
+  seen: ReadonlySet<string> = new Set(),
+  rng: Rng = Math.random,
+): MockExam {
+  const usable = pool.filter((i) => itemInExam(i, exam) && (output || i.kind !== 'output'))
   const picked: Item[] = []
   for (const topic of TOPICS) {
     const queues = new Map(objectivesOf(topic.id).map((o) => [o.id, freshFirst(usable.filter((i) => i.objectiveId === o.id), seen, rng)]))
@@ -41,6 +48,7 @@ export function buildMockExam(pool: readonly Item[], output: boolean, seen: Read
   }
   const items = shuffle(picked, rng)
   return {
+    exam,
     output,
     items,
     minutes: Math.max(1, Math.round((MOCK.minutes * items.length) / MOCK.items)),

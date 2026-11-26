@@ -17,7 +17,10 @@ type Answers = Record<string, Response>
 /** Items the learner has answered before, so a new mock prefers fresh ones. */
 const seenItems = () => new Set(Object.entries(getProgress().items).flatMap(([id, s]) => (s.attempts > 0 ? [id] : [])))
 
-const newExam = (): MockExam => buildMockExam(ITEMS, getProgress().outputInMock, seenItems())
+const newExam = (): MockExam => {
+  const { track, outputInMock } = getProgress()
+  return buildMockExam(ITEMS, track, outputInMock, seenItems())
+}
 
 export default function MockExamPage() {
   const [exam, setExam] = useState<MockExam | null>(null)
@@ -38,11 +41,12 @@ export default function MockExamPage() {
         key={attempt}
         exam={exam}
         onSubmit={(answers) => {
-          const score = scoreMock(exam.items, (item) => grade(item, answers[item.id]!))
+          const score = scoreMock(exam.items, exam.exam, (item) => grade(item, answers[item.id]!))
           const at = Date.now()
           for (const item of exam.items) recordAnswer(item.id, grade(item, answers[item.id]!), at)
           recordMockResult({
             at,
+            exam: exam.exam,
             output: exam.output,
             correct: score.correct,
             total: score.total,

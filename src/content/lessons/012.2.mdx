@@ -1,0 +1,322 @@
+export const meta = {
+  objectiveId: '012.2',
+  updated: '2026-11-26',
+  tldr: 'Linux documents itself. `man NAME` opens the manual page of a command (`q` quits, `/` searches, the number picks a section: `man 5 passwd`). `man -k WORD` searches the short descriptions. Most commands also print a quick summary with `--help`. Longer documentation and examples live in `/usr/share/doc/`. On 010-160 you also use `info` pages and `locate`.',
+  areasCovered: ['012.2.1', '012.2.2', '012.2.v1'],
+  termsCovered: ['012.2.t1', '012.2.t2', '012.2.t3', '012.2.vt1', '012.2.vt2'],
+  links: [
+    { title: 'man(1) manual page (man-db)', url: 'https://man7.org/linux/man-pages/man1/man.1.html' },
+    { title: 'man-pages(7): conventions for writing and sections', url: 'https://man7.org/linux/man-pages/man7/man-pages.7.html' },
+    { title: 'apropos(1) manual page', url: 'https://man7.org/linux/man-pages/man1/apropos.1.html' },
+    { title: 'GNU Coding Standards: --help and --version', url: 'https://www.gnu.org/prep/standards/html_node/_002d_002dhelp.html' },
+    { title: 'GNU Texinfo manual: Stand-alone info program', url: 'https://www.gnu.org/software/texinfo/manual/info-stnd/info-stnd.html' },
+    { title: 'locate(1) manual page (findutils)', url: 'https://man7.org/linux/man-pages/man1/locate.1.html' },
+    { title: 'Filesystem Hierarchy Standard 3.0: /usr/share', url: 'https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s11.html' },
+  ],
+}
+
+## Big idea
+
+Nobody remembers every option of every command, and nobody has to. A Linux system carries its own reference books, on the machine, offline. There are three places to look, from quickest to deepest:
+
+1. **A usage summary** from the command itself: `command --help`. One screen, instant.
+2. **The manual page**: `man command`. The full reference for that command, file or concept.
+3. **The documentation directory**: `/usr/share/doc/`, with README files, change logs and example configuration files that ship with the packages.
+
+A good habit: when you meet an unknown command, run it with `--help` first, then read its man page.
+
+## Walkthrough
+
+### Man pages
+
+A **man page** (manual page) is the official reference for one command, file format or topic. `man` opens it in a **pager**, a program that shows a long text one screen at a time. Because the pager shows the text of the page itself, you can search and scroll.
+
+```bash static
+man ls
+```
+
+These keys work inside the pager:
+
+| Key | Does |
+|---|---|
+| Space or `f` | Next page |
+| `b` | Previous page |
+| Arrow keys, `j` and `k` | Line by line |
+| `/word` then Enter | Search forward for "word" |
+| `n` and `N` | Next and previous match |
+| `g` and `G` | Go to the top and to the end |
+| `q` | **Quit** |
+| `h` | Help for the pager |
+
+Every man page has the same layout. The sections you will use most:
+
+- **NAME**: the command and a one-line description.
+- **SYNOPSIS**: how to call it (explained next).
+- **DESCRIPTION**: what it does, with every option.
+- **EXAMPLES**, **FILES**, **SEE ALSO**: examples, files it reads and related pages.
+
+You can see the top of a page without the pager by sending it through `head`:
+
+```bash
+man cp | head -n 10
+```
+
+```output
+CP(1)                            User Commands                           CP(1)
+
+NAME
+       cp - copy files and directories
+
+SYNOPSIS
+       cp [OPTION]... [-T] SOURCE DEST
+       cp [OPTION]... SOURCE... DIRECTORY
+       cp [OPTION]... -t DIRECTORY SOURCE...
+
+```
+
+#### Reading the SYNOPSIS
+
+The synopsis shows the **syntax** of the command with a small set of conventions:
+
+```text
+cp [OPTION]... SOURCE DEST
+```
+
+| Notation | Meaning |
+|---|---|
+| `[ ]` | Optional. The command works without it |
+| `...` | Can be repeated: more than one |
+| `a \| b` | Either `a` or `b` |
+| `UPPER CASE` | A placeholder you replace: a real file name, not the word SOURCE |
+| bold or plain text | Type it exactly as shown (shown bold in a terminal) |
+
+So `cp [OPTION]... SOURCE DEST` means: `cp`, then any number of options, then what to copy and where to.
+
+#### Manual sections
+
+Man pages are grouped into numbered **sections**. The same name can exist in more than one section, so a number tells `man` which one you want:
+
+| Section | Holds |
+|---|---|
+| 1 | User commands and programs (`ls`, `cp`) |
+| 2 | System calls (functions the kernel offers programs) |
+| 3 | Library functions (for C programmers) |
+| 4 | Special files, devices (`/dev`) |
+| 5 | **File formats** and configuration files (`/etc/passwd`) |
+| 6 | Games |
+| 7 | Miscellaneous: concepts, conventions, overviews |
+| 8 | System administration commands (usually for root) |
+
+`passwd` is both a command (section 1: change your password) and a file (section 5: the format of `/etc/passwd`). `man passwd` shows the first it finds, section 1. Ask for the file with `man 5 passwd`. The page header always shows the section in brackets, like `PASSWD(5)`.
+
+```bash
+man 5 passwd | head -n 5
+```
+
+```output
+PASSWD(5)               File Formats and Configuration               PASSWD(5)
+
+NAME
+       passwd - the password file
+
+```
+
+#### Finding the right page
+
+If you don't know the command's name, search the one-line descriptions. `man -k WORD` (**k**eyword) does it, and `apropos WORD` is the same thing. `man -f NAME` (or `whatis NAME`) goes the other way: it lists the short description of exactly that name, in every section.
+
+```bash
+man -k "^passwd$"
+man -f passwd
+whatis ls
+```
+
+```output
+passwd (1)           - change user password
+passwd (5)           - the password file
+passwd (1)           - change user password
+passwd (5)           - the password file
+ls (1)               - list directory contents
+```
+
+The `^passwd$` is a pattern that matches the whole word and nothing longer; try plain `man -k passwd` yourself and you will see more pages (`chpasswd`, `gpasswd` ...). Each result shows name, section and description. `man -w NAME` prints just the **file** the page comes from:
+
+```bash
+man -w 5 passwd
+```
+
+```output
+/usr/share/man/man5/passwd.5.gz
+```
+
+Man pages live under `/usr/share/man/`, in one folder per section (`man1`, `man5` ...), compressed with gzip.
+
+<ExamOnly exam="010-200">
+
+### Common help parameters
+
+Most commands can tell you how to use them, without opening the manual. The two usual ways are `--help` (long form) and `-h` (short form). Many programs support both, and some only one.
+
+```bash
+cp --help | head -n 3
+```
+
+```output
+Usage: cp [OPTION]... [-T] SOURCE DEST
+  or:  cp [OPTION]... SOURCE... DIRECTORY
+  or:  cp [OPTION]... -t DIRECTORY SOURCE...
+```
+
+The text starts with a `Usage:` line, which is the same synopsis as in the man page, followed by the options. The output can be long. Pipe it into `head` to see the start, or into `less` to scroll through it.
+
+Be careful with `-h`: it doesn't always mean help. In `ls -lh` it means **human-readable** sizes, and in `df -h` as well. `--help` is the safe choice, and `--version` prints the version of a program.
+
+Bash **builtins** have no man page of their own, because they are part of Bash. Use the builtin `help` for them:
+
+```bash
+help cd | head -n 2
+```
+
+```output
+cd: cd [-L|[-P [-e]] [-@]] [dir]
+    Change the shell working directory.
+```
+
+If you give a command a wrong option, it often prints an error and a hint like "Try 'ls --help' for more information."
+
+</ExamOnly>
+
+### Documentation directory
+
+Besides man pages, packages install extra documentation in **`/usr/share/doc/`**: one directory per package, named after it. You find README files, licence texts (`copyright`), change logs (`changelog.gz`) and often an `examples` folder with sample configuration files.
+
+```bash
+ls /usr/share/doc/adduser
+```
+
+```output
+changelog.gz  copyright  examples  NEWS.Debian.gz  README.gz  TODO
+```
+
+Files ending in `.gz` are compressed. Read them with `zcat` (print a gzip file) or `zless`. For example `zcat /usr/share/doc/bash/README.gz | head -n 3` shows the start of Bash's README.
+
+<ExamOnly exam="010-160">
+
+### Info pages
+
+Some projects, especially the GNU tools, ship **info pages** in addition to or instead of man pages. Info documents are organised like a small website: pages called **nodes** with links (menu entries) between them. You read one with the `info` command:
+
+```bash static
+info coreutils
+```
+
+Keys inside `info`: Space and Backspace move through the text, `n`, `p` and `u` go to the next, previous and parent node, Enter follows a link, `/` searches and `q` quits. With a name, `info ls` jumps to the node of that command. Info files live in `/usr/share/info/`.
+
+The `info` program is not installed in this course's terminal, so you can't run it here, but the exam on track 010-160 asks about it. Remember: **`info`** is the command and **`q`** leaves it.
+
+### Finding files with locate
+
+`locate` finds files by name very quickly. It does not search the disk, it searches a **database** of file names that a system job rebuilds regularly (usually once a day). The command `updatedb` rebuilds the database by hand, and it needs root.
+
+```bash static
+locate press-kit
+```
+
+Because it uses the database, `locate` finds files in an instant, but it does not know about files created since the last update, and it still lists files that were deleted since. The `find` command (see [lesson 012.3](/learn/012.3)) searches the real disk, which is slower but always current. `locate` is not installed in this course's terminal either, so there is no output to show.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **A new tool.** Ada installs a command nobody at the studio knows. She runs `toolname --help` first and reads the options, and only then the man page for details.
+- **Which file format?** Mira wonders what the seven columns in `/etc/passwd` mean. `man passwd` shows the command, so she runs `man 5 passwd` to get the file format.
+- **Forgot the name.** Jonas wants a command that "copies disk images", but he can't remember its name. `man -k copy` lists candidates with a short description, and he spots it.
+- **Sample configs.** Before changing a service's settings, Mira looks in `/usr/share/doc/NAME/examples` for a sample file to start from.
+
+## Predict the output
+
+<Predict>
+
+```bash
+man -f cp
+```
+
+```output
+cp (1)               - copy files and directories
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+man -w ls
+```
+
+```output
+/usr/share/man/man1/ls.1.gz
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+whatis -s 5 passwd
+```
+
+```output
+passwd (5)           - the password file
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Sections 1, 5 and 8">
+  <p>Section 1 is commands, section 5 is file formats and configuration files, section 8 is administration commands. When a name exists twice, give the section first: `man 5 passwd`, not `man passwd 5`.</p>
+</Callout>
+
+<Callout title="Quit with q">
+  <p>`man` opens a pager. `q` quits it, `/word` searches, Space moves down a page.</p>
+</Callout>
+
+<Callout title="man -k and apropos search descriptions">
+  <p>`man -k WORD` and `apropos WORD` search the names and one-line descriptions of all man pages. They don't search inside the pages. `man -f NAME` is the same as `whatis NAME`.</p>
+</Callout>
+
+<Callout title="Square brackets mean optional">
+  <p>In a SYNOPSIS, `[OPTION]` is optional and `...` means "more of these". Words in upper case are placeholders you replace with real values. A vertical bar `|` means "either one".</p>
+</Callout>
+
+<ExamOnly exam="010-200">
+
+<Callout title="--help, -h and builtins">
+  <p>`--help` is the common way to get a usage summary; `-h` sometimes does the same but often means something else (`ls -h`, `df -h`: human-readable). Builtins such as `cd` have no man page: use `help cd`.</p>
+</Callout>
+
+</ExamOnly>
+
+<Callout title="/usr/share/doc holds more than man pages">
+  <p>Package documentation, README files, licences and example configuration files are in `/usr/share/doc/`. The man pages themselves are in `/usr/share/man/`.</p>
+</Callout>
+
+<ExamOnly exam="010-160">
+
+<Callout title="info and locate">
+  <p>`info` reads info pages (nodes with links; `q` quits). `locate` searches a prebuilt database, so it is fast but can be out of date until `updatedb` runs. `find` searches the real disk.</p>
+</Callout>
+
+</ExamOnly>
+
+## Try it
+
+Open the [terminal](/terminal) and look things up:
+
+1. Run `man ls`. Search for the word "human" with `/human`, press Enter, then leave with `q`.
+2. Run `man -k "^passwd$"` and then open both pages: `man 1 passwd` and `man 5 passwd`. How do the headers differ?
+3. Run `ls --help | head -n 5`, then `cp --help | head -n 5`. What do the first lines have in common?
+4. Run `man -k copy`. Pick one command from the list and read its NAME line with `man -f`.
+5. Look around `/usr/share/doc/` with `ls`, then list one package's folder and read a file with `zcat` or `cat`.
+
+When you're ready, [practise this objective](/practice?objective=012.2). Next, create, copy and delete files in [lesson 012.4](/learn/012.4).

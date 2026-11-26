@@ -1,8 +1,10 @@
 // Prints question-bank coverage per objective, key knowledge area and term
-// against the PLAN.md targets, with the mix of item kinds. Run: npm run content:status
+// against the PLAN.md targets, with the mix of item kinds. Objective counts are
+// for 010-200; areas and terms are checked on each exam with the items on it.
+// Run: npm run content:status
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
-import { BANK_TARGET, MIN_ITEMS_PER_AREA, TOPICS, objectivesOf, questionTarget, topicWeight } from '../src/content/blueprint.ts'
+import { BANK_TARGET, EXAM_IDS, MIN_ITEMS_PER_AREA, TOPICS, itemInExam, linesFor, objectivesOf, questionTarget, topicWeight } from '../src/content/blueprint.ts'
 import type { Item } from '../src/content/schema.ts'
 
 const dir = join(import.meta.dirname, '../src/content/questions')
@@ -27,12 +29,15 @@ for (const t of TOPICS) {
       .map(([k, n]) => `${k} ${n}`)
       .join(', ')
     console.log(`  ${pool.length >= target ? '✓' : ' '} ${o.id}  ${String(pool.length).padStart(3)} / ${target}  ${mixText}`)
-    const thin = o.areas
-      .map((a) => [a.id, pool.filter((i) => i.areas.includes(a.id)).length] as const)
-      .filter(([, n]) => n < MIN_ITEMS_PER_AREA)
-    if (thin.length) console.log(`        areas below ${MIN_ITEMS_PER_AREA}: ${thin.map(([id, n]) => `${id} (${n})`).join(', ')}`)
-    const untested = o.terms.filter((term) => !pool.some((i) => i.terms?.includes(term.id)))
-    if (untested.length) console.log(`        terms no item tests: ${untested.map((term) => term.id).join(', ')}`)
+    for (const exam of EXAM_IDS) {
+      const onExam = pool.filter((i) => itemInExam(i, exam))
+      const thin = linesFor(o, 'areas', exam)
+        .map((a) => [a.id, onExam.filter((i) => i.areas.includes(a.id)).length] as const)
+        .filter(([, n]) => n < MIN_ITEMS_PER_AREA)
+      if (thin.length) console.log(`        ${exam} areas below ${MIN_ITEMS_PER_AREA}: ${thin.map(([id, n]) => `${id} (${n})`).join(', ')}`)
+      const untested = linesFor(o, 'terms', exam).filter((term) => !onExam.some((i) => i.terms?.includes(term.id)))
+      if (untested.length) console.log(`        ${exam} terms no item tests: ${untested.map((term) => term.id).join(', ')}`)
+    }
   }
 }
 const share = (k: string) => (items.length ? Math.round(((kinds[k] ?? 0) / items.length) * 100) : 0)

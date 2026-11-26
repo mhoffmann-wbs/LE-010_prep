@@ -1,4 +1,5 @@
-import { OBJECTIVE_BY_ID } from '../content/blueprint'
+import { objectiveName } from '../content/blueprint'
+import { useProgress } from '../progress/store'
 import { COUNT_WORDS, type Item } from '../content/schema'
 import { Inline } from '../components/Inline'
 import { ShellCommand } from '../components/ShellCommand'
@@ -29,11 +30,11 @@ interface Props {
 type Of<K extends Item['kind']> = Extract<Item, { kind: K }>
 
 export function ItemView({ item, response, onChange, revealed = false, keyboard = false, onEnter }: Props) {
-  const objective = OBJECTIVE_BY_ID.get(item.objectiveId)!
+  const { track } = useProgress()
   return (
     <article className="space-y-4" data-item-id={item.id}>
       <p className="text-xs uppercase tracking-wide text-slate-500">
-        {objective.id} · {objective.title} · <span className="normal-case">{KIND_LABELS[item.kind]}</span>
+        {objectiveName(item.objectiveId, track).replace(' ', ' · ')} · <span className="normal-case">{KIND_LABELS[item.kind]}</span>
       </p>
       <p className="whitespace-pre-line text-lg leading-relaxed">
         <Inline text={item.stem} />

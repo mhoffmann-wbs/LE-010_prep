@@ -1,0 +1,15 @@
+{
+  "description": "Mira's project folder: the Pixel Raiders game (source, docs, a hidden .gitignore) and the studio website, plus a hidden ~/.tuxpixel settings folder and a notes file.",
+  "entries": [
+    { "path": "/home/mira/notes.txt", "content": "Ask Jonas about the level editor.\n" },
+    { "path": "/home/mira/.tuxpixel/settings.conf", "content": "theme=dark\nautosave=5\n" },
+    { "path": "/home/mira/projects/pixel-raiders/README.md", "content": "# Pixel Raiders\n\nA retro platformer by TuxPixel Studio.\n" },
+    { "path": "/home/mira/projects/pixel-raiders/.gitignore", "content": "build/\n*.o\n" },
+    { "path": "/home/mira/projects/pixel-raiders/src/main.c", "content": "int main(void) { return 0; }\n" },
+    { "path": "/home/mira/projects/pixel-raiders/src/player.c", "content": "/* player movement */\n" },
+    { "path": "/home/mira/projects/pixel-raiders/docs/design.md", "content": "# Design notes\n" },
+    { "path": "/home/mira/projects/pixel-raiders/docs/levels.md", "content": "# Level list\n" },
+    { "path": "/home/mira/projects/website/index.html", "content": "<h1>TuxPixel Studio</h1>\n" },
+    { "path": "/home/mira/projects/website/press-kit.md", "content": "# Press kit\n" }
+  ]
+}

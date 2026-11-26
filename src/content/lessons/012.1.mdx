@@ -1,0 +1,399 @@
+export const meta = {
+  objectiveId: '012.1',
+  updated: '2026-11-26',
+  tldr: 'The shell (`bash`) reads a line, splits it into a command, options and arguments, and runs it. Variables hold text: `name=Mira` makes a local one, `export` hands it to programs you start, and `$PATH` lists the directories where the shell looks for programs. Double quotes allow `$` expansion, single quotes allow nothing, and a backslash escapes one character. `type` tells you whether a command is a builtin or a program.',
+  areasCovered: ['012.1.1', '012.1.2', '012.1.3', '012.1.4'],
+  termsCovered: ['012.1.t1', '012.1.t2', '012.1.t3', '012.1.t4', '012.1.t5', '012.1.t6', '012.1.t7'],
+  links: [
+    { title: 'Bash Reference Manual', url: 'https://www.gnu.org/software/bash/manual/bash.html' },
+    { title: 'Bash Reference Manual: Quoting', url: 'https://www.gnu.org/software/bash/manual/html_node/Quoting.html' },
+    { title: 'Bash Reference Manual: Shell Variables', url: 'https://www.gnu.org/software/bash/manual/html_node/Shell-Variables.html' },
+    { title: 'Bash Reference Manual: Bash History Builtins', url: 'https://www.gnu.org/software/bash/manual/html_node/Bash-History-Builtins.html' },
+    { title: 'bash(1) manual page', url: 'https://man7.org/linux/man-pages/man1/bash.1.html' },
+    { title: 'Filesystem Hierarchy Standard 3.0', url: 'https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html' },
+  ],
+}
+
+## Big idea
+
+When you type into a terminal, you are not talking to Linux directly. You are talking to a program called the **shell**. The shell reads each line you type, works out what you mean, starts the right program and shows you its output. Almost every Linux distribution uses **Bash** (the "Bourne Again SHell") as its default shell, and it is the one this course uses.
+
+The prompt tells you the shell is waiting. Everything you type after it is a **command line**. The shell does three jobs with it:
+
+1. It **splits** the line into words.
+2. It **expands** special characters (`$HOME`, `~`, `*`) into their values.
+3. It **runs** the first word as a command, with the other words as input.
+
+Most mistakes beginners make come from step 2: the shell changes your line *before* the command ever sees it. Quoting, the last topic below, is how you control that.
+
+## Walkthrough
+
+### The basic shell
+
+A shell runs in two ways. Interactively, you type a line and press Enter. Or it reads a **script**, a text file of command lines. Both use the same rules. Bash is not the only shell (`sh`, `dash`, `zsh` exist), but the exam asks about Bash.
+
+`echo` is the simplest command: it prints its arguments.
+
+```bash
+echo Pixel Raiders is out
+```
+
+```output
+Pixel Raiders is out
+```
+
+Useful keys in Bash: the **Tab** key completes a name for you, the up arrow brings back the previous line, and **Ctrl+C** stops a running program.
+
+Your shell also remembers the lines you typed. The `history` command lists them with numbers, oldest first. `!!` repeats the last line and `!42` repeats line 42. The **Ctrl+R** key searches the history as you type. Bash keeps the history in a hidden file in your home, `~/.bash_history`.
+
+```bash static
+history
+```
+
+The numbers and lines depend on what you typed earlier in your own session, so there is no fixed output to show here. Try it in the [terminal](/terminal).
+
+### Command line syntax
+
+A command line has up to three kinds of words, separated by spaces:
+
+```text
+command  options  arguments
+```
+
+- The **command** is the first word: the program or builtin to run.
+- **Options** (also called flags or switches) change *how* it works. They start with a dash: `-l`, or `--all` in the long form.
+- **Arguments** say *what* to work on: usually file names or text.
+
+```bash
+ls -l -a /usr/local/bin
+```
+
+```output
+total 1
+drwxr-xr-x  2 root root 0 Nov 23 00:00 .
+drwxr-xr-x 10 root root 0 Nov 23 00:00 ..
+```
+
+Here `ls` is the command, `-l` and `-a` are options and `/usr/local/bin` is the argument. Short options (one dash, one letter) can usually be combined: `ls -la` equals `ls -l -a`. Long options (two dashes, a word) cannot be combined. Some options take a value of their own, as in `head -n 3 file`.
+
+Spaces matter. The shell splits at every run of spaces and hands the words to the command, so extra spaces vanish:
+
+```bash
+echo hello      world
+echo "hello      world"
+```
+
+```output
+hello world
+hello      world
+```
+
+The second line keeps its spaces because the quotes make it **one** argument. Quoting is covered below.
+
+`echo` has two options worth knowing. `-n` leaves out the final newline and `-e` turns backslash sequences like `\t` (tab) and `\n` (new line) into the real characters.
+
+```bash
+echo -e "name\tscore"
+```
+
+```output
+name	score
+```
+
+To put several commands on one line, separate them with `;`. They run one after the other:
+
+```bash
+echo first; echo second
+```
+
+```output
+first
+second
+```
+
+### Variables
+
+A **variable** is a named piece of text. Set one with `name=value`, with **no spaces** around the `=`. Read it by putting a `$` in front of the name:
+
+```bash
+game=Pixel
+echo $game
+echo "$game Raiders"
+```
+
+```output
+Pixel
+Pixel Raiders
+```
+
+Variable names are case sensitive, and by habit your own are lower case while the standard ones are upper case: `HOME`, `USER`, `PATH`, `SHELL`.
+
+```bash
+echo $HOME $USER $SHELL
+```
+
+```output
+/home/mira mira /bin/bash
+```
+
+`$HOME` is your home directory (the same place `~` stands for), `$USER` your user name and `$SHELL` your login shell.
+
+#### Local and environment variables
+
+A variable you set with `name=value` is a **local** (shell) variable: only this shell knows it. Programs you start from the shell do not see it. To pass it on, mark it with `export`. It then becomes an **environment variable**, and every program started from this shell gets a copy.
+
+To prove it, start a second Bash (`bash -c '…'` runs one command in a new shell) and ask it for the variable:
+
+```bash
+studio=TuxPixel
+bash -c 'echo [$studio]'
+export studio
+bash -c 'echo [$studio]'
+```
+
+```output
+[]
+[TuxPixel]
+```
+
+The first child shell prints nothing between the brackets, because `studio` was only local. After `export studio` (no `$` here: you name the variable, not its value) the child sees it. You can also do both at once: `export studio=TuxPixel`.
+
+A copy goes *down* to child programs. A child can never change the variable in the shell that started it.
+
+Two commands list variables. `env` prints the **environment** variables only. `set` prints everything the shell knows, local variables and functions too, so it is much longer.
+
+```bash
+env | grep ^HOME
+```
+
+```output
+HOME=/home/mira
+```
+
+Remove a variable with `unset name`.
+
+#### The PATH variable
+
+When you type `ls`, how does the shell find the program? It looks in each directory listed in **`PATH`**, in order, and runs the first match. The directories are separated by colons:
+
+```bash
+echo $PATH
+```
+
+```output
+/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+```
+
+So `ls` is searched for in `/usr/local/bin`, then `/usr/bin`, and so on. The exact list differs between distributions and users. If a command is not in any listed directory, you get `command not found`. A program in your current directory is **not** found, unless `.` is in `PATH` (which is deliberately not the default). Run it with a path instead: `./run.sh`.
+
+To add a directory, assign `PATH` again and keep the old value:
+
+```text
+PATH="$PATH:/home/mira/bin"
+```
+
+Break `PATH` and even `ls` stops working. A change in one terminal lasts only until you close it, unless you put it in a start-up file like `~/.bashrc`.
+
+### Quoting
+
+Some characters mean something special to the shell: space, `$`, `*`, `~`, `;`, `#`, `\`, and quotes. **Quoting** switches that special meaning off. There are three tools.
+
+| Tool | Example | What it does |
+|---|---|---|
+| Backslash `\` | `\$HOME` | Escapes the **one** character after it |
+| Single quotes `'…'` | `'$HOME'` | Everything inside is literal. Nothing is expanded |
+| Double quotes `"…"` | `"$HOME"` | Literal, **except** `$` (variables) and a few others still work |
+
+Compare all three with the variable from before:
+
+```bash
+name=Mira
+echo $name
+echo "$name"
+echo '$name'
+echo \$name
+```
+
+```output
+Mira
+Mira
+$name
+$name
+```
+
+Without quotes and in double quotes, `$name` is replaced by `Mira`. In single quotes and after a backslash, it stays as the five characters `$name`.
+
+Double quotes are the everyday choice, because they keep spaces together **and** still let variables work. A backslash inside double quotes escapes a `$`:
+
+```bash
+echo "Cost: \$5"
+echo 'It costs $5 today'
+```
+
+```output
+Cost: $5
+It costs $5 today
+```
+
+Quotes can sit side by side, and the shell glues the pieces together: `"a"b'c'` becomes `abc`. Quotes also matter for the `*` wildcard (see [lesson 012.4](/learn/012.4)): `echo "*"` prints a star, while an unquoted `*` is replaced by the names of the files in the directory.
+
+A related feature is **command substitution**: `$(command)` is replaced by what the command prints.
+
+```bash
+echo "Today the shell says: $(echo hi)"
+```
+
+```output
+Today the shell says: hi
+```
+
+It works in double quotes but not in single quotes.
+
+### Builtins and programs
+
+Not every command is a program on disk. A **builtin** is part of Bash itself, such as `cd`, `echo`, `export`, `type` and `history`. An **external command** (an **executable file**) is a separate program that Bash looks up through `PATH`, such as `ls`.
+
+`cd` must be a builtin. A separate program could only change *its own* directory, never the shell's.
+
+The `type` command tells you which kind a name is:
+
+```bash
+type cd
+type ls
+type type
+```
+
+```output
+cd is a shell builtin
+ls is /usr/bin/ls
+type is a shell builtin
+```
+
+For an external command, `type` shows the full path of the file that would run. For a name that is neither, it prints "not found" and exits with a non-zero status. `type -t NAME` prints just the kind: `builtin`, `file`, `alias` or `keyword`.
+
+Some names are both: `echo` is a builtin, but a program `/usr/bin/echo` exists too. The builtin wins, because the shell checks builtins first.
+
+<ExamOnly exam="010-200">
+
+### Where executables live
+
+Programs sit in a few standard directories of the filesystem tree:
+
+| Directory | Holds |
+|---|---|
+| `/bin` | Essential programs for all users (`ls`, `cp`, `bash`) |
+| `/usr/bin` | The bulk of the installed programs for all users |
+| `/sbin` | Essential system administration programs (`fdisk`, `ip`) |
+| `/usr/sbin` | More administration programs, mostly for root |
+| `/usr/local/bin` | Programs the administrator installed by hand |
+
+The `s` in `sbin` stands for *system*: these programs are meant for the administrator. On modern Debian, the old split between `/bin` and `/usr/bin` is gone. `/bin` and `/sbin` are only **symbolic links** (shortcuts) to `/usr/bin` and `/usr/sbin`:
+
+```bash
+readlink /bin
+readlink /sbin
+```
+
+```output
+usr/bin
+usr/sbin
+```
+
+That is why `/bin/ls` and `/usr/bin/ls` are the same file. The exam still lists all four directories as the places for executables.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **The studio's build.** Ada's release script needs a variable, `RELEASE=0.9`. Setting it with `RELEASE=0.9` does nothing for the compiler she starts. `export RELEASE=0.9` makes it visible.
+- **A broken PATH.** Jonas installed an audio tool in `/home/jonas/bin` and got `command not found`. The fix was to add that directory to `PATH`, not to retype the full path every time.
+- **Quoting a file name.** A sprite called `slime attack.png` has a space in its name. `rm slime attack.png` tries to delete *two* files. `rm "slime attack.png"` deletes one.
+- **Which ls?** When a command behaves strangely, Mira runs `type NAME` first. It shows whether she is calling a builtin, a program, or something someone redefined.
+
+## Predict the output
+
+<Predict>
+
+```bash
+who=Jonas
+echo "Hi $who"
+echo 'Hi $who'
+```
+
+```output
+Hi Jonas
+Hi $who
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+team=TuxPixel
+bash -c 'echo "[$team]"'
+```
+
+```output
+[]
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+echo a   b  "c   d"
+```
+
+```output
+a b c   d
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="export makes a copy for child programs">
+  <p>A plain `name=value` creates a local variable that only this shell sees. `export name` turns it into an environment variable, which programs started afterwards inherit. Never write `export $name`: that would export the variable named by the *value*.</p>
+</Callout>
+
+<Callout title="No spaces around the equals sign">
+  <p>`name=Mira` sets a variable. `name = Mira` makes Bash look for a command called `name` and fail. Reading a variable needs the `$`: `echo $name`, not `echo name`.</p>
+</Callout>
+
+<Callout title="Single quotes block everything, double quotes block less">
+  <p>In single quotes nothing is expanded, so `'$HOME'` stays `$HOME`. In double quotes `$` still works, so `"$HOME"` becomes `/home/mira`. A backslash protects exactly one character.</p>
+</Callout>
+
+<Callout title="env vs. set">
+  <p>`env` lists environment (exported) variables. `set` lists all shell variables, local ones included. `printenv` and `export` with no arguments also list the environment.</p>
+</Callout>
+
+<Callout title="Builtins are not files">
+  <p>`type` tells you if a command is a builtin (`cd`, `echo`, `export`, `type`, `history`) or a file on disk. `which` and `type` for an external command both show the path. Builtins have no path, and `cd` can never be an external program.</p>
+</Callout>
+
+<Callout title="PATH is a colon-separated list">
+  <p>Entries are separated by `:` and searched from left to right. The current directory is not searched unless you add it, so a script in your current directory needs `./script.sh`.</p>
+</Callout>
+
+<ExamOnly exam="010-200">
+
+<Callout title="The sbin directories">
+  <p>`/bin` and `/usr/bin` hold programs for everyone; `/sbin` and `/usr/sbin` hold system administration tools. On a current Debian `/bin` and `/sbin` are links into `/usr`.</p>
+</Callout>
+
+</ExamOnly>
+
+## Try it
+
+Open the [terminal](/terminal) and experiment:
+
+1. Run `echo $HOME $USER $SHELL`. Then run it again with single quotes. What changed?
+2. Set `color=green`, then `bash -c 'echo [$color]'`. Run `export color` and repeat the `bash -c` line.
+3. Run `type cd`, `type ls` and `type history`. Which are builtins?
+4. Run `echo $PATH`. Pick one directory from it and list it with `ls`.
+5. Run `history` and then repeat the previous command with `!!`.
+
+When you're ready, [practise this objective](/practice?objective=012.1). Next, learn how to find help on the system in [lesson 012.2](/learn/012.2).

@@ -1,0 +1,320 @@
+export const meta = {
+  objectiveId: '015.1',
+  updated: '2026-11-26',
+  tldr: 'Linux knows three kinds of accounts: `root` (user ID 0, may do anything), standard users (the people, IDs from 1000) and system users (IDs below 1000, made for services, no interactive login). Work as a standard user and borrow power only when needed: `sudo command` runs one command as root using your own password, `su` switches to another account using that account\'s password. `ssh user@host` opens a shell on another machine, `scp` copies files over the same secure connection, and `ssh-keygen` makes a key pair whose public half goes into `~/.ssh/authorized_keys` on the server.',
+  areasCovered: ['015.1.1', '015.1.2', '015.1.3', '015.1.4', '015.1.5'],
+  termsCovered: ['015.1.t1', '015.1.t2', '015.1.t3', '015.1.t4', '015.1.vt1', '015.1.vt2'],
+  links: [
+    { title: 'sudo manual (sudo.ws)', url: 'https://www.sudo.ws/docs/man/sudo.man/' },
+    { title: 'su(1) manual page (util-linux)', url: 'https://man7.org/linux/man-pages/man1/su.1.html' },
+    { title: 'ssh(1) manual page (OpenSSH)', url: 'https://man.openbsd.org/ssh' },
+    { title: 'scp(1) manual page (OpenSSH)', url: 'https://man.openbsd.org/scp' },
+    { title: 'ssh-keygen(1) manual page (OpenSSH)', url: 'https://man.openbsd.org/ssh-keygen' },
+    { title: 'sshd(8) manual page: the authorized_keys file format', url: 'https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT' },
+    { title: 'Debian Policy: UID and GID classes', url: 'https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes' },
+    { title: 'login.defs(5) manual page', url: 'https://man7.org/linux/man-pages/man5/login.defs.5.html' },
+  ],
+}
+
+## Big idea
+
+Every process on a Linux machine runs **as** some account, and that account decides what it may read, change and run. There are three kinds:
+
+| Kind | User ID (UID) | Used by | Can log in? |
+|---|---|---|---|
+| **root** (the superuser) | `0` | the administrator | yes, but you should rarely do it |
+| **standard users** | `1000` and up on Debian | people: Mira, Jonas, Ada | yes |
+| **system users** | below `1000` | services and programs (a web server, a mail system) | no |
+
+`root` can read, change and delete **everything**, and no permission check stops it. That makes a mistake as root very expensive, so the rule is: **work as a standard user, and borrow root's power for one command at a time**. This lesson covers how to borrow it (`sudo`, `su`), how to reach another machine (`ssh`, `scp`) and how to log in there without a password (key authentication).
+
+You can see which kind of account you are with `id`:
+
+```bash
+id
+```
+
+```output
+uid=1000(mira) gid=1000(mira) groups=1000(mira),27(sudo)
+```
+
+Mira's UID is 1000, so she is a standard user (the first one on this machine). She is also a member of the group `sudo`, which will matter in a moment. [Lesson 015.2](/learn/015.2) explains `id` fully.
+
+## Walkthrough
+
+### Root and standard users
+
+The administrator account is called **root** and always has UID 0. Its home directory is `/root` (not `/home/root`), and a root shell usually ends its prompt with `#` instead of `$`. Everything a standard user is forbidden to touch, root may touch. Compare Mira with the file that stores password hashes:
+
+```bash
+stat -c '%A %U %G %n' /etc/shadow
+cat /etc/shadow
+```
+
+```output
+-rw-r----- root shadow /etc/shadow
+cat: /etc/shadow: Permission denied
+```
+
+Only root (the owner) can write to `/etc/shadow`, and only root and the group `shadow` can read it, so Mira gets "Permission denied". ([Lesson 015.3](/learn/015.3) explains how to read that first column.) Root would be allowed, and so would a root-owned program she borrows power for.
+
+A **standard user** (also "regular" or "normal" user) is an account for a person. It owns its home directory and its own files, and it can't change the system or other people's files.
+
+### System users
+
+**System users** (or service accounts) belong to programs, not people. A web server runs as `www-data`, so that if the web server is hacked, the attacker gets only that account's few permissions instead of root's. System users have a UID **below 1000**: on Debian, the classes are fixed by Debian Policy: 0 is root, 1–99 are IDs reserved for packages that need the same number everywhere, 100–999 are given out to other system users when software is installed, and 1000 and up are for people. (Other distributions use different boundaries, such as 500 on older Red Hat systems; the configured limit is `UID_MIN` in `/etc/login.defs`.)
+
+```bash
+getent passwd daemon www-data
+id www-data
+```
+
+```output
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+```
+
+The last field of each line is the login shell. A system user gets `/usr/sbin/nologin`, a "shell" that just prints a refusal and exits, so nobody can open an interactive session as `daemon` or `www-data`. You also won't find passwords for them: they exist so that files and processes can be owned by something other than root.
+
+### Executing commands with elevated permissions
+
+You don't log in as root. Instead you ask for root's power for a single command. There are two tools, and the difference matters for the exam.
+
+**`sudo`** ("superuser do") runs **one command** as root, after asking for **your own** password:
+
+```bash static
+sudo apt update
+```
+
+Which users may use `sudo` is configured in `/etc/sudoers`. On Debian and Ubuntu, every member of the group `sudo` may run any command as root; on Red Hat-family systems the group is called `wheel`. Mira is in `sudo`, Jonas and Ada are not. This guest has no real keyboard for typing a password into a cell, so the next one hands it over on standard input with `-S`; at a real prompt you'd simply type it (and never put a password on a command line like this):
+
+```bash
+echo tuxpixel | sudo -S -p "" id
+```
+
+```output
+uid=0(root) gid=0(root) groups=0(root)
+```
+
+The command ran with UID 0. `sudo -n` ("non-interactive") refuses to ask for a password at all, which shows what happens when none is given:
+
+```bash
+sudo -n id
+```
+
+```output
+sudo: a password is required
+```
+
+A normal `sudo` also **logs** every use, so the administrators can see who did what. That's a big reason to prefer it to a shared root password.
+
+**`su`** ("substitute user") starts a **shell** as another account, and asks for **that account's** password. With no name it means root: `su` needs root's password, `sudo` needs yours.
+
+```bash static
+su
+su - jonas
+```
+
+`su - jonas` (with the dash, also written `su -l`) gives you a **login shell**: Jonas's environment and his home directory as the working directory. Plain `su jonas` keeps most of your current environment. Leave the new shell with `exit`. The one exception to the password rule: root may `su` to anyone without a password.
+
+```bash user=root
+su - jonas -c pwd
+```
+
+```output
+/home/jonas
+```
+
+(`-c` runs one command instead of an interactive shell.) A common pairing is `sudo su -`, which uses sudo to start a root login shell; it works, but doing single commands with `sudo` is the better habit.
+
+<ExamOnly exam="010-200">
+
+### Remote logins using SSH
+
+**SSH** (Secure Shell) lets you use the shell of another computer over the network. Everything travels **encrypted**, which is why it replaced the older `telnet`, which sent passwords as plain text. The server side is the SSH daemon, `sshd`, listening on **TCP port 22** by default.
+
+This course's terminal has no network, so these commands are shown, not run. Ada logs in to the studio's build server:
+
+```bash static
+ssh ada@build.tuxpixel.example
+```
+
+The form is `ssh [user@]host`. Without `user@`, ssh uses the name you're logged in as locally. You then get a shell prompt **on the build server**; what you type runs there. `exit` (or Ctrl+D) ends the session and brings you back. You can also hand ssh a single command and get its output locally:
+
+```bash static
+ssh ada@build.tuxpixel.example uptime
+```
+
+Useful options: `-p 2222` uses another port (lower-case p), `-l ada` is another way to name the user, and `-i FILE` picks a private key.
+
+**The first connection.** The first time you connect, ssh shows the server's **host key fingerprint** and asks whether you trust it. If you answer `yes`, it saves the key in `~/.ssh/known_hosts`. Next time, ssh compares: if the key has *changed*, it warns loudly, because someone may be pretending to be the server. This protects you from a fake server; it's the server proving its identity to **you**.
+
+**Copying files with scp.** `scp` copies files over an SSH connection, using the same `user@host` syntax with a colon before the path. The remote side is the one with `host:`:
+
+```bash static
+scp level1.txt ada@build.tuxpixel.example:/home/ada/
+scp ada@build.tuxpixel.example:/home/ada/build.log .
+scp -r art ada@build.tuxpixel.example:/home/ada/
+```
+
+The first line uploads a file, the second downloads one to the current directory (`.`) and the third copies a whole directory (`-r` for recursive; for the port, scp uses a **capital** `-P`, because lower-case `-p` already means "preserve times and modes"). Since OpenSSH 9.0 `scp` transfers files with the SFTP protocol, but you type the same commands as before.
+
+### SSH key generation and authentication
+
+Passwords can be guessed or stolen. **Public key authentication** replaces them with a **key pair** of two matching files:
+
+- the **private key**, which stays secret on *your* computer and never leaves it,
+- the **public key**, which is safe to hand out and goes on every server you want to log in to.
+
+The server uses the public key to check that you hold the matching private key, without the private key ever being sent. `ssh-keygen` makes the pair. Without options it makes an **Ed25519** key (OpenSSH's default type; `-t rsa` is the older one):
+
+```bash static
+ssh-keygen -t ed25519 -C "mira@tuxpixel"
+```
+
+It asks where to save the key (default `~/.ssh/id_ed25519`) and for an optional **passphrase**, which encrypts the private key file on disk. It then writes two files:
+
+| File | What it is | Share it? |
+|---|---|---|
+| `~/.ssh/id_ed25519` | the **private** key | never |
+| `~/.ssh/id_ed25519.pub` | the **public** key (the same name plus `.pub`) | yes |
+
+To switch a server to your key, put the public key on one line in **`~/.ssh/authorized_keys`** in your home directory **on the server**. Each line has the key type, the key itself (a long base64 text) and a comment:
+
+```text
+ssh-ed25519 AAAAC3Nza…(a long string)… mira@tuxpixel
+```
+
+The helper `ssh-copy-id` does that for you:
+
+```bash static
+ssh-copy-id ada@build.tuxpixel.example
+```
+
+From then on, `ssh ada@build.tuxpixel.example` logs in without asking for Ada's account password (if you set a passphrase, it asks for that instead, to unlock the private key). Only the server's `authorized_keys` decides which keys are accepted, so removing a line there takes that person's access away.
+
+sshd is strict about permissions: if the home directory, `~/.ssh` or `authorized_keys` can be written by other users, it ignores the file. The usual safe setting is `700` for the directory and `600` for the file. Here is that setup as the commands, with the modes checked (the key itself is a made-up placeholder, not a real key):
+
+```bash
+mkdir -m 700 ~/.ssh
+echo "ssh-ed25519 AAAAplaceholder mira@tuxpixel" > ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+stat -c '%a %n' ~/.ssh ~/.ssh/authorized_keys
+```
+
+```output
+700 /home/mira/.ssh
+600 /home/mira/.ssh/authorized_keys
+```
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+### Identifying user types (exam 010-160)
+
+On the older exam, this objective also asks you to tell account types apart with the user database and a few commands. The files `/etc/passwd`, `/etc/shadow` and `/etc/group`, and the commands `id`, `last`, `who` and `w`, are taught in full in [lesson 015.2](/learn/015.2). In short: a UID of 0 is root, a UID from 1000 up is a standard user, and anything between is a system user (they have `nologin` as shell). See your own numbers with:
+
+```bash
+id -u
+grep -E '^(root|www-data|mira):' /etc/passwd
+```
+
+```output
+1000
+root:x:0:0:root:/root:/bin/bash
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+mira:x:1000:1000:Mira Okafor:/home/mira:/bin/bash
+```
+
+The third field is the UID. Root's is 0 and Mira's is 1000; `www-data`'s is 33, so it's a system user.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **Mira administers, as Mira.** She is in the group `sudo`, so she installs packages with `sudo apt install …`. Nobody at the studio knows root's password, and the log shows exactly who ran what.
+- **Jonas can't `sudo`.** If he types `sudo something`, he is told he isn't in the sudoers file, and the attempt is logged. When his machine needs a package, he asks Mira.
+- **Ada's build server.** The nightly Pixel Raiders build runs on `build.tuxpixel.example`. Ada logs in with `ssh`, collects results with `scp`, and her laptop's public key sits in `~/.ssh/authorized_keys` there, so no password is ever typed or sent.
+- **Services as system users.** The studio's web server runs as `www-data`, so a bug in the website can't touch Mira's home directory, because it belongs to Mira and only she (and root) may enter it.
+
+## Predict the output
+
+<Predict>
+
+```bash
+echo tuxpixel | sudo -S -p "" whoami
+```
+
+```output
+root
+```
+
+</Predict>
+
+<Predict>
+
+```bash user=root
+su -c "whoami" ada
+```
+
+```output
+ada
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+id -un
+sudo -n true
+echo "status $?"
+```
+
+```output
+mira
+sudo: a password is required
+status 1
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="sudo asks for YOUR password, su for the target's">
+  <p>`sudo` checks that you are allowed (via `/etc/sudoers` or the group `sudo`) and asks for your own password. `su` knows nothing about permission lists: it asks for the password of the account you switch to, root's if you give no name.</p>
+</Callout>
+
+<Callout title="su vs. su -">
+  <p>`su jonas` switches the user but keeps your current directory and most of your environment. `su - jonas` (or `su -l jonas`) starts a full login shell: Jonas's environment and home directory. Either way, `exit` takes you back.</p>
+</Callout>
+
+<Callout title="UID 0 is root, not the name">
+  <p>Root is defined by **UID 0**. System users have UIDs below 1000 on Debian, standard users 1000 and up. A system user usually has `/usr/sbin/nologin` as its shell and can't be logged in to.</p>
+</Callout>
+
+<ExamOnly exam="010-200">
+
+<Callout title="Public key goes to the server, private key never leaves">
+  <p>`ssh-keygen` makes `id_ed25519` (private) and `id_ed25519.pub` (public). Copy only the **public** key, into `~/.ssh/authorized_keys` of the account you log in to on the **server**. Don't mix this up with `~/.ssh/known_hosts`, which stores the *servers'* keys on your side.</p>
+</Callout>
+
+<Callout title="scp uses -P, ssh uses -p">
+  <p>`ssh -p 2222 host` but `scp -P 2222 file host:`. In scp, lower-case `-p` means "preserve modification times and modes". SSH's default port is 22.</p>
+</Callout>
+
+</ExamOnly>
+
+## Try it
+
+Open the [terminal](/terminal). You are Mira, who may use `sudo` (her password is `tuxpixel`):
+
+1. Run `id`. Which UID and groups do you have? Is `sudo` among them?
+2. Try `cat /etc/shadow`, then `sudo cat /etc/shadow`. Why does the second one work?
+3. Run `getent passwd` and look at the last column. Which accounts have `nologin`? What are their UIDs?
+4. Run `su - jonas` (password `tuxpixel`), then `id` and `pwd`, then `exit`.
+5. Run `ssh-keygen -t ed25519`, accept the defaults with an empty passphrase, then `ls ~/.ssh`. Which file would you give to a server? (ssh itself isn't installed in this guest, so the key generator may be missing too. If so, just think it through.)
+
+When you're ready, [practise this objective](/practice?objective=015.1). Next, learn how accounts and groups are created and stored in [lesson 015.2](/learn/015.2).

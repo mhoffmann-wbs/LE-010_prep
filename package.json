@@ -18,7 +18,8 @@
     "content:verify": "node scripts/content-verify.ts",
     "vm:build": "bash scripts/vm/build-image.sh",
     "vm:state": "node scripts/vm/build-state.ts",
-    "vm:smoke": "node scripts/vm/smoke.ts"
+    "vm:smoke": "node scripts/vm/smoke.ts",
+    "vm:run": "node scripts/vm/run.ts"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.11.0",

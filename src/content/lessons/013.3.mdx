@@ -1,0 +1,588 @@
+export const meta = {
+  objectiveId: '013.3',
+  updated: '2026-11-26',
+  tldr: 'A shell script is a text file of commands. Its first line, the shebang `#!/bin/bash`, names the interpreter. Make it executable with `chmod +x` and run it as `./script.sh`, or run `bash script.sh` without the permission. Variables are set as `name=value` (no spaces) and read as `$name`; the arguments are `$1`, `$2`, `$#`, `$@`, and `$0` is the script. `$?` holds the exit status of the last command (0 means success), `exit N` ends the script with status N. `if [ -f file ]` tests a file, `[ "$a" = "$b" ]` compares text, and `for x in list` loops.',
+  areasCovered: ['013.3.1', '013.3.v1'],
+  termsCovered: ['013.3.t1', '013.3.t2', '013.3.t3', '013.3.t4', '013.3.t5', '013.3.t6', '013.3.t7', '013.3.t8'],
+  links: [
+    { title: 'Bash Reference Manual: Shell scripts', url: 'https://www.gnu.org/software/bash/manual/html_node/Shell-Scripts.html' },
+    { title: 'Bash Reference Manual: Shell parameters (variables)', url: 'https://www.gnu.org/software/bash/manual/html_node/Shell-Parameters.html' },
+    { title: 'Bash Reference Manual: Special parameters ($1, $#, $@, $?)', url: 'https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html' },
+    { title: 'Bash Reference Manual: Conditional constructs (if)', url: 'https://www.gnu.org/software/bash/manual/html_node/Conditional-Constructs.html' },
+    { title: 'Bash Reference Manual: Bash conditional expressions (-f, -d, -e)', url: 'https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html' },
+    { title: 'Bash Reference Manual: Looping constructs (for)', url: 'https://www.gnu.org/software/bash/manual/html_node/Looping-Constructs.html' },
+    { title: 'Bash Reference Manual: Exit status', url: 'https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html' },
+    { title: 'echo(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/echo.1.html' },
+    { title: 'nano: official site and documentation', url: 'https://www.nano-editor.org/docs.php' },
+    { title: 'vi(1p) manual page (POSIX)', url: 'https://man7.org/linux/man-pages/man1/vi.1p.html' },
+  ],
+}
+
+## Big idea
+
+When you type the same commands every day, let the computer do it. A **shell script** is a plain text file that holds commands, one per line, in the order you'd type them. The shell reads the file and runs them for you. Add **variables**, **conditions** and **loops** and a script can make decisions and repeat work, which is a small program.
+
+The shell you use here is **bash**. Working with a script takes three steps:
+
+1. Write the text file, starting with a **shebang** line that says which program should run it.
+2. Give it permission to run, or hand it to `bash` directly.
+3. Run it, passing **arguments** if it wants any, and check its **exit status**.
+
+## Walkthrough
+
+### Your first script: the shebang
+
+The first line of a script is special. `#!` (called **shebang**, from "hash" and "bang") followed by the path of a program tells Linux: "run this file with that program". For bash scripts it is:
+
+```text
+#!/bin/bash
+```
+
+Every other line that starts with `#` is a **comment**: the shell ignores it, and you write it for human readers.
+
+Now write a script. Editors come later, so here we create the file with a **here-document**: `cat > hello.sh << 'EOF'` writes everything up to the line `EOF` into `hello.sh`. (In the [terminal](/terminal) you can also use an editor, such as `nano hello.sh`.)
+
+```bash
+cat > hello.sh << 'EOF'
+#!/bin/bash
+# Greet the team
+name="Mira"
+echo "Hello, $name! Welcome to TuxPixel Studio."
+EOF
+cat hello.sh
+```
+
+```output
+#!/bin/bash
+# Greet the team
+name="Mira"
+echo "Hello, $name! Welcome to TuxPixel Studio."
+```
+
+`echo` prints its arguments, followed by a newline. That is its whole job, and it is the main way a script talks to you. `echo -n` leaves out the newline.
+
+### Running a script: ./script.sh or bash script.sh
+
+There are two ways, and the difference is a classic exam question:
+
+1. **`bash hello.sh`**: start bash and give it the file to read. The file doesn't need any special permission (only read), and the shebang line is ignored, being just a comment.
+2. **`./hello.sh`**: run the file as a **program**. It needs the **execute permission** (`chmod +x`), and Linux uses the shebang line to find the interpreter.
+
+```bash
+cat > hello.sh << 'EOF'
+#!/bin/bash
+name="Mira"
+echo "Hello, $name!"
+EOF
+bash hello.sh
+```
+
+```output
+Hello, Mira!
+```
+
+A new file isn't executable, so `./hello.sh` fails at first with "Permission denied" (exit status 126). `chmod +x` adds the permission ([lesson 015.3](/learn/015.3) explains permissions):
+
+```bash
+cat > hello.sh << 'EOF'
+#!/bin/bash
+echo "Hello from a program!"
+EOF
+./hello.sh 2> /dev/null
+echo "status without permission: $?"
+chmod +x hello.sh
+./hello.sh
+```
+
+```output
+status without permission: 126
+Hello from a program!
+```
+
+Why `./`? The shell looks for commands only in the directories listed in the `PATH` variable ([lesson 012.1](/learn/012.1)), and your current directory isn't in it. `./hello.sh` says "the file `hello.sh` right here". The path `/bin/bash` in the shebang is the program, and it must be an **absolute path**: `#!/bin/bash`, not `#!bash`.
+
+### Variables
+
+A **variable** is a named box for text. You **set** it with `name=value`. There must be **no spaces** around the `=`. You **read** it with a dollar sign: `$name`.
+
+```bash
+game="Pixel Raiders"
+version=0.9
+echo "$game version $version"
+```
+
+```output
+Pixel Raiders version 0.9
+```
+
+Notes that cause many mistakes:
+
+- A value with spaces needs quotes: `game="Pixel Raiders"`.
+- `$name` is replaced **before** the command runs: `echo $name` prints the value, `echo name` prints the word.
+- Use **double quotes** around `"$name"` when you print or test it: this keeps values with spaces in one piece. **Single quotes** switch the replacement off:
+
+```bash
+who=Ada
+echo "Built by $who"
+echo 'Built by $who'
+echo "Built by ${who}s"
+```
+
+```output
+Built by Ada
+Built by $who
+Built by Adas
+```
+
+Braces, as in `${who}s`, mark where the name ends. An unset variable is simply empty. (Variables set in a script exist only while that script runs.) The shell also provides ready-made variables like `$HOME` (your home directory) and `$USER` (your name):
+
+```bash
+echo "$USER lives in $HOME"
+```
+
+```output
+mira lives in /home/mira
+```
+
+The shell can also store the **output of a command** in a variable with `$( )`, which is called command substitution:
+
+```bash
+files=$(ls /home)
+echo $files
+```
+
+```output
+ada jonas mira
+```
+
+### Arguments
+
+A script can take **arguments**, the words you type after its name. Inside the script they are in special variables:
+
+| Variable | Holds |
+|---|---|
+| `$0` | the name of the script, as it was started |
+| `$1`, `$2`, … | the first, second, … argument |
+| `$#` | the **number** of arguments |
+| `$@` | **all** arguments |
+
+```bash
+cat > args.sh << 'EOF'
+#!/bin/bash
+echo "script: $0"
+echo "first: $1"
+echo "second: $2"
+echo "count: $#"
+echo "all: $@"
+EOF
+bash args.sh slime bat ghost
+```
+
+```output
+script: args.sh
+first: slime
+second: bat
+count: 3
+all: slime bat ghost
+```
+
+`$0` is the script itself, **not** the first argument, so the first argument is `$1`. An argument that isn't given is empty, so `$2` would print nothing if you only passed one word.
+
+### Exit status
+
+Every command ends with a number, its **exit status**. By convention **0 means success** and **any other number means some kind of failure**. The shell keeps the status of the last command in `$?`:
+
+```bash
+ls /home > /dev/null
+echo "ls said: $?"
+ls /nonexistent 2> /dev/null
+echo "ls said: $?"
+grep -q zebra /etc/hostname
+echo "grep said: $?"
+```
+
+```output
+ls said: 0
+ls said: 2
+grep said: 1
+```
+
+`grep` returns 1 when it finds nothing, and 2 for a real error. Read `$?` straight away, because the next command replaces it, including the `echo` that prints it.
+
+Your own script sets its status with **`exit`**. `exit` stops the script at once and hands the number back to whoever started it. A script that reaches its last line without `exit` returns the status of its last command.
+
+```bash
+cat > stop.sh << 'EOF'
+#!/bin/bash
+echo "before"
+exit 3
+echo "never printed"
+EOF
+bash stop.sh
+echo "status: $?"
+```
+
+```output
+before
+status: 3
+```
+
+<ExamOnly exam="010-200">
+
+### Making decisions with if
+
+An **if** command runs commands only when a **condition** is true. The condition is itself a command, and "true" means exit status 0. The most common condition command is `[ ... ]`, bash's test. The layout is:
+
+```text
+if [ CONDITION ]; then
+  commands
+else
+  other commands
+fi
+```
+
+`fi` ("if" backwards) closes the block, and `else` is optional. The **spaces** inside the brackets are required: `[` is a command name, and `]` is its last argument.
+
+**Testing files.** These tests take a path:
+
+| Test | True when |
+|---|---|
+| `-e path` | the path **e**xists (file, directory, anything) |
+| `-f path` | it exists and is a regular **f**ile |
+| `-d path` | it exists and is a **d**irectory |
+
+Here is a script that checks that an artwork file is there before using it, and ends with a failing status if it isn't:
+
+```bash fixture=data-art
+cat > check.sh << 'EOF'
+#!/bin/bash
+# usage: check.sh FILE
+if [ -f "$1" ]; then
+  echo "$1 exists"
+else
+  echo "$1 is missing"
+  exit 1
+fi
+EOF
+bash check.sh art/hero.png
+echo "status: $?"
+bash check.sh art/dragon.png
+echo "status: $?"
+```
+
+```output
+art/hero.png exists
+status: 0
+art/dragon.png is missing
+status: 1
+```
+
+The difference between the three tests is visible on a directory: it exists (`-e` is true) but it is not an ordinary file. (The `for` loop that repeats the tests for each path is explained further down, under "Repeating work with for"; `A && B || C` runs B when A succeeds and C otherwise.)
+
+```bash fixture=data-art
+for p in art art/hero.png art/dragon.png; do
+  [ -e "$p" ] && echo "$p: -e yes" || echo "$p: -e no"
+  [ -f "$p" ] && echo "$p: -f yes" || echo "$p: -f no"
+  [ -d "$p" ] && echo "$p: -d yes" || echo "$p: -d no"
+done
+```
+
+```output
+art: -e yes
+art: -f no
+art: -d yes
+art/hero.png: -e yes
+art/hero.png: -f yes
+art/hero.png: -d no
+art/dragon.png: -e no
+art/dragon.png: -f no
+art/dragon.png: -d no
+```
+
+(`&&` runs the next command only if the previous one succeeded and `||` only if it failed, a short form of `if`.)
+
+**Comparing variables.** For text, use `=` (equal) and `!=` (not equal), with the variables in **double quotes**:
+
+```bash
+mode="release"
+if [ "$mode" = "release" ]; then
+  echo "building the real thing"
+else
+  echo "building a test version"
+fi
+```
+
+```output
+building the real thing
+```
+
+Two traps live here. **Spaces around `=`** are required inside `[ ]`, though forbidden when setting a variable. Without them, `[ "$a"="$b" ]` is a single word, which is always true:
+
+```bash
+a=slime
+b=bat
+[ "$a" = "$b" ]
+echo "with spaces: $?"
+[ "$a"="$b" ]
+echo "without spaces: $?"
+```
+
+```output
+with spaces: 1
+without spaces: 0
+```
+
+The second test "succeeded" although the two values are different. The second trap is the quotes. If `$a` were empty or held two words, an unquoted `[ $a = "x" ]` would break, so always write `"$a"`. (For numbers there are other operators, such as `-eq`, but text equality is what the objective names.)
+
+</ExamOnly>
+
+### Repeating work with for
+
+A **for loop** runs commands once for each item in a list. The loop variable takes each item in turn. The layout:
+
+```text
+for VARIABLE in LIST; do
+  commands
+done
+```
+
+`do` starts the loop body and `done` ends it. The list can be **words separated by spaces**:
+
+```bash
+for enemy in slime bat ghost; do
+  echo "Testing the $enemy"
+done
+```
+
+```output
+Testing the slime
+Testing the bat
+Testing the ghost
+```
+
+Or a **file glob**. The shell first replaces the glob with the matching file names ([lesson 012.4](/learn/012.4)), then the loop runs once per file:
+
+```bash fixture=data-art
+for f in art/*.png; do
+  echo "found $f"
+done
+```
+
+```output
+found art/bat.png
+found art/hero.png
+found art/slime.png
+```
+
+Loops work with counters, too. `$(( ))` does whole-number arithmetic:
+
+```bash fixture=data-art
+count=0
+for f in art/*.png; do
+  count=$((count + 1))
+done
+echo "$count sprites"
+```
+
+```output
+3 sprites
+```
+
+Mind the quotes: a glob inside quotes isn't expanded, because the shell then treats `*` as a plain character. And a glob with no match stays as it is, so `art/*.jpg` is passed along literally:
+
+```bash fixture=data-art
+for f in art/*.jpg; do
+  echo "$f"
+done
+```
+
+```output
+art/*.jpg
+```
+
+### A whole script: arguments, conditions, loops and exit
+
+Here is a small script of the kind Ada writes. It packs the folder named by the first argument into a `.tar.gz` ([lesson 013.1](/learn/013.1)), and complains with status 2 when the folder isn't there:
+
+```bash fixture=data-art
+cat > pack.sh << 'EOF'
+#!/bin/bash
+folder=$1
+if [ -d "$folder" ]; then
+  tar -czf "$folder.tar.gz" "$folder"
+  echo "packed $folder"
+else
+  echo "no such folder: $folder"
+  exit 2
+fi
+EOF
+bash pack.sh art
+echo "status: $?"
+bash pack.sh levels
+echo "status: $?"
+ls -1
+```
+
+```output
+packed art
+status: 0
+no such folder: levels
+status: 2
+art
+art.tar.gz
+pack.sh
+```
+
+<ExamOnly exam="010-160">
+
+### Text editors: vi and nano
+
+The 1.6 objectives ask you to be **aware** of the two common terminal text editors. Running `nano hello.sh` or `vi hello.sh` opens the file in the editor (it creates the file when you save). Neither one runs in a lesson cell, so these are examples to try in the [terminal](/terminal).
+
+```bash static
+nano hello.sh
+```
+
+**nano** is the friendly one. It starts in a mode where you can simply type, and the key commands are listed at the bottom of the screen. The `^` means the Ctrl key:
+
+| Keys | Action |
+|---|---|
+| `Ctrl+O` | **O**utput: save (write out) the file |
+| `Ctrl+X` | e**X**it (it asks whether to save, if you made changes) |
+| `Ctrl+K` | **K**ill (cut) the current line |
+| `Ctrl+W` | **W**here is: search |
+
+**vi** (on most systems really `vim`) is on practically every Linux system, even tiny ones, so it's worth knowing the basics. It has **modes**, and that is what confuses beginners. It starts in **normal mode**, where keys are commands and typing text does nothing useful:
+
+```bash static
+vi hello.sh
+```
+
+| Keys | Action |
+|---|---|
+| `i` | enter **insert mode**: now typed text goes into the file |
+| `Esc` | go back to normal mode |
+| `:w` then Enter | **w**rite (save) the file |
+| `:q` then Enter | **q**uit (works if nothing changed) |
+| `:wq` then Enter (or `ZZ`) | save and quit |
+| `:q!` then Enter | quit and **throw away** your changes |
+| `dd` | delete the current line (in normal mode) |
+| `/word` then Enter | search for "word" |
+
+**How to quit vi:** press `Esc` (to be sure you're in normal mode), then type `:q!` and press Enter to leave without saving, or `:wq` to save first.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **The release script.** Ada's `release.sh` takes the version as its first argument, `./release.sh 0.9`. If she forgets it, `$#` is 0, so the script prints a usage message and exits with status 1, and the nightly job notices.
+- **Check before you work.** Jonas's export script starts by testing that his art folder exists and stops with a clear message if it doesn't, instead of failing in the middle.
+- **Looping over sprites.** A script goes through `art/*.png` and prints the name of every file that hasn't been renamed yet. It's a three-line loop, which beats clicking through a file manager.
+- **Success or failure.** The studio's chat bot looks at the exit status of the build script: 0 posts a happy message, anything else posts the log.
+
+## Predict the output
+
+<Predict>
+
+```bash
+cat > who.sh << 'EOF'
+#!/bin/bash
+echo "$0 got $# arguments, the first is $1"
+EOF
+bash who.sh pixel raiders
+```
+
+```output
+who.sh got 2 arguments, the first is pixel
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+for n in 1 2 3; do
+  echo "level $n"
+done
+echo "done: $?"
+```
+
+```output
+level 1
+level 2
+level 3
+done: 0
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+cat > fail.sh << 'EOF'
+#!/bin/bash
+echo "start"
+exit 4
+EOF
+bash fail.sh
+echo "exit status: $?"
+```
+
+```output
+start
+exit status: 4
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="The shebang names the interpreter">
+  <p>`#!/bin/bash` must be the very first line, with an absolute path. The interpreter is `/bin/bash`. A `#` anywhere else starts a comment. With `bash script.sh` the shebang is ignored; with `./script.sh` Linux uses it.</p>
+</Callout>
+
+<Callout title="./script.sh needs +x; bash script.sh does not">
+  <p>A new file has no execute permission, so `./script.sh` gives "Permission denied" (status 126) until you run `chmod +x script.sh`. `bash script.sh` only needs read permission. And `script.sh` without `./` fails: the current directory isn't in `PATH`.</p>
+</Callout>
+
+<Callout title="No spaces around = when setting a variable">
+  <p>`name=Mira` sets it. `name = Mira` runs a command called `name`. You read it with `$name`; you never write the `$` when setting it. Single quotes stop the replacement: `echo '$name'` prints `$name`.</p>
+</Callout>
+
+<Callout title="$0, $1, $#, $@, $?">
+  <p>`$0` is the script's own name, `$1` the first argument, `$#` the number of arguments, `$@` all of them. `$?` is the exit status of the last command, with 0 meaning success. `exit 3` ends the script with status 3.</p>
+</Callout>
+
+<ExamOnly exam="010-200">
+
+<Callout title="[ ] needs its spaces">
+  <p>Write `if [ -f "$file" ]; then ... fi`: spaces after `[` and before `]`, and `then` after the `;`. `-e` is "exists" (anything), `-f` is "regular file", `-d` is "directory". Compare text with `=` and `!=`, and put spaces on both sides: `[ "$a" = "$b" ]`. Without them it is always true.</p>
+</Callout>
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+<Callout title="Quitting vi, and the keys of nano">
+  <p>In vi, `i` starts inserting and `Esc` returns to normal mode. `:wq` saves and quits, `:q!` quits without saving. In nano, `Ctrl+O` saves and `Ctrl+X` exits. The editors are for writing the script, not for running it: the script is run by bash.</p>
+</Callout>
+
+</ExamOnly>
+
+<Callout title="for loops: in, do, done">
+  <p>`for x in a b c; do ... done`. The list is separated by spaces, and it can be a glob like `*.png`. The variable is read with a `$`, so inside the loop write `$x`. `if` ends with `fi` and `for` ends with `done`.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal) and build a script:
+
+1. Create a folder: `mkdir -p ~/scripts && cd ~/scripts`.
+2. Write the script with `nano welcome.sh` (or a here-document, as in this lesson): a shebang line, then `echo "Welcome, $1!"`. Save it.
+3. Run it with `bash welcome.sh Ada`. Then try `./welcome.sh Ada`. What happens, and how do you fix it?
+4. Add a line `echo "You gave $# arguments"` and run it with no argument, one, and two.
+5. Write a loop: `for f in /etc/host*; do echo "$f"; done`. Then, on exam 010-200, change it to print only names that pass an `if [ -f "$f" ]` test.
+6. Make a script that ends with `exit 7`, run it, and read the status with `echo $?`.
+7. On exam 010-160, open a file in `vi`, type a line with `i`, then leave without saving: `Esc`, then `:q!`.
+
+When you're ready, [practise this objective](/practice?objective=013.3). That's the end of topic 013. Check yourself with a [mock exam](/mock), or revisit [lesson 013.2](/learn/013.2).

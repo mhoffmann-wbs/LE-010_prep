@@ -1,0 +1,376 @@
+export const meta = {
+  objectiveId: '012.4',
+  updated: '2026-11-26',
+  tldr: '`touch` creates an empty file, `mkdir` a directory (`-p` for a whole chain), `cp` copies (`-r` for directories), `mv` moves and renames, `rm` deletes (`-r` for directories) and `rmdir` removes empty directories. There is no trash can: deleted is gone. File names are case sensitive. Wildcards, or globs (`*`, `?`, `[abc]`), are expanded by the shell before the command runs.',
+  areasCovered: ['012.4.1', '012.4.2', '012.4.3'],
+  termsCovered: ['012.4.t1', '012.4.t2'],
+  links: [
+    { title: 'touch(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/touch.1.html' },
+    { title: 'cp(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/cp.1.html' },
+    { title: 'mv(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/mv.1.html' },
+    { title: 'rm(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/rm.1.html' },
+    { title: 'mkdir(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/mkdir.1.html' },
+    { title: 'rmdir(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/rmdir.1.html' },
+    { title: 'glob(7): shell wildcard patterns', url: 'https://man7.org/linux/man-pages/man7/glob.7.html' },
+    { title: 'Bash Reference Manual: Filename Expansion', url: 'https://www.gnu.org/software/bash/manual/html_node/Filename-Expansion.html' },
+  ],
+}
+
+## Big idea
+
+Five small commands do most of the daily work on files: **create**, **copy**, **move**, **rename** and **delete**. Each does exactly what you tell it, and most do it **without asking**. Linux has no recycle bin on the command line. After `rm`, a file is gone.
+
+A second idea makes the commands powerful: **wildcards**. Instead of naming ten files, you write a pattern like `*.png` and the shell fills in the matching names. Because the shell does it, wildcards work the same way with every command.
+
+Mira keeps the Pixel Raiders sprites in a folder called `art`. The examples below use it. Here is what is inside:
+
+```bash fixture=basics-art
+ls art
+```
+
+```output
+backup	    boss1.png  hero1.png  hero3.png  Notes.txt	slime.png
+boss10.png  boss2.png  hero2.png  notes.txt  readme.md
+```
+
+## Walkthrough
+
+### Files and directories
+
+Every command below has the same shape: the command, perhaps some options, then one or more **sources** and, for copy and move, a **destination**. Directories are files too, as far as these commands are concerned, except that some options are needed to work on a directory.
+
+#### Creating files: touch
+
+`touch NAME` creates an empty file if the name doesn't exist. If it does exist, `touch` only updates its modification time and leaves the content alone. You can give several names at once.
+
+```bash fixture=basics-art
+cd art
+touch todo.txt ideas.txt
+ls todo.txt ideas.txt
+```
+
+```output
+ideas.txt  todo.txt
+```
+
+#### Creating directories: mkdir
+
+`mkdir NAME` makes a directory. It fails when the parent directory doesn't exist yet:
+
+```bash fixture=basics-art
+cd art
+mkdir levels/world1/boss
+echo "exit status: $?"
+```
+
+```output
+mkdir: cannot create directory ‘levels/world1/boss’: No such file or directory
+exit status: 1
+```
+
+The option `-p` (**p**arents) creates the whole chain, and doesn't complain if a directory is already there:
+
+```bash fixture=basics-art
+cd art
+mkdir -p levels/world1/boss
+ls levels/world1
+```
+
+```output
+boss
+```
+
+#### Removing empty directories: rmdir
+
+`rmdir NAME` removes a directory, but **only if it is empty**. That makes it the safe way to clean up:
+
+```bash fixture=basics-art
+cd art
+cp readme.md backup
+rmdir backup
+```
+
+```output
+rmdir: failed to remove 'backup': Directory not empty
+```
+
+Error messages are part of the exam answer, so read them: this one says why nothing was removed. For a directory that still has content, you need `rm -r` (below).
+
+#### Copying: cp
+
+`cp SOURCE DEST` makes a copy. If `DEST` is an existing directory, the copy goes **inside** it under the same name. Otherwise `DEST` is the name of the new file.
+
+```bash fixture=basics-art
+cd art
+cp hero1.png hero1-backup.png
+cp readme.md backup
+ls backup
+```
+
+```output
+readme.md
+```
+
+To copy several files into a directory, put the directory **last**: `cp hero1.png hero2.png backup`.
+
+`cp` refuses to copy a **directory** by itself. Add `-r` (**r**ecursive: the directory and everything inside it):
+
+```bash fixture=basics-art
+cd art
+cp backup backup2
+cp -r backup backup2
+ls -d backup*
+```
+
+```output
+cp: -r not specified; omitting directory 'backup'
+backup	backup2
+```
+
+Two more options protect you. `-i` (**i**nteractive) asks before it overwrites an existing file, and `-v` (**v**erbose) prints what it does. Without `-i`, `cp` silently **replaces** a destination that exists.
+
+```bash static
+cp -i hero1.png hero2.png
+```
+
+The shell would ask `cp: overwrite 'hero2.png'?` and wait for `y` or `n`. A prompt needs a person to answer, so it can't run as a cell here, but you can try it in the [terminal](/terminal).
+
+#### Moving and renaming: mv
+
+`mv` does two jobs with one syntax. It **moves** a file to another directory, and it **renames** a file when the destination is a new name in the same place:
+
+```bash fixture=basics-art
+cd art
+mv slime.png blob.png
+mv boss1.png boss2.png boss10.png backup
+ls backup
+ls blob.png slime.png 2>&1
+```
+
+```output
+boss10.png  boss1.png  boss2.png
+ls: cannot access 'slime.png': No such file or directory
+blob.png
+```
+
+There is no separate "rename" command. `mv` needs no `-r` for directories. Like `cp`, it overwrites an existing destination without asking, unless you use `-i`.
+
+#### Deleting: rm
+
+`rm NAME` deletes files. **There is no trash can**: the file is gone for good.
+
+```bash fixture=basics-art
+cd art
+rm slime.png
+ls slime.png 2>&1
+```
+
+```output
+ls: cannot access 'slime.png': No such file or directory
+```
+
+`rm` refuses to delete a directory, until you add `-r` (recursive), which deletes the directory and all of its contents:
+
+```bash fixture=basics-art
+cd art
+rm backup
+rm -r backup
+ls -d backup 2>&1
+```
+
+```output
+rm: cannot remove 'backup': Is a directory
+ls: cannot access 'backup': No such file or directory
+```
+
+The options to know:
+
+| Option | Meaning |
+|---|---|
+| `-r` | Recursive: also directories and everything in them |
+| `-i` | **I**nteractive: ask before every removal |
+| `-f` | **F**orce: never ask, and ignore files that don't exist |
+
+`-f` is risky: `rm -rf NAME` deletes a whole tree silently. A mistyped name or an unexpected wildcard can wipe out your work, and as `root` even the whole system. Read the line twice before pressing Enter.
+
+A safety trick: put `echo` in front of the command first. It shows what the shell would pass, and deletes nothing:
+
+```bash fixture=basics-art
+cd art
+echo rm *.png
+```
+
+```output
+rm boss10.png boss1.png boss2.png hero1.png hero2.png hero3.png slime.png
+```
+
+### Case sensitivity
+
+Linux file names are **case sensitive**. `notes.txt`, `Notes.txt` and `NOTES.TXT` are three different files, and they can live side by side. This is the same for commands, directories and options (`-r` and `-R` can differ).
+
+```bash fixture=basics-art
+cd art
+cat notes.txt
+cat Notes.txt
+ls NOTES.TXT 2>&1
+```
+
+```output
+lower-case notes
+Capitalised notes
+ls: cannot access 'NOTES.TXT': No such file or directory
+```
+
+The common mistake is the one in the third line: a name that is right except for the case is simply a name that doesn't exist. Watch out for the opposite danger too. Renaming `notes.txt` to `Notes.txt` when that name exists **overwrites** the capitalised file:
+
+```bash fixture=basics-art
+cd art
+mv notes.txt Notes.txt
+cat Notes.txt
+```
+
+```output
+lower-case notes
+```
+
+(Windows and macOS usually treat both names as the same file. Linux doesn't.)
+
+### Simple globbing
+
+A **glob** (wildcard pattern) is a name pattern with special characters. The shell replaces the pattern by **all matching names**, sorted, before the command runs. The command never sees the pattern. These are the ones to know:
+
+| Pattern | Matches |
+|---|---|
+| `*` | Any number of any characters, including none |
+| `?` | Exactly one character |
+| `[abc]` | One character from the list: `a`, `b` or `c` |
+| `[a-z]` | One character in the range |
+| `[!abc]` | One character that is **not** in the list |
+
+Let's try them on the art folder. `echo` shows what the shell produces:
+
+```bash fixture=basics-art
+cd art
+echo hero*
+echo boss?.png
+echo hero[12].png
+echo [!b]*.png
+```
+
+```output
+hero1.png hero2.png hero3.png
+boss1.png boss2.png
+hero1.png hero2.png
+hero1.png hero2.png hero3.png slime.png
+```
+
+- `hero*` is everything that starts with `hero`.
+- `boss?.png` matches `boss1.png` and `boss2.png`, but not `boss10.png`: the `?` is exactly **one** character.
+- `hero[12].png` matches `hero1.png` and `hero2.png`, but not `hero3.png`.
+- `[!b]*.png` is every `.png` that doesn't start with `b`.
+
+`*` and `?` don't match a leading dot, so hidden files stay out (see [lesson 012.3](/learn/012.3)). Globs only match names that **exist**. If nothing matches, Bash passes the pattern unchanged and the command complains about it:
+
+```bash fixture=basics-art
+cd art
+ls *.jpg 2>&1
+echo "*.png"
+```
+
+```output
+ls: cannot access '*.jpg': No such file or directory
+*.png
+```
+
+The second line shows quoting again: inside quotes the shell does **not** expand the `*` ([lesson 012.1](/learn/012.1)). That is how a pattern gets through to a command that wants to expand it itself.
+
+Globs combine nicely with the commands above: `cp *.png backup` copies every sprite, `rm *.tmp` removes every temp file, `ls hero?.png` lists the numbered heroes.
+
+## At TuxPixel
+
+- **Tidy-up before a release.** Ada moves the finished sprites into the release folder with `mv *.png release/` and checks first with `ls *.png`, so she knows what the pattern will pick up.
+- **A very bad typo.** Jonas meant `rm *.tmp` and typed `rm * .tmp`. The space makes `*` match **everything** in the folder. Nothing asked, nothing came back. The studio rule is now: `echo` first, then the real command.
+- **Case sensitive names.** Mira's build script looked for `Hero.png`, but the file was `hero.png`. On her Windows laptop it worked. On the Linux build server it failed, because the names differ in case.
+- **Folders from scratch.** A new project needs `src`, `docs` and `assets/sprites`. `mkdir -p src docs assets/sprites` creates all three, including the missing `assets`.
+
+## Predict the output
+
+<Predict>
+
+```bash fixture=basics-art
+cd art
+echo boss*.png
+```
+
+```output
+boss10.png boss1.png boss2.png
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=basics-art
+cd art
+echo ????1.png
+```
+
+```output
+boss1.png hero1.png
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=basics-art
+cd art
+mkdir -p a/b
+cp readme.md a/b
+ls a/b
+```
+
+```output
+readme.md
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="rm has no undo">
+  <p>Deleted files do not go to a trash can. `rm -r` removes a directory with everything inside, and `rm -f` stops asking and ignores errors. `rm -rf` combines both. `rmdir` is the safe one: it only removes **empty** directories.</p>
+</Callout>
+
+<Callout title="cp -r and rm -r: directories need the recursive option">
+  <p>`cp backup backup2` refuses to copy a directory, and `rm backup` refuses to delete one. Both need `-r`. `mv` does not: it moves and renames directories as it is. `ls -R` (capital) is the recursive listing.</p>
+</Callout>
+
+<Callout title="mv is both move and rename">
+  <p>There is no `rename` command in this objective. `mv old new` renames, `mv file directory/` moves. And `mv` and `cp` overwrite an existing destination silently unless you give `-i`.</p>
+</Callout>
+
+<Callout title="mkdir needs -p for a chain">
+  <p>`mkdir a/b/c` fails if `a/b` doesn't exist. `mkdir -p a/b/c` creates every missing level and is not an error when they already exist. `touch` creates files only: an empty file, or an updated time if it exists.</p>
+</Callout>
+
+<Callout title="Names are case sensitive">
+  <p>`File.txt` and `file.txt` are two different files. A command with the wrong case reports "No such file or directory".</p>
+</Callout>
+
+<Callout title="The shell expands globs, not the command">
+  <p>`*` matches any number of characters (even none), `?` exactly one, `[abc]` one of the listed characters, `[!abc]` one that is not listed. With `boss?.png`, the file `boss10.png` does not match. Put a pattern in quotes and the shell leaves it alone.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal) and build a small workspace:
+
+1. Create a folder chain: `mkdir -p ~/practice/sprites/old`. Check it with `ls -R ~/practice`.
+2. Go in with `cd ~/practice` and make three files: `touch a1.txt a2.txt b1.txt`.
+3. Run `echo a*`, `echo ?1.txt` and `echo [ab]2.txt`. Which names does each pattern produce?
+4. Copy the `a` files into `sprites` with `cp a*.txt sprites`. Then rename `b1.txt` to `c1.txt` with `mv`.
+5. Try `rmdir sprites`. What does the error say? Then remove it with `rm -r sprites`, and clean up the rest.
+6. Run `touch Case.txt case.txt` and `ls`. How many files do you have?
+
+When you're ready, [practise this objective](/practice?objective=012.4). Next, learn how to archive and compress files in [lesson 013.1](/learn/013.1).

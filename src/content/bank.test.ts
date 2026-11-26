@@ -1,7 +1,7 @@
 // Integrity of the real question bank. Targets (PLAN.md §4) are tracked with
 // `npm run content:status`, not enforced here.
 import { describe, expect, it } from 'vitest'
-import { AREA_BY_ID, OBJECTIVE_BY_ID, TERM_BY_ID } from './blueprint'
+import { AREA_BY_ID, EXAM_IDS, OBJECTIVE_BY_ID, TERM_BY_ID, itemInExam } from './blueprint'
 import { ITEMS, QUESTION_FILES } from './bank'
 import { QUALITY_CHECKS } from './quality'
 import { itemFileSchema } from './schema'
@@ -21,6 +21,13 @@ describe('question bank', () => {
     for (const item of ITEMS) {
       for (const a of item.areas) expect(AREA_BY_ID.has(a), `${item.id}: ${a}`).toBe(true)
       for (const t of item.terms ?? []) expect(TERM_BY_ID.has(t), `${item.id}: ${t}`).toBe(true)
+    }
+  })
+
+  it('tags only its own objective, and puts every item on at least one exam', () => {
+    for (const item of ITEMS) {
+      for (const id of [...item.areas, ...(item.terms ?? [])]) expect(id.startsWith(`${item.objectiveId}.`), `${item.id}: ${id}`).toBe(true)
+      expect(EXAM_IDS.some((e) => itemInExam(item, e)), `${item.id}: its areas and terms are on different exams; tag a line of each`).toBe(true)
     }
   })
 

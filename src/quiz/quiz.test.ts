@@ -54,7 +54,7 @@ const perObjective = (items: Item[]) => {
 
 describe('mock exam', () => {
   it('has 40 questions in 60 minutes, one per weight point of each objective', () => {
-    const exam = buildMockExam(bank(10), false, new Set(), seededRng(1))
+    const exam = buildMockExam(bank(10), '010-200', false, new Set(), seededRng(1))
     expect(exam).toMatchObject({ minutes: 60, shortfall: 0, output: false })
     expect(exam.items).toHaveLength(40)
     expect(perObjective(exam.items)).toEqual(Object.fromEntries(OBJECTIVES.map((o) => [o.id, mockQuota(o.id)])))
@@ -62,13 +62,13 @@ describe('mock exam', () => {
   })
 
   it('includes output items only when asked', () => {
-    const kinds = new Set(Array.from({ length: 10 }, (_, s) => buildMockExam(bank(1), true, new Set(), seededRng(s))).flatMap((e) => e.items.map((i) => i.kind)))
+    const kinds = new Set(Array.from({ length: 10 }, (_, s) => buildMockExam(bank(1), '010-200', true, new Set(), seededRng(s))).flatMap((e) => e.items.map((i) => i.kind)))
     expect(kinds.has('output')).toBe(true)
   })
 
   it('fills a short objective from the rest of its topic', () => {
     const items = bank(10, false).filter((i) => !(i.objectiveId === '013.3' && Number(i.id.slice(-3)) >= 1))
-    const exam = buildMockExam(items, false, new Set(), seededRng(2))
+    const exam = buildMockExam(items, '010-200', false, new Set(), seededRng(2))
     expect(exam.items).toHaveLength(40)
     expect(perObjective(exam.items)['013.3']).toBe(1)
     expect(exam.items.filter((i) => i.objectiveId.startsWith('013.'))).toHaveLength(9)
@@ -77,12 +77,12 @@ describe('mock exam', () => {
   it('prefers unseen items', () => {
     const items = bank(10, false)
     const seen = new Set(items.filter((i) => Number(i.id.slice(-3)) < 5).map((i) => i.id))
-    const exam = buildMockExam(items, false, seen, seededRng(3))
+    const exam = buildMockExam(items, '010-200', false, seen, seededRng(3))
     expect(exam.items.some((i) => seen.has(i.id))).toBe(false)
   })
 
   it('scales the time to the real pace when the bank is short', () => {
-    const exam = buildMockExam(bank(1, false), false, new Set(), seededRng(4))
+    const exam = buildMockExam(bank(1, false), '010-200', false, new Set(), seededRng(4))
     expect(exam.items).toHaveLength(19)
     expect(exam.shortfall).toBe(21)
     expect(exam.minutes).toBe(Math.round((60 * 19) / 40))
@@ -91,8 +91,16 @@ describe('mock exam', () => {
 
 describe('practice sets', () => {
   it('leaves out output items when the learner turns them off', () => {
-    expect(practicePool(bank(2), false).some((i) => i.kind === 'output')).toBe(false)
-    expect(practicePool(bank(2), true).some((i) => i.kind === 'output')).toBe(true)
+    expect(practicePool(bank(2), '010-200', false).some((i) => i.kind === 'output')).toBe(false)
+    expect(practicePool(bank(2), '010-200', true).some((i) => i.kind === 'output')).toBe(true)
+  })
+
+  it('keeps each exam to its own items', () => {
+    // Fixtures: device files (014.2.2) are only on 010-200; archives (013.1.2) are on both.
+    const ids = (exam: '010-200' | '010-160') => practicePool([SINGLE, FILL], exam, true).map((i) => i.id)
+    expect(ids('010-200')).toEqual([SINGLE.id, FILL.id])
+    expect(ids('010-160')).toEqual([FILL.id])
+    expect(buildMockExam([SINGLE, FILL], '010-160', true, new Set(), seededRng(5)).items.map((i) => i.id)).toEqual([FILL.id])
   })
 
   it('weights objectives by the blueprint, 40 in all', () => {
@@ -116,7 +124,7 @@ describe('practice sets', () => {
 
 describe('mock score', () => {
   it('scores by topic and objective and estimates the scaled score', () => {
-    const score = scoreMock([SINGLE, MULTI, FILL], (item) => item.kind !== 'fill')
+    const score = scoreMock([SINGLE, MULTI, FILL], '010-200', (item) => item.kind !== 'fill')
     expect(score).toMatchObject({ correct: 2, total: 3, percent: 67, scaled: 500, passed: true })
     expect(score.topics.find((t) => t.id === '013')).toMatchObject({ correct: 0, total: 1 })
     expect(score.objectives.map((o) => o.id)).toEqual(['011.2', '013.1', '014.2'])

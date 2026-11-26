@@ -1,0 +1,311 @@
+export const meta = {
+  objectiveId: '014.4',
+  updated: '2026-11-26',
+  tldr: 'Computers on a network have IP addresses (IPv4 like `192.0.2.10`, IPv6 like `2001:db8::10`). A router connects networks, and a machine sends everything not local to its default gateway. Names become addresses through DNS (`/etc/hosts`, `/etc/resolv.conf`, `host`, `resolvectl`). Query with `ip addr show`, `ip route show`, `ip -6 route show`, `ss` and `ping`. DHCP, SLAAC and DHCPv6 configure a machine automatically.',
+  areasCovered: ['014.4.1', '014.4.2', '014.4.3', '014.4.4'],
+  termsCovered: ['014.4.t1', '014.4.t2', '014.4.t3', '014.4.t4', '014.4.t5', '014.4.t6', '014.4.t7', '014.4.t8', '014.4.vt1', '014.4.vt2', '014.4.vt3', '014.4.vt4'],
+  links: [
+    { title: 'ip(8) manual page (iproute2)', url: 'https://man7.org/linux/man-pages/man8/ip.8.html' },
+    { title: 'ip-route(8) manual page', url: 'https://man7.org/linux/man-pages/man8/ip-route.8.html' },
+    { title: 'ss(8) manual page', url: 'https://man7.org/linux/man-pages/man8/ss.8.html' },
+    { title: 'ping(8) manual page', url: 'https://man7.org/linux/man-pages/man8/ping.8.html' },
+    { title: 'host(1) manual page', url: 'https://man7.org/linux/man-pages/man1/host.1.html' },
+    { title: 'hosts(5) manual page (/etc/hosts)', url: 'https://man7.org/linux/man-pages/man5/hosts.5.html' },
+    { title: 'resolv.conf(5) manual page', url: 'https://man7.org/linux/man-pages/man5/resolv.conf.5.html' },
+    { title: 'resolvectl(1) manual page (freedesktop.org)', url: 'https://www.freedesktop.org/software/systemd/man/latest/resolvectl.html' },
+    { title: 'RFC 1918: private IPv4 address ranges', url: 'https://www.rfc-editor.org/rfc/rfc1918' },
+    { title: 'RFC 4862: IPv6 stateless address autoconfiguration (SLAAC)', url: 'https://www.rfc-editor.org/rfc/rfc4862' },
+    { title: 'RFC 2131: DHCP', url: 'https://www.rfc-editor.org/rfc/rfc2131' },
+    { title: 'RFC 8415: DHCPv6', url: 'https://www.rfc-editor.org/rfc/rfc8415' },
+    { title: 'RFC 5737: IPv4 addresses reserved for documentation', url: 'https://www.rfc-editor.org/rfc/rfc5737' },
+  ],
+}
+
+## Big idea
+
+A **network** is a set of computers that can send data to each other. The **Internet** is the huge network made of many smaller ones joined together. Three ideas explain most of it:
+
+1. **Every machine has an address.** On an IP network each network interface has an **IP address**, so data knows where to go.
+2. **Routers join networks.** Machines that share a network (a **LAN**, local area network, like the TuxPixel office) talk directly. For anything else, they hand the data to a **router**, which passes it on towards its destination. The router a machine uses for "everything else" is its **default gateway**.
+3. **Names are for people.** You type `tuxpixel.example`, and **DNS** (the Domain Name System) turns it into an address.
+
+### IPv4 and IPv6
+
+**IPv4** addresses have 32 bits, written as four numbers from 0 to 255 separated by dots: `192.0.2.10`. There are only about 4 billion of them, which isn't enough, so networks use **private** ranges inside the LAN (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) that are never used on the Internet, and the router translates between inside and outside.
+
+**IPv6** has 128 bits, written as eight groups of hexadecimal digits separated by colons: `2001:db8:0:0:0:0:0:10`. Leading zeros may be dropped, and one run of zero groups may be replaced by `::`, so this is `2001:db8::10`. IPv6 has enough addresses that every device can have a public one. Special ones: `::1` is the machine itself (loopback) and addresses starting `fe80:` are **link-local**, valid only on the local link.
+
+The `/24` or `/64` after an address, as in `192.0.2.10/24`, is the **prefix length**: how many of the leading bits name the network. The rest names the machine within it. `/24` means that `192.0.2.1` to `192.0.2.254` are neighbours.
+
+This course's examples use addresses reserved for documentation: `192.0.2.0/24` and `198.51.100.0/24` for IPv4 and `2001:db8::/32` for IPv6.
+
+A **port** is a number (0 to 65535) that tells the machine which program should get the data. SSH uses port 22, HTTP 80 and HTTPS 443. An address and a port together name one connection end.
+
+Ask the guest for its own addresses on the loopback interface (`lo`), the one a machine uses to talk to itself:
+
+```bash
+ip -4 addr show lo | grep inet | awk '{print $2}'
+```
+
+```output
+127.0.0.1/8
+```
+
+## Walkthrough
+
+### Querying addresses with ip addr show
+
+`ip` is the modern tool to look at and configure networking. `ip addr show` (short: `ip a`) lists every interface with its addresses. On a real machine you would see the loopback `lo`, an Ethernet interface such as `enp3s0` and perhaps WiFi `wlp2s0`. For each: its **state** (`UP`), the hardware (**MAC**) address on a `link/ether` line, an `inet` line for each IPv4 address with its prefix length and an `inet6` line for each IPv6 address. Add an interface name to see one: `ip addr show enp3s0`. In the practice VM, which has no network card, there is only `lo`:
+
+```bash
+ip addr show lo | grep inet | awk '{print $1, $2}'
+```
+
+```output
+inet 127.0.0.1/8
+inet6 ::1/128
+```
+
+`ip -br addr` prints one line per interface (**b**rief), and `ip -6 addr` shows IPv6 only.
+
+### Routes: ip route show and ip -6 route show
+
+The **routing table** tells the kernel where to send data for each destination. `ip route show` prints the IPv4 table and `ip -6 route show` the IPv6 one. Each line is a destination and how to reach it. The ones to recognise:
+
+- A line starting with **`default via`**, followed by an address: the **default gateway**. Anything that matches no other line goes there. If there is no such line, the machine can't reach the Internet.
+- A line that names a network such as `192.0.2.0/24` with `dev` and an interface: a **directly connected** network. These machines are reached directly, with no router.
+
+The practice VM has no network, so its tables are empty, and the commands print nothing, but they succeed:
+
+```bash
+ip route show
+ip -6 route show
+echo $?
+```
+
+```output
+0
+```
+
+### DNS client configuration
+
+A computer (the DNS **client**) asks a **DNS server** for the address behind a name. Where does it look? Three places matter.
+
+**`/etc/hosts`** is a plain text list of fixed name-to-address pairs, checked first. Each line is an address followed by one or more names:
+
+```bash
+cat /etc/hosts
+```
+
+```output
+127.0.0.1	localhost
+127.0.1.1	tuxpixel
+::1	localhost ip6-localhost ip6-loopback
+```
+
+The first two columns of the middle line say that the name `tuxpixel` is this machine. TuxPixel's studio laptops also list the file server there, a quick way to give a name to a machine without a DNS entry.
+
+**`/etc/resolv.conf`** tells the system which DNS servers to ask. Each `nameserver` line holds one server's address (in order, at most three are used). A `search` line lists domains to append to short names, so `fileserver` may become `fileserver.tuxpixel.example`. On a machine using DHCP the file is written automatically, so don't edit it by hand. In the practice VM it is empty:
+
+```bash
+wc -c < /etc/resolv.conf
+```
+
+```output
+0
+```
+
+**`/etc/nsswitch.conf`** has a `hosts:` line that sets the order of the lookup sources, usually `files` (`/etc/hosts`) before `dns`:
+
+```bash
+grep ^hosts: /etc/nsswitch.conf
+```
+
+```output
+hosts:          files dns
+```
+
+**`host`** asks DNS for a name and prints the addresses it found (shown, not run: the practice VM has no DNS server):
+
+```bash static
+host tuxpixel.example
+host 192.0.2.10
+```
+
+For a name, `host` prints lines saying `has address` (IPv4) and `has IPv6 address`. For an address, it prints the name `domain name pointer`. `dig` and `nslookup` do the same with more detail.
+
+**`resolvectl`** is the front end of `systemd-resolved`, the DNS resolver service on many systemd distributions. On such a system `/etc/resolv.conf` may just point to a local stub resolver (`127.0.0.53`), so the real servers are not in that file. `resolvectl status` shows them, per interface, and `resolvectl query NAME` looks up a name through the resolver (both shown, not run):
+
+```bash static
+resolvectl status
+resolvectl query tuxpixel.example
+```
+
+### Open ports and connections with ss
+
+`ss` (socket statistics) shows network connections and the ports programs are listening on. Without options it lists established connections. The common options:
+
+| Option | Meaning |
+|---|---|
+| `-t` | TCP sockets |
+| `-u` | UDP sockets |
+| `-l` | only **listening** sockets (waiting for connections) |
+| `-n` | numbers: don't turn ports and addresses into names |
+| `-p` | show the **process** that owns each socket (needs root to see other users') |
+| `-a` | all, listening or not |
+
+A common check, "which services are listening for TCP connections", is `ss -tln`; with `-p` and sudo you also see who. Look at the `Local Address:Port` column to see the port (a listener on `0.0.0.0:22` or `[::]:22` is SSH open to everybody; one on `127.0.0.1` is only reachable from the machine itself). The VM has no listening TCP sockets, so only the header line is printed:
+
+```bash
+ss -tln | wc -l
+```
+
+```output
+1
+```
+
+### Testing with ping
+
+`ping` sends a small message (an ICMP echo request) to a machine, and waits for an answer, to check that it is reachable and how long the round trip takes. On Linux it runs until you press Ctrl+C unless you limit the count with `-c`:
+
+```bash static
+ping -c 3 198.51.100.7
+ping -c 3 tuxpixel.example
+ping -6 -c 3 2001:db8::7
+```
+
+Each answer line shows the time in ms, and the summary lists packets sent, received and the percentage lost. Ping by number first, then by name: if the number works and the name doesn't, the network is fine and **DNS is the problem**. A machine may also be up but filter ping, so a failure isn't proof. The practice VM has no network, so you can't try ping here: it is shown, not run.
+
+### Automatic network configuration
+
+Typing addresses on every laptop would be slow and error-prone, so networks configure machines automatically. A machine that joins asks for its settings.
+
+<ExamOnly exam="010-200">
+
+**DHCP** (Dynamic Host Configuration Protocol) is how IPv4 machines get settings. A DHCP server, often built into the router, answers with an address on **lease** (valid for some hours, then renewed), the prefix length (subnet mask), the default gateway and the DNS servers. The machine then writes those into its address, routing table and `/etc/resolv.conf`. You rarely set up an address by hand, apart from servers that need a fixed one.
+
+**SLAAC** (Stateless Address Autoconfiguration) is the IPv6 way. A router regularly announces the network's prefix (a **router advertisement**), and each machine builds its own address from that prefix plus an identifier of its own, checking that no one else already uses it. No server keeps a list of who has which address, hence "stateless".
+
+**DHCPv6** is the IPv6 version of DHCP. It is **stateful**: a server hands out addresses and keeps track. It is also used alongside SLAAC just to deliver extra settings such as DNS servers. So a network can use SLAAC alone, DHCPv6 alone, or both.
+
+| | Protocol | Who answers | Needs a server that remembers addresses |
+|---|---|---|---|
+| IPv4 | DHCP | DHCP server | yes |
+| IPv6 | SLAAC | the router, by advertisement | no |
+| IPv6 | DHCPv6 | DHCPv6 server | yes |
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+On exam 010-160 you need to know the **older network tools** besides `ip`. They come from the `net-tools` package, which is no longer installed by default on many distributions, but you'll still see them in guides and scripts:
+
+| Old tool | Does | New equivalent |
+|---|---|---|
+| `ifconfig` | shows (and sets) interface addresses | `ip addr show` |
+| `route` or `route -n` | shows the routing table (`-n`: numbers, no names) | `ip route show` |
+| `netstat` | shows connections and listening ports | `ss` |
+
+`netstat -tulpn` is a classic: TCP and UDP, **l**istening, with **p**rocess and **n**umbers, like `ss -tulpn`. In a `route` listing, the default gateway is the line whose destination is `0.0.0.0` (flag `UG`, "up, gateway"). `ifconfig` shows the addresses and `RX`/`TX` packet counts for each interface.
+
+In this exam you also need the basic requirements for a LAN: a machine needs an **IP address**, a **netmask**, a **default gateway** to leave the network and a **DNS server** to resolve names. With **DHCP** these come automatically. In these tools' output, an interface called `eth0` carries the addresses, `lo` is loopback.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **Can't reach the build server.** Mira runs `ping -c 3 198.51.100.7` first (works), then `ping -c 3 build01.tuxpixel.example` (fails), so she knows it is DNS. A look at `/etc/resolv.conf` shows the DNS server's address has a typo.
+- **Which address am I?** Jonas needs his laptop's address for the printer setup. `ip addr show` shows an `inet 192.168.…` line on his WiFi interface.
+- **No Internet on the Pi.** The office Raspberry Pi has an address but no `default via` line in `ip route show`, so it can't leave the LAN. The DHCP lease didn't include a gateway.
+- **Who listens on 8080?** Ada runs `sudo ss -tlnp` and finds out that her test web server is still running on port 8080.
+- **A fixed name for the file server.** Until DNS has an entry, `/etc/hosts` maps `fileserver` to `192.0.2.20`.
+- **IPv6.** The cloud instances have addresses in `2001:db8::/32`-style ranges, shown in `ip -6 addr` and `ip -6 route show`.
+
+## Predict the output
+
+<Predict>
+
+```bash
+ip -6 addr show lo | grep inet6 | awk '{print $2}'
+```
+
+```output
+::1/128
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+awk '/tuxpixel/ {print $1}' /etc/hosts
+```
+
+```output
+127.0.1.1
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+ip route show | wc -l
+```
+
+```output
+0
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Default gateway">
+  <p>The default gateway is the router for everything that isn't on the local network. In `ip route show` it's the line that begins `default via`. If it's missing, the machine can reach its own LAN only.</p>
+</Callout>
+
+<Callout title="Which file holds what">
+  <p>`/etc/hosts`: fixed name-to-address pairs, checked first. `/etc/resolv.conf`: the DNS servers (`nameserver`) to ask. On systemd-resolved systems the real servers show in `resolvectl status`. Don't mix them up.</p>
+</Callout>
+
+<Callout title="Names work, numbers don't, or the other way round">
+  <p>If `ping 198.51.100.7` works but `ping tuxpixel.example` doesn't, the network is fine and DNS is broken. If neither works, look at the address, the route and the gateway.</p>
+</Callout>
+
+<Callout title="ss options">
+  <p>`ss -tln` is "TCP, listening, numbers". `-u` is UDP and `-p` adds the process. `ss` replaces `netstat`, and `ip addr` replaces `ifconfig`.</p>
+</Callout>
+
+<Callout title="IPv6 notation">
+  <p>An IPv6 address has 128 bits, in hexadecimal groups with colons, and `::` replaces one run of zeros (once only). `::1` is loopback and `fe80::` addresses are link-local. IPv4 is 32 bits, four numbers up to 255.</p>
+</Callout>
+
+<ExamOnly exam="010-200">
+
+<Callout title="DHCP, SLAAC, DHCPv6">
+  <p>DHCP gives IPv4 settings and is stateful. SLAAC lets IPv6 machines build their own address from a router's advertisement and is stateless. DHCPv6 is the stateful IPv6 version and may also just hand out DNS servers.</p>
+</Callout>
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+<Callout title="Old tools, new tools">
+  <p>`ifconfig` is `ip addr show`, `route` is `ip route show`, `netstat` is `ss`. The old ones are from the `net-tools` package and may not be installed.</p>
+</Callout>
+
+</ExamOnly>
+
+## Try it
+
+Open the [terminal](/terminal). It has no network, so you can only look at the loopback, but you can read all the files:
+
+1. Run `ip addr show`. Which interfaces exist? Which `inet` and `inet6` addresses does `lo` have?
+2. Run `ip route show` and `ip -6 route show`. Why are they empty?
+3. Run `cat /etc/hosts` and find the line with the name of this machine.
+4. Run `cat /etc/resolv.conf`. Is anything in it?
+5. Run `ss -tln`, then `ss -s` for a summary.
+6. Try `ping -c 1 127.0.0.1` and read the error. Why can't you ping here, even the machine itself?
+
+When you're ready, [practise this objective](/practice?objective=014.4). Next, learn about users and security in [lesson 015.1](/learn/015.1).

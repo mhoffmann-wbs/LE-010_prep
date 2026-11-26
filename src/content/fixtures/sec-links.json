@@ -1,0 +1,9 @@
+{
+  "description": "Mira's builds folder with two build archives and a note, plus a file of Jonas's in the shared /tmp, for symbolic links and the sticky bit (015.4).",
+  "entries": [
+    { "path": "/home/mira/builds/pixel-raiders-1.0.tar", "content": "build 1.0\n" },
+    { "path": "/home/mira/builds/pixel-raiders-1.1.tar", "content": "build 1.1\n" },
+    { "path": "/home/mira/notes.txt", "content": "Remember: tag the release.\n" },
+    { "path": "/tmp/jonas-sketch.txt", "content": "Sketch: lava cave boss.\n", "owner": "jonas", "group": "jonas", "mode": "666" }
+  ]
+}

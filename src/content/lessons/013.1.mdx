@@ -1,0 +1,344 @@
+export const meta = {
+  objectiveId: '013.1',
+  updated: '2026-11-26',
+  tldr: 'An archive bundles many files into one file; compression makes a file smaller. `tar` makes archives: `tar -cf` creates, `tar -tf` lists, `tar -xf` extracts, and `-z`, `-j`, `-J` add gzip, bzip2 or xz compression (`.tar.gz`, `.tar.bz2`, `.tar.xz`). `gzip`, `bzip2` and `xz` compress one file each; `zip -r` and `unzip` do both jobs at once.',
+  areasCovered: ['013.1.1', '013.1.2'],
+  termsCovered: ['013.1.t1', '013.1.t2', '013.1.t3', '013.1.t4'],
+  links: [
+    { title: 'tar(1) manual page', url: 'https://man7.org/linux/man-pages/man1/tar.1.html' },
+    { title: 'GNU tar manual', url: 'https://www.gnu.org/software/tar/manual/tar.html' },
+    { title: 'gzip(1) manual page', url: 'https://man7.org/linux/man-pages/man1/gzip.1.html' },
+    { title: 'bzip2(1) manual page', url: 'https://man7.org/linux/man-pages/man1/bzip2.1.html' },
+    { title: 'xz(1) manual page', url: 'https://man7.org/linux/man-pages/man1/xz.1.html' },
+    { title: 'zip(1) manual page (Info-ZIP)', url: 'https://manpages.debian.org/bookworm/zip/zip.1.en.html' },
+    { title: 'unzip(1) manual page (Info-ZIP)', url: 'https://manpages.debian.org/bookworm/unzip/unzip.1.en.html' },
+  ],
+}
+
+## Big idea
+
+Two different jobs often get mixed up, so keep them apart from the start:
+
+- **Archiving** puts many files and directories into **one** file, so you can move, send or back them up as a single thing. An archive remembers the names, the directory layout and the permissions. It does **not** have to make anything smaller.
+- **Compression** makes **one** file smaller by storing its data in a cleverer way. The file must be decompressed before you can use it.
+
+Linux keeps the two jobs in two kinds of tools, and you combine them. First `tar` (short for *tape archive*, a name from the days of backup tapes) bundles the files. Then a compressor such as `gzip` shrinks the bundle. That is why you see names like `assets-0.9.tar.gz`: a **tar** archive, then compressed with **gzip**. The ZIP format, which many people know from Windows, does both jobs in one tool.
+
+A **file archive** that you created yourself is just a normal file in your home directory, so everything from [lesson 012.4](/learn/012.4) works on it too.
+
+## Walkthrough
+
+### Creating, listing and extracting with tar
+
+`tar` works in one **mode** at a time. You pick the mode with one option, and `-f` always names the archive file:
+
+| Option | Meaning |
+|---|---|
+| `-c` | **c**reate a new archive |
+| `-t` | **t**able of contents: list what is inside |
+| `-x` | e**x**tract: unpack the archive |
+| `-f FILE` | the archive **f**ile to work on (the next word is its name) |
+| `-v` | **v**erbose: print each file name while working |
+| `-z` | filter through **gzip** |
+| `-j` | filter through **bzip2** |
+| `-J` | filter through **xz** (capital J) |
+| `-C DIR` | **C**hange into `DIR` first: extract (or read) there |
+
+Mira has a folder of game assets. To create an archive, give `-c`, `-f`, the new archive's name, and then the files or directories to put in. Add `-v` to watch what goes in:
+
+```bash fixture=assets
+tar -cvf sprites.tar assets/sprites
+```
+
+```output
+assets/sprites/
+assets/sprites/hero.png
+assets/sprites/slime.png
+```
+
+`sprites.tar` now exists next to `assets`; the original files are untouched. Look inside without unpacking, with `-t`:
+
+```bash fixture=assets
+tar -cf sprites.tar assets/sprites
+tar -tf sprites.tar
+```
+
+```output
+assets/sprites/
+assets/sprites/hero.png
+assets/sprites/slime.png
+```
+
+Extracting uses `-x`. The files come out in the **current directory**, with the paths stored in the archive, so `assets/sprites/hero.png` is recreated below where you are. This archive was made earlier by the studio's build script, `assets-0.9.tar.gz`. Unpack it with `-x` and `-C`, which makes `tar` put the files into another directory (it must already exist):
+
+```bash fixture=assets
+mkdir out
+tar -xvf assets-0.9.tar.gz -C out
+```
+
+```output
+assets/
+assets/sprites/
+assets/sprites/hero.png
+assets/sprites/slime.png
+assets/sounds/
+assets/sounds/jump.ogg
+assets/levels/
+assets/levels/level1.txt
+assets/README.md
+```
+
+You can also pull out a single member by naming it after the archive:
+
+```bash fixture=assets
+tar -xf assets-0.9.tar.gz assets/README.md
+cat assets/README.md
+```
+
+```output
+# Pixel Raiders assets
+
+Release 0.9. Sprites are 32x32.
+```
+
+(The fixture already has `assets/README.md`, so `tar` simply writes the same file again.) A habit worth building: **list first with `-t`**, then extract. You then know where the files will land and whether the archive holds one tidy folder or a hundred loose files.
+
+The leading dash is optional for the first option group of `tar`, so `tar cf a.tar dir`, `tar -cf a.tar dir` and `tar -c -f a.tar dir` all mean the same. Use the dash form, as in this course; the exam may show either.
+
+### Compressing a tar archive
+
+Add one more letter to compress the archive while it's written. The letter tells `tar` which compressor to use:
+
+| Option | Compressor | Usual file name |
+|---|---|---|
+| `-z` | gzip | `.tar.gz` (or `.tgz`) |
+| `-j` | bzip2 | `.tar.bz2` |
+| `-J` | xz | `.tar.xz` |
+
+```bash fixture=assets
+tar -czvf backup.tar.gz assets
+```
+
+```output
+assets/
+assets/sprites/
+assets/sprites/hero.png
+assets/sprites/slime.png
+assets/sounds/
+assets/sounds/jump.ogg
+assets/levels/
+assets/levels/level1.txt
+assets/README.md
+```
+
+`tar` does **not** add the `.gz` for you. The file is named whatever you type after `-f`. The ending is only a hint for people, but follow the convention, because it tells the next person how to unpack the file. The command `file` looks at the real content and tells the truth, whatever the name says:
+
+```bash fixture=assets
+tar -cjf a.tar.bz2 assets
+tar -cJf a.tar.xz assets
+file a.tar.bz2 a.tar.xz
+```
+
+```output
+a.tar.bz2: bzip2 compressed data, block size = 900k
+a.tar.xz:  XZ compressed data, checksum CRC64
+```
+
+When you **list or extract**, the same letter is used as when you created: `-tzf` and `-xzf` for gzip, `-xjf` for bzip2, `-xJf` for xz. (Modern GNU `tar` can often work out the compression by itself when reading, so plain `-xf` works too. For the exam, remember the letters.)
+
+```bash fixture=assets
+tar -czf backup.tar.gz assets
+tar -tzf backup.tar.gz | wc -l
+```
+
+```output
+9
+```
+
+`wc -l` counts lines: nine members were in the archive. You'll meet it in [lesson 013.2](/learn/013.2).
+
+### Compressing single files: gzip, bzip2 and xz
+
+The three compressors are separate programs with the same habits. Each one takes a **file**, writes a smaller file with an extra ending, and (by default) **deletes the original**:
+
+| Compress | Ending added | Decompress with |
+|---|---|---|
+| `gzip FILE` | `.gz` | `gunzip FILE.gz` (or `gzip -d`) |
+| `bzip2 FILE` | `.bz2` | `bunzip2 FILE.bz2` (or `bzip2 -d`) |
+| `xz FILE` | `.xz` | `unxz FILE.xz` (or `xz -d`) |
+
+The three trade speed against size. As a rule of thumb: `gzip` is the fastest, `bzip2` squeezes harder but is slower, and `xz` usually squeezes hardest and is the slowest to compress. A line repeated 500 times is easy to squeeze. `-k` (keep) stops the compressor from deleting the original, and `wc -c` counts bytes:
+
+```bash
+yes "slime hits hero for 3 damage" | head -n 500 > fight.log
+wc -c < fight.log
+gzip -k fight.log
+wc -c < fight.log.gz
+ls -1
+```
+
+```output
+14500
+111
+fight.log
+fight.log.gz
+```
+
+From 14,500 bytes down to 111. Without `-k`, the original would be gone:
+
+```bash
+cp /etc/hostname name.txt
+gzip name.txt
+ls -1
+gunzip name.txt.gz
+ls -1
+```
+
+```output
+name.txt.gz
+name.txt
+```
+
+Each compressor handles **one file at a time**. Give `gzip` a directory and it refuses:
+
+```bash fixture=assets
+gzip assets
+echo "exit status: $?"
+```
+
+```output
+gzip: assets is a directory -- ignored
+exit status: 2
+```
+
+That is the reason `tar` exists. To compress a whole directory you first bundle it (`tar`), then compress the one bundle; `tar -czf` does both steps for you. The result `backup.tar.gz` is the same as running `tar -cf backup.tar assets` and then `gzip backup.tar`.
+
+### ZIP: archive and compression in one tool
+
+The ZIP format is what Windows and macOS use for "compressed folders", so it is the best choice when you send files to someone who doesn't use Linux. `zip` creates an archive and compresses each file inside it. Give it the archive name, then the files. A directory needs `-r` (**r**ecursive), which means "go inside and take everything below too":
+
+```bash fixture=assets
+zip -rq assets.zip assets
+unzip -l assets.zip
+```
+
+```output
+Archive:  assets.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  2026-11-02 09:30   assets/
+        0  2026-11-02 09:30   assets/sprites/
+       25  2026-11-02 09:30   assets/sprites/hero.png
+       26  2026-11-02 09:30   assets/sprites/slime.png
+        0  2026-11-02 09:30   assets/sounds/
+       24  2026-11-02 09:30   assets/sounds/jump.ogg
+        0  2026-11-02 09:30   assets/levels/
+       33  2026-11-02 09:30   assets/levels/level1.txt
+       56  2026-11-02 09:30   assets/README.md
+---------                     -------
+      164                     9 files
+```
+
+(`-q` is "quiet": without it `zip` prints a line for each file it adds.) `unzip -l` **l**ists the contents without extracting, like `tar -t`. Plain `unzip` extracts, and `-d DIR` chooses the directory, like `tar -C`:
+
+```bash fixture=assets
+zip -rq a.zip assets
+mkdir out
+unzip -q a.zip -d out
+ls -1 out/assets
+```
+
+```output
+levels
+README.md
+sounds
+sprites
+```
+
+Three differences from `tar` are worth knowing. The `zip` tool **keeps** your originals. It needs `-r` for directories, and `tar` does not. And `zip` keeps the `.zip` ending for you (if you type `zip backup assets`, you get `backup.zip`).
+
+## At TuxPixel
+
+- **Release day.** Ada's build script ends with `tar -czf pixel-raiders-0.9.tar.gz pixel-raiders/`. One file goes to the download server, and the ending `.tar.gz` tells everyone how to open it.
+- **Look before you unpack.** Mira gets a `.tar.gz` from a contractor. She runs `tar -tzf` first and sees every file starts with `levels-pack/`, so she knows it unpacks into a folder of its own and won't scatter files across her home directory.
+- **Sending to a publisher.** The publisher's team uses Windows. Jonas sends the press images with `zip -r screenshots.zip screenshots/`, which they can open without extra software.
+- **Old logs.** The logs of last month are 50 MB of repeating text. Ada runs `xz` on each one: slow, but the files shrink to a tiny fraction and live on cheap storage.
+
+## Predict the output
+
+<Predict>
+
+```bash fixture=assets
+tar -cf sprites.tar assets/sprites
+tar -tf sprites.tar | wc -l
+```
+
+```output
+3
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+cp /etc/hostname server.txt
+gzip -k server.txt
+ls -1
+```
+
+```output
+server.txt
+server.txt.gz
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=assets
+mkdir unpacked
+tar -xzf assets-0.9.tar.gz -C unpacked
+ls -1 unpacked
+```
+
+```output
+assets
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Archive is not compression">
+  <p>`tar` alone only bundles files; the `.tar` file is not smaller. `gzip`, `bzip2` and `xz` compress but cannot bundle several files. `.tar.gz` is both: bundled first, then compressed. `zip` does both jobs in one tool.</p>
+</Callout>
+
+<Callout title="c, t, x: create, table of contents, extract">
+  <p>`-c` creates, `-t` lists, `-x` extracts. `-f` must come right before the archive's name, so `tar -cfz a.tar.gz dir` is wrong: `tar` takes `z` as the file name. Write `-czf`. `-v` is only "verbose" and never changes the result.</p>
+</Callout>
+
+<Callout title="z, j, J pick the compressor">
+  <p>`-z` is gzip (`.gz`), `-j` is bzip2 (`.bz2`), `-J` is xz (`.xz`). Mind the capital J. `-C` is not a compression option: it changes the directory.</p>
+</Callout>
+
+<Callout title="Compressors replace the original and take single files">
+  <p>`gzip file` leaves only `file.gz` unless you add `-k`. To undo it, use `gunzip file.gz` or `gzip -d file.gz`. `bzip2` and `xz` work the same way (`bunzip2`, `unxz`, or `-d`). None of them takes a directory: use `tar` for that.</p>
+</Callout>
+
+<Callout title="zip needs -r for a directory">
+  <p>`zip archive.zip dir` stores only the empty directory entry. `zip -r archive.zip dir` stores everything below it. To list a ZIP without extracting, use `unzip -l`. To extract, use `unzip`, not `tar`.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal) and try the whole round trip:
+
+1. Make a folder with some files: `mkdir -p ~/demo && cd ~/demo`, then `cp /etc/hostname /etc/hosts .`.
+2. Go up with `cd ..`, then create an archive: `tar -cvf demo.tar demo`. Is it bigger or smaller than the files? Check with `ls -l`.
+3. Compress it with `gzip demo.tar`. What happened to `demo.tar`? Then reverse it with `gunzip demo.tar.gz`.
+4. Create `demo.tar.gz` in one step with `tar -czf demo.tar.gz demo`, and list it with `tar -tzf demo.tar.gz`.
+5. Extract it somewhere else: `mkdir elsewhere`, then `tar -xzf demo.tar.gz -C elsewhere`.
+6. Make `demo.zip` with `zip -r demo.zip demo` and list it with `unzip -l demo.zip`.
+
+When you're ready, [practise this objective](/practice?objective=013.1). Next, learn to pass data between commands and to search text in [lesson 013.2](/learn/013.2).

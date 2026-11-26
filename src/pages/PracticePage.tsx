@@ -1,7 +1,7 @@
 import { type ReactNode, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { OutputItemsToggle } from '../components/OutputItemsToggle'
-import { MOCK, OBJECTIVES, OBJECTIVE_BY_ID, TOPICS, TOPIC_BY_ID, objectivesOf } from '../content/blueprint'
+import { MOCK, OBJECTIVES, TOPICS, objectiveName, objectivesOf, topicName } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
 import type { Item } from '../content/schema'
 import { weakAreaItems } from '../progress/readiness'
@@ -37,7 +37,7 @@ export default function PracticePage() {
   // Progress is read once per selection (sessions keep their first order), so
   // answering during a session doesn't reshuffle it.
   const progress = getProgress()
-  const pool = practicePool(ITEMS, progress.outputInPractice)
+  const pool = practicePool(ITEMS, progress.track, progress.outputInPractice)
   const weights = objectiveWeights()
   const streakOf = (id: string) => progress.items[id]?.streak ?? 0
   const suffix = focus ? ': least mastered' : ''
@@ -56,9 +56,7 @@ export default function PracticePage() {
   if (!objectiveId && !topicId) return <PracticePicker />
 
   const items = pool.filter((i) => (objectiveId ? i.objectiveId === objectiveId : i.objectiveId.startsWith(`${topicId}.`)))
-  const label = objectiveId
-    ? `${objectiveId} ${OBJECTIVE_BY_ID.get(objectiveId)?.title ?? ''}`
-    : `Topic ${topicId}: ${TOPIC_BY_ID.get(topicId!)?.title ?? ''}`
+  const label = objectiveId ? objectiveName(objectiveId, progress.track) : topicName(topicId!, progress.track)
   // Keying on the selection resets the session when the learner picks something else.
   return (
     <PracticeSession
@@ -72,7 +70,8 @@ export default function PracticePage() {
 
 function PracticePicker() {
   const progress = useProgress()
-  const pool = practicePool(ITEMS, progress.outputInPractice)
+  const { track } = progress
+  const pool = practicePool(ITEMS, progress.track, progress.outputInPractice)
   const [focus, setFocus] = useState(false)
   const count = (prefix: string) => pool.filter((i) => `${i.objectiveId}.`.startsWith(`${prefix}.`)).length
   return (
@@ -120,14 +119,14 @@ function PracticePicker() {
         <section key={t.id} className="rounded-lg border border-slate-200 bg-white p-4">
           <h2 className="font-semibold">
             <PracticeLink to={withMode(`?topic=${t.id}`, focus)} count={count(t.id)}>
-              Topic {t.id}: {t.title}
+              {topicName(t.id, track)}
             </PracticeLink>
           </h2>
           <ul className="mt-2 grid gap-1 sm:grid-cols-2">
             {objectivesOf(t.id).map((o) => (
               <li key={o.id} className="text-sm">
                 <PracticeLink to={withMode(`?objective=${o.id}`, focus)} count={count(o.id)}>
-                  {o.id} {o.title}
+                  {objectiveName(o.id, track)}
                 </PracticeLink>
               </li>
             ))}
@@ -193,7 +192,7 @@ function PracticeSession({ items: initial, label, onAgain }: { items: Item[]; la
     const objectiveIds = [...new Set(answered.map((i) => i.objectiveId))].sort()
     const rows = objectiveIds.map((id) => {
       const xs = answered.filter((i) => i.objectiveId === id)
-      return { id, label: OBJECTIVE_BY_ID.get(id)!.title, correct: xs.filter((i) => grade(i, answers[i.id]!)).length, total: xs.length }
+      return { id, label: objectiveName(id, getProgress().track), correct: xs.filter((i) => grade(i, answers[i.id]!)).length, total: xs.length }
     })
     return (
       <div className="space-y-4">

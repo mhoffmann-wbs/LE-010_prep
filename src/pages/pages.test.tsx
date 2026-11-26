@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { routes } from '../app/routes'
-import { getProgress, resetProgress } from '../progress/store'
+import { getProgress, resetProgress, setTrack } from '../progress/store'
 
 /** Renders the real routes at `path` and waits for the lazy page's heading. */
 async function renderAt(path: string) {
@@ -27,6 +27,36 @@ describe('pages', () => {
     expect(screen.getByText(/40 questions in 60 minutes/)).toBeInTheDocument()
     expect(screen.getAllByText(/^Topic 01\d:/)).toHaveLength(5)
     expect(screen.getByText(/Not affiliated with or endorsed by the Linux Professional Institute/)).toBeInTheDocument()
+  })
+
+  it('switches the whole app to exam 010-160 from the home page', async () => {
+    await renderAt('/')
+    await userEvent.click(screen.getByRole('radio', { name: /Linux Essentials 010-160/ }))
+    expect(getProgress().track).toBe('010-160')
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Linux Essentials (010-160)')
+    expect(screen.getByText('Topic 2: Finding Your Way on a Linux System')).toBeInTheDocument()
+  })
+
+  it('lists the lessons by topic', async () => {
+    expect(await renderAt('/learn')).toHaveTextContent('Learn')
+    expect(screen.getByRole('link', { name: '012.3 Files, Directories and Paths' })).toBeInTheDocument()
+  })
+
+  it('renders a lesson with runnable cells, and opens only the blocks on the learner’s exam', async () => {
+    expect(await renderAt('/learn/012.3')).toHaveTextContent('012.3 Files, Directories and Paths')
+    expect(await screen.findByText('Big idea')).toBeInTheDocument()
+    expect(screen.getAllByRole('button', { name: /Run/ }).length).toBeGreaterThan(0)
+    const findBlock = () => screen.getAllByText('Only on exam 010-200 (objectives v2.0)')[0]!.closest('details')!
+    expect(findBlock()).toHaveAttribute('open')
+    expect(screen.getByText('On exam 010-160: 2.3 Using Directories and Listing Files.')).toBeInTheDocument()
+  })
+
+  it('collapses 010-200-only lesson blocks on the 010-160 track', async () => {
+    setTrack('010-160')
+    expect(await renderAt('/learn/012.3')).toHaveTextContent('2.3 Using Directories and Listing Files')
+    const block = (await screen.findAllByText('Only on exam 010-200 (objectives v2.0)'))[0]!.closest('details')!
+    expect(block).not.toHaveAttribute('open')
+    expect(screen.getByText('Only on exam 010-200')).toBeInTheDocument()
   })
 
   it('shows a not-found page for unknown paths', async () => {

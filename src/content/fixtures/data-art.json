@@ -1,0 +1,10 @@
+{
+  "description": "Jonas's art folder: three PNG sprites, a sound and a notes file, for shell-script lessons.",
+  "entries": [
+    { "path": "/home/mira/art/hero.png", "content": "placeholder sprite: hero\n" },
+    { "path": "/home/mira/art/slime.png", "content": "placeholder sprite: slime\n" },
+    { "path": "/home/mira/art/bat.png", "content": "placeholder sprite: bat\n" },
+    { "path": "/home/mira/art/boom.ogg", "content": "placeholder sound: boom\n" },
+    { "path": "/home/mira/art/notes.txt", "content": "Sprites are 32x32.\n" }
+  ]
+}

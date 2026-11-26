@@ -1,0 +1,49 @@
+{
+  "description": "Mira's art folder for globbing and file management: sprites numbered and plain, upper and lower case notes, a Markdown readme and an empty backup folder.",
+  "entries": [
+    {
+      "path": "/home/mira/art/hero1.png",
+      "content": "sprite: hero1\n"
+    },
+    {
+      "path": "/home/mira/art/hero2.png",
+      "content": "sprite: hero2\n"
+    },
+    {
+      "path": "/home/mira/art/hero3.png",
+      "content": "sprite: hero3\n"
+    },
+    {
+      "path": "/home/mira/art/slime.png",
+      "content": "sprite: slime\n"
+    },
+    {
+      "path": "/home/mira/art/boss1.png",
+      "content": "sprite: boss1\n"
+    },
+    {
+      "path": "/home/mira/art/boss2.png",
+      "content": "sprite: boss2\n"
+    },
+    {
+      "path": "/home/mira/art/boss10.png",
+      "content": "sprite: boss10\n"
+    },
+    {
+      "path": "/home/mira/art/notes.txt",
+      "content": "lower-case notes\n"
+    },
+    {
+      "path": "/home/mira/art/Notes.txt",
+      "content": "Capitalised notes\n"
+    },
+    {
+      "path": "/home/mira/art/readme.md",
+      "content": "# Art folder\n"
+    },
+    {
+      "path": "/home/mira/art/backup",
+      "type": "dir"
+    }
+  ]
+}

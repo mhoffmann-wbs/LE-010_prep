@@ -1,0 +1,367 @@
+export const meta = {
+  objectiveId: '015.3',
+  updated: '2026-11-26',
+  tldr: 'Every file has an owner, a group and nine permission bits: read, write and execute for the owner, the group and everyone else. `ls -l` shows them as `-rwxr-xr--`; the first character is the type. `chmod` changes them, either with numbers (r=4, w=2, x=1, so `755`, `644`) or with letters (`u+x`, `g-w`, `o=`, `a+r`). `chown user:group file` changes who owns it. On a directory, r means "list the names", w means "create and delete entries" and x means "enter it and reach what is inside".',
+  areasCovered: ['015.3.1'],
+  termsCovered: ['015.3.t1', '015.3.t2'],
+  links: [
+    { title: 'chmod(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/chmod.1.html' },
+    { title: 'chown(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/chown.1.html' },
+    { title: 'chgrp(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/chgrp.1.html' },
+    { title: 'ls(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/ls.1.html' },
+    { title: 'inode(7): file type and mode bits', url: 'https://man7.org/linux/man-pages/man7/inode.7.html' },
+    { title: 'umask(2) manual page', url: 'https://man7.org/linux/man-pages/man2/umask.2.html' },
+  ],
+}
+
+## Big idea
+
+Linux is a multi-user system, so it has to answer one question for every action: **may this user do this to this file?** It decides with three facts stored on every file and directory:
+
+1. the **owner** (one user),
+2. the **group** (one group),
+3. the **permissions**: which of **read**, **write** and **execute** each of three kinds of people gets.
+
+The three kinds of people, in this fixed order, are the **user** (the owner, `u`), the **group** (`g`) and **others** (`o`, everyone else). Linux checks them in that order and uses **the first one that matches**: if you are the owner, the owner permissions apply to you, and only them; if you aren't but you are in the file's group, the group permissions apply; otherwise the "others" ones do. **root** skips these checks.
+
+## Walkthrough
+
+### Reading ls -l
+
+Here are files from Mira's studio folder. `ls -l` (long listing) shows all three facts:
+
+```bash fixture=sec-perms
+cd studio
+ls -l *.txt
+```
+
+```output
+-rw-r--r-- 1 mira mira    13 Nov  2 09:30 draft.txt
+-rw-r--r-- 1 mira mira    27 Nov  2 09:30 level1.txt
+-rw------- 1 mira mira    36 Nov  2 09:30 passwords.txt
+-rw-r----- 1 ada  release 26 Nov  2 09:30 release-notes.txt
+```
+
+Read one line, `-rw-r----- 1 ada release 26 Nov  2 09:30 release-notes.txt`, from left to right:
+
+| Part | Value | Meaning |
+|---|---|---|
+| 1st character | `-` | the **file type**: `-` ordinary file, `d` directory, `l` symbolic link |
+| next 3 | `rw-` | the **owner's** permissions: read and write, no execute |
+| next 3 | `r--` | the **group's** permissions: read only |
+| last 3 | `---` | **others'** permissions: nothing |
+| `1` | link count | how many names the file has (hard links; see [lesson 015.4](/learn/015.4)) |
+| `ada` | owner | the user that owns it |
+| `release` | group | the group of the file |
+| `26` | size | in bytes |
+| `Nov  2 09:30` | date | last modification |
+| `release-notes.txt` | name | |
+
+So the release notes belong to Ada, whose group is `release`. Ada may read and write them, members of `release` (Mira is one) may read them, and everybody else, such as Jonas, may do nothing. Directories and programs look like this (`ls` sorts the names you give it):
+
+```bash fixture=sec-perms
+cd studio
+ls -l build.sh art/hero.png
+ls -ld art private
+```
+
+```output
+-rw-rw-r-- 1 jonas design 16 Nov  2 09:30 art/hero.png
+-rwxr-xr-x 1 mira  mira   38 Nov  2 09:30 build.sh
+drwxrwxr-x 2 mira design 0 Nov  2 09:30 art
+drwx------ 2 mira mira   0 Nov  2 09:30 private
+```
+
+`ls -d` lists a directory *itself* instead of its contents ([lesson 012.3](/learn/012.3)), which is how you see a directory's own permissions. The `art` directory belongs to Mira but has the group `design`, which Mira and Jonas share. (The size 0 of directories is a quirk of this terminal's filesystem, not of Linux in general.)
+
+`ls -a` adds **hidden** names (those starting with a dot) to the listing, and `ls -la` combines both, so a long listing includes `.` and `..` too:
+
+```bash fixture=sec-perms
+ls -a studio/art
+```
+
+```output
+.  ..  hero.png
+```
+
+### What r, w and x mean
+
+The three letters mean different things on files and on directories. This table is the most tested content of this objective:
+
+| | On a **file** | On a **directory** |
+|---|---|---|
+| `r` read | read the contents (`cat`, open it) | **list** the names inside (`ls`) |
+| `w` write | change the contents | **create, rename and delete** entries inside it (needs `x` as well) |
+| `x` execute | run it as a program or script | **enter** it (`cd`) and reach the files in it |
+
+Two consequences surprise beginners. First, **deleting a file is controlled by the permissions of the directory**, not by the file's own: with `w` on the directory you can remove a file you can't even read. Second, without `x` on a directory you can't reach anything inside, even files whose own permissions are wide open.
+
+Watch the directory `private` (mode `700`) lose its bits. First, take away `x`: you can still **list** the names, but not **open** anything in it:
+
+```bash fixture=sec-perms
+cd studio
+chmod u-x private
+ls private
+cat private/ideas.txt
+```
+
+```output
+ideas.txt
+cat: private/ideas.txt: Permission denied
+```
+
+(`chmod` is explained just below.) Now the other way round, with `x` but without `r`: you can't list it, but if you know the name of a file inside, you can still open it.
+
+```bash fixture=sec-perms
+cd studio
+chmod u-r private
+ls private
+cat private/ideas.txt
+```
+
+```output
+ls: cannot open directory 'private': Permission denied
+Boss fight in the lava cave.
+```
+
+A script needs `x` to run it directly, which is the same reason `build.sh` is `-rwxr-xr-x`. Take the bit away, and the shell answers with status 126, "cannot execute". (You can still run it by handing it to the interpreter: `sh build.sh` only needs `r`.)
+
+```bash fixture=sec-perms
+cd studio
+./build.sh
+chmod -x build.sh
+./build.sh 2>/dev/null
+echo "status $?"
+```
+
+```output
+building Pixel Raiders
+status 126
+```
+
+### Changing permissions with chmod: octal mode
+
+`chmod` ("change mode") changes the permission bits. Only the file's **owner** and **root** may do it. The numeric form writes each triplet as **one digit**, adding up **r = 4**, **w = 2**, **x = 1**:
+
+| Digit | Binary | Permissions |
+|---|---|---|
+| `7` | 4+2+1 | `rwx` |
+| `6` | 4+2 | `rw-` |
+| `5` | 4+1 | `r-x` |
+| `4` | 4 | `r--` |
+| `0` | none | `---` |
+
+Three digits, in the order **user, group, others**: `640` is `rw-` `r--` `---`. Typical modes: `644` (normal file: the owner writes, all read), `755` (program or directory: everyone enters or runs it, only the owner changes it), `600` (private file), `700` (private directory) and `664` or `775` (shared with the group).
+
+```bash fixture=sec-perms
+cd studio
+chmod 600 draft.txt
+ls -l draft.txt
+chmod 755 draft.txt
+ls -l draft.txt
+chmod 640 draft.txt
+ls -l draft.txt
+```
+
+```output
+-rw------- 1 mira mira 13 Nov  2 09:30 draft.txt
+-rwxr-xr-x 1 mira mira 13 Nov  2 09:30 draft.txt
+-rw-r----- 1 mira mira 13 Nov  2 09:30 draft.txt
+```
+
+### Changing permissions with chmod: symbolic mode
+
+The symbolic form describes a **change** instead of the final state: *who*, an *operator*, and *which permissions*.
+
+| Who | | Operator | | Permission | |
+|---|---|---|---|---|---|
+| `u` | owner (user) | `+` | add | `r` | read |
+| `g` | group | `-` | remove | `w` | write |
+| `o` | others | `=` | set exactly | `x` | execute |
+| `a` | all three | | | | |
+
+`chmod u+x` adds execute for the owner and leaves all the other bits alone. Without a *who*, the change applies to `a`. Combine changes with commas:
+
+```bash fixture=sec-perms
+cd studio
+chmod 600 draft.txt
+chmod u+x,g+w draft.txt
+ls -l draft.txt
+chmod o= draft.txt
+chmod a+r draft.txt
+ls -l draft.txt
+chmod g=rx draft.txt
+ls -l draft.txt
+```
+
+```output
+-rwx-w---- 1 mira mira 13 Nov  2 09:30 draft.txt
+-rwxrw-r-- 1 mira mira 13 Nov  2 09:30 draft.txt
+-rwxr-xr-- 1 mira mira 13 Nov  2 09:30 draft.txt
+```
+
+Look at what each did: `u+x,g+w` added `x` for the owner and `w` for the group. `o=` set "others" to *nothing*, and `a+r` then gave *everybody* read again. `g=rx` replaced the group's permissions with exactly read and execute (the `w` is gone).
+
+Use `-R` ("recursive") to change a directory and everything inside it: `chmod -R g+r art`. The letters are handy for small changes ("make it executable": `chmod +x build.sh`), the numbers for stating the whole result ("make it private": `chmod 600`).
+
+New files get their starting permissions from the **umask**, a mask of bits to *remove* from the maximum (666 for files, 777 for directories). With the usual `022`, a new file is `644` and a new directory `755`:
+
+```bash
+umask
+touch f
+mkdir d
+stat -c '%a %n' f d
+```
+
+```output
+0022
+644 f
+755 d
+```
+
+### Changing owner and group: chown and chgrp
+
+**`chown`** ("change owner") sets the owner and, after a colon, the group: `chown OWNER:GROUP file`. Either part can be left out: `chown ada file` changes only the owner, and `chown :release file` (or `chgrp release file`) only the group. **Only root** may give a file to another user. The owner may change the group, but only to one **they are a member of**:
+
+```bash fixture=sec-perms
+cd studio
+chgrp design draft.txt
+ls -l draft.txt
+chown mira:release draft.txt
+ls -l draft.txt
+chown ada draft.txt
+chmod 777 release-notes.txt
+```
+
+```output
+-rw-r--r-- 1 mira design 13 Nov  2 09:30 draft.txt
+-rw-r--r-- 1 mira release 13 Nov  2 09:30 draft.txt
+chown: changing ownership of 'draft.txt': Operation not permitted
+chmod: changing permissions of 'release-notes.txt': Operation not permitted
+```
+
+Mira may put her own file into groups she belongs to (`design`, `release`). She can't give it to Ada, and she can't `chmod` Ada's file, since she isn't the owner. Root may do all of it, and `-R` works for `chown` as well:
+
+```bash user=root fixture=sec-perms
+chown ada:release /home/mira/studio/draft.txt
+chown -R jonas /home/mira/studio/art
+ls -l /home/mira/studio/draft.txt /home/mira/studio/art/hero.png
+```
+
+```output
+-rw-rw-r-- 1 jonas design  16 Nov  2 09:30 /home/mira/studio/art/hero.png
+-rw-r--r-- 1 ada   release 13 Nov  2 09:30 /home/mira/studio/draft.txt
+```
+
+(`ls` sorts the names it was given alphabetically, which is why `art` comes before `draft`.)
+
+### Who may do what: putting it together
+
+Use the **first match** rule from the Big idea. Take `release-notes.txt` (`-rw-r----- ada release`) and `art/hero.png` (`-rw-rw-r-- jonas design`):
+
+| Who | release-notes.txt | hero.png |
+|---|---|---|
+| Ada (owner) | read and write | no write: she is "others" (`r--`) |
+| Mira (in `release` and `design`) | read only (group) | read and write (group) |
+| Jonas (in `design`) | **nothing** (others) | read and write (owner) |
+
+```bash fixture=sec-perms user=jonas
+cd /home/mira/studio
+cat level1.txt
+cat release-notes.txt
+```
+
+```output
+Level 1: the pixel forest.
+cat: release-notes.txt: Permission denied
+```
+
+Jonas can read `level1.txt` (`r--` for others), but not `release-notes.txt`, which gives "others" nothing.
+
+## At TuxPixel
+
+- **Passwords and keys.** Mira's `passwords.txt` is `600` (only she can even read it), and her `~/.ssh` is `700` ([lesson 015.1](/learn/015.1)). If a file holds a secret, the mode should say so.
+- **A shared art folder.** `art` is owned by the group `design`, mode `775`, and the files inside are `664`. Jonas and Mira are in `design` and can both edit, nobody else can. When a new artist joins, Mira adds them to the group instead of loosening the modes.
+- **Release notes.** Ada's `release-notes.txt` is `640`, group `release`: Ada edits, Mira reads, others can't see unannounced features.
+- **Build scripts.** `build.sh` is `755`. After Ada copies a new script from a download, `chmod +x` is the first thing she does, because it arrives without `x`.
+- **"Permission denied".** Jonas can't open `release-notes.txt`. Mira checks with `ls -l`: the file's others-permissions are `---`. She doesn't `chmod 777` to make it "work", she asks who should see it.
+
+## Predict the output
+
+<Predict>
+
+```bash fixture=sec-perms
+cd studio
+chmod 750 art
+ls -ld art
+```
+
+```output
+drwxr-x--- 2 mira design 0 Nov  2 09:30 art
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=sec-perms
+cd studio
+chmod go-r level1.txt
+chmod u+x level1.txt
+ls -l level1.txt
+```
+
+```output
+-rwx------ 1 mira mira 27 Nov  2 09:30 level1.txt
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=sec-perms user=jonas
+cd /home/mira/studio
+echo hi > art/note.txt
+ls art
+```
+
+```output
+hero.png  note.txt
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Order: user, group, others">
+  <p>`ls -l` and the three octal digits are always in the order owner, group, others. `rwxr-x---` is `750`. `chmod 640` and `chmod u=rw,g=r,o=` are the same thing.</p>
+</Callout>
+
+<Callout title="4-2-1 adds up">
+  <p>r is 4, w is 2, x is 1. So `6` is `rw-` (not `rx`), `5` is `r-x` and `7` is `rwx`. `chmod 777` gives everybody everything and is almost never the right fix.</p>
+</Callout>
+
+<Callout title="Directory: r lists, x enters, w changes">
+  <p>To `cd` into a directory you need `x`. To `ls` it you need `r`. To create or delete a file inside it you need `w` **and** `x` on the directory. To delete a file, the file's own permissions don't matter, the directory's do.</p>
+</Callout>
+
+<Callout title="chmod u+x vs. chmod u=x">
+  <p>`+` adds to what is there and `-` removes. `=` **replaces**: `chmod u=x file` leaves the owner with *only* execute. `chmod a+x` and `chmod +x` both make the file executable for everybody.</p>
+</Callout>
+
+<Callout title="Who may chown">
+  <p>Only **root** can change a file's owner. The owner (and root) can run `chmod`, and the owner can change the group to one of their own groups. The format is `chown user:group file`; `chown :group file` changes only the group.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal):
+
+1. Run `ls -l /etc/passwd /etc/shadow /usr/bin/passwd` and read the permissions aloud. Who can read each file? What is the `s` in `/usr/bin/passwd` (it is a special bit; you only need to notice it)?
+2. Make a scratch directory with `mkdir ~/scratch` and a file with `echo hello > ~/scratch/a.txt`. Run `ls -l ~/scratch`, then `chmod 000 ~/scratch/a.txt` and try `cat ~/scratch/a.txt`.
+3. Use symbolic mode to give yourself read and write back (`u+rw`), then check with `ls -l`. What octal mode is it now?
+4. Remove `x` from `~/scratch` with `chmod u-x ~/scratch`. Try `cd ~/scratch` and `ls ~/scratch`. Which works, which doesn't? Put it back with `chmod u+x`.
+5. Run `sudo chown root ~/scratch/a.txt` (password `tuxpixel`), then `ls -l ~/scratch`. Can you still change it with `chmod`? Why not?
+6. Run `umask`, create a file and a directory with `touch` and `mkdir`, and check their modes with `ls -l` and `ls -ld`.
+
+When you're ready, [practise this objective](/practice?objective=015.3). Next, learn about `/tmp`, the sticky bit and symbolic links in [lesson 015.4](/learn/015.4).

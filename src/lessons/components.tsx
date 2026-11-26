@@ -6,9 +6,11 @@
 import { Children, type ComponentProps, type ReactNode, isValidElement, useState } from 'react'
 import { Link } from 'react-router'
 import { ShellCommand } from '../components/ShellCommand'
+import type { ExamId } from '../content/blueprint'
 import { FIXTURES } from '../content/fixtureBank'
 import { normaliseOutput } from '../content/schema'
 import { type FenceMeta, parseMeta } from '../content/snippets'
+import { useProgress } from '../progress/store'
 import { sharedRunner } from '../vm/emulator'
 import { type RunResult, RunError } from '../vm/runner'
 
@@ -192,10 +194,43 @@ export function Predict({ children }: { children: ReactNode }) {
   )
 }
 
+const EXAM_ONLY_LABELS: Record<ExamId, string> = {
+  '010-200': 'Only on exam 010-200 (objectives v2.0)',
+  '010-160': 'Only on exam 010-160 (objectives v1.6)',
+}
+
+/**
+ * Lesson material that only one of the two exams asks about. It's open when
+ * it's on the learner's exam, and collapsed (but still readable) when it isn't.
+ */
+export function ExamOnly({ exam, children }: { exam: ExamId; children: ReactNode }) {
+  const { track } = useProgress()
+  const mine = track === exam
+  return (
+    <details open={mine} className="my-6 rounded-lg border-2 border-dashed border-slate-300 bg-white px-4 py-2">
+      <summary className="not-prose cursor-pointer py-1 text-sm font-semibold text-slate-600">
+        {EXAM_ONLY_LABELS[exam]}
+        {!mine && <span className="font-normal"> (not on your exam, {track})</span>}
+      </summary>
+      {children}
+    </details>
+  )
+}
+
+/** A highlighted box for an exam trap or a key takeaway. */
+export function Callout({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <aside className="not-prose my-4 rounded-lg border-l-4 border-accent bg-white p-4">
+      <p className="font-semibold">{title}</p>
+      <div className="mt-1 space-y-2 text-slate-700">{children}</div>
+    </aside>
+  )
+}
+
 /** Links starting with / go through the router; others open in a new tab. */
 function A({ href = '', ...props }: ComponentProps<'a'>) {
   if (href.startsWith('/')) return <Link to={href} {...props} />
   return <a href={href} target="_blank" rel="noreferrer" {...props} />
 }
 
-export const lessonComponents = { pre: Pre, a: A, Predict }
+export const lessonComponents = { pre: Pre, a: A, Predict, Callout, ExamOnly }

@@ -1,0 +1,271 @@
+export const meta = {
+  objectiveId: '011.2',
+  updated: '2026-11-26',
+  tldr: 'Know what the big open source programs are for: desktop apps (LibreOffice, Firefox, GIMP), web apps and servers (Nextcloud, Apache, NGINX, databases, Samba), code tools (Git, languages) and package managers. Software comes in packages from repositories. `dpkg`, `apt` and `apt-get` work with `.deb` packages; `rpm`, `dnf`, `zypper` and `apk` belong to the other families.',
+  areasCovered: ['011.2.1', '011.2.2', '011.2.3', '011.2.4', '011.2.5', '011.2.6', '011.2.v1'],
+  termsCovered: ['011.2.t1', '011.2.t2', '011.2.t3', '011.2.t4', '011.2.t5', '011.2.vt1', '011.2.vt2', '011.2.vt3', '011.2.vt4', '011.2.vt5'],
+  links: [
+    { title: 'LibreOffice', url: 'https://www.libreoffice.org/' },
+    { title: 'Mozilla Thunderbird', url: 'https://www.thunderbird.net/' },
+    { title: 'Mozilla Firefox', url: 'https://www.mozilla.org/firefox/' },
+    { title: 'VSCodium', url: 'https://vscodium.com/' },
+    { title: 'GIMP', url: 'https://www.gimp.org/' },
+    { title: 'Inkscape', url: 'https://inkscape.org/' },
+    { title: 'VLC media player', url: 'https://www.videolan.org/vlc/' },
+    { title: 'The GNU Privacy Guard', url: 'https://gnupg.org/' },
+    { title: 'The R Project', url: 'https://www.r-project.org/' },
+    { title: 'Nextcloud', url: 'https://nextcloud.com/' },
+    { title: 'Kodi', url: 'https://kodi.tv/' },
+    { title: 'Jitsi', url: 'https://jitsi.org/' },
+    { title: 'BigBlueButton', url: 'https://bigbluebutton.org/' },
+    { title: 'Moodle', url: 'https://moodle.org/' },
+    { title: 'Git', url: 'https://git-scm.com/' },
+    { title: 'GitLab', url: 'https://about.gitlab.com/' },
+    { title: 'Forgejo', url: 'https://forgejo.org/' },
+    { title: 'Apache HTTP Server', url: 'https://httpd.apache.org/' },
+    { title: 'NGINX', url: 'https://nginx.org/' },
+    { title: 'MariaDB', url: 'https://mariadb.org/' },
+    { title: 'PostgreSQL', url: 'https://www.postgresql.org/' },
+    { title: 'Samba', url: 'https://www.samba.org/' },
+    { title: 'Debian reference: package management with apt and dpkg', url: 'https://www.debian.org/doc/manuals/debian-reference/ch02.en.html' },
+    { title: 'dnf documentation', url: 'https://dnf.readthedocs.io/' },
+    { title: 'openSUSE: zypper', url: 'https://en.opensuse.org/Portal:Zypper' },
+    { title: 'Alpine Linux wiki: apk', url: 'https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper' },
+  ],
+}
+
+## Big idea
+
+Linux is not only a system for experts. A huge amount of everyday software is **open source**: anyone can read its source code, and it is usually free to use. This lesson is a tour. You don't have to install or operate any of these programs for the exam. You must recognise each name and know **what it is for**.
+
+Where does the software come from? On Linux you rarely download an installer from a website. You use a **package manager** that fetches a **package** (the program plus information about what else it needs) from a **repository** (an online store of packages run by your distribution). One command installs, updates and removes software.
+
+You can ask the Debian system in this app's terminal which package a file came from:
+
+```bash
+dpkg -S /bin/ls
+```
+
+```output
+coreutils: /bin/ls
+```
+
+The program `ls` is shipped in the package `coreutils`.
+
+## Walkthrough
+
+### Desktop applications
+
+These are the programs you click on in a graphical desktop.
+
+| Program | What it is for |
+|---|---|
+| **LibreOffice** | Office suite: word processor, spreadsheet, presentations |
+| **Thunderbird** | Email, calendar and news client |
+| **Firefox** | Web browser |
+| **Chromium** | Open source web browser. **Chrome** is Google's browser built on it, with some proprietary parts added. |
+| **VSCodium / Visual Studio Code** | Code editor. VSCodium is a build of the open source code behind Visual Studio Code, without Microsoft's added branding and tracking. |
+| **GIMP** | Photo editing and raster images (pixels) |
+| **Inkscape** | Vector graphics (shapes and lines that scale without getting blurry) |
+| **VLC** | Plays almost any audio or video file |
+| **GPG** (GnuPG) | Encrypts and signs files and emails. It is a command line tool. |
+| **R** | Language and environment for statistics and charts |
+
+<ExamOnly exam="010-160">
+
+Exam 010-160 lists **OpenOffice.org** next to LibreOffice. It is the older office suite from which LibreOffice was forked, and it lives on as Apache OpenOffice. Both do the same kind of work: documents, spreadsheets, slides.
+
+</ExamOnly>
+
+<ExamOnly exam="010-200">
+
+### Web applications
+
+A **web application** runs on a server, and you use it in your browser. Nothing is installed on your computer.
+
+| Program | What it is for |
+|---|---|
+| **Kodi** | Media center for your TV: video, music, photos |
+| **Jitsi** | Video meetings in the browser |
+| **BigBlueButton** | Web conferencing built for virtual classrooms |
+| **Moodle** | Learning platform: courses, quizzes, grades |
+| **GitLab** | Hosts Git repositories and adds issue tracking and build pipelines |
+| **Forgejo**, **Gitea** | Light, self-hosted Git forges, similar in idea to GitLab |
+
+**Git** itself is not a web application. It is the command line tool that tracks changes to source code. GitLab, Forgejo and Gitea are web services built around Git repositories.
+
+</ExamOnly>
+
+### Server applications
+
+A **server application** runs in the background and answers requests from other computers.
+
+| Program | What it is for |
+|---|---|
+| **Apache HTTPD**, **NGINX** | Web servers: they deliver web pages. NGINX is also often used as a reverse proxy in front of other programs. |
+| **MariaDB**, **MySQL**, **PostgreSQL** | Database servers: they store structured data and answer queries. MariaDB started as a fork of MySQL. |
+| **NFS** | Network File System: share directories between Unix and Linux machines |
+| **Nextcloud**, **ownCloud** | Your own file sync and sharing "cloud" (like Dropbox), with calendars and contacts |
+| **Samba** | Shares files and printers with Windows computers, using their protocols |
+
+Web servers are often combined with a database and a programming language to run a site. A well-known stack is **LAMP**: Linux, Apache, MariaDB or MySQL, and PHP.
+
+<ExamOnly exam="010-160">
+
+Exam 010-160 does not list PostgreSQL, but it asks for the rest of this table.
+
+</ExamOnly>
+
+### Programming languages
+
+| Language | Typical use |
+|---|---|
+| **C** | Operating systems, drivers, fast programs. Linux itself is mostly written in C. |
+| **C++** | Large programs where speed matters: games, browsers, engines |
+| **Java** | Business applications; runs on the Java virtual machine; Android apps |
+| **JavaScript** | The language of web browsers, and of servers through Node.js |
+| **Python** | General purpose; popular for scripts, automation, data science |
+| **PHP** | Server-side web pages (for example WordPress and Moodle) |
+| **Rust** | Systems programming with strong memory safety. Used more and more near the kernel. |
+| **Go** | Fast, simple language for network services and tools; created at Google |
+
+Two groups matter. **Compiled** languages (C, C++, Rust, Go) are translated into a machine-code program before running. **Interpreted** languages (Python, PHP, JavaScript, and shell scripts) are run by another program, the interpreter, that reads the source directly. Java sits between: it is compiled to bytecode that a virtual machine runs.
+
+<ExamOnly exam="010-160">
+
+Exam 010-160 lists two more entries in this table. **Perl** is an older scripting language, very popular for text processing and system tasks in the 1990s and 2000s, and it is still installed on many Linux systems. **Shell** (usually Bash) is the command language you use in the terminal, and you can also write scripts in it. See [lesson 012.1](/learn/012.1) onwards. Exam 010-160 does not list C++, Rust or Go.
+
+</ExamOnly>
+
+### Software packages and repositories
+
+A **package** is one file that holds a program, its data files and metadata: name, version, and its **dependencies** (other packages it needs). A **repository** is a server that holds many packages, with an index that the package manager downloads. Your distribution runs official repositories; each package is signed so that your system can check where it came from.
+
+The point of this is that the package manager can resolve **dependencies** for you: asking for one program also brings the libraries it needs. It can also update everything with one command, and remove a program cleanly.
+
+You can see which tools this guest has. It is Debian, so it has the Debian tools and not the others:
+
+```bash
+for t in dpkg rpm; do command -v $t || echo "no $t"; done
+```
+
+```output
+/usr/bin/dpkg
+no rpm
+```
+
+### Package management tools
+
+Two layers exist. The **low-level** tool installs, removes or inspects one package file and doesn't fetch anything. The **high-level** tool talks to the repositories, downloads what is needed and resolves dependencies, using the low-level tool underneath.
+
+| Family | Package file | Low-level tool | High-level tool |
+|---|---|---|---|
+| Debian-based | `.deb` | `dpkg` | `apt`, `apt-get` |
+| Enterprise Linux (Red Hat family) | `.rpm` | `rpm` | `dnf` |
+| SUSE-based | `.rpm` | `rpm` | `zypper` |
+| Alpine | `.apk` | | `apk` |
+
+`apt` is the friendlier, newer front end that is meant for people at the keyboard. `apt-get` is the older one with a very stable interface, and scripts often use it. Examples (shown, not run here, because installing needs administrator rights and the network):
+
+```bash static
+sudo apt update              # refresh the list of packages in the repositories
+sudo apt install gimp        # install GIMP and the packages it needs
+sudo apt remove gimp         # remove it again
+dpkg -l                      # list installed packages
+sudo dnf install gimp        # the same on Fedora, RHEL, AlmaLinux, Rocky
+sudo zypper install gimp     # the same on openSUSE and SUSE
+sudo apk add gimp            # the same on Alpine, as root
+```
+
+`rpm` and `dpkg` can install a single downloaded file, but they do not fetch dependencies, which is why you normally use `apt`, `dnf` or `zypper`.
+
+<ExamOnly exam="010-160">
+
+Exam 010-160 lists **yum** instead of `dnf`. `yum` was the high-level tool of the Red Hat family before `dnf` replaced it. It does the same job (`yum install gimp`), and the older versions of RHEL and CentOS shipped it. Exam 010-160 does not list `apt`, `zypper` or `apk`.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **Office and email:** LibreOffice for the studio's budgets and documents, Thunderbird for email. Nobody needs a licence key.
+- **Art (Jonas):** GIMP for painting sprites, Inkscape for the logo (it scales to a poster without going blurry), and VLC to preview trailers.
+- **Source code (Ada and Mira):** the source of "Pixel Raiders" lives in a **Git** repository, which they host on a self-hosted forge, **Forgejo**, on a small server. They could have used GitLab instead. The engine is written in **C++**, the build tools in **Python**, and a new small tool in **Go**.
+- **The asset server:** **Samba** shares the art folder with Jonas's colleague who uses Windows. **NFS** shares it with the Linux build server.
+- **The website:** NGINX serves the studio's site, with PostgreSQL behind the player forum.
+- **Updating:** Mira updates the laptops with `sudo apt update` and `sudo apt upgrade`, and Ada never installs a program by downloading random files.
+
+## Predict the output
+
+<Predict>
+
+```bash
+dpkg -S /bin/ls
+```
+
+```output
+coreutils: /bin/ls
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+for t in dpkg rpm; do command -v $t || echo "no $t"; done
+```
+
+```output
+/usr/bin/dpkg
+no rpm
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+for t in perl python3 gcc git; do command -v $t || echo "no $t"; done
+```
+
+```output
+/usr/bin/perl
+no python3
+no gcc
+no git
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Match the tool to the family">
+  <p>`dpkg` and `apt` (or `apt-get`) work with `.deb` packages on Debian and Ubuntu. `rpm` and `dnf` handle `.rpm` packages on the Red Hat family, `rpm` and `zypper` on SUSE, and `apk` is Alpine's own tool. A question that shows `dnf install` is not about Debian.</p>
+</Callout>
+
+<Callout title="Low-level or high-level">
+  <p>`dpkg` and `rpm` work on package files you already have and don't fetch dependencies. `apt`, `dnf`, `zypper` and `apk` use repositories and resolve dependencies.</p>
+</Callout>
+
+<Callout title="Chromium is not Chrome, and Git is not GitHub">
+  <p>Chromium is the open source browser, and Chrome is Google's product built on it. Git is the version control tool, while GitLab, Forgejo and Gitea host Git repositories on a server.</p>
+</Callout>
+
+<Callout title="Web server or database">
+  <p>Apache HTTPD and NGINX are web servers. MariaDB, MySQL and PostgreSQL are databases. Samba talks to Windows, NFS to Unix and Linux. Nextcloud and ownCloud are for file sync and sharing.</p>
+</Callout>
+
+<Callout title="Raster or vector">
+  <p>GIMP edits pixel images (raster). Inkscape draws vector graphics. GPG is for encryption and signing, and R is for statistics.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal):
+
+1. Run `dpkg -S /bin/cp`. Which package ships `cp`?
+2. Try `command -v nano vi perl firefox`. Which of them exist here, and which don't?
+3. Run `dpkg -l | head`. What do the columns look like?
+4. Sort these into desktop, web or server application: Firefox, Moodle, PostgreSQL, Inkscape, Jitsi, NGINX.
+5. For each of C, Go, Python and PHP, say what you would use it for at TuxPixel.
+
+When you're ready, [practise this objective](/practice?objective=011.2). Next, find out why all this software is free to share in [lesson 011.3](/learn/011.3).

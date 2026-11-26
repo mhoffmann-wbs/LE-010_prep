@@ -1,0 +1,377 @@
+export const meta = {
+  objectiveId: '015.2',
+  updated: '2026-11-26',
+  tldr: 'Accounts live in plain text files: `/etc/passwd` (one line per user: name, `x`, UID, GID, comment, home, shell), `/etc/group` (one line per group with its members), and `/etc/shadow` (the password hashes, readable only by root). `id` shows who you are, `who`, `w` and `last` show who is or was logged in. As root, `useradd` creates a user (`-m` makes the home from the template `/etc/skel`), `groupadd` creates a group, and `passwd` sets or changes a password.',
+  areasCovered: ['015.2.1', '015.2.2'],
+  termsCovered: ['015.2.t1', '015.2.t2', '015.2.t3', '015.2.t4'],
+  links: [
+    { title: 'passwd(5): the format of /etc/passwd', url: 'https://man7.org/linux/man-pages/man5/passwd.5.html' },
+    { title: 'group(5): the format of /etc/group', url: 'https://man7.org/linux/man-pages/man5/group.5.html' },
+    { title: 'shadow(5): the format of /etc/shadow', url: 'https://man7.org/linux/man-pages/man5/shadow.5.html' },
+    { title: 'useradd(8) manual page', url: 'https://man7.org/linux/man-pages/man8/useradd.8.html' },
+    { title: 'groupadd(8) manual page', url: 'https://man7.org/linux/man-pages/man8/groupadd.8.html' },
+    { title: 'passwd(1) manual page', url: 'https://man7.org/linux/man-pages/man1/passwd.1.html' },
+    { title: 'id(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/id.1.html' },
+    { title: 'w(1), who(1) and last(1) manual pages', url: 'https://man7.org/linux/man-pages/man1/who.1.html' },
+    { title: 'Debian 13 release notes: removed login-tracking commands (last, lastlog, wtmpdb)', url: 'https://www.debian.org/releases/trixie/release-notes/issues.html' },
+    { title: 'Debian Policy: UID and GID classes', url: 'https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes' },
+  ],
+}
+
+## Big idea
+
+Linux doesn't keep its accounts in a hidden database. They are **ordinary text files** in `/etc`, and the commands in this lesson are just tools that edit those files safely. Three files do the work:
+
+| File | Holds | Who can read it |
+|---|---|---|
+| `/etc/passwd` | one line per **user**: name, ID, home directory, shell | everyone |
+| `/etc/group` | one line per **group**: name, ID, members | everyone |
+| `/etc/shadow` | the users' **password hashes** and password ageing | root only (and the group `shadow`) |
+
+Every user has a number, the **UID**, and every group a **GID**. Linux itself works with numbers; the names are for humans. Files record their owner by UID and group by GID, and `ls` looks the names up in these files.
+
+## Walkthrough
+
+### The user database: /etc/passwd
+
+Each line of `/etc/passwd` is one account, in **seven fields separated by colons**:
+
+```bash
+grep '^mira:' /etc/passwd
+```
+
+```output
+mira:x:1000:1000:Mira Okafor:/home/mira:/bin/bash
+```
+
+| # | Value | Meaning |
+|---|---|---|
+| 1 | `mira` | the login name |
+| 2 | `x` | the password lives in `/etc/shadow` (it was once stored here) |
+| 3 | `1000` | the **UID** |
+| 4 | `1000` | the **GID** of her primary group |
+| 5 | `Mira Okafor` | a comment, usually the real name (also called GECOS) |
+| 6 | `/home/mira` | the home directory |
+| 7 | `/bin/bash` | the login shell |
+
+You can't log in with a user whose shell is `/usr/sbin/nologin`: that's how system users are kept from logging in ([lesson 015.1](/learn/015.1)). Everyone can read `/etc/passwd`, because programs such as `ls` need it to turn numbers into names, so it must not hold the passwords.
+
+### The password file: /etc/shadow
+
+That is why hashed passwords are in a second file, `/etc/shadow`, which only root can read:
+
+```bash
+stat -c '%a %U %G %n' /etc/passwd /etc/shadow
+cat /etc/shadow
+```
+
+```output
+644 root root /etc/passwd
+640 root shadow /etc/shadow
+cat: /etc/shadow: Permission denied
+```
+
+(`stat -c` prints the octal mode, owner, group and name. Modes are the subject of [lesson 015.3](/learn/015.3).) A line in `/etc/shadow` also has colon-separated fields: the name, the **hash** of the password (never the password itself), then dates and limits such as the last change and the maximum age. If the hash field is `!` or `*`, no password can match, so the account has **no usable password**: it is locked.
+
+### The group database: /etc/group
+
+`/etc/group` has four fields: **group name, password placeholder (`x`), GID and a comma-separated list of members**:
+
+```bash
+grep -E '^(sudo|mira):' /etc/group
+```
+
+```output
+sudo:x:27:mira
+mira:x:1000:
+```
+
+The group `sudo` has Mira as a member. The group `mira` has **no** listed members: it's Mira's **primary group**, which `/etc/passwd` records in field 4 (GID 1000). Debian gives each new user a private group with the same name. A user can additionally be a member of any number of **supplementary groups** (the list in `/etc/group`), and a file's group permissions apply to all of them.
+
+### Who am I? id, groups and who
+
+`id` prints your UIDs and GIDs, and `id NAME` does so for someone else:
+
+```bash
+id
+id jonas
+```
+
+```output
+uid=1000(mira) gid=1000(mira) groups=1000(mira),27(sudo)
+uid=1001(jonas) gid=1001(jonas) groups=1001(jonas)
+```
+
+`id` has short options for one piece at a time, and `-n` shows names instead of numbers:
+
+| Command | Prints |
+|---|---|
+| `id -u` | the user ID |
+| `id -g` | the primary group ID |
+| `id -G` | all group IDs |
+| `id -un`, `id -gn`, `id -Gn` | the same, as names |
+
+```bash
+id -u jonas
+id -G
+id -Gn
+groups
+```
+
+```output
+1001
+1000 27
+mira sudo
+mira sudo
+```
+
+`groups` is the short way to list a user's group names.
+
+Three more commands tell you about **sessions**, meaning who is logged in now and who was before:
+
+| Command | Shows |
+|---|---|
+| `who` | one line per logged-in user: name, terminal, login time |
+| `w` | the same plus what each user is running, and the load on the machine |
+| `last` | the history of logins and reboots, newest first |
+
+```bash
+who
+w
+last -n 3
+```
+
+Their output depends on who is logged in and when, so run it and compare with your terminal. In `w`, the first line shows the time, how long the machine has been up, how many users are on and the load averages, and the columns that follow (USER, TTY, FROM, LOGIN@, IDLE, JCPU, PCPU, WHAT) describe each session.
+
+<ExamOnly exam="010-200">
+
+### wtmpdb last: the new login history
+
+`last` reads its history from a file, `/var/log/wtmp`. That file format stores times in a way that **stops working in the year 2038** (the "Year 2038 problem", from 32-bit timestamps). The developers of the old tools did not want to change the file formats, so a replacement was written: **`wtmpdb`**, which keeps login records in an SQLite database. Debian 13 ("trixie") dropped the `last` command from its util-linux package and uses `wtmpdb` instead. The command `wtmpdb last` prints the same sort of list, newest first:
+
+```bash static
+wtmpdb last
+```
+
+Because the replacement needs a PAM module to record logins, a Debian 13 system must have the packages `wtmpdb` and `libpam-wtmpdb` installed for the list to be filled. This course's terminal runs Debian 12, which still has the classic `last`, so `wtmpdb last` isn't available in it. For the exam, remember: **`last` and `wtmpdb last` answer the same question, "who logged in, and when?"**.
+
+</ExamOnly>
+
+### Creating users: useradd
+
+**`useradd`** creates an account. It must run as root, so Mira uses `sudo`. Its options set what the plain defaults would not:
+
+| Option | Meaning |
+|---|---|
+| `-m` | **create the home directory** and fill it from `/etc/skel` |
+| `-c "Noah Kim"` | the comment (real name) |
+| `-s /bin/bash` | the login shell |
+| `-g GROUP` | the primary group (name or GID) |
+| `-G GROUP,GROUP` | extra, supplementary groups |
+| `-u 1500` | a chosen UID (otherwise the next free one) |
+| `-r` | a **system** user (UID below 1000) |
+
+A new intern, Noah, joins TuxPixel. The cells here run as root, and they start from a clean guest each time, so you can try anything:
+
+```bash user=root
+useradd -m -c "Noah Kim" -s /bin/bash noah
+grep '^noah:' /etc/passwd
+grep '^noah:' /etc/group
+id noah
+```
+
+```output
+noah:x:1003:1003:Noah Kim:/home/noah:/bin/bash
+noah:x:1003:
+uid=1003(noah) gid=1003(noah) groups=1003(noah)
+```
+
+`useradd` took the next free UID (1003) and made a private group with the same number. The new `/etc/shadow` entry has `!` as password hash, so Noah can't log in yet. `passwd -S` ("status") says the same with a letter, `L` for locked:
+
+```bash user=root
+useradd -m noah
+passwd -S noah | cut -d' ' -f1,2
+```
+
+```output
+noah L
+```
+
+**Careful with `-m`.** Without it, `useradd` on Debian creates the account but **no home directory**, and the shell defaults to `/bin/sh`:
+
+```bash user=root
+useradd noah
+ls /home
+getent passwd noah
+```
+
+```output
+ada  jonas  mira
+noah:x:1003:1003::/home/noah:/bin/sh
+```
+
+Compare the `ls /home` list: there is no `noah` in it. Debian also ships a friendlier wrapper, `adduser`, that asks questions and creates the home by default. The exam asks about the low-level `useradd`.
+
+### The skeleton directory: /etc/skel
+
+When `useradd -m` creates a home directory, it **copies everything from `/etc/skel/`** into it (skel = "skeleton") and gives the new user ownership. That is where a new user's `.bashrc` and `.profile` come from; change the files in `/etc/skel` and every user created afterwards gets the change (existing users keep theirs).
+
+```bash
+ls -A /etc/skel
+```
+
+```output
+.bash_logout  .bashrc  .profile
+```
+
+```bash user=root
+useradd -m noah
+ls -A /home/noah
+```
+
+```output
+.bash_logout  .bashrc  .profile
+```
+
+### Groups: groupadd
+
+**`groupadd`** creates a group; it needs root too. Then `usermod -aG GROUP USER` **adds** a user to it (`-a` is "append": without it, `-G` would *replace* the user's list of extra groups):
+
+```bash user=root
+groupadd playtest
+usermod -aG playtest jonas
+usermod -aG playtest ada
+getent group playtest
+id jonas
+```
+
+```output
+playtest:x:1003:jonas,ada
+uid=1001(jonas) gid=1001(jonas) groups=1001(jonas),1003(playtest)
+```
+
+Group membership is read when someone **logs in**, so a user who is already logged in must log in again to see it. A running session never gets new groups. `groupadd -r` makes a system group, and `groupadd -g 2000 qa` picks the GID.
+
+### Passwords: passwd
+
+**`passwd`** sets a password. A normal user changes their own, after being asked for the current one:
+
+```bash static
+passwd
+```
+
+Root can set anyone's password, without knowing the old one, with `passwd NAME`:
+
+```bash static
+sudo passwd noah
+```
+
+Both ask you to type the new password twice, and show nothing while you type. Useful root options: `passwd -l noah` **locks** the account (puts `!` in front of the hash), `passwd -u noah` unlocks it and `passwd -e noah` expires the password so Noah must choose a new one at the next login. `passwd -S noah` shows the status.
+
+### User IDs
+
+Remember the number ranges, because the exam asks for them. On Debian:
+
+| UID | Meaning |
+|---|---|
+| `0` | root |
+| `1`–`999` | system users (those below 100 are assigned by Debian's base packages; software installed later gets 100–999) |
+| `1000` and up | standard users |
+
+New standard users get the **next free UID from 1000**, which is why Noah got 1003. (The limits are set in `/etc/login.defs`.) The system `root`'s UID **0** is what makes it root: the name itself is not special. Group IDs follow the same scheme. A file stores numbers; `ls` shows names by looking up `/etc/passwd` and `/etc/group`:
+
+```bash
+getent passwd 1001
+```
+
+```output
+jonas:x:1001:1001:Jonas Berg:/home/jonas:/bin/bash
+```
+
+## At TuxPixel
+
+- **Onboarding Noah, the new intern.** Mira runs `sudo useradd -m -c "Noah Kim" -s /bin/bash noah`, then `sudo passwd noah`, and tells him to log in and change it. Noah's home starts with the same `.bashrc` as everyone else's, because it was copied from `/etc/skel`.
+- **A playtest group.** Jonas and Ada both need to open the playtest videos. Mira makes a group once (`sudo groupadd playtest`) and adds them (`sudo usermod -aG playtest jonas`) instead of changing permissions per person. Folders owned by the group follow in [lesson 015.3](/learn/015.3).
+- **Who's on the build machine?** Before restarting it, Ada runs `w`. Mira's name shows there, with `make` in the WHAT column. She waits.
+- **An intern leaves.** Mira locks his account with `sudo passwd -l noah` right away. The files stay in `/home/noah` until someone has copied them.
+
+## Predict the output
+
+<Predict>
+
+```bash
+id -gn jonas
+```
+
+```output
+jonas
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+cut -d: -f1,3 /etc/passwd | tail -3
+```
+
+```output
+mira:1000
+jonas:1001
+ada:1002
+```
+
+</Predict>
+
+<Predict>
+
+```bash user=root
+groupadd review
+useradd -m -G review -c "Noah Kim" noah
+id noah
+```
+
+```output
+uid=1003(noah) gid=1004(noah) groups=1004(noah),1003(review)
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="/etc/passwd has no passwords">
+  <p>Field 2 is just `x`. The hashes are in `/etc/shadow`, readable only by root. The groups are in `/etc/group`. Know the **seven** fields of passwd: name, password marker, UID, GID, comment, home, shell.</p>
+</Callout>
+
+<Callout title="useradd without -m makes no home">
+  <p>`useradd noah` creates the entry in `/etc/passwd` but no home directory, so `/etc/skel` isn't copied. Add `-m` to create the home and copy the skeleton files. Debian's `adduser` does it by default.</p>
+</Callout>
+
+<Callout title="usermod -G replaces, -aG adds">
+  <p>`usermod -G playtest jonas` **replaces** Jonas's supplementary groups with only `playtest`. `usermod -aG playtest jonas` **adds** it to the groups he already has. Always write `-aG` together.</p>
+</Callout>
+
+<Callout title="Standard users start at 1000">
+  <p>UID 0 is root, system users are below 1000 and standard users start at 1000 on Debian (the limit is `UID_MIN` in `/etc/login.defs`, and older Red Hat systems used 500). A system user with `nologin` as its shell exists but can't be logged in to.</p>
+</Callout>
+
+<ExamOnly exam="010-200">
+
+<Callout title="last and wtmpdb last">
+  <p>`who` and `w` show who is logged in **now**; `last` shows who logged in **before** (from `/var/log/wtmp`). On systems that replaced `last` because of the Year 2038 problem, `wtmpdb last` does the same job from a database.</p>
+</Callout>
+
+</ExamOnly>
+
+## Try it
+
+Open the [terminal](/terminal):
+
+1. Run `grep "$USER" /etc/passwd`. Name the seven fields of your own line.
+2. Run `id`, `id -u`, `id -Gn` and `groups`. Which groups are you in?
+3. Run `ls -A /etc/skel` and `ls -A ~`. Which of your hidden files came from the skeleton?
+4. Run `cat /etc/shadow`, then `sudo cat /etc/shadow` (password `tuxpixel`). Do the second lines look like passwords? What are the `!` and `*` fields?
+5. Create a user with `sudo useradd -m -c "Test User" testuser`, check `grep testuser /etc/passwd`, `ls -A /home/testuser` and `sudo passwd -S testuser`. Then remove it again with `sudo userdel -r testuser`.
+6. Run `who`, `w` and `last -n 5`. What does each tell you?
+
+When you're ready, [practise this objective](/practice?objective=015.2). Next, learn what permissions and ownership are in [lesson 015.3](/learn/015.3).

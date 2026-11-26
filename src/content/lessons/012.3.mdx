@@ -1,0 +1,390 @@
+export const meta = {
+  objectiveId: '012.3',
+  updated: '2026-11-26',
+  tldr: 'Linux keeps every file in one tree that starts at `/`. A path that starts with `/` is absolute; any other path is relative to where you are (`pwd`). `.` is "here", `..` is "one up" and `~` is your home directory. Names that start with a dot are hidden: `ls -a` shows them. `find` searches a tree by name.',
+  areasCovered: ['012.3.1', '012.3.2', '012.3.3', '012.3.4', '012.3.5'],
+  termsCovered: ['012.3.t1', '012.3.t2', '012.3.t3', '012.3.t4', '012.3.t5', '012.3.t6', '012.3.t7'],
+  links: [
+    { title: 'ls(1) manual page (GNU coreutils)', url: 'https://man7.org/linux/man-pages/man1/ls.1.html' },
+    { title: 'find(1) manual page (GNU findutils)', url: 'https://man7.org/linux/man-pages/man1/find.1.html' },
+    { title: 'Bash Reference Manual: Bourne shell builtins (cd, pwd)', url: 'https://www.gnu.org/software/bash/manual/html_node/Bourne-Shell-Builtins.html' },
+    { title: 'Bash Reference Manual: Tilde expansion', url: 'https://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html' },
+    { title: 'Filesystem Hierarchy Standard 3.0', url: 'https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html' },
+  ],
+}
+
+## Big idea
+
+On Windows every drive has its own letter: `C:\`, `D:\`. Linux has **one single tree** of folders instead. Its top is called the **root directory** and is written as a single slash, `/`. Every file on the system, on every disk and USB stick, hangs somewhere below it.
+
+A **path** is the list of directories you walk through to reach a file, separated by `/`:
+
+```text
+/home/mira/projects/pixel-raiders/README.md
+```
+
+Read it from the left: start at the root `/`, go into `home`, then `mira`, then `projects`, then `pixel-raiders`, and there is `README.md`. ("Directory" and "folder" mean the same thing; Linux people usually say directory.)
+
+You always stand *somewhere* in the tree: your **current working directory**. The shell starts you in your **home directory**, and `pwd` (print working directory) tells you where you are:
+
+```bash
+pwd
+```
+
+```output
+/home/mira
+```
+
+Only two more ideas and you can walk the whole tree: paths can be **absolute** or **relative**, and a few short names (`.`, `..`, `~`) are shortcuts.
+
+## Walkthrough
+
+### Files and directories
+
+Every name in the tree is either a **file** (it holds data: text, a picture, a program) or a **directory** (it holds other names). Mira, a developer at TuxPixel Studio, keeps her work in a `projects` directory. `ls` (list) shows what's in the current directory:
+
+```bash fixture=projects
+ls
+```
+
+```output
+notes.txt  projects
+```
+
+Give `ls` a path to look somewhere else without moving:
+
+```bash fixture=projects
+ls projects/pixel-raiders
+```
+
+```output
+docs  README.md  src
+```
+
+From the plain list you can't tell which names are directories. `ls -F` adds a `/` after each directory (and a `*` after programs):
+
+```bash fixture=projects
+ls -F projects/pixel-raiders
+```
+
+```output
+docs/  README.md  src/
+```
+
+Linux doesn't rely on file extensions. `README.md` ends in `.md` only so people (and editors) know it's Markdown; to Linux it's just a name.
+
+### Common options for ls
+
+An **option** changes what a command does. Options start with a dash and come before the path. These are the ones to know for the exam:
+
+| Option | What it does |
+|---|---|
+| `-l` | **Long** listing: one line per entry with permissions, owner, size and date |
+| `-a` | **All**: also show hidden names, including `.` and `..` |
+| `-A` | Almost all: hidden names, but without `.` and `..` |
+| `-h` | With `-l`: **human-readable** sizes (`4.0K`, `12M`) instead of bytes |
+| `-R` | **Recursive**: also list every directory inside, and the ones inside those |
+| `-d` | List a directory **itself**, not what's in it |
+| `-F` | Mark the type: `/` for directories, `*` for programs |
+| `-t` | Sort by modification time, newest first |
+| `-r` | Reverse the sort order |
+
+Short options can be combined: `ls -la` is the same as `ls -l -a`.
+
+```bash fixture=projects
+ls -l projects
+```
+
+```output
+total 1
+drwxr-xr-x 4 mira mira 0 Nov  2 09:30 pixel-raiders
+drwxr-xr-x 2 mira mira 0 Nov  2 09:30 website
+```
+
+The first letter of each line is the type: `d` for a directory, `-` for an ordinary file and `l` for a symbolic link. The rest of the line (permissions, owner, group, size, date) is the subject of [lesson 015.3](/learn/015.3). Ignore the `total` line, and don't expect directory sizes in this course's terminal to match a real disk: its filesystem reports directories as size 0.
+
+### Hidden files and directories
+
+Any name that starts with a **dot** is **hidden**: a plain `ls` skips it. That's all "hidden" means on Linux. There is no special attribute, just the dot. Programs use hidden names for settings, so that your home directory doesn't fill up with clutter. Compare:
+
+```bash fixture=projects
+ls
+```
+
+```output
+notes.txt  projects
+```
+
+```bash fixture=projects
+ls -a
+```
+
+```output
+.  ..  .bash_logout  .bashrc  notes.txt  .profile  projects  .tuxpixel
+```
+
+`-a` reveals Mira's shell settings (`.bashrc`, `.profile`, `.bash_logout`) and a hidden *directory*, `.tuxpixel`, where TuxPixel's tools keep their settings. To hide a file, you simply rename it so its name starts with a dot. `ls -A` is the same list without `.` and `..`:
+
+```bash fixture=projects
+ls -A projects/pixel-raiders
+```
+
+```output
+docs  .gitignore  README.md  src
+```
+
+### Home directories and ~
+
+Every user gets a **home directory** of their own, where they can keep files. For ordinary users it lives under `/home`:
+
+```bash
+ls /home
+```
+
+```output
+ada  jonas  mira
+```
+
+The administrator, `root`, is the exception: root's home is `/root`, not `/home/root`.
+
+The tilde, `~`, is the shell's shortcut for **your** home directory. `~/notes.txt` means `/home/mira/notes.txt` when Mira types it and `/home/jonas/notes.txt` when Jonas does. `~jonas` (a tilde followed by a user name) means Jonas's home, whoever types it:
+
+```bash fixture=projects
+echo ~ ~/notes.txt ~jonas
+```
+
+```output
+/home/mira /home/mira/notes.txt /home/jonas
+```
+
+The shell replaces `~` *before* the command runs, so `echo` only ever sees the full paths.
+
+### Absolute and relative paths
+
+An **absolute** path starts with `/`. It describes the way from the root, so it means the same thing wherever you are: `/home/mira/notes.txt` is always that one file.
+
+A **relative** path does **not** start with `/`. It starts from your current directory. When Mira is in `/home/mira`, `projects/website` means `/home/mira/projects/website`. If she were somewhere else, the same relative path would point somewhere else (or nowhere).
+
+Two special names exist in every directory:
+
+| Name | Means | Example from `/home/mira/projects` |
+|---|---|---|
+| `.` | this directory | `./website` is `/home/mira/projects/website` |
+| `..` | the parent directory, one level up | `..` is `/home/mira` |
+
+You saw them in the `ls -a` output above. `..` can be repeated: `../..` is two levels up. The parent of `/` is `/` itself.
+
+### Moving around with cd
+
+`cd` (change directory) moves you. It takes an absolute or a relative path:
+
+```bash fixture=projects
+cd projects/pixel-raiders/src
+pwd
+cd ../docs
+pwd
+cd ..
+pwd
+```
+
+```output
+/home/mira/projects/pixel-raiders/src
+/home/mira/projects/pixel-raiders/docs
+/home/mira/projects/pixel-raiders
+```
+
+`../docs` means "go up one level, then into `docs`". Three more forms are worth knowing:
+
+| Command | Takes you to |
+|---|---|
+| `cd` (no path) | your home directory |
+| `cd ~` | your home directory, too |
+| `cd -` | the directory you were in before |
+| `cd /` | the root directory |
+
+```bash fixture=projects
+cd /usr/share/doc
+pwd
+cd
+pwd
+```
+
+```output
+/usr/share/doc
+/home/mira
+```
+
+`cd` is built into the shell rather than being a separate program, because a program can't change the current directory of the shell that started it ([lesson 012.1](/learn/012.1) explains builtins).
+
+### Recursive listings
+
+**Recursive** means "this directory, and everything inside it, all the way down". `ls -R` lists a directory and then each directory below it, one block per directory:
+
+```bash fixture=projects
+ls -R projects/pixel-raiders
+```
+
+```output
+projects/pixel-raiders:
+docs  README.md  src
+
+projects/pixel-raiders/docs:
+design.md  levels.md
+
+projects/pixel-raiders/src:
+main.c	player.c
+```
+
+Many other commands use a recursive option too, for example `cp -r` and `rm -r` in [lesson 012.4](/learn/012.4). Careful: `ls -R` is a capital R, while `cp -r` and `rm -r` take a lower-case one.
+
+To list a directory itself instead of its contents, use `ls -d`. It's mostly combined with `-l`, to see a directory's own permissions:
+
+```bash fixture=projects
+ls -ld projects
+```
+
+```output
+drwxr-xr-x 4 mira mira 0 Nov  2 09:30 projects
+```
+
+### Searching for files by name with find
+
+<ExamOnly exam="010-200">
+
+`ls` shows one directory at a time. `find` walks a whole tree and prints every path that matches your tests. The pattern is:
+
+```text
+find WHERE TESTS
+```
+
+`-name` matches the file name. Put patterns with `*` in quotes, so that `find` gets the `*` and the shell doesn't expand it first:
+
+```bash fixture=projects
+find projects -name "*.md"
+```
+
+```output
+projects/pixel-raiders/README.md
+projects/pixel-raiders/docs/design.md
+projects/pixel-raiders/docs/levels.md
+projects/website/press-kit.md
+```
+
+`find` prints paths in the form you gave it: a relative start (`projects`) gives relative results, and an absolute one (`~` expands to `/home/mira`) gives absolute results:
+
+```bash fixture=projects
+find ~ -name "*.c"
+```
+
+```output
+/home/mira/projects/pixel-raiders/src/main.c
+/home/mira/projects/pixel-raiders/src/player.c
+```
+
+Useful tests to combine with `-name`:
+
+| Test | Matches |
+|---|---|
+| `-name "*.png"` | names matching the pattern, case-sensitive |
+| `-iname "readme*"` | the same, ignoring upper and lower case |
+| `-type f` | ordinary files only |
+| `-type d` | directories only |
+
+```bash fixture=projects
+find . -type d -name docs
+```
+
+```output
+./projects/pixel-raiders/docs
+```
+
+With no tests at all, `find projects` simply lists everything below `projects`. Searching from `/` works too, but as an ordinary user you'll see "Permission denied" for directories you may not read.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **New laptop, same paths.** Every developer's settings live in hidden files in their own home: Mira's in `/home/mira/.tuxpixel`, Jonas's in `/home/jonas/.tuxpixel`. The studio's setup guide therefore writes `~/.tuxpixel/settings.conf`, which works for everyone.
+- **Scripts use absolute paths.** The nightly backup script copies `/srv/assets`, not `assets`, because a script can be started from any directory and a relative path would then point somewhere else.
+- **Finding a lost file.** Ada knows the press kit is "somewhere in the website project". `find ~/projects -iname "*press*"` finds it without clicking through folders.
+- **Checking before deleting.** Before cleaning up, Jonas runs `ls -la` in the folder. A plain `ls` would hide `.gitignore`, and he would forget it's there.
+
+## Predict the output
+
+<Predict>
+
+```bash fixture=projects
+cd projects/website
+cd ../pixel-raiders/docs
+pwd
+```
+
+```output
+/home/mira/projects/pixel-raiders/docs
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=projects
+ls -a projects/pixel-raiders
+```
+
+```output
+.  ..  docs  .gitignore  README.md  src
+```
+
+</Predict>
+
+<Predict>
+
+```bash fixture=projects
+cd projects/pixel-raiders/src
+cd ../../..
+pwd
+```
+
+```output
+/home/mira
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Absolute means it starts with /">
+  <p>The test is the first character, nothing else. `/etc/hosts` is absolute. `etc/hosts`, `./run.sh`, `../notes.txt` and `docs/` are all relative. `~/notes.txt` looks relative, but the shell turns it into `/home/…/notes.txt`, an absolute path, before the command sees it.</p>
+</Callout>
+
+<Callout title="Hidden is just a leading dot">
+  <p>A hidden file is any file whose name starts with `.`. `ls -a` shows hidden names along with `.` and `..`; `ls -A` shows them without those two. There is no "hide" attribute or command.</p>
+</Callout>
+
+<Callout title="root's home is /root">
+  <p>Ordinary users live in `/home/<name>`. The root account's home is `/root`. And the root *directory* `/` is something else again: the top of the tree.</p>
+</Callout>
+
+<Callout title="cd with no argument goes home">
+  <p>`cd`, `cd ~` and `cd $HOME` all go to your home directory. `cd -` goes back to the previous directory, `cd ..` goes up one level and `cd /` goes to the root.</p>
+</Callout>
+
+<ExamOnly exam="010-200">
+
+<Callout title="ls -R vs. find">
+  <p>`ls -R` lists everything below a directory, grouped by directory. To search a tree for names that match a pattern, the answer is `find` with `-name` (or `-iname` to ignore case). Quote the pattern: `find . -name "*.txt"`.</p>
+</Callout>
+
+</ExamOnly>
+
+## Try it
+
+Open the [terminal](/terminal) and find your way around:
+
+1. Run `pwd`, then `ls -a`. Which of the names are hidden?
+2. Go to `/usr/share` with an absolute path, then to `/usr/share/doc` with a relative one. Check with `pwd` after each step.
+3. Run `cd -` twice and watch where you end up.
+4. Use `find /usr/share/doc -name "*.gz" -type f` and count roughly how many files it prints (`find` is on exam 010-200 only).
+5. Make a hidden directory: `mkdir ~/.secret`. Does a plain `ls` show it?
+
+When you're ready, [practise this objective](/practice?objective=012.3). Next, learn to create, copy, move and delete files in [lesson 012.4](/learn/012.4).

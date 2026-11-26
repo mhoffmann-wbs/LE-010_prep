@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet } from 'react-router'
 
 // Pillar pages are added here as they get built (PLAN.md §8).
 const NAV = [
+  { to: '/learn', label: 'Learn' },
   { to: '/practice', label: 'Practice' },
   { to: '/questions', label: 'Questions' },
   { to: '/mock', label: 'Mock exam' },

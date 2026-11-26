@@ -1,0 +1,228 @@
+export const meta = {
+  objectiveId: '011.3',
+  updated: '2026-11-26',
+  tldr: 'Free software gives users four freedoms: run, study and change, share, and share changes. Open source software meets the Open Source Definition. The FSF backs the first idea and the OSI the second. Copyleft licences (GPL) require that changes stay free; permissive licences (BSD) mostly just ask for credit. Creative Commons licences do the same job for content such as art and text. Proprietary software keeps those freedoms from you, which affects your digital autonomy and sovereignty.',
+  areasCovered: ['011.3.1', '011.3.2', '011.3.3', '011.3.4', '011.3.v1', '011.3.v2'],
+  termsCovered: ['011.3.t1', '011.3.t2', '011.3.t3', '011.3.t4', '011.3.t5', '011.3.t6', '011.3.t7', '011.3.t8', '011.3.vt1', '011.3.vt2', '011.3.vt3'],
+  links: [
+    { title: 'GNU: What is free software? (the four freedoms)', url: 'https://www.gnu.org/philosophy/free-sw.html' },
+    { title: 'GNU: What is copyleft?', url: 'https://www.gnu.org/licenses/copyleft.html' },
+    { title: 'GNU: licences (GPL, LGPL, AGPL)', url: 'https://www.gnu.org/licenses/licenses.html' },
+    { title: 'Free Software Foundation', url: 'https://www.fsf.org/' },
+    { title: 'Open Source Initiative: the Open Source Definition', url: 'https://opensource.org/osd' },
+    { title: 'Open Source Initiative: BSD 3-Clause licence', url: 'https://opensource.org/license/bsd-3-clause' },
+    { title: 'Creative Commons: about the licences', url: 'https://creativecommons.org/share-your-work/cclicenses/' },
+    { title: 'Free Software Foundation Europe: digital sovereignty and free software', url: 'https://fsfe.org/news/2025/news-20251124-01.html' },
+    { title: 'Open Source Initiative: open source as a global commons for digital sovereignty', url: 'https://opensource.org/blog/open-source-a-global-commons-to-enable-digital-sovereignty' },
+  ],
+}
+
+## Big idea
+
+When you buy a game, you normally get the **right to run** it and nothing more. You can't see how it works, can't fix it, can't hand copies to friends. That's **proprietary** software: the owner keeps control.
+
+Linux grew from another idea. People share a program together with its **source code** (the human-readable instructions) and give everyone the permission to use, study, change and share it. What decides what you may do is the program's **licence**, a legal text that comes with the software.
+
+A licence is not the same as price. "Free" in **free software** means freedom, not "no charge". Free software can be sold, and a program that costs nothing can still be proprietary. You can check what licences your own system carries: Debian keeps copies of the common ones.
+
+```bash
+ls /usr/share/common-licenses/GPL*
+```
+
+```output
+/usr/share/common-licenses/GPL	  /usr/share/common-licenses/GPL-2
+/usr/share/common-licenses/GPL-1  /usr/share/common-licenses/GPL-3
+```
+
+## Walkthrough
+
+### Free software and open source software
+
+Two movements, two names, mostly the same programs.
+
+| | **Free Software** | **Open Source Software** |
+|---|---|---|
+| Founded around | The GNU project and the **Free Software Foundation (FSF)**, started by Richard Stallman | The **Open Source Initiative (OSI)**, founded in the late 1990s |
+| Main message | Users' freedom is an ethical matter | Open development gives better software; a practical argument |
+| Definition | The four essential freedoms | The ten points of the **Open Source Definition** |
+
+The FSF's four essential freedoms are numbered from 0:
+
+| Freedom | You may |
+|---|---|
+| 0 | **Run** the program for any purpose |
+| 1 | **Study** how it works and **change** it (this needs the source code) |
+| 2 | **Share** copies |
+| 3 | **Share your changed versions** (this also needs the source code) |
+
+The Open Source Definition (maintained by the OSI) has ten criteria. A few are free redistribution, source code must be available, derived works must be allowed, and no discrimination against people or fields of work. A licence the OSI approves counts as an open source licence.
+
+In practice nearly every free software licence is also an open source licence, and the other way round. People who want to speak about both at once say "free and open source software". The two groups differ in their emphasis, not mostly in which programs they accept.
+
+<ExamOnly exam="010-160">
+
+You will also meet the abbreviations **FOSS** (free and open source software) and **FLOSS** (free/libre and open source software). Both mean the same family of software. The word *libre* comes from Spanish and French: it says "free" as in freedom, without the "free of charge" meaning.
+
+</ExamOnly>
+
+### Copyleft and permissive licences
+
+Free and open source licences fall into two groups, and the difference is what happens when someone passes your code on.
+
+| | **Copyleft** | **Permissive** |
+|---|---|---|
+| Idea | Anyone who distributes the software or a changed version must keep it free under the same terms | You may do almost anything, even make your changes proprietary |
+| Main duty | Pass on the source and the same licence | Keep the copyright notice and the licence text |
+| Examples | **GPL** (GNU General Public License), LGPL, AGPL | **BSD** licences, MIT, Apache 2.0 |
+
+**Copyleft** is a play on the word *copyright*. It uses copyright law to keep software free: the author says "you may copy and change this, as long as the people you give it to get the same freedoms". The **GPL** is the best-known copyleft licence. The Linux kernel is under the GPL, and so are many GNU tools. The **LGPL** is a weaker version made for libraries, and the **AGPL** extends the idea to programs people only use over a network, so that running a modified version as a web service still means sharing its source.
+
+A **permissive** licence puts very few conditions on reuse. The **BSD** licences ask mostly that you keep the copyright notice and that you don't use the authors' names to promote your product. A company may take BSD-licensed code, improve it, and sell the result without releasing its changes.
+
+You can read both on this system. A GPL licence starts with its name and version:
+
+```bash
+head -n 2 /usr/share/common-licenses/GPL-3
+```
+
+```output
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+```
+
+### Open content and Creative Commons
+
+Software licences are written for code. Art, music, photos, articles and manuals are **content**, and **Creative Commons (CC)** gives them a matching family of licences. Content shared under such terms is called **open content** when the licence lets others reuse it.
+
+A CC licence is built from four elements:
+
+| Element | Name | Means |
+|---|---|---|
+| **BY** | Attribution | You must credit the creator (every CC licence has this) |
+| **SA** | ShareAlike | Adaptations must be shared under the same terms (that's copyleft for content) |
+| **NC** | NonCommercial | Only non-commercial use is allowed |
+| **ND** | NoDerivatives | You may copy and share it, but not change it |
+
+The six licences are **CC BY**, **CC BY-SA**, **CC BY-NC**, **CC BY-NC-SA**, **CC BY-ND** and **CC BY-NC-ND**. CC BY is the most open, and CC BY-NC-ND the most restrictive. There is also **CC0**, which gives up as many rights as the law allows, so that anyone can use the work without conditions. NC and ND licences are not free licences by the FSF and OSI standard, as they limit use or changes. They are still useful for content you want shared under tighter rules.
+
+Creative Commons licences are not meant for software. For code, use a software licence.
+
+<ExamOnly exam="010-200">
+
+### Proprietary software
+
+**Proprietary software** (also called non-free) is software whose owner decides what you can do with it. You typically get only a binary, a licence that limits use, and no source code. Examples are commercial office suites and many games. It can be sold, free of charge, or shown with ads, so price isn't the test. The test is the freedoms.
+
+Proprietary doesn't mean "bad", and a lot of useful work is done with it. But there are consequences, the main one being dependence on the owner.
+
+### Digital autonomy and digital sovereignty
+
+**Digital autonomy** is the ability of a person or an organisation to decide for themselves how they use their computers and data: which software they run, where their files are stored, and whether they can leave a supplier.
+
+**Digital sovereignty** is the same idea at the level of a country, a public body or a company: control over their own digital infrastructure, data and rules. A government that depends wholly on one foreign company's proprietary software can't easily inspect it, fix it, or switch away.
+
+Free and open source software supports both, because you may read it, change it, run it yourself and switch to a different supplier. It does not make them automatic: you still need skills, money and good decisions. Organisations disagree on how much it contributes. The Free Software Foundation Europe argues that sovereignty needs free software, while the Open Source Initiative describes open source as a global commons that nobody owns and encourages joining the development communities. There is no single agreed definition, so on the exam remember the common ground: open licences give users **control and the ability to leave**, while a proprietary product can leave them **dependent on one vendor** (vendor lock-in).
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+### Open source business models
+
+If anyone may copy the software, how do people earn money? Common models:
+
+| Model | How it earns |
+|---|---|
+| **Support and subscriptions** | Customers pay for updates, help and guarantees. Red Hat and SUSE do this. |
+| **Services and consulting** | Experts build, adapt and run the software for customers. |
+| **Hosting (software as a service)** | The company runs the program for you and charges monthly. |
+| **Dual licensing** | The same code is sold under a free licence and a paid commercial one. |
+| **Open core** | The core is free, and extra features are sold under a proprietary licence. |
+| **Donations, sponsorship, crowdfunding** | Users and companies fund the work. |
+| **Selling hardware or related products** | Software is open; the device or the book isn't. |
+
+Companies also benefit from sharing code with others, since a community finds bugs and adds features.
+
+</ExamOnly>
+
+## At TuxPixel
+
+- **The game engine (Ada):** TuxPixel releases the "Pixel Raiders" engine under a **permissive** licence, so that other small studios may build on it even in commercial games. The studio chose this because it wants the engine used widely. A **copyleft** licence would have required others to share their changes too. Both are legitimate choices, and the studio checks each against its goals.
+- **The art and sprites (Jonas):** Jonas publishes some art for the community under **CC BY-SA**: people may reuse and remix it, if they credit him and share their remixes the same way. His commercial soundtrack stays **all rights reserved**.
+- **The docs:** the modding guide is under **CC BY**, so anyone may translate it, as long as they credit the studio.
+- **What they use:** the studio's laptops run GPL software and ship nothing that breaks the licence. Mira keeps a list of the licences of third-party libraries in the game before every release.
+- **Independence:** when the project chose a self-hosted code forge over a proprietary hosting service, Ada's argument was **digital autonomy**: the studio controls its source code and can move it without asking anyone.
+
+## Predict the output
+
+<Predict>
+
+```bash
+ls /usr/share/common-licenses/GPL*
+```
+
+```output
+/usr/share/common-licenses/GPL	  /usr/share/common-licenses/GPL-2
+/usr/share/common-licenses/GPL-1  /usr/share/common-licenses/GPL-3
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+head -n 2 /usr/share/common-licenses/GPL-3
+```
+
+```output
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+```
+
+</Predict>
+
+<Predict>
+
+```bash
+grep -m1 "Apache License" /usr/share/common-licenses/Apache-2.0
+```
+
+```output
+                                 Apache License
+```
+
+</Predict>
+
+## Exam traps
+
+<Callout title="Free means freedom, not price">
+  <p>Free software is about the four freedoms. It can be sold, and proprietary software can be given away at no charge. "Gratis" means no price, "libre" means freedom.</p>
+</Callout>
+
+<Callout title="Copyleft versus permissive">
+  <p>Copyleft (GPL) requires that changed versions you distribute stay under the same free terms. Permissive (BSD, MIT, Apache) lets others even make their versions proprietary. The BSD licences are permissive, and the GPL is the best-known copyleft licence.</p>
+</Callout>
+
+<Callout title="FSF or OSI">
+  <p>The Free Software Foundation (FSF) defines free software with four freedoms and promotes the GPL. The Open Source Initiative (OSI) maintains the Open Source Definition and approves licences. Open source stresses practical benefits.</p>
+</Callout>
+
+<Callout title="Creative Commons is for content">
+  <p>CC licences cover art, music, text and photos, not software. BY (credit), SA (share alike), NC (non-commercial) and ND (no derivatives) are the elements. Every CC licence requires attribution, apart from CC0.</p>
+</Callout>
+
+<Callout title="Open source is not always free of charge">
+  <p>A company can sell open source software, or sell support for it. What makes it open is the licence and the source code, not the price.</p>
+</Callout>
+
+## Try it
+
+Open the [terminal](/terminal):
+
+1. Run `ls /usr/share/common-licenses`. Which licences do you recognise?
+2. Run `head -n 20 /usr/share/common-licenses/BSD`. Is the text short or long compared to the GPL (`wc -l /usr/share/common-licenses/GPL-3`)?
+3. For each, say copyleft or permissive: GPL, BSD, MIT, LGPL.
+4. Which Creative Commons licence would you pick for a picture you want others to remix, but only if they share their remix under the same licence?
+5. Why might a city administration want open source software for its office computers?
+
+When you're ready, [practise this objective](/practice?objective=011.3). Next, see how Linux is used day to day, and how to stay safe, in [lesson 011.4](/learn/011.4).

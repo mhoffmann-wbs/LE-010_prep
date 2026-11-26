@@ -10,7 +10,9 @@ Authoritative sources (where they disagree with this plan, they win):
 - LPI FAQ on scoring (scale 200–800, pass at 500, set psychometrically): https://lpi.org/fpp7
 - Official learning materials for 010-200: https://learning.lpi.org/en/learning-materials/010-200/ (PDF version 2026-11-19, 409 pages). These are licensed **CC BY-NC-ND 4.0**, so the app links to them and never copies, adapts or translates their text, exercises or answers.
 
-The previous exam, 010-160 (objectives v1.6), can be booked until April 2027. The app does not cover it.
+The previous exam, 010-160 (objectives v1.6), can be booked until April 2027. The app covers it as a second exam track (§3b); 010-200 is the main one.
+- Objectives v1.6: https://wiki.lpi.org/wiki/Linux_Essentials_Objectives_V1.6 (oldid 5896, checked 2026-11-26)
+- Change summary 1.6 → 2.0: https://wiki.lpi.org/wiki/Linux_Essentials_Summary_Version_1.6_To_2.0 (oldid 5912)
 
 ---
 
@@ -19,7 +21,7 @@ The previous exam, 010-160 (objectives v1.6), can be booked until April 2027. Th
 | Topic | Decision |
 |---|---|
 | Name | **LE-010_prep**: `github.com/mhoffmann-wbs/LE-010_prep` → `https://mhoffmann-wbs.github.io/LE-010_prep/` |
-| Exam | **010-200 only** (objectives v2.0). There's no track switch. |
+| Exams | **010-200** (objectives v2.0) is the main exam and the default. **010-160** (v1.6) is selectable through the exam-track switch, as PCEP does with 30-02 (§3b). |
 | Audience | English-speaking **beginners**: bootcamp students, career changers and people who have never opened a terminal. Lessons explain everything from scratch. |
 | Theme | One invented company, **TuxPixel Studio**, a small indie game studio. The studio runs Linux laptops, a build server, an asset file server, a Raspberry Pi in the office and a few cloud instances. Every scenario, fixture file, hostname, user, log and script belongs to it. All people, games and figures are invented. |
 | Pillars | **Learn** (lessons), **Check** (practice, question bank and mock exam), and **Do / Explore**: a real Linux terminal in the browser, auto-graded terminal exercises, concept simulators, matcher drills and flashcards. |
@@ -29,7 +31,7 @@ The previous exam, 010-160 (objectives v1.6), can be booked until April 2027. Th
 | Mock exam | 40 items in 60 minutes, one per weight point. The report shows a scaled-score estimate against 500 on the 200–800 scale. |
 | Terminal | **Real Linux in the browser**: the v86 x86 emulator boots a minimal **Debian 12 (bookworm) i386** userland from a saved-state snapshot. It is self-hosted and loaded lazily, like PCEP's Pyodide (§5). |
 | Hard-to-emulate topics | systemd, journalctl, ssh/scp, ip/ss, useradd and dmesg are taught with **simulators driven by recorded transcripts** from a real Debian 13 system. Outputs are captured, never invented (§6a). There are no local labs. |
-| LPI materials | Every lesson is original and links to the matching LPI lesson as further reading. |
+| LPI materials | Every lesson is original and links to the LPI Learning Materials as further reading. learning.lpi.org refuses automated fetches (HTTP 403), so lessons link to the 010-200 index page; per-lesson deep links wait until someone checks the URL pattern in a browser. |
 | Stack | Vite, React, TypeScript, Tailwind v4, React Router, Zod, MDX, Vitest with RTL, oxlint, v86 and xterm.js. It's a static SPA: progress lives in `localStorage` and can be exported and imported. |
 
 ## 2. Exam facts the app must mirror
@@ -68,6 +70,24 @@ Notes on v2.0 content that is new or easy to get wrong. Check each one against c
 - 015.1: `ssh-keygen` and `~/.ssh/authorized_keys`.
 - 015.2: `wtmpdb last`.
 - 013.2: ERE with `.`, `[ ]`, `*` and `?` only.
+
+## 3b. The 010-160 track
+
+Learners pick their exam on the home page (it can be changed on the progress page). The choice is stored in progress (`track`) and filters practice, the question bank, the mock exam, readiness and the objective lists; lessons show both exams' material and mark the differences.
+
+**Model.** The 19 objectives map one to one (1.1 → 011.1 … 5.4 → 015.4) with the same weights, so there are no extra objectives. Each objective carries its v1.6 id, title and description verbatim. Areas and terms form one list per objective:
+- A line both versions list keeps its 2.0 id. When v1.6 only words it differently (the change summary calls it a rename, e.g. "Development languages" → "Programming languages"), it keeps the v1.6 wording as `v16Text`.
+- A line only 2.0 lists is tagged `exams: ['010-200']`. A line only v1.6 lists gets its own id (`012.2.v1` "Info pages", `012.2.vt2` "locate") and `exams: ['010-160']`.
+- A line whose contents changed (items added or removed, e.g. "syslog, dmesg" vs "journalctl, dmesg") counts as two lines, one per exam.
+- Some topics moved objective between versions (distribution life cycles: 4.1 → 011.1; vi and nano: 3.3 → 011.4; /etc/passwd and id/last/who/w: 5.1 → 015.2). Each exam's lines stay under its own objective, so lessons cross-link.
+
+**Items** need no exam field: an item is on an exam when at least one of its areas, and (if it tags terms) one of its terms, is on that exam (`itemInExam`). To put an item on both exams where the versions list a topic on different lines, tag both lines. `bank.test.ts` fails when an item ends up on neither exam.
+
+**Mock exam**: 40 items in 60 minutes on both exams (the v1.6 page says "40 questions in 60 minutes"), one per weight point, drawn from the track's items. Mock results record their exam.
+
+**Lessons** teach 2.0 as the main text. Material only one exam asks about sits in `<ExamOnly exam="…">` blocks: open on that exam's track, collapsed (but readable) on the other. A test requires a block for each exam that has lines of its own in the objective, and `areasCovered`/`termsCovered` list both exams' lines.
+
+**Bank targets** stay 15 per weight point for 010-200; every area of each exam needs 5 items on that exam, and every term of each exam must be tested or taught (`content:status` reports both exams).
 
 ## 4. Question bank
 
@@ -216,7 +236,10 @@ Scripts:
    - `content:verify` runs every claim in v86 under Node and writes `verified.json`; `verify.test.ts` checks claims against it offline, and CI reruns everything after rebuilding the guest. `fill` items gained `verify`, and output items `fixture` and `user`.
    - Lesson cells (`bash` cells you can edit and run, `static` fences, `output` blocks and `<Predict>`), tested through the real MDX pipeline and checked in Chrome: about 1 s per run.
    - `vm:smoke` checks the runner. The Docker-vs-v86 spot check was dropped once verification moved into v86 (§5c).
-3. **Lessons**: 19 lessons (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`). Each cites its sources and links to the LPI lesson. The per-lesson URL pattern on learning.lpi.org is checked, not guessed.
+3. **Lessons and the 010-160 track** (done 2026-11-26; per-lesson LPI deep links still open):
+   - The exam-track switch (§3b): v1.6 data in the blueprint, `itemInExam`, progress v2 with `track`, track-aware practice, mock, readiness and labels.
+   - 19 lessons with 252 verified snippet claims (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`), with `<ExamOnly>` blocks for each exam's own material. Each cites its sources and links to the LPI Learning Materials; per-lesson deep links wait until the URL pattern is checked in a browser (§1).
+   - `vm:run` to try a command in the guest while writing.
 4. **Question bank**: 600 items, every objective at target, every area at 5 or more, and every term covered.
 5. **Exercises**: terminal exercises with checks, plus the `/terminal` playground.
 6. **Explore I**: flashcards and drills.

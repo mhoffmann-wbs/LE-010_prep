@@ -28,5 +28,1427 @@
     "command": "printf 'boss\\nlevel\\nboss\\n' | sort | uniq",
     "exit": 0,
     "output": "boss\nlevel"
+  },
+  "09ff9a817c8bdef9": {
+    "id": "lesson 011.1:151",
+    "command": "uname -s\nuname -o",
+    "exit": 0,
+    "output": "Linux\nGNU/Linux"
+  },
+  "4fdfd6ff63ad360d": {
+    "id": "lesson 011.1:165",
+    "command": "grep -E \"^(ID|NAME)=\" /etc/os-release",
+    "exit": 0,
+    "output": "NAME=\"Debian GNU/Linux\"\nID=debian"
+  },
+  "fdf1414205d0e285": {
+    "id": "lesson 011.1:178",
+    "command": "for t in apt dnf zypper apk; do command -v $t || echo \"no $t\"; done",
+    "exit": 0,
+    "output": "/usr/bin/apt\nno dnf\nno zypper\nno apk"
+  },
+  "536dc6e04225d882": {
+    "id": "lesson 011.2:201",
+    "command": "dpkg -S /bin/ls",
+    "exit": 0,
+    "output": "coreutils: /bin/ls"
+  },
+  "f879badba8727723": {
+    "id": "lesson 011.2:213",
+    "command": "for t in dpkg rpm; do command -v $t || echo \"no $t\"; done",
+    "exit": 0,
+    "output": "/usr/bin/dpkg\nno rpm"
+  },
+  "70bcf996dbf9dded": {
+    "id": "lesson 011.2:226",
+    "command": "for t in perl python3 gcc git; do command -v $t || echo \"no $t\"; done",
+    "exit": 0,
+    "output": "/usr/bin/perl\nno python3\nno gcc\nno git"
+  },
+  "52b2e24c0e449c75": {
+    "id": "lesson 011.3:160",
+    "command": "ls /usr/share/common-licenses/GPL*",
+    "exit": 0,
+    "output": "/usr/share/common-licenses/GPL\t  /usr/share/common-licenses/GPL-2\n/usr/share/common-licenses/GPL-1  /usr/share/common-licenses/GPL-3"
+  },
+  "34039fc829178300": {
+    "id": "lesson 011.3:173",
+    "command": "head -n 2 /usr/share/common-licenses/GPL-3",
+    "exit": 0,
+    "output": "                    GNU GENERAL PUBLIC LICENSE\n                       Version 3, 29 June 2007"
+  },
+  "5968cf27d12c1aab": {
+    "id": "lesson 011.3:186",
+    "command": "grep -m1 \"Apache License\" /usr/share/common-licenses/Apache-2.0",
+    "exit": 0,
+    "output": "                                 Apache License"
+  },
+  "4f40657dfce82e36": {
+    "id": "lesson 011.4:230",
+    "command": "type vi nano",
+    "exit": 0,
+    "output": "vi is /usr/bin/vi\nnano is /usr/bin/nano"
+  },
+  "0e6e535f02d3ac05": {
+    "id": "lesson 011.4:243",
+    "command": "tty",
+    "exit": 0,
+    "output": "/dev/pts/0"
+  },
+  "40c86386d21ec53e": {
+    "id": "lesson 011.4:255",
+    "command": "echo $TERM",
+    "exit": 0,
+    "output": "xterm-256color"
+  },
+  "436f3c2a80da9ab9": {
+    "id": "lesson 012.1:37",
+    "command": "echo Pixel Raiders is out",
+    "exit": 0,
+    "output": "Pixel Raiders is out"
+  },
+  "e175677baf110f7d": {
+    "id": "lesson 012.1:67",
+    "command": "ls -l -a /usr/local/bin",
+    "exit": 0,
+    "output": "total 1\ndrwxr-xr-x  2 root root 0 Nov 23 00:00 .\ndrwxr-xr-x 10 root root 0 Nov 23 00:00 .."
+  },
+  "633c7d802678638d": {
+    "id": "lesson 012.1:81",
+    "command": "echo hello      world\necho \"hello      world\"",
+    "exit": 0,
+    "output": "hello world\nhello      world"
+  },
+  "9fefa857aea6e204": {
+    "id": "lesson 012.1:95",
+    "command": "echo -e \"name\\tscore\"",
+    "exit": 0,
+    "output": "name\tscore"
+  },
+  "2483f6742173d61d": {
+    "id": "lesson 012.1:105",
+    "command": "echo first; echo second",
+    "exit": 0,
+    "output": "first\nsecond"
+  },
+  "f505212f9b2488aa": {
+    "id": "lesson 012.1:118",
+    "command": "game=Pixel\necho $game\necho \"$game Raiders\"",
+    "exit": 0,
+    "output": "Pixel\nPixel Raiders"
+  },
+  "7e020359643e1e4a": {
+    "id": "lesson 012.1:131",
+    "command": "echo $HOME $USER $SHELL",
+    "exit": 0,
+    "output": "/home/mira mira /bin/bash"
+  },
+  "b57ece2403cb2331": {
+    "id": "lesson 012.1:147",
+    "command": "studio=TuxPixel\nbash -c 'echo [$studio]'\nexport studio\nbash -c 'echo [$studio]'",
+    "exit": 0,
+    "output": "[]\n[TuxPixel]"
+  },
+  "8af49d63ea2917a2": {
+    "id": "lesson 012.1:165",
+    "command": "env | grep ^HOME",
+    "exit": 0,
+    "output": "HOME=/home/mira"
+  },
+  "1ca2eeac27f78b4c": {
+    "id": "lesson 012.1:179",
+    "command": "echo $PATH",
+    "exit": 0,
+    "output": "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+  },
+  "c8faf235ec79aff4": {
+    "id": "lesson 012.1:209",
+    "command": "name=Mira\necho $name\necho \"$name\"\necho '$name'\necho \\$name",
+    "exit": 0,
+    "output": "Mira\nMira\n$name\n$name"
+  },
+  "8a19e3fd370e94fc": {
+    "id": "lesson 012.1:228",
+    "command": "echo \"Cost: \\$5\"\necho 'It costs $5 today'",
+    "exit": 0,
+    "output": "Cost: $5\nIt costs $5 today"
+  },
+  "5440b625438db99f": {
+    "id": "lesson 012.1:242",
+    "command": "echo \"Today the shell says: $(echo hi)\"",
+    "exit": 0,
+    "output": "Today the shell says: hi"
+  },
+  "daabe367faeac699": {
+    "id": "lesson 012.1:260",
+    "command": "type cd\ntype ls\ntype type",
+    "exit": 0,
+    "output": "cd is a shell builtin\nls is /usr/bin/ls\ntype is a shell builtin"
+  },
+  "82427e05575c9c46": {
+    "id": "lesson 012.1:292",
+    "command": "readlink /bin\nreadlink /sbin",
+    "exit": 0,
+    "output": "usr/bin\nusr/sbin"
+  },
+  "883cf02b2e2c708a": {
+    "id": "lesson 012.1:317",
+    "command": "who=Jonas\necho \"Hi $who\"\necho 'Hi $who'",
+    "exit": 0,
+    "output": "Hi Jonas\nHi $who"
+  },
+  "39486e7fe1a15673": {
+    "id": "lesson 012.1:332",
+    "command": "team=TuxPixel\nbash -c 'echo \"[$team]\"'",
+    "exit": 0,
+    "output": "[]"
+  },
+  "74da81b65d91868b": {
+    "id": "lesson 012.1:345",
+    "command": "echo a   b  \"c   d\"",
+    "exit": 0,
+    "output": "a b c   d"
+  },
+  "cccff51e625dc93a": {
+    "id": "lesson 012.2:60",
+    "command": "man cp | head -n 10",
+    "exit": 0,
+    "output": "CP(1)                            User Commands                           CP(1)\n\nNAME\n       cp - copy files and directories\n\nSYNOPSIS\n       cp [OPTION]... [-T] SOURCE DEST\n       cp [OPTION]... SOURCE... DIRECTORY\n       cp [OPTION]... -t DIRECTORY SOURCE...\n"
+  },
+  "07f7927f59b7727f": {
+    "id": "lesson 012.2:112",
+    "command": "man 5 passwd | head -n 5",
+    "exit": 0,
+    "output": "PASSWD(5)               File Formats and Configuration               PASSWD(5)\n\nNAME\n       passwd - the password file\n"
+  },
+  "8241fa0844efe311": {
+    "id": "lesson 012.2:128",
+    "command": "man -k \"^passwd$\"\nman -f passwd\nwhatis ls",
+    "exit": 0,
+    "output": "passwd (1)           - change user password\npasswd (5)           - the password file\npasswd (1)           - change user password\npasswd (5)           - the password file\nls (1)               - list directory contents"
+  },
+  "a764af7e91a353ad": {
+    "id": "lesson 012.2:144",
+    "command": "man -w 5 passwd",
+    "exit": 0,
+    "output": "/usr/share/man/man5/passwd.5.gz"
+  },
+  "1b8f37db16ac0463": {
+    "id": "lesson 012.2:160",
+    "command": "cp --help | head -n 3",
+    "exit": 0,
+    "output": "Usage: cp [OPTION]... [-T] SOURCE DEST\n  or:  cp [OPTION]... SOURCE... DIRECTORY\n  or:  cp [OPTION]... -t DIRECTORY SOURCE..."
+  },
+  "32b18c0962d4028f": {
+    "id": "lesson 012.2:176",
+    "command": "help cd | head -n 2",
+    "exit": 0,
+    "output": "cd: cd [-L|[-P [-e]] [-@]] [dir]\n    Change the shell working directory."
+  },
+  "c97304ca57f59aa5": {
+    "id": "lesson 012.2:193",
+    "command": "ls /usr/share/doc/adduser",
+    "exit": 0,
+    "output": "changelog.gz  copyright  examples  NEWS.Debian.gz  README.gz  TODO"
+  },
+  "1bf709973078aeec": {
+    "id": "lesson 012.2:240",
+    "command": "man -f cp",
+    "exit": 0,
+    "output": "cp (1)               - copy files and directories"
+  },
+  "9d6750d6591d135f": {
+    "id": "lesson 012.2:252",
+    "command": "man -w ls",
+    "exit": 0,
+    "output": "/usr/share/man/man1/ls.1.gz"
+  },
+  "ca1c6cb662d159e5": {
+    "id": "lesson 012.2:264",
+    "command": "whatis -s 5 passwd",
+    "exit": 0,
+    "output": "passwd (5)           - the password file"
+  },
+  "5c11d6eb004682af": {
+    "id": "lesson 012.3:30",
+    "command": "pwd",
+    "exit": 0,
+    "output": "/home/mira"
+  },
+  "501ed781a091e5b4": {
+    "id": "lesson 012.3:56",
+    "command": "ls projects/pixel-raiders",
+    "exit": 0,
+    "output": "docs  README.md  src"
+  },
+  "b14c6a7081ab0915": {
+    "id": "lesson 012.3:66",
+    "command": "ls -F projects/pixel-raiders",
+    "exit": 0,
+    "output": "docs/  README.md  src/"
+  },
+  "495b733752234846": {
+    "id": "lesson 012.3:94",
+    "command": "ls -l projects",
+    "exit": 0,
+    "output": "total 1\ndrwxr-xr-x 4 mira mira 0 Nov  2 09:30 pixel-raiders\ndrwxr-xr-x 2 mira mira 0 Nov  2 09:30 website"
+  },
+  "0eeadbbaca129345": {
+    "id": "lesson 012.3:110",
+    "command": "ls",
+    "exit": 0,
+    "output": "notes.txt  projects"
+  },
+  "27a5b9222c10e1fd": {
+    "id": "lesson 012.3:118",
+    "command": "ls -a",
+    "exit": 0,
+    "output": ".  ..  .bash_logout  .bashrc  notes.txt  .profile  projects  .tuxpixel"
+  },
+  "2b65c3895d2f18ad": {
+    "id": "lesson 012.3:128",
+    "command": "ls -A projects/pixel-raiders",
+    "exit": 0,
+    "output": "docs  .gitignore  README.md  src"
+  },
+  "4d3ab31eb81fcf47": {
+    "id": "lesson 012.3:140",
+    "command": "ls /home",
+    "exit": 0,
+    "output": "ada  jonas  mira"
+  },
+  "6e3662a9486ab2e9": {
+    "id": "lesson 012.3:152",
+    "command": "echo ~ ~/notes.txt ~jonas",
+    "exit": 0,
+    "output": "/home/mira /home/mira/notes.txt /home/jonas"
+  },
+  "d381a3b23ea659a5": {
+    "id": "lesson 012.3:181",
+    "command": "cd projects/pixel-raiders/src\npwd\ncd ../docs\npwd\ncd ..\npwd",
+    "exit": 0,
+    "output": "/home/mira/projects/pixel-raiders/src\n/home/mira/projects/pixel-raiders/docs\n/home/mira/projects/pixel-raiders"
+  },
+  "a435fc50f236d7c6": {
+    "id": "lesson 012.3:205",
+    "command": "cd /usr/share/doc\npwd\ncd\npwd",
+    "exit": 0,
+    "output": "/usr/share/doc\n/home/mira"
+  },
+  "e10da4b2b93cd81b": {
+    "id": "lesson 012.3:223",
+    "command": "ls -R projects/pixel-raiders",
+    "exit": 0,
+    "output": "projects/pixel-raiders:\ndocs  README.md  src\n\nprojects/pixel-raiders/docs:\ndesign.md  levels.md\n\nprojects/pixel-raiders/src:\nmain.c\tplayer.c"
+  },
+  "242e9585e3973b11": {
+    "id": "lesson 012.3:242",
+    "command": "ls -ld projects",
+    "exit": 0,
+    "output": "drwxr-xr-x 4 mira mira 0 Nov  2 09:30 projects"
+  },
+  "58dd9657913feffc": {
+    "id": "lesson 012.3:262",
+    "command": "find projects -name \"*.md\"",
+    "exit": 0,
+    "output": "projects/pixel-raiders/README.md\nprojects/pixel-raiders/docs/design.md\nprojects/pixel-raiders/docs/levels.md\nprojects/website/press-kit.md"
+  },
+  "525e43a4a95ab227": {
+    "id": "lesson 012.3:275",
+    "command": "find ~ -name \"*.c\"",
+    "exit": 0,
+    "output": "/home/mira/projects/pixel-raiders/src/main.c\n/home/mira/projects/pixel-raiders/src/player.c"
+  },
+  "82d5e2c9bc127305": {
+    "id": "lesson 012.3:293",
+    "command": "find . -type d -name docs",
+    "exit": 0,
+    "output": "./projects/pixel-raiders/docs"
+  },
+  "dc99b254cab37546": {
+    "id": "lesson 012.3:316",
+    "command": "cd projects/website\ncd ../pixel-raiders/docs\npwd",
+    "exit": 0,
+    "output": "/home/mira/projects/pixel-raiders/docs"
+  },
+  "cbe4a2bf88cd770b": {
+    "id": "lesson 012.3:330",
+    "command": "ls -a projects/pixel-raiders",
+    "exit": 0,
+    "output": ".  ..  docs  .gitignore  README.md  src"
+  },
+  "f99d655449364798": {
+    "id": "lesson 012.3:342",
+    "command": "cd projects/pixel-raiders/src\ncd ../../..\npwd",
+    "exit": 0,
+    "output": "/home/mira"
+  },
+  "6dcf49efd4a82e0c": {
+    "id": "lesson 012.4:27",
+    "command": "ls art",
+    "exit": 0,
+    "output": "backup\t    boss1.png  hero1.png  hero3.png  Notes.txt\tslime.png\nboss10.png  boss2.png  hero2.png  notes.txt  readme.md"
+  },
+  "c441f53870d66a0c": {
+    "id": "lesson 012.4:46",
+    "command": "cd art\ntouch todo.txt ideas.txt\nls todo.txt ideas.txt",
+    "exit": 0,
+    "output": "ideas.txt  todo.txt"
+  },
+  "ed5df895656ca87d": {
+    "id": "lesson 012.4:60",
+    "command": "cd art\nmkdir levels/world1/boss\necho \"exit status: $?\"",
+    "exit": 0,
+    "output": "mkdir: cannot create directory ‘levels/world1/boss’: No such file or directory\nexit status: 1"
+  },
+  "b124a1324f66a375": {
+    "id": "lesson 012.4:73",
+    "command": "cd art\nmkdir -p levels/world1/boss\nls levels/world1",
+    "exit": 0,
+    "output": "boss"
+  },
+  "20771cba631ff53f": {
+    "id": "lesson 012.4:87",
+    "command": "cd art\ncp readme.md backup\nrmdir backup",
+    "exit": 1,
+    "output": "rmdir: failed to remove 'backup': Directory not empty"
+  },
+  "5358296f9c924197": {
+    "id": "lesson 012.4:103",
+    "command": "cd art\ncp hero1.png hero1-backup.png\ncp readme.md backup\nls backup",
+    "exit": 0,
+    "output": "readme.md"
+  },
+  "1786273162705617": {
+    "id": "lesson 012.4:118",
+    "command": "cd art\ncp backup backup2\ncp -r backup backup2\nls -d backup*",
+    "exit": 0,
+    "output": "cp: -r not specified; omitting directory 'backup'\nbackup\tbackup2"
+  },
+  "a73b93e3c939fe2d": {
+    "id": "lesson 012.4:142",
+    "command": "cd art\nmv slime.png blob.png\nmv boss1.png boss2.png boss10.png backup\nls backup\nls blob.png slime.png 2>&1",
+    "exit": 2,
+    "output": "boss10.png  boss1.png  boss2.png\nls: cannot access 'slime.png': No such file or directory\nblob.png"
+  },
+  "033e3109a00cbdb7": {
+    "id": "lesson 012.4:162",
+    "command": "cd art\nrm slime.png\nls slime.png 2>&1",
+    "exit": 2,
+    "output": "ls: cannot access 'slime.png': No such file or directory"
+  },
+  "e9dee40df7726afd": {
+    "id": "lesson 012.4:174",
+    "command": "cd art\nrm backup\nrm -r backup\nls -d backup 2>&1",
+    "exit": 2,
+    "output": "rm: cannot remove 'backup': Is a directory\nls: cannot access 'backup': No such file or directory"
+  },
+  "a35bf912450a0cdb": {
+    "id": "lesson 012.4:198",
+    "command": "cd art\necho rm *.png",
+    "exit": 0,
+    "output": "rm boss10.png boss1.png boss2.png hero1.png hero2.png hero3.png slime.png"
+  },
+  "9e94f59f044e6c4d": {
+    "id": "lesson 012.4:211",
+    "command": "cd art\ncat notes.txt\ncat Notes.txt\nls NOTES.TXT 2>&1",
+    "exit": 2,
+    "output": "lower-case notes\nCapitalised notes\nls: cannot access 'NOTES.TXT': No such file or directory"
+  },
+  "7aa9ebd9f7638db3": {
+    "id": "lesson 012.4:226",
+    "command": "cd art\nmv notes.txt Notes.txt\ncat Notes.txt",
+    "exit": 0,
+    "output": "lower-case notes"
+  },
+  "7dbd87ce713fcea4": {
+    "id": "lesson 012.4:252",
+    "command": "cd art\necho hero*\necho boss?.png\necho hero[12].png\necho [!b]*.png",
+    "exit": 0,
+    "output": "hero1.png hero2.png hero3.png\nboss1.png boss2.png\nhero1.png hero2.png\nhero1.png hero2.png hero3.png slime.png"
+  },
+  "fdead8a063f1aaf2": {
+    "id": "lesson 012.4:274",
+    "command": "cd art\nls *.jpg 2>&1\necho \"*.png\"",
+    "exit": 0,
+    "output": "ls: cannot access '*.jpg': No such file or directory\n*.png"
+  },
+  "6c771e4b1ae848d4": {
+    "id": "lesson 012.4:300",
+    "command": "cd art\necho boss*.png",
+    "exit": 0,
+    "output": "boss10.png boss1.png boss2.png"
+  },
+  "91fc1fb453afc3b3": {
+    "id": "lesson 012.4:313",
+    "command": "cd art\necho ????1.png",
+    "exit": 0,
+    "output": "boss1.png hero1.png"
+  },
+  "9026d2d006f4b351": {
+    "id": "lesson 012.4:326",
+    "command": "cd art\nmkdir -p a/b\ncp readme.md a/b\nls a/b",
+    "exit": 0,
+    "output": "readme.md"
+  },
+  "352ebabd638b5603": {
+    "id": "lesson 013.1:49",
+    "command": "tar -cvf sprites.tar assets/sprites",
+    "exit": 0,
+    "output": "assets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png"
+  },
+  "cac885d023c589d9": {
+    "id": "lesson 013.1:61",
+    "command": "tar -cf sprites.tar assets/sprites\ntar -tf sprites.tar",
+    "exit": 0,
+    "output": "assets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png"
+  },
+  "c9783f738b523d1f": {
+    "id": "lesson 013.1:74",
+    "command": "mkdir out\ntar -xvf assets-0.9.tar.gz -C out",
+    "exit": 0,
+    "output": "assets/\nassets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png\nassets/sounds/\nassets/sounds/jump.ogg\nassets/levels/\nassets/levels/level1.txt\nassets/README.md"
+  },
+  "2da10de04d9ef404": {
+    "id": "lesson 013.1:93",
+    "command": "tar -xf assets-0.9.tar.gz assets/README.md\ncat assets/README.md",
+    "exit": 0,
+    "output": "# Pixel Raiders assets\n\nRelease 0.9. Sprites are 32x32."
+  },
+  "696e6b9a725b914d": {
+    "id": "lesson 013.1:118",
+    "command": "tar -czvf backup.tar.gz assets",
+    "exit": 0,
+    "output": "assets/\nassets/sprites/\nassets/sprites/hero.png\nassets/sprites/slime.png\nassets/sounds/\nassets/sounds/jump.ogg\nassets/levels/\nassets/levels/level1.txt\nassets/README.md"
+  },
+  "bf317f6bbbc7a067": {
+    "id": "lesson 013.1:136",
+    "command": "tar -cjf a.tar.bz2 assets\ntar -cJf a.tar.xz assets\nfile a.tar.bz2 a.tar.xz",
+    "exit": 0,
+    "output": "a.tar.bz2: bzip2 compressed data, block size = 900k\na.tar.xz:  XZ compressed data, checksum CRC64"
+  },
+  "56e55cc9efc35496": {
+    "id": "lesson 013.1:149",
+    "command": "tar -czf backup.tar.gz assets\ntar -tzf backup.tar.gz | wc -l",
+    "exit": 0,
+    "output": "9"
+  },
+  "408cdd7bfd26c76f": {
+    "id": "lesson 013.1:172",
+    "command": "yes \"slime hits hero for 3 damage\" | head -n 500 > fight.log\nwc -c < fight.log\ngzip -k fight.log\nwc -c < fight.log.gz\nls -1",
+    "exit": 0,
+    "output": "14500\n111\nfight.log\nfight.log.gz"
+  },
+  "e0aaeef163ec80f2": {
+    "id": "lesson 013.1:189",
+    "command": "cp /etc/hostname name.txt\ngzip name.txt\nls -1\ngunzip name.txt.gz\nls -1",
+    "exit": 0,
+    "output": "name.txt.gz\nname.txt"
+  },
+  "3430f6f0ae4dcb38": {
+    "id": "lesson 013.1:204",
+    "command": "gzip assets\necho \"exit status: $?\"",
+    "exit": 0,
+    "output": "gzip: assets is a directory -- ignored\nexit status: 2"
+  },
+  "498e229f49985399": {
+    "id": "lesson 013.1:220",
+    "command": "zip -rq assets.zip assets\nunzip -l assets.zip",
+    "exit": 0,
+    "output": "Archive:  assets.zip\n  Length      Date    Time    Name\n---------  ---------- -----   ----\n        0  2026-11-02 09:30   assets/\n        0  2026-11-02 09:30   assets/sprites/\n       25  2026-11-02 09:30   assets/sprites/hero.png\n       26  2026-11-02 09:30   assets/sprites/slime.png\n        0  2026-11-02 09:30   assets/sounds/\n       24  2026-11-02 09:30   assets/sounds/jump.ogg\n        0  2026-11-02 09:30   assets/levels/\n       33  2026-11-02 09:30   assets/levels/level1.txt\n       56  2026-11-02 09:30   assets/README.md\n---------                     -------\n      164                     9 files"
+  },
+  "0383bed475363b65": {
+    "id": "lesson 013.1:244",
+    "command": "zip -rq a.zip assets\nmkdir out\nunzip -q a.zip -d out\nls -1 out/assets",
+    "exit": 0,
+    "output": "levels\nREADME.md\nsounds\nsprites"
+  },
+  "4b7b9edfef55b848": {
+    "id": "lesson 013.1:271",
+    "command": "tar -cf sprites.tar assets/sprites\ntar -tf sprites.tar | wc -l",
+    "exit": 0,
+    "output": "3"
+  },
+  "0495e2ab5b2cc22e": {
+    "id": "lesson 013.1:284",
+    "command": "cp /etc/hostname server.txt\ngzip -k server.txt\nls -1",
+    "exit": 0,
+    "output": "server.txt\nserver.txt.gz"
+  },
+  "4f42bef9f66f8c9c": {
+    "id": "lesson 013.1:299",
+    "command": "mkdir unpacked\ntar -xzf assets-0.9.tar.gz -C unpacked\nls -1 unpacked",
+    "exit": 0,
+    "output": "assets"
+  },
+  "4c599ed7fe81c6a8": {
+    "id": "lesson 013.2:44",
+    "command": "grep ERROR build.log > errors.txt\ncat errors.txt",
+    "exit": 0,
+    "output": "ERROR missing file sounds/boom.ogg\nERROR link failed: undefined reference to player_jump"
+  },
+  "4f89d3dad7fa59a4": {
+    "id": "lesson 013.2:56",
+    "command": "grep ERROR build.log > errors.txt\ngrep WARN build.log >> errors.txt\ncat errors.txt",
+    "exit": 0,
+    "output": "ERROR missing file sounds/boom.ogg\nERROR link failed: undefined reference to player_jump\nWARN texture hero.png is not 32x32\nWARN unused variable speed in enemy.c"
+  },
+  "8c883878c31421c2": {
+    "id": "lesson 013.2:71",
+    "command": "echo first > f\necho second > f\necho third >> f\ncat f",
+    "exit": 0,
+    "output": "second\nthird"
+  },
+  "ab599f5a0281d8ec": {
+    "id": "lesson 013.2:89",
+    "command": "ls nothere build.log > out.txt",
+    "exit": 2,
+    "output": "ls: cannot access 'nothere': No such file or directory"
+  },
+  "151aa8827b7da169": {
+    "id": "lesson 013.2:99",
+    "command": "ls nothere build.log > out.txt 2> err.txt\necho \"out.txt holds:\"\ncat out.txt\necho \"err.txt holds:\"\ncat err.txt",
+    "exit": 0,
+    "output": "out.txt holds:\nbuild.log\nerr.txt holds:\nls: cannot access 'nothere': No such file or directory"
+  },
+  "71af5b12aabffb6e": {
+    "id": "lesson 013.2:116",
+    "command": "ls nothere build.log &> both.txt\ncat both.txt",
+    "exit": 0,
+    "output": "ls: cannot access 'nothere': No such file or directory\nbuild.log"
+  },
+  "3863125b0d88711a": {
+    "id": "lesson 013.2:128",
+    "command": "ls nothere build.log 2>&1 > out.txt",
+    "exit": 2,
+    "output": "ls: cannot access 'nothere': No such file or directory"
+  },
+  "c30647128ebd8929": {
+    "id": "lesson 013.2:138",
+    "command": "ls nothere build.log 2> /dev/null\necho \"exit status: $?\"",
+    "exit": 0,
+    "output": "build.log\nexit status: 2"
+  },
+  "2428a12d5751daec": {
+    "id": "lesson 013.2:154",
+    "command": "wc -l build.log\nwc -l < build.log",
+    "exit": 0,
+    "output": "9 build.log\n9"
+  },
+  "50110da21b75208c": {
+    "id": "lesson 013.2:170",
+    "command": "grep ERROR build.log | wc -l",
+    "exit": 0,
+    "output": "2"
+  },
+  "8aa1dbefe9dbdd8f": {
+    "id": "lesson 013.2:182",
+    "command": "grep ERROR build.log | tee errors.txt | wc -l\ncat errors.txt",
+    "exit": 0,
+    "output": "2\nERROR missing file sounds/boom.ogg\nERROR link failed: undefined reference to player_jump"
+  },
+  "d6551e04dac396a2": {
+    "id": "lesson 013.2:197",
+    "command": "cat -n build.log | head -n 3",
+    "exit": 0,
+    "output": "     1\tINFO compiling src/main.c\n     2\tINFO compiling src/player.c\n     3\tWARN texture hero.png is not 32x32"
+  },
+  "900389e094ab89cc": {
+    "id": "lesson 013.2:209",
+    "command": "head -n 2 build.log\necho ---\ntail -n 2 build.log",
+    "exit": 0,
+    "output": "INFO compiling src/main.c\nINFO compiling src/player.c\n---\nERROR link failed: undefined reference to player_jump\nINFO build finished with 2 errors"
+  },
+  "e0b4c6bdb4416aca": {
+    "id": "lesson 013.2:237",
+    "command": "wc build.log\nwc -l build.log",
+    "exit": 0,
+    "output": "  9  41 304 build.log\n9 build.log"
+  },
+  "96666465503aca90": {
+    "id": "lesson 013.2:253",
+    "command": "sort enemies.txt",
+    "exit": 0,
+    "output": "bat\nbat\nghost\nghosts\ngoblin\ngoblin\nskeleton\nSkeleton\nslime\nslime\nslime"
+  },
+  "e72f93fe89a16951": {
+    "id": "lesson 013.2:282",
+    "command": "tail -n +2 playtest.csv | sort -t, -k3 | head -n 3\necho ---\ntail -n +2 playtest.csv | sort -t, -k3 -n | head -n 3",
+    "exit": 0,
+    "output": "jonas,3,1100,7\nmira,1,1200,2\nmira,2,1500,3\n---\njonas,2,700,9\njonas,1,950,5\njonas,3,1100,7"
+  },
+  "82eda4a6c04e6dbd": {
+    "id": "lesson 013.2:300",
+    "command": "tail -n +2 playtest.csv | sort -t, -k3 -n -r | head -n 3",
+    "exit": 0,
+    "output": "mira,3,2600,4\nada,1,2100,0\nada,2,1800,1"
+  },
+  "25ec1b4f0b045984": {
+    "id": "lesson 013.2:314",
+    "command": "cut -d, -f1,3 playtest.csv | head -n 3",
+    "exit": 0,
+    "output": "player,score\nmira,1200\njonas,950"
+  },
+  "afb46ad3ea2e1535": {
+    "id": "lesson 013.2:326",
+    "command": "cut -c1-4 playtest.csv | head -n 3",
+    "exit": 0,
+    "output": "play\nmira\njona"
+  },
+  "7053d906f42da298": {
+    "id": "lesson 013.2:342",
+    "command": "uniq enemies.txt | head -n 4\necho ---\nsort enemies.txt | uniq",
+    "exit": 0,
+    "output": "slime\nbat\ngoblin\nslime\n---\nbat\nghost\nghosts\ngoblin\nskeleton\nSkeleton\nslime"
+  },
+  "0abf447bb4debd22": {
+    "id": "lesson 013.2:365",
+    "command": "sort enemies.txt | uniq -c | sort -rn | head -n 3",
+    "exit": 0,
+    "output": "      3 slime\n      2 goblin\n      2 bat"
+  },
+  "635de42a1a17fe98": {
+    "id": "lesson 013.2:383",
+    "command": "grep ERROR build.log",
+    "exit": 0,
+    "output": "ERROR missing file sounds/boom.ogg\nERROR link failed: undefined reference to player_jump"
+  },
+  "6b157af166a326aa": {
+    "id": "lesson 013.2:403",
+    "command": "grep -n ERROR build.log\necho ---\ngrep -c WARN build.log\necho ---\ngrep -v INFO build.log\necho ---\ngrep -i HERO build.log",
+    "exit": 0,
+    "output": "5:ERROR missing file sounds/boom.ogg\n8:ERROR link failed: undefined reference to player_jump\n---\n2\n---\nWARN texture hero.png is not 32x32\nERROR missing file sounds/boom.ogg\nWARN unused variable speed in enemy.c\nERROR link failed: undefined reference to player_jump\n---\nWARN texture hero.png is not 32x32"
+  },
+  "1af4fb858b413071": {
+    "id": "lesson 013.2:429",
+    "command": "mkdir logs\ncp build.log logs/monday.log\ncp build.log logs/tuesday.log\ngrep -r hero logs",
+    "exit": 0,
+    "output": "logs/monday.log:WARN texture hero.png is not 32x32\nlogs/tuesday.log:WARN texture hero.png is not 32x32"
+  },
+  "c5804c66f7ff0766": {
+    "id": "lesson 013.2:458",
+    "command": "grep 's.ime' enemies.txt\necho ---\ngrep '^[sb]' enemies.txt\necho ---\ngrep 't$' enemies.txt\necho ---\ngrep 'go*blin' enemies.txt",
+    "exit": 0,
+    "output": "slime\nslime\nslime\n---\nslime\nbat\nslime\nbat\nslime\nskeleton\n---\nbat\nbat\nghost\n---\ngoblin\ngoblin"
+  },
+  "3635a484e5c9c64f": {
+    "id": "lesson 013.2:503",
+    "command": "grep -E 'ghosts?' enemies.txt\necho ---\ngrep -E 'bat|ghost' enemies.txt\necho ---\ngrep -E '^(slime|bat)$' enemies.txt",
+    "exit": 0,
+    "output": "ghost\nghosts\n---\nbat\nbat\nghost\nghosts\n---\nslime\nbat\nslime\nbat\nslime"
+  },
+  "3748af397865ce96": {
+    "id": "lesson 013.2:529",
+    "command": "grep 'ghosts?' enemies.txt\necho \"exit status: $?\"",
+    "exit": 0,
+    "output": "exit status: 1"
+  },
+  "1aebc39a8b0ad03b": {
+    "id": "lesson 013.2:550",
+    "command": "grep 'ghosts\\?' enemies.txt\necho ---\ngrep 'ghosts?' enemies.txt\necho \"exit status: $?\"",
+    "exit": 0,
+    "output": "ghost\nghosts\n---\nexit status: 1"
+  },
+  "de59cb25ba710bc5": {
+    "id": "lesson 013.2:582",
+    "command": "grep -v INFO build.log | wc -l",
+    "exit": 0,
+    "output": "4"
+  },
+  "dc9f935a805b99d8": {
+    "id": "lesson 013.2:594",
+    "command": "cut -d, -f1 playtest.csv | tail -n +2 | sort -r | head -n 2",
+    "exit": 0,
+    "output": "mira\nmira"
+  },
+  "eb4d96070127717a": {
+    "id": "lesson 013.2:607",
+    "command": "echo hello > note.txt\necho world >> note.txt\necho again > note.txt\ncat note.txt",
+    "exit": 0,
+    "output": "again"
+  },
+  "d0c16e582a900c92": {
+    "id": "lesson 013.3:45",
+    "command": "cat > hello.sh << 'EOF'\n#!/bin/bash\n# Greet the team\nname=\"Mira\"\necho \"Hello, $name! Welcome to TuxPixel Studio.\"\nEOF\ncat hello.sh",
+    "exit": 0,
+    "output": "#!/bin/bash\n# Greet the team\nname=\"Mira\"\necho \"Hello, $name! Welcome to TuxPixel Studio.\""
+  },
+  "e75eac3a7b943ef5": {
+    "id": "lesson 013.3:71",
+    "command": "cat > hello.sh << 'EOF'\n#!/bin/bash\nname=\"Mira\"\necho \"Hello, $name!\"\nEOF\nbash hello.sh",
+    "exit": 0,
+    "output": "Hello, Mira!"
+  },
+  "cd135dff57bafa89": {
+    "id": "lesson 013.3:86",
+    "command": "cat > hello.sh << 'EOF'\n#!/bin/bash\necho \"Hello from a program!\"\nEOF\n./hello.sh 2> /dev/null\necho \"status without permission: $?\"\nchmod +x hello.sh\n./hello.sh",
+    "exit": 0,
+    "output": "status without permission: 126\nHello from a program!"
+  },
+  "fe5450f9c90d8d4a": {
+    "id": "lesson 013.3:108",
+    "command": "game=\"Pixel Raiders\"\nversion=0.9\necho \"$game version $version\"",
+    "exit": 0,
+    "output": "Pixel Raiders version 0.9"
+  },
+  "9d5560e0d130d2d7": {
+    "id": "lesson 013.3:124",
+    "command": "who=Ada\necho \"Built by $who\"\necho 'Built by $who'\necho \"Built by ${who}s\"",
+    "exit": 0,
+    "output": "Built by Ada\nBuilt by $who\nBuilt by Adas"
+  },
+  "220fdde6393d8018": {
+    "id": "lesson 013.3:139",
+    "command": "echo \"$USER lives in $HOME\"",
+    "exit": 0,
+    "output": "mira lives in /home/mira"
+  },
+  "d0fd834286025f04": {
+    "id": "lesson 013.3:149",
+    "command": "files=$(ls /home)\necho $files",
+    "exit": 0,
+    "output": "ada jonas mira"
+  },
+  "070c41500da91808": {
+    "id": "lesson 013.3:169",
+    "command": "cat > args.sh << 'EOF'\n#!/bin/bash\necho \"script: $0\"\necho \"first: $1\"\necho \"second: $2\"\necho \"count: $#\"\necho \"all: $@\"\nEOF\nbash args.sh slime bat ghost",
+    "exit": 0,
+    "output": "script: args.sh\nfirst: slime\nsecond: bat\ncount: 3\nall: slime bat ghost"
+  },
+  "9ca588a516922498": {
+    "id": "lesson 013.3:195",
+    "command": "ls /home > /dev/null\necho \"ls said: $?\"\nls /nonexistent 2> /dev/null\necho \"ls said: $?\"\ngrep -q zebra /etc/hostname\necho \"grep said: $?\"",
+    "exit": 0,
+    "output": "ls said: 0\nls said: 2\ngrep said: 1"
+  },
+  "e14562c298da0df5": {
+    "id": "lesson 013.3:214",
+    "command": "cat > stop.sh << 'EOF'\n#!/bin/bash\necho \"before\"\nexit 3\necho \"never printed\"\nEOF\nbash stop.sh\necho \"status: $?\"",
+    "exit": 0,
+    "output": "before\nstatus: 3"
+  },
+  "1b7db74297711bb4": {
+    "id": "lesson 013.3:256",
+    "command": "cat > check.sh << 'EOF'\n#!/bin/bash\n# usage: check.sh FILE\nif [ -f \"$1\" ]; then\n  echo \"$1 exists\"\nelse\n  echo \"$1 is missing\"\n  exit 1\nfi\nEOF\nbash check.sh art/hero.png\necho \"status: $?\"\nbash check.sh art/dragon.png\necho \"status: $?\"",
+    "exit": 0,
+    "output": "art/hero.png exists\nstatus: 0\nart/dragon.png is missing\nstatus: 1"
+  },
+  "5bad45d99a71d3b4": {
+    "id": "lesson 013.3:282",
+    "command": "for p in art art/hero.png art/dragon.png; do\n  [ -e \"$p\" ] && echo \"$p: -e yes\" || echo \"$p: -e no\"\n  [ -f \"$p\" ] && echo \"$p: -f yes\" || echo \"$p: -f no\"\n  [ -d \"$p\" ] && echo \"$p: -d yes\" || echo \"$p: -d no\"\ndone",
+    "exit": 0,
+    "output": "art: -e yes\nart: -f no\nart: -d yes\nart/hero.png: -e yes\nart/hero.png: -f yes\nart/hero.png: -d no\nart/dragon.png: -e no\nart/dragon.png: -f no\nart/dragon.png: -d no"
+  },
+  "898f46b9a3ce5b04": {
+    "id": "lesson 013.3:306",
+    "command": "mode=\"release\"\nif [ \"$mode\" = \"release\" ]; then\n  echo \"building the real thing\"\nelse\n  echo \"building a test version\"\nfi",
+    "exit": 0,
+    "output": "building the real thing"
+  },
+  "d816258eb5040e38": {
+    "id": "lesson 013.3:321",
+    "command": "a=slime\nb=bat\n[ \"$a\" = \"$b\" ]\necho \"with spaces: $?\"\n[ \"$a\"=\"$b\" ]\necho \"without spaces: $?\"",
+    "exit": 0,
+    "output": "with spaces: 1\nwithout spaces: 0"
+  },
+  "d80c273caeac10bd": {
+    "id": "lesson 013.3:351",
+    "command": "for enemy in slime bat ghost; do\n  echo \"Testing the $enemy\"\ndone",
+    "exit": 0,
+    "output": "Testing the slime\nTesting the bat\nTesting the ghost"
+  },
+  "0fda7540eb2440a9": {
+    "id": "lesson 013.3:365",
+    "command": "for f in art/*.png; do\n  echo \"found $f\"\ndone",
+    "exit": 0,
+    "output": "found art/bat.png\nfound art/hero.png\nfound art/slime.png"
+  },
+  "967daab2d630a247": {
+    "id": "lesson 013.3:379",
+    "command": "count=0\nfor f in art/*.png; do\n  count=$((count + 1))\ndone\necho \"$count sprites\"",
+    "exit": 0,
+    "output": "3 sprites"
+  },
+  "d9dbe398f9db6650": {
+    "id": "lesson 013.3:393",
+    "command": "for f in art/*.jpg; do\n  echo \"$f\"\ndone",
+    "exit": 0,
+    "output": "art/*.jpg"
+  },
+  "f4002ad080ebd15d": {
+    "id": "lesson 013.3:407",
+    "command": "cat > pack.sh << 'EOF'\n#!/bin/bash\nfolder=$1\nif [ -d \"$folder\" ]; then\n  tar -czf \"$folder.tar.gz\" \"$folder\"\n  echo \"packed $folder\"\nelse\n  echo \"no such folder: $folder\"\n  exit 2\nfi\nEOF\nbash pack.sh art\necho \"status: $?\"\nbash pack.sh levels\necho \"status: $?\"\nls -1",
+    "exit": 0,
+    "output": "packed art\nstatus: 0\nno such folder: levels\nstatus: 2\nart\nart.tar.gz\npack.sh"
+  },
+  "98c9e7bba518aaf2": {
+    "id": "lesson 013.3:487",
+    "command": "cat > who.sh << 'EOF'\n#!/bin/bash\necho \"$0 got $# arguments, the first is $1\"\nEOF\nbash who.sh pixel raiders",
+    "exit": 0,
+    "output": "who.sh got 2 arguments, the first is pixel"
+  },
+  "cad515eadb79ebc2": {
+    "id": "lesson 013.3:503",
+    "command": "for n in 1 2 3; do\n  echo \"level $n\"\ndone\necho \"done: $?\"",
+    "exit": 0,
+    "output": "level 1\nlevel 2\nlevel 3\ndone: 0"
+  },
+  "c9a8d4c469fdf1a6": {
+    "id": "lesson 013.3:521",
+    "command": "cat > fail.sh << 'EOF'\n#!/bin/bash\necho \"start\"\nexit 4\nEOF\nbash fail.sh\necho \"exit status: $?\"",
+    "exit": 0,
+    "output": "start\nexit status: 4"
+  },
+  "b7b16175a1f07830": {
+    "id": "lesson 014.1:120",
+    "command": "uname -s",
+    "exit": 0,
+    "output": "Linux"
+  },
+  "a0a781a27382a9fa": {
+    "id": "lesson 014.1:132",
+    "command": "grep ^ID= /etc/os-release",
+    "exit": 0,
+    "output": "ID=debian"
+  },
+  "3106b9f6f7747d2b": {
+    "id": "lesson 014.1:144",
+    "command": "hostname",
+    "exit": 0,
+    "output": "tuxpixel"
+  },
+  "49aaf02abc52de81": {
+    "id": "lesson 014.2:36",
+    "command": "uname -m",
+    "exit": 0,
+    "output": "i686"
+  },
+  "173cee5fd128a470": {
+    "id": "lesson 014.2:52",
+    "command": "ls /sys/class/net",
+    "exit": 0,
+    "output": "lo"
+  },
+  "319264274386926b": {
+    "id": "lesson 014.2:76",
+    "command": "ls -d /dev/sd* /dev/nvme* 2>/dev/null | wc -l",
+    "exit": 0,
+    "output": "0"
+  },
+  "ce2a62a2907aad78": {
+    "id": "lesson 014.2:90",
+    "command": "stat -c \"%n is a %F\" /dev/null /dev/tty",
+    "exit": 0,
+    "output": "/dev/null is a character special file\n/dev/tty is a character special file"
+  },
+  "c9e4758fa83fce0d": {
+    "id": "lesson 014.2:113",
+    "command": "echo \"this vanishes\" > /dev/null\nwc -c < /dev/null",
+    "exit": 0,
+    "output": "0"
+  },
+  "26e9f8a6afae83a6": {
+    "id": "lesson 014.2:124",
+    "command": "head -c 8 /dev/zero | od -c",
+    "exit": 0,
+    "output": "0000000  \\0  \\0  \\0  \\0  \\0  \\0  \\0  \\0\n0000010"
+  },
+  "f3acbb1d932c7d8c": {
+    "id": "lesson 014.2:135",
+    "command": "head -c 16 /dev/urandom | wc -c",
+    "exit": 0,
+    "output": "16"
+  },
+  "6f72222d080c8d6b": {
+    "id": "lesson 014.2:151",
+    "command": "lsmod | head -1",
+    "exit": 0,
+    "output": "Module                  Size  Used by"
+  },
+  "337bbb56329e36be": {
+    "id": "lesson 014.2:169",
+    "command": "ls /boot | cut -d- -f1",
+    "exit": 0,
+    "output": "config\ninitrd.img\nSystem.map\nvmlinuz"
+  },
+  "ead0c25fc00fe572": {
+    "id": "lesson 014.2:202",
+    "command": "head -c 3 /dev/zero | wc -c",
+    "exit": 0,
+    "output": "3"
+  },
+  "e8733d3d701b0244": {
+    "id": "lesson 014.2:214",
+    "command": "echo \"Pixel Raiders\" | cat > /dev/null\necho $?",
+    "exit": 0,
+    "output": "0"
+  },
+  "9577e1988094fb61": {
+    "id": "lesson 014.2:227",
+    "command": "stat -c \"%n %F\" /dev/zero /dev/urandom",
+    "exit": 0,
+    "output": "/dev/zero character special file\n/dev/urandom character special file"
+  },
+  "e27795df738e3a57": {
+    "id": "lesson 014.3:32",
+    "command": "ps -o comm= -p 1",
+    "exit": 0,
+    "output": "le-init"
+  },
+  "2d4786babf7fab6f": {
+    "id": "lesson 014.3:48",
+    "command": "cat /etc/tuxpixel/buildd.conf",
+    "exit": 0,
+    "output": "# Settings for the Pixel Raiders build daemon\nworkers=4\nartifact_dir=/srv/builds"
+  },
+  "01662f64a95ccdf1": {
+    "id": "lesson 014.3:76",
+    "command": "ps -ef",
+    "exit": 0,
+    "output": "UID        PID  PPID  C STIME TTY          TIME CMD\nroot         1     0  1 17:27 ?        00:00:00 /bin/bash /sbin/le-init\nroot         2     0  0 17:27 ?        00:00:00 [kthreadd]\nroot         3     2  0 17:27 ?        00:00:00 [rcu_gp]\nroot         4     2  0 17:27 ?        00:00:00 [rcu_par_gp]\nroot         5     2  0 17:27 ?        00:00:00 [slub_flushwq]\nroot         6     2  0 17:27 ?        00:00:00 [netns]\nroot         7     2  0 17:27 ?        00:00:00 [kworker/0:0-rcu_gp]\nroot         8     2  0 17:27 ?        00:00:00 [kworker/0:0H-events_highpri]\nroot         9     2  0 17:27 ?        00:00:00 [kworker/u4:0-events_unbound]\nroot        10     2  0 17:27 ?        00:00:00 [mm_percpu_wq]\nroot        11     2  0 17:27 ?        00:00:00 [rcu_tasks_kthread]\nroot        12     2  0 17:27 ?        00:00:00 [rcu_tasks_rude_kthread]\nroot        13     2  0 17:27 ?        00:00:00 [rcu_tasks_trace_kthread]\nroot        14     2  0 17:27 ?        00:00:00 [ksoftirqd/0]\nroot        15     2  0 17:27 ?        00:00:00 [rcu_preempt]\nroot        16     2  0 17:27 ?        00:00:00 [migration/0]\nroot        17     2  0 17:27 ?        00:00:00 [kworker/0:1-events_long]\nroot        18     2  0 17:27 ?        00:00:00 [cpuhp/0]\nroot        19     2  0 17:27 ?        00:00:00 [kdevtmpfs]\nroot        20     2  0 17:27 ?        00:00:00 [inet_frag_wq]\nroot        21     2  0 17:27 ?        00:00:00 [kauditd]\nroot        22     2  0 17:27 ?        00:00:00 [khungtaskd]\nroot        23     2  0 17:27 ?        00:00:00 [oom_reaper]\nroot        24     2  0 17:27 ?        00:00:00 [kworker/u4:1-eval_map_wq]\nroot        25     2  0 17:27 ?        00:00:00 [kworker/u4:2-events_unbound]\nroot        26     2  0 17:27 ?        00:00:00 [writeback]\nroot        27     2  0 17:27 ?        00:00:00 [kcompactd0]\nroot        28     2  0 17:27 ?        00:00:00 [ksmd]\nroot        29     2  0 17:27 ?        00:00:00 [kintegrityd]\nroot        30     2  0 17:27 ?        00:00:00 [kblockd]\nroot        31     2  0 17:27 ?        00:00:00 [blkcg_punt_bio]\nroot        32     2  0 17:27 ?        00:00:00 [tpm_dev_wq]\nroot        33     2  0 17:27 ?        00:00:00 [edac-poller]\nroot        34     2  0 17:27 ?        00:00:00 [devfreq_wq]\nroot        35     2  0 17:27 ?        00:00:00 [kworker/u4:3]\nroot        36     2  0 17:27 ?        00:00:00 [quota_events_un]\nroot        37     2  0 17:27 ?        00:00:00 [kworker/0:1H]\nroot        38     2  0 17:27 ?        00:00:00 [kswapd0]\nroot        44     2  0 17:27 ?        00:00:00 [kthrotld]\nroot        48     2  0 17:27 ?        00:00:00 [kworker/0:2-events]\nroot        49     2  0 17:27 ?        00:00:00 [mld]\nroot        50     2  0 17:27 ?        00:00:00 [ipv6_addrconf]\nroot        55     2  0 17:27 ?        00:00:00 [kstrp]\nroot        60     2  0 17:27 ?        00:00:00 [zswap-shrink]\nroot        61     2  0 17:27 ?        00:00:00 [kworker/u5:0]\nroot       156     1  0 17:27 ?        00:00:00 /bin/bash /sbin/le-init\nroot       157     1  0 17:27 ttyS0    00:00:00 /bin/login -f\nmira       162   157  0 17:27 ttyS0    00:00:00 -bash\nroot       169   156  7 17:28 ?        00:00:00 bash /run/le-job\nroot       175   169 21 17:28 ?        00:00:00 runuser -u mira -- env -i HOME=/\nmira       176   175 14 17:28 ?        00:00:00 script -qec stty cols 80 rows 24\nmira       177   176 22 17:28 pts/0    00:00:00 timeout -k 1 10 bash /run/le-cmd\nmira       179   177 15 17:28 pts/0    00:00:00 bash /run/le-cmd\nmira       180   179 99 17:28 pts/0    00:00:00 ps -ef"
+  },
+  "2b42499fb438a81f": {
+    "id": "lesson 014.3:82",
+    "command": "ps -o pid,user,comm -p 1",
+    "exit": 0,
+    "output": "  PID USER     COMMAND\n    1 root     le-init"
+  },
+  "5a3a944083198570": {
+    "id": "lesson 014.3:113",
+    "command": "free | head -1",
+    "exit": 0,
+    "output": "               total        used        free      shared  buff/cache   available"
+  },
+  "b745d9366bd75d35": {
+    "id": "lesson 014.3:127",
+    "command": "head -1 /proc/meminfo | cut -d: -f1",
+    "exit": 0,
+    "output": "MemTotal"
+  },
+  "cb5418a475f1658c": {
+    "id": "lesson 014.3:135",
+    "command": "cat /proc/1/comm",
+    "exit": 0,
+    "output": "le-init"
+  },
+  "4b8212657c3744de": {
+    "id": "lesson 014.3:151",
+    "command": "grep ERROR /var/log/tuxpixel-build.log",
+    "exit": 0,
+    "output": "Nov 25 22:09:12 build01 buildd[311]: ERROR: link failed: undefined reference to player_jump"
+  },
+  "d51ca9a269487d5b": {
+    "id": "lesson 014.3:159",
+    "command": "tail -n 2 /var/log/tuxpixel-build.log",
+    "exit": 0,
+    "output": "Nov 26 22:01:02 build01 buildd[402]: starting nightly build of pixel-raiders\nNov 26 22:08:55 build01 buildd[402]: build finished with 0 errors"
+  },
+  "00b8c826492651ca": {
+    "id": "lesson 014.3:261",
+    "command": "grep -c WARNING /var/log/tuxpixel-build.log",
+    "exit": 0,
+    "output": "1"
+  },
+  "7a03528ede68f02e": {
+    "id": "lesson 014.3:273",
+    "command": "tail -n 1 /var/log/tuxpixel-build.log | cut -d\" \" -f6-",
+    "exit": 0,
+    "output": "build finished with 0 errors"
+  },
+  "cc747dbfb2b30ff9": {
+    "id": "lesson 014.3:285",
+    "command": "ps -p 1 -o comm=,user=",
+    "exit": 0,
+    "output": "le-init         root"
+  },
+  "744fa95f6cea3227": {
+    "id": "lesson 014.4:46",
+    "command": "ip -4 addr show lo | grep inet | awk '{print $2}'",
+    "exit": 0,
+    "output": "127.0.0.1/8"
+  },
+  "83c4d932e8ab3d13": {
+    "id": "lesson 014.4:60",
+    "command": "ip addr show lo | grep inet | awk '{print $1, $2}'",
+    "exit": 0,
+    "output": "inet 127.0.0.1/8\ninet6 ::1/128"
+  },
+  "bd6325e021ac018b": {
+    "id": "lesson 014.4:80",
+    "command": "ip route show\nip -6 route show\necho $?",
+    "exit": 0,
+    "output": "0"
+  },
+  "45f6ae2c05e250ad": {
+    "id": "lesson 014.4:96",
+    "command": "cat /etc/hosts",
+    "exit": 0,
+    "output": "127.0.0.1\tlocalhost\n127.0.1.1\ttuxpixel\n::1\tlocalhost ip6-localhost ip6-loopback"
+  },
+  "aea2b7b23613252f": {
+    "id": "lesson 014.4:110",
+    "command": "wc -c < /etc/resolv.conf",
+    "exit": 0,
+    "output": "0"
+  },
+  "72b5420df3c9b38c": {
+    "id": "lesson 014.4:120",
+    "command": "grep ^hosts: /etc/nsswitch.conf",
+    "exit": 0,
+    "output": "hosts:          files dns"
+  },
+  "0d62beacdb255c38": {
+    "id": "lesson 014.4:159",
+    "command": "ss -tln | wc -l",
+    "exit": 0,
+    "output": "1"
+  },
+  "ccaa4354c12da2f1": {
+    "id": "lesson 014.4:228",
+    "command": "ip -6 addr show lo | grep inet6 | awk '{print $2}'",
+    "exit": 0,
+    "output": "::1/128"
+  },
+  "cfb4eb4b855be28e": {
+    "id": "lesson 014.4:240",
+    "command": "awk '/tuxpixel/ {print $1}' /etc/hosts",
+    "exit": 0,
+    "output": "127.0.1.1"
+  },
+  "85cfd3a7b8b048c4": {
+    "id": "lesson 014.4:252",
+    "command": "ip route show | wc -l",
+    "exit": 0,
+    "output": "0"
+  },
+  "0c36133ba5a0d475": {
+    "id": "lesson 015.1:33",
+    "command": "id",
+    "exit": 0,
+    "output": "uid=1000(mira) gid=1000(mira) groups=1000(mira),27(sudo)"
+  },
+  "2ed81f6ec81385ab": {
+    "id": "lesson 015.1:49",
+    "command": "stat -c '%A %U %G %n' /etc/shadow\ncat /etc/shadow",
+    "exit": 1,
+    "output": "-rw-r----- root shadow /etc/shadow\ncat: /etc/shadow: Permission denied"
+  },
+  "bf11229780ab28ba": {
+    "id": "lesson 015.1:67",
+    "command": "getent passwd daemon www-data\nid www-data",
+    "exit": 0,
+    "output": "daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nuid=33(www-data) gid=33(www-data) groups=33(www-data)"
+  },
+  "ef0ac6b1d6599674": {
+    "id": "lesson 015.1:92",
+    "command": "echo tuxpixel | sudo -S -p \"\" id",
+    "exit": 0,
+    "output": "uid=0(root) gid=0(root) groups=0(root)"
+  },
+  "870c8cf31a8d7d06": {
+    "id": "lesson 015.1:102",
+    "command": "sudo -n id",
+    "exit": 1,
+    "output": "sudo: a password is required"
+  },
+  "eebcdd3a1fe61247": {
+    "id": "lesson 015.1:121",
+    "command": "su - jonas -c pwd",
+    "exit": 0,
+    "output": "/home/jonas"
+  },
+  "49b4d90abf73a26f": {
+    "id": "lesson 015.1:199",
+    "command": "mkdir -m 700 ~/.ssh\necho \"ssh-ed25519 AAAAplaceholder mira@tuxpixel\" > ~/.ssh/authorized_keys\nchmod 600 ~/.ssh/authorized_keys\nstat -c '%a %n' ~/.ssh ~/.ssh/authorized_keys",
+    "exit": 0,
+    "output": "700 /home/mira/.ssh\n600 /home/mira/.ssh/authorized_keys"
+  },
+  "855c4f3bf0b80145": {
+    "id": "lesson 015.1:219",
+    "command": "id -u\ngrep -E '^(root|www-data|mira):' /etc/passwd",
+    "exit": 0,
+    "output": "1000\nroot:x:0:0:root:/root:/bin/bash\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nmira:x:1000:1000:Mira Okafor:/home/mira:/bin/bash"
+  },
+  "20da37e7a56bc6d9": {
+    "id": "lesson 015.1:246",
+    "command": "echo tuxpixel | sudo -S -p \"\" whoami",
+    "exit": 0,
+    "output": "root"
+  },
+  "2189149773ae1086": {
+    "id": "lesson 015.1:258",
+    "command": "su -c \"whoami\" ada",
+    "exit": 0,
+    "output": "ada"
+  },
+  "b27ec49a0469d333": {
+    "id": "lesson 015.1:270",
+    "command": "id -un\nsudo -n true\necho \"status $?\"",
+    "exit": 0,
+    "output": "mira\nsudo: a password is required\nstatus 1"
+  },
+  "b1d0f4b7fd4363a3": {
+    "id": "lesson 015.2:39",
+    "command": "grep '^mira:' /etc/passwd",
+    "exit": 0,
+    "output": "mira:x:1000:1000:Mira Okafor:/home/mira:/bin/bash"
+  },
+  "c99ce3cfd6a6c6b6": {
+    "id": "lesson 015.2:63",
+    "command": "stat -c '%a %U %G %n' /etc/passwd /etc/shadow\ncat /etc/shadow",
+    "exit": 1,
+    "output": "644 root root /etc/passwd\n640 root shadow /etc/shadow\ncat: /etc/shadow: Permission denied"
+  },
+  "ef311397ceb560f1": {
+    "id": "lesson 015.2:80",
+    "command": "grep -E '^(sudo|mira):' /etc/group",
+    "exit": 0,
+    "output": "sudo:x:27:mira\nmira:x:1000:"
+  },
+  "637a23009b9a087f": {
+    "id": "lesson 015.2:95",
+    "command": "id\nid jonas",
+    "exit": 0,
+    "output": "uid=1000(mira) gid=1000(mira) groups=1000(mira),27(sudo)\nuid=1001(jonas) gid=1001(jonas) groups=1001(jonas)"
+  },
+  "82a7f025aedb8e2e": {
+    "id": "lesson 015.2:114",
+    "command": "id -u jonas\nid -G\nid -Gn\ngroups",
+    "exit": 0,
+    "output": "1001\n1000 27\nmira sudo\nmira sudo"
+  },
+  "8282da64a83f6087": {
+    "id": "lesson 015.2:138",
+    "command": "who\nw\nlast -n 3",
+    "exit": 0,
+    "output": "mira     ttyS0        45748935-06-16 08:41\n 17:29:07 up 1 min,  1 user,  load average: 1.12, 0.39, 0.14\nUSER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT\nmira     ttyS0    -                Tue21   43:36m  0.24s  0.13s -bash\nmira     ttyS0                         Tue Nov 24 21:52    gone - no logout\n\nwtmp begins Tue Nov 24 21:52:29 2026"
+  },
+  "1903b3113e6b401f": {
+    "id": "lesson 015.2:176",
+    "command": "useradd -m -c \"Noah Kim\" -s /bin/bash noah\ngrep '^noah:' /etc/passwd\ngrep '^noah:' /etc/group\nid noah",
+    "exit": 0,
+    "output": "noah:x:1003:1003:Noah Kim:/home/noah:/bin/bash\nnoah:x:1003:\nuid=1003(noah) gid=1003(noah) groups=1003(noah)"
+  },
+  "e22aae986066609a": {
+    "id": "lesson 015.2:191",
+    "command": "useradd -m noah\npasswd -S noah | cut -d' ' -f1,2",
+    "exit": 0,
+    "output": "noah L"
+  },
+  "0853f1652ce5471f": {
+    "id": "lesson 015.2:202",
+    "command": "useradd noah\nls /home\ngetent passwd noah",
+    "exit": 0,
+    "output": "ada  jonas  mira\nnoah:x:1003:1003::/home/noah:/bin/sh"
+  },
+  "47101bb3ae8a790a": {
+    "id": "lesson 015.2:219",
+    "command": "ls -A /etc/skel",
+    "exit": 0,
+    "output": ".bash_logout  .bashrc  .profile"
+  },
+  "41cb31289334c870": {
+    "id": "lesson 015.2:227",
+    "command": "useradd -m noah\nls -A /home/noah",
+    "exit": 0,
+    "output": ".bash_logout  .bashrc  .profile"
+  },
+  "49bcffb9c4a58c2e": {
+    "id": "lesson 015.2:240",
+    "command": "groupadd playtest\nusermod -aG playtest jonas\nusermod -aG playtest ada\ngetent group playtest\nid jonas",
+    "exit": 0,
+    "output": "playtest:x:1003:jonas,ada\nuid=1001(jonas) gid=1001(jonas) groups=1001(jonas),1003(playtest)"
+  },
+  "b25470f14107e87c": {
+    "id": "lesson 015.2:283",
+    "command": "getent passwd 1001",
+    "exit": 0,
+    "output": "jonas:x:1001:1001:Jonas Berg:/home/jonas:/bin/bash"
+  },
+  "823216453133267f": {
+    "id": "lesson 015.2:302",
+    "command": "id -gn jonas",
+    "exit": 0,
+    "output": "jonas"
+  },
+  "79e160bedc63f44d": {
+    "id": "lesson 015.2:314",
+    "command": "cut -d: -f1,3 /etc/passwd | tail -3",
+    "exit": 0,
+    "output": "mira:1000\njonas:1001\nada:1002"
+  },
+  "2178536f8dc10da4": {
+    "id": "lesson 015.2:328",
+    "command": "groupadd review\nuseradd -m -G review -c \"Noah Kim\" noah\nid noah",
+    "exit": 0,
+    "output": "uid=1003(noah) gid=1004(noah) groups=1004(noah),1003(review)"
+  },
+  "4d6425180c458d9e": {
+    "id": "lesson 015.3:33",
+    "command": "cd studio\nls -l *.txt",
+    "exit": 0,
+    "output": "-rw-r--r-- 1 mira mira    13 Nov  2 09:30 draft.txt\n-rw-r--r-- 1 mira mira    27 Nov  2 09:30 level1.txt\n-rw------- 1 mira mira    36 Nov  2 09:30 passwords.txt\n-rw-r----- 1 ada  release 26 Nov  2 09:30 release-notes.txt"
+  },
+  "bd4c595a46c76a65": {
+    "id": "lesson 015.3:62",
+    "command": "cd studio\nls -l build.sh art/hero.png\nls -ld art private",
+    "exit": 0,
+    "output": "-rw-rw-r-- 1 jonas design 16 Nov  2 09:30 art/hero.png\n-rwxr-xr-x 1 mira  mira   38 Nov  2 09:30 build.sh\ndrwxrwxr-x 2 mira design 0 Nov  2 09:30 art\ndrwx------ 2 mira mira   0 Nov  2 09:30 private"
+  },
+  "369580c4f7b21328": {
+    "id": "lesson 015.3:79",
+    "command": "ls -a studio/art",
+    "exit": 0,
+    "output": ".  ..  hero.png"
+  },
+  "379d8e89183e5191": {
+    "id": "lesson 015.3:101",
+    "command": "cd studio\nchmod u-x private\nls private\ncat private/ideas.txt",
+    "exit": 1,
+    "output": "ideas.txt\ncat: private/ideas.txt: Permission denied"
+  },
+  "09ff2fccfbd86e7c": {
+    "id": "lesson 015.3:115",
+    "command": "cd studio\nchmod u-r private\nls private\ncat private/ideas.txt",
+    "exit": 0,
+    "output": "ls: cannot open directory 'private': Permission denied\nBoss fight in the lava cave."
+  },
+  "70b5e0f38bc67130": {
+    "id": "lesson 015.3:129",
+    "command": "cd studio\n./build.sh\nchmod -x build.sh\n./build.sh 2>/dev/null\necho \"status $?\"",
+    "exit": 0,
+    "output": "building Pixel Raiders\nstatus 126"
+  },
+  "4d7762f1fae7b714": {
+    "id": "lesson 015.3:156",
+    "command": "cd studio\nchmod 600 draft.txt\nls -l draft.txt\nchmod 755 draft.txt\nls -l draft.txt\nchmod 640 draft.txt\nls -l draft.txt",
+    "exit": 0,
+    "output": "-rw------- 1 mira mira 13 Nov  2 09:30 draft.txt\n-rwxr-xr-x 1 mira mira 13 Nov  2 09:30 draft.txt\n-rw-r----- 1 mira mira 13 Nov  2 09:30 draft.txt"
+  },
+  "cbb95c3197dd6fa1": {
+    "id": "lesson 015.3:185",
+    "command": "cd studio\nchmod 600 draft.txt\nchmod u+x,g+w draft.txt\nls -l draft.txt\nchmod o= draft.txt\nchmod a+r draft.txt\nls -l draft.txt\nchmod g=rx draft.txt\nls -l draft.txt",
+    "exit": 0,
+    "output": "-rwx-w---- 1 mira mira 13 Nov  2 09:30 draft.txt\n-rwxrw-r-- 1 mira mira 13 Nov  2 09:30 draft.txt\n-rwxr-xr-- 1 mira mira 13 Nov  2 09:30 draft.txt"
+  },
+  "80132dc6f9bc4dc0": {
+    "id": "lesson 015.3:209",
+    "command": "umask\ntouch f\nmkdir d\nstat -c '%a %n' f d",
+    "exit": 0,
+    "output": "0022\n644 f\n755 d"
+  },
+  "0bba396cb3b01c77": {
+    "id": "lesson 015.3:226",
+    "command": "cd studio\nchgrp design draft.txt\nls -l draft.txt\nchown mira:release draft.txt\nls -l draft.txt\nchown ada draft.txt\nchmod 777 release-notes.txt",
+    "exit": 1,
+    "output": "-rw-r--r-- 1 mira design 13 Nov  2 09:30 draft.txt\n-rw-r--r-- 1 mira release 13 Nov  2 09:30 draft.txt\nchown: changing ownership of 'draft.txt': Operation not permitted\nchmod: changing permissions of 'release-notes.txt': Operation not permitted"
+  },
+  "35c1ffdfced55366": {
+    "id": "lesson 015.3:245",
+    "command": "chown ada:release /home/mira/studio/draft.txt\nchown -R jonas /home/mira/studio/art\nls -l /home/mira/studio/draft.txt /home/mira/studio/art/hero.png",
+    "exit": 0,
+    "output": "-rw-rw-r-- 1 jonas design  16 Nov  2 09:30 /home/mira/studio/art/hero.png\n-rw-r--r-- 1 ada   release 13 Nov  2 09:30 /home/mira/studio/draft.txt"
+  },
+  "fd2ef1044a8f5e09": {
+    "id": "lesson 015.3:268",
+    "command": "cd /home/mira/studio\ncat level1.txt\ncat release-notes.txt",
+    "exit": 1,
+    "output": "Level 1: the pixel forest.\ncat: release-notes.txt: Permission denied"
+  },
+  "634f9852efc17269": {
+    "id": "lesson 015.3:293",
+    "command": "cd studio\nchmod 750 art\nls -ld art",
+    "exit": 0,
+    "output": "drwxr-x--- 2 mira design 0 Nov  2 09:30 art"
+  },
+  "4fb98539f91556ec": {
+    "id": "lesson 015.3:307",
+    "command": "cd studio\nchmod go-r level1.txt\nchmod u+x level1.txt\nls -l level1.txt",
+    "exit": 0,
+    "output": "-rwx------ 1 mira mira 27 Nov  2 09:30 level1.txt"
+  },
+  "3f9a0a270c1a92c3": {
+    "id": "lesson 015.3:322",
+    "command": "cd /home/mira/studio\necho hi > art/note.txt\nls art",
+    "exit": 0,
+    "output": "hero.png  note.txt"
+  },
+  "efe737ad9ca275b1": {
+    "id": "lesson 015.4:37",
+    "command": "ls -d /tmp /var/tmp\nls -A /tmp",
+    "exit": 0,
+    "output": "/tmp  /var/tmp\njonas-sketch.txt"
+  },
+  "f9c712ca42fcb64a": {
+    "id": "lesson 015.4:49",
+    "command": "cd studio\nls -d */\nls -d art",
+    "exit": 0,
+    "output": "art/  private/\nart"
+  },
+  "c5c2634f1dbacbf2": {
+    "id": "lesson 015.4:62",
+    "command": "stat -c '%A %U %G %n' /tmp /var/tmp",
+    "exit": 0,
+    "output": "drwxrwxrwt root root /tmp\ndrwxrwxrwt root root /var/tmp"
+  },
+  "de6a46d048e023c8": {
+    "id": "lesson 015.4:81",
+    "command": "ls -l /tmp/jonas-sketch.txt\nrm /tmp/jonas-sketch.txt",
+    "exit": 1,
+    "output": "-rw-rw-rw- 1 jonas jonas 24 Nov  2 09:30 /tmp/jonas-sketch.txt\nrm: cannot remove '/tmp/jonas-sketch.txt': Operation not permitted"
+  },
+  "c959fecc9c09192b": {
+    "id": "lesson 015.4:95",
+    "command": "mkdir shared\nchmod 1777 shared\nstat -c '%A %a' shared\nchmod -t shared\nstat -c '%A %a' shared\nchmod +t shared\nstat -c '%A %a' shared",
+    "exit": 0,
+    "output": "drwxrwxrwt 1777\ndrwxrwxrwx 777\ndrwxrwxrwt 1777"
+  },
+  "9dc8ae663bedea79": {
+    "id": "lesson 015.4:117",
+    "command": "cd builds\nln -s pixel-raiders-1.1.tar latest\nreadlink latest\ncat latest\nstat -c '%F' latest pixel-raiders-1.1.tar",
+    "exit": 0,
+    "output": "pixel-raiders-1.1.tar\nbuild 1.1\nsymbolic link\nregular file"
+  },
+  "df991482f305d4cb": {
+    "id": "lesson 015.4:134",
+    "command": "cd builds\nln -s pixel-raiders-1.1.tar latest\nls -1F",
+    "exit": 0,
+    "output": "latest@\npixel-raiders-1.0.tar\npixel-raiders-1.1.tar"
+  },
+  "d2a84ec0c483ebe8": {
+    "id": "lesson 015.4:154",
+    "command": "cd builds\nln -s pixel-raiders-1.0.tar current\nrm current\nls -1\ncat pixel-raiders-1.0.tar",
+    "exit": 0,
+    "output": "pixel-raiders-1.0.tar\npixel-raiders-1.1.tar\nbuild 1.0"
+  },
+  "73d0531f3a0b9a73": {
+    "id": "lesson 015.4:170",
+    "command": "cd builds\nln -s pixel-raiders-0.9.tar old\ncat old\nreadlink old",
+    "exit": 0,
+    "output": "cat: old: No such file or directory\npixel-raiders-0.9.tar"
+  },
+  "7bd8b771ea80e485": {
+    "id": "lesson 015.4:188",
+    "command": "cd builds\necho a > a.txt\nln a.txt b.txt\nstat -c '%h %n' a.txt b.txt\nrm a.txt\ncat b.txt",
+    "exit": 0,
+    "output": "2 a.txt\n2 b.txt\na"
+  },
+  "9ab042561ba53152": {
+    "id": "lesson 015.4:224",
+    "command": "cd builds\nln -s pixel-raiders-1.0.tar current\nrm pixel-raiders-1.0.tar\ncat current",
+    "exit": 1,
+    "output": "cat: current: No such file or directory"
+  },
+  "3899c8b23bd5a791": {
+    "id": "lesson 015.4:239",
+    "command": "mkdir drop\nchmod 1777 drop\nstat -c '%a %A' drop",
+    "exit": 0,
+    "output": "1777 drwxrwxrwt"
+  },
+  "090b17810f5c39e2": {
+    "id": "lesson 015.4:253",
+    "command": "cd builds\nln -s ../notes.txt n\ncat n\nrm n\ncat ../notes.txt",
+    "exit": 0,
+    "output": "Remember: tag the release.\nRemember: tag the release."
   }
 }
