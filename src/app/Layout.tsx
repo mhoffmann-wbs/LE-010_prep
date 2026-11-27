@@ -8,7 +8,11 @@ const NAV_GROUPS: { id: string; label: string; links: NavEntry[] }[] = [
   {
     id: 'learn',
     label: 'Learn',
-    links: [{ to: '/learn', label: 'Lessons' }],
+    links: [
+      { to: '/learn', label: 'Lessons' },
+      { to: '/guides/cheat-sheet', label: 'Cheat sheet' },
+      { to: '/guides/exam-day', label: 'Exam day' },
+    ],
   },
   {
     id: 'quiz',

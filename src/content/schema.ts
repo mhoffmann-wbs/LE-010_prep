@@ -159,6 +159,18 @@ export const lessonMetaSchema = z.object({
 
 export type LessonMeta = z.infer<typeof lessonMetaSchema>
 
+/** A print-ready guide (src/content/guides/<slug>.mdx): the cheat sheet and the exam-day guide. */
+export const guideMetaSchema = z.object({
+  slug: z.string().regex(/^[a-z-]+$/),
+  title: nonEmpty,
+  /** Date the guide's facts were last checked against the objectives and LPI's pages. */
+  updated: z.iso.date(),
+  summary: nonEmpty,
+  links: z.array(z.object({ title: nonEmpty, url: z.url() })).min(1),
+})
+
+export type GuideMeta = z.infer<typeof guideMetaSchema>
+
 // Built-in flashcards (src/content/flashcards/<objectiveId>.json). Card ids are
 // `<objectiveId>-cNN` in file order and are stored in progress, so append, never
 // renumber. Their areas and terms decide which exam track shows them, as for items.

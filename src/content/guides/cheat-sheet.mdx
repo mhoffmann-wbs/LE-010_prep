@@ -1,0 +1,262 @@
+export const meta = {
+  slug: 'cheat-sheet',
+  title: 'Cheat sheet',
+  updated: '2026-11-27',
+  summary:
+    'The facts Linux Essentials questions rely on, topic by topic, collected from the 19 lessons. Read it the night before; each part links to its lesson, which has the sources and commands you can run.',
+  links: [
+    { title: 'LPI: Linux Essentials 010 objectives v2.0', url: 'https://www.lpi.org/our-certifications/exam-010-objectives/' },
+    { title: 'Linux Essentials objectives v1.6 (exam 010-160)', url: 'https://wiki.lpi.org/wiki/Linux_Essentials_Objectives_V1.6' },
+    { title: 'LPI Learning Materials for 010-200 (further reading)', url: 'https://learning.lpi.org/en/learning-materials/010-200/' },
+  ],
+}
+
+Blocks marked "Only on exam …" hold material just one of the two exams lists. The one for your exam track is open; switch the track on the [start page](/).
+
+<TopicHeading topic="011" />
+
+### Distributions
+
+- **Linux is the kernel.** A distribution adds userspace tools, a package manager and a release policy. Android uses the Linux kernel but not the GNU userspace. <LessonLink id="011.1" />
+
+| Family | Members | Package tools |
+|---|---|---|
+| Debian | Debian, Ubuntu, Raspberry Pi OS | `dpkg`, `apt`, `apt-get` (`.deb`) |
+| Enterprise Linux | Fedora → CentOS Stream → RHEL; AlmaLinux, Rocky Linux | `rpm`, `dnf` (`.rpm`) |
+| SUSE | SLE, openSUSE Leap, openSUSE Tumbleweed | `rpm`, `zypper` |
+| Alpine | Alpine (musl, BusyBox) | `apk` |
+
+- **Release models:** stable and LTS favour predictability; rolling (Tumbleweed, Alpine edge) updates continuously. Debian's testing becomes the next stable; unstable is sid. Ubuntu: every six months, an LTS every two years with five years of standard support.
+- **Low-level vs. high-level:** `dpkg` and `rpm` install package files you already have and don't fetch dependencies; `apt`, `dnf`, `zypper` and `apk` use repositories and resolve them.
+
+### Open source applications
+
+- Web servers: Apache HTTPD, NGINX. Databases: MariaDB, MySQL, PostgreSQL. Windows file sharing: Samba; Unix: NFS. File sync: Nextcloud, ownCloud. <LessonLink id="011.2" />
+- GIMP edits raster (pixel) images, Inkscape vector graphics. Chromium is the open source browser, Chrome Google's product on top. Git is the tool; GitLab, Forgejo and Gitea host it.
+
+### Licences
+
+- **Free means freedom, not price.** The four freedoms: run, study and change, share, share your changes. The **FSF** defines free software and promotes the GPL; the **OSI** keeps the Open Source Definition and approves licences. <LessonLink id="011.3" />
+- **Copyleft** (GPL): distributed changes stay under the same terms. **Permissive** (BSD, MIT, Apache): others may even make their versions proprietary.
+- **Creative Commons** is for content, not software: BY (credit), SA (share alike), NC (non-commercial), ND (no derivatives). CC0 asks for nothing.
+- Open source can be sold, and sold with support. What makes it open is the licence and the source.
+
+### Using Linux
+
+- **VM vs. container:** a VM has its own kernel under a hypervisor; a container shares the host's kernel. Client and server are roles, not hardware. <LessonLink id="011.4" />
+- **vi:** `i` inserts, Esc returns to command mode, `:wq` saves and quits, `:q!` quits without saving. **nano:** just type; Ctrl+O saves, Ctrl+X exits.
+- **Security:** long, unique passwords in a password manager; MFA uses a second *kind* of factor (know, have, are); passkeys use public-key cryptography, so there's nothing to phish. HTTPS protects data in transit and checks the server's certificate, not its honesty; storage encryption (LUKS) protects data at rest.
+- **Configuration management** (Ansible, Puppet, Chef, Salt) applies a described state to many machines.
+
+<TopicHeading topic="012" />
+
+### The shell
+
+| Write | Means |
+|---|---|
+| `name=Mira` | set a shell variable: no spaces around `=` |
+| `export name` | hand it to programs started afterwards |
+| `echo $name` | read it: the `$` only when reading |
+| `'$HOME'` | single quotes: nothing is expanded |
+| `"$HOME"` | double quotes: `$` still works |
+| `\$` | a backslash protects one character |
+| `env`, `printenv` | the environment; `set` lists all variables |
+| `type cd` | builtin or file? Builtins have no path |
+
+- `PATH` is a colon-separated list searched left to right. The current directory isn't in it, so a script there runs as `./script.sh`. <LessonLink id="012.1" />
+
+<ExamOnly exam="010-200">
+
+- `/bin` and `/usr/bin` hold programs for everyone, `/sbin` and `/usr/sbin` administration tools. On current Debian `/bin` and `/sbin` link into `/usr`.
+
+</ExamOnly>
+
+### Help
+
+- `man ls`; `q` quits, `/word` searches. **Sections:** 1 commands, 5 file formats, 8 administration: `man 5 passwd`. `man -k WORD` (= `apropos`) searches descriptions; `man -f` (= `whatis`). <LessonLink id="012.2" />
+- In a SYNOPSIS, `[ ]` is optional, `...` repeatable, `|` either one, UPPER CASE a placeholder. More docs in `/usr/share/doc/`.
+
+<ExamOnly exam="010-200">
+
+- `--help` prints a usage summary; `-h` often means "human-readable" instead (`ls -h`, `df -h`). Builtins have no man page: `help cd`.
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+- `info` pages have nodes and links (`q` quits). `locate` searches a prebuilt database (fast, possibly stale until `updatedb`); `find` searches the disk.
+
+</ExamOnly>
+
+### Paths and listings
+
+- **Absolute** starts with `/`; everything else is relative to `pwd`. `.` here, `..` one up, `~` your home. `cd` alone goes home, `cd -` back. Root's home is `/root`. <LessonLink id="012.3" />
+- **Hidden** = name starts with a dot. `ls -a` shows them with `.` and `..`, `ls -A` without. `ls -l` long, `ls -R` recursive, `ls -d` the directory itself.
+
+<ExamOnly exam="010-200">
+
+- Search a tree with `find . -name "*.txt"` (`-iname` ignores case). Quote the pattern.
+
+</ExamOnly>
+
+### Files and globs
+
+| Command | Remember |
+|---|---|
+| `touch f` | empty file, or a new time |
+| `mkdir -p a/b/c` | the whole chain, no error if it exists |
+| `cp -r`, `rm -r` | directories need `-r`; `mv` doesn't |
+| `mv old new` | rename and move; overwrites silently without `-i` |
+| `rm -f` | no questions, no undo, no trash can |
+| `rmdir d` | only empty directories |
+
+- **Globs** are expanded by the shell: `*` any characters (even none), `?` exactly one, `[abc]` one of these, `[!abc]` none of these. Quotes stop expansion. Names are case sensitive. <LessonLink id="012.4" />
+
+<TopicHeading topic="013" />
+
+### Archives
+
+| Command | Does |
+|---|---|
+| `tar -cf a.tar dir` | create (bundle only, not smaller) |
+| `tar -tf a.tar` | list |
+| `tar -xf a.tar` | extract (`-C dir`: into dir) |
+| `-z` / `-j` / `-J` | gzip `.gz` / bzip2 `.bz2` / xz `.xz` |
+| `gzip f` | replaces `f` with `f.gz` (`-k` keeps it); `gunzip` or `gzip -d` undo |
+| `zip -r a.zip dir` | bundle and compress; `unzip -l` lists, `unzip` extracts |
+
+- `-f` comes right before the archive name: `tar -czf`, never `tar -cfz`. Compressors take single files, not directories. <LessonLink id="013.1" />
+
+### Redirection and text
+
+| Write | Means |
+|---|---|
+| `>` / `>>` | stdout to a file: replace / append |
+| `2>` | stderr (stream 2) to a file |
+| `> f 2>&1` | both to `f` (order matters) |
+| `<` | stdin from a file |
+| `a \| b` | stdout of `a` into `b` (commands, never files) |
+| `> /dev/null` | discard |
+
+- `head`/`tail` 10 lines by default (`-n 3`). `wc -l` lines, `-w` words, `-c` bytes. `sort -n` numeric, `-r` reverse, `-k2` field 2, `-t,` separator. `cut -d, -f2` (separator `-d`, default Tab). `uniq` only merges neighbours: `sort | uniq`, `uniq -c` counts. <LessonLink id="013.2" />
+- `grep -i` ignore case, `-v` invert, `-c` count, `-n` line numbers, `-r` recursive. No match: exit status 1.
+- **Regex:** `.` any one character, `*` the item before repeated (so `.*` is anything), `[ ]` one of a set, `^` start, `$` end. Globs and regexes are different languages.
+
+<ExamOnly exam="010-200">
+
+- `grep -E`: extended regex, where `?`, `+`, `|` and `( )` are operators.
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+- Plain `grep` (basic regex): write the optional operator as `\?`; a bare `?` is a literal question mark.
+
+</ExamOnly>
+
+### Scripts
+
+- First line `#!/bin/bash` (absolute path). `chmod +x s.sh` then `./s.sh`; `bash s.sh` needs only read permission and ignores the shebang. <LessonLink id="013.3" />
+- `$0` the script, `$1` first argument, `$#` how many, `$@` all, `$?` last exit status (0 = success). `exit 3` ends with status 3.
+- `for f in *.png; do echo "$f"; done`. `if` ends with `fi`, `for` with `done`.
+
+<ExamOnly exam="010-200">
+
+- `if [ -f "$file" ]; then … fi`: spaces inside the brackets. `-e` exists, `-f` regular file, `-d` directory; text with `=` and `!=`, spaces on both sides.
+
+</ExamOnly>
+
+<TopicHeading topic="014" />
+
+### Installation
+
+- `uname -s` prints `Linux`; `/etc/os-release` names the distribution. <LessonLink id="014.1" />
+
+<ExamOnly exam="010-200">
+
+- An **ISO** installs; an **OS image** is an installed system you boot (SD card, cloud). **Dual boot:** one system at a time; **VM:** both at once; **WSL:** Linux inside Windows (WSL 2 runs a real kernel in a light VM). Cloud instances start from an image and cloud-init applies user data on first boot.
+
+</ExamOnly>
+
+### Hardware
+
+- Disks: `/dev/sda` (first partition `/dev/sda1`); NVMe `/dev/nvme0n1` (partition `/dev/nvme0n1p1`). Network cards have no `/dev` file: `ip addr show`. <LessonLink id="014.2" />
+- `/dev/null` discards, `/dev/zero` endless zeros, `/dev/urandom` endless random bytes. `/boot` has the kernel, `/sys` describes devices. Drivers are kernel modules: `lsmod`. x86 and ARM programs don't mix; a Raspberry Pi is ARM.
+
+### Processes and logs
+
+- A program is a file; a process is a running copy with a PID. `ps` snapshot, `top` live, `free` memory (look at `available`). Settings in `/etc/`, logs in `/var/log/`, live kernel data in `/proc/`. Kernel messages: `dmesg`. <LessonLink id="014.3" />
+
+<ExamOnly exam="010-200">
+
+- `systemctl start` / `stop` / `status` act **now**; `enable` acts at **boot**. Service messages: `journalctl -u NAME`. The journal isn't a text file, so `cat` can't read it.
+
+</ExamOnly>
+
+### Networking
+
+| Command or file | Shows |
+|---|---|
+| `ip addr show` | addresses |
+| `ip route show` | routes: `default via` is the gateway |
+| `ss -tln` | TCP listening sockets, numeric (`-u` UDP, `-p` process) |
+| `ping` | is it reachable? |
+| `host name` | DNS lookup |
+| `/etc/hosts` | fixed names, checked first |
+| `/etc/resolv.conf` | DNS servers (`nameserver`) |
+
+- IPv4: 32 bits, four numbers up to 255. IPv6: 128 bits in hex groups, `::` once for a run of zeros, `::1` loopback, `fe80::` link-local. Ping by number works but by name doesn't: DNS is broken. <LessonLink id="014.4" />
+
+<ExamOnly exam="010-200">
+
+- `resolvectl status` shows the real DNS servers under systemd-resolved; `ip -6 route show` the IPv6 routes. **DHCP** (IPv4, stateful), **SLAAC** (IPv6, stateless, from the router's advertisement), **DHCPv6** (stateful IPv6).
+
+</ExamOnly>
+
+<ExamOnly exam="010-160">
+
+- Old to new: `ifconfig` → `ip addr`, `route` → `ip route`, `netstat` → `ss` (the old ones come from `net-tools`).
+
+</ExamOnly>
+
+<TopicHeading topic="015" />
+
+### Accounts and elevated rights
+
+- **root** is UID 0. System users are below 1000 (often shell `nologin`), standard users from 1000 on Debian (`UID_MIN` in `/etc/login.defs`). <LessonLink id="015.1" />
+- `sudo cmd` asks for **your** password and checks `/etc/sudoers` or the `sudo` group. `su` asks for the **target's** password; `su - jonas` starts a full login shell.
+
+<ExamOnly exam="010-200">
+
+- `ssh user@host` (`-p` port, default 22), `scp file host:` (`-P` port). `ssh-keygen` makes `id_ed25519` (private, never leaves) and `id_ed25519.pub`, which goes into `~/.ssh/authorized_keys` on the **server**. `~/.ssh/known_hosts` holds the servers' keys on your side.
+
+</ExamOnly>
+
+### Users and groups
+
+- `/etc/passwd`, seven fields: name, `x`, UID, GID, comment, home, shell. Hashes are in `/etc/shadow` (root only); groups in `/etc/group`. <LessonLink id="015.2" />
+- `useradd -m` creates the home from `/etc/skel` (without `-m`, no home). `groupadd`, `passwd`. `usermod -aG grp user` **adds** a group; `-G` alone **replaces** them all.
+- `id` who you are; `who` and `w` who is logged in now; `last` who logged in before.
+
+<ExamOnly exam="010-200">
+
+- `wtmpdb last` does `last`'s job from a database, on systems that replaced it because of the Year 2038 problem.
+
+</ExamOnly>
+
+### Permissions
+
+| Octal | Letters | |
+|---|---|---|
+| 4 / 2 / 1 | r / w / x | add them up: 6 = `rw-`, 5 = `r-x`, 7 = `rwx` |
+| `755` | `rwxr-xr-x` | programs, directories |
+| `644` | `rw-r--r--` | ordinary files |
+| `750` | `rwxr-x---` | owner all, group read and enter |
+
+- Order is always owner, group, others. `chmod u+x` adds, `u-x` removes, `u=x` **replaces**. `chown user:group f`; only root can change the owner. <LessonLink id="015.3" />
+- On a directory: `r` lists names, `x` enters, `w` (with `x`) creates and deletes entries. Deleting a file depends on the directory's permissions, not the file's.
+
+### Special directories and links
+
+- `/tmp` is cleared at reboot, `/var/tmp` survives it. Both are `drwxrwxrwt` (`1777`): the **sticky bit** `t` lets you delete only your own files. `chmod +t dir`. <LessonLink id="015.4" />
+- `ln -s TARGET LINK`: target first, like `cp`. `ls -l` shows `link -> target`. `rm link` leaves the target; removing the target leaves a dangling link.

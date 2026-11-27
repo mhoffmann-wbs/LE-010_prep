@@ -6,7 +6,7 @@
 import { Children, type ComponentProps, type ReactNode, isValidElement, useState } from 'react'
 import { Link } from 'react-router'
 import { ShellCommand } from '../components/ShellCommand'
-import type { ExamId } from '../content/blueprint'
+import { type ExamId, objectiveName, objectivesOf, topicName } from '../content/blueprint'
 import { FIXTURES } from '../content/fixtureBank'
 import { normaliseOutput } from '../content/schema'
 import { type FenceMeta, parseMeta } from '../content/snippets'
@@ -234,3 +234,22 @@ function A({ href = '', ...props }: ComponentProps<'a'>) {
 }
 
 export const lessonComponents = { pre: Pre, a: A, Predict, Callout, ExamOnly }
+
+/** A guide's heading for one topic, numbered and named for the learner's exam, with its share of the 40 weight points. */
+function TopicHeading({ topic }: { topic: string }) {
+  const { track } = useProgress()
+  const weight = objectivesOf(topic).reduce((sum, o) => sum + o.weight, 0)
+  return (
+    <h2>
+      {topicName(topic, track)} <span className="font-normal text-slate-500">(weight {weight} of 40)</span>
+    </h2>
+  )
+}
+
+/** A link to an objective's lesson, labelled with the learner's exam numbering. */
+function LessonLink({ id }: { id: string }) {
+  const { track } = useProgress()
+  return <Link to={`/learn/${id}`}>{objectiveName(id, track)}</Link>
+}
+
+export const guideComponents = { ...lessonComponents, TopicHeading, LessonLink }

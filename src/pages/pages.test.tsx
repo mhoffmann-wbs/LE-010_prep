@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 // UI tests run against the real routes and the real question bank, so keep them
 // independent of item order and pool size.
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { RouterProvider, createMemoryRouter } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -162,6 +162,22 @@ describe('pages', () => {
     await user.click(screen.getByRole('button', { name: 'Submit exam' }))
     expect(await screen.findByText(/Estimated scaled score/)).toBeInTheDocument()
     expect(getProgress().mockResults).toHaveLength(1)
+  })
+
+  it('renders both guides with the exam facts, the track’s numbering and their sources', async () => {
+    expect(await renderAt('/guides/exam-day')).toHaveTextContent('Exam day')
+    expect(screen.getByText(/1 minute 30 seconds per question/)).toBeInTheDocument()
+    expect(screen.getAllByRole('link', { name: 'cheat sheet' })[0]).toHaveAttribute('href', '/guides/cheat-sheet')
+    cleanup()
+    expect(await renderAt('/guides/cheat-sheet')).toHaveTextContent('Cheat sheet')
+    expect(screen.getByRole('heading', { name: /^Topic 013: Data Processing/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '013.3 Shell Scripting Basics' })).toHaveAttribute('href', '/learn/013.3')
+    expect(screen.getByRole('heading', { name: 'Sources' })).toBeInTheDocument()
+    cleanup()
+    setTrack('010-160')
+    await renderAt('/guides/cheat-sheet')
+    expect(screen.getByRole('heading', { name: /^Topic 3: The Power of the Command Line/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '3.3 Turning Commands into a Script' })).toHaveAttribute('href', '/learn/013.3')
   })
 
   it('shows readiness by topic on the progress page', async () => {

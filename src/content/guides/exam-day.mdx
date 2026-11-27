@@ -1,0 +1,101 @@
+import { EXAM_FORMAT, EXAM_PROFILES } from '../blueprint'
+
+export const meta = {
+  slug: 'exam-day',
+  title: 'Exam day',
+  updated: '2026-11-27',
+  summary:
+    'The format of the Linux Essentials exam, how to pace yourself, how to read the questions, and what to sort out before the day: price, booking with Pearson VUE, ID and results. Facts come from the LPI pages listed under Sources.',
+  links: [
+    { title: 'LPI: Linux Essentials overview', url: 'https://www.lpi.org/our-certifications/linux-essentials-overview/' },
+    { title: 'LPI: Linux Essentials 010 objectives v2.0', url: 'https://www.lpi.org/our-certifications/exam-010-objectives/' },
+    { title: 'LPI: exam pricing', url: 'https://www.lpi.org/exam-pricing/' },
+    { title: 'LPI: frequently asked questions (scoring, results, delivery)', url: 'https://www.lpi.org/about-lpi/frequently-asked-questions/' },
+    { title: 'LPI: exam vouchers and return policy (booking, ID, rescheduling)', url: 'https://www.lpi.org/lpi-exam-vouchers-and-return-policy/' },
+    { title: 'LPI: online testing with OnVUE', url: 'https://www.lpi.org/online-testing/' },
+    { title: 'LPI blog: How I scored 100% on the Linux Essentials exam (question formats)', url: 'https://www.lpi.org/blog/2026/02/12/how-i-scored-100-on-the-linux-essentials-exam/' },
+    { title: 'Linux Essentials objectives v1.6 (exam 010-160)', url: 'https://wiki.lpi.org/wiki/Linux_Essentials_Objectives_V1.6' },
+  ],
+}
+
+## The format
+
+| | 010-200 | 010-160 |
+|---|---|---|
+| Objectives | version {EXAM_PROFILES['010-200'].version} | version {EXAM_PROFILES['010-160'].version} |
+| Questions | {EXAM_FORMAT.items} | {EXAM_FORMAT.items} |
+| Time | {EXAM_FORMAT.minutes} minutes | {EXAM_FORMAT.minutes} minutes |
+| Result | pass or fail, with a scaled score from {EXAM_FORMAT.scaleMin} to {EXAM_FORMAT.scaleMax}; you pass at **{EXAM_FORMAT.passScore}** | the same |
+| Available | the current exam | until {EXAM_PROFILES['010-160'].availableUntil} |
+| Prerequisites | none | none |
+| Valid for | life | life |
+
+- **Which exam?** 010-200 is the current one, and the one this app teaches by default. 010-160 can still be booked until {EXAM_PROFILES['010-160'].availableUntil}. If you've already studied for it, switch the exam track on the [start page](/), and every lesson, practice set and mock follows that exam.
+- **The pass mark is not a percentage.** LPI sets the cut score per exam with psychometric methods and publishes only the scaled 500. The app's mock shows an *estimate* that assumes you need about two thirds right. Aim well above that.
+- **Question formats.** No official LPI page lists them. A trainer's report on LPI's blog describes "multiple choice, multiple response, and short input": pick one answer, pick several, or type a short answer such as a command, an option or a path. The app's single, multi and fill questions mirror these three. Its "predict the output" questions train the same skill from another angle; switch them on or off for practice and the mock on the [progress page](/progress).
+- **Short input wants exact text.** Type commands and paths as you would in a terminal: `ls -l`, `/etc/passwd`. Linux is case sensitive, and so is the answer.
+- **Plan your time by weight.** Each objective has a weight from 1 to 4, and the weights add up to 40, about one question per point. Shell scripting (weight 4) is worth four times as much as installation (weight 1).
+- **Answer every question.** LPI doesn't publish whether wrong answers cost points, and a blank can't be right.
+- For multiple-response questions, read how many answers the question asks for ("Choose TWO") before you look at the options.
+
+## Pacing
+
+{EXAM_FORMAT.minutes} minutes for {EXAM_FORMAT.items} questions is **1 minute 30 seconds per question**. Most Linux Essentials questions are short, so aim for about 1 minute 20 seconds. That leaves around 7 minutes at the end for the questions you want to look at again.
+
+| By minute | you should be past question |
+|---|---|
+| 14 | 10 |
+| 27 | 20 |
+| 40 | 30 |
+| 53 | 40, then go back to the ones you were unsure of |
+
+- **If a question takes more than 2 minutes, pick your best answer, note the number and move on.** A hard question is worth no more than an easy one.
+- The [mock exam](/mock) uses the real length and time limit and lets you flag questions. Take at least two under exam conditions: no lessons, no terminal, no notes, phone away.
+
+## Reading a question
+
+1. **Read the last sentence first.** It says what is being asked: a command, an option, a file, a concept.
+2. **Look for the word that decides it.** Many wrong options are real commands that do something slightly different. Typical pairs:
+
+| The question says | Usually points to |
+|---|---|
+| "append", "add to the end of a file" | `>>`, not `>` |
+| "errors", "error messages" | stream 2: `2>` or `2>&1` |
+| "only empty directories" | `rmdir`, not `rm -r` |
+| "a whole chain of directories" | `mkdir -p` |
+| "now" versus "at boot" (010-200) | `systemctl start` versus `systemctl enable` |
+| "your own password" versus "the other account's password" | `sudo` versus `su` |
+| "add to a group, keep the others" | `usermod -aG`, not `-G` |
+| "who is logged in now" versus "who logged in before" | `who`, `w` versus `last` |
+| "the interpreter of a script" | the shebang line, `#!/bin/bash` |
+| "share changes under the same terms" | copyleft (GPL), not permissive (BSD, MIT) |
+
+3. **Check the options letter by letter.** Linux options are case sensitive (`-r` and `-R`, `-j` and `-J`), and an option on the wrong tool is a classic distractor: `scp -P` but `ssh -p`, `cut -d` but `sort -t`.
+4. **Watch for absolutes.** "Always", "never" and "only" are usually wrong, unless the rule really is absolute: only root can change a file's owner.
+5. The [cheat sheet](/guides/cheat-sheet) collects these facts topic by topic.
+
+## Price and booking
+
+- **Price depends on where you live.** LPI's pricing page lists Linux Essentials at USD 120, 100 or 80 depending on the region, EUR 110 or JPY 13,000. Pick your country on the page to see your price (checked {meta.updated}).
+- **You need an LPI ID first.** Create it at LPI, then book through Pearson VUE ([vue.com/lpi](https://www.vue.com/lpi)), where you sign in or create a Pearson VUE account and give your LPI ID. **Use exactly the same name and email address for both accounts**, and the name that is on your ID.
+- **Test centre or online.** You can take the exam at a Pearson VUE test centre or online with OnVUE, at the same price and length. OnVUE needs Windows or macOS, a camera, a stable internet connection and a quiet, private room. Its interface and the proctors are in English.
+- **Vouchers.** You can buy a voucher in advance from LPI's marketplace and use it to pay when you book. Its expiry date is firm and can't be extended, so book before it runs out.
+- **Language.** LPI's overview page lists English and says translations are coming. Check which languages Pearson VUE offers when you book.
+
+## Before the day
+
+- **Rescheduling and cancelling.** Tell Pearson VUE at least **two business days** before the appointment to get a full refund. After that the fee is not refunded. LPI can't move appointments for you: only Pearson VUE can.
+- **ID at a test centre.** Bring two valid forms of ID. Both must be current and carry your signature, and at least one must have your photo. The name must match your booking.
+- **Arrive 15 minutes early** at a test centre. Personal items stay outside the testing room.
+- **Online?** Read Pearson VUE's OnVUE requirements and run its system test on the computer and in the room you'll use, well before the day.
+
+## The day before
+
+- Read the [cheat sheet](/guides/cheat-sheet) once. Don't start new topics.
+- Look at your weak objectives on the [progress page](/progress) and do one short [weak-spot practice](/practice?weak=1) set, not a full mock.
+- Sleep. A rested brain reads `-aG` and `-G` correctly.
+
+## Results
+
+- **You see your result and a score report right after the exam.** Pearson VUE sends it to LPI within 24 hours, and LPI then issues the certificate.
+- Linux Essentials has no paper certificate. It never expires.

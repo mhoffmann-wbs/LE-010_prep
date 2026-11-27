@@ -24,6 +24,17 @@ export default function HomePage() {
           </Link>{' '}
           runs in your browser.
         </p>
+        <p className="text-slate-700">
+          Booked your exam? Read the{' '}
+          <Link to="/guides/exam-day" className="underline">
+            exam-day guide
+          </Link>{' '}
+          and the{' '}
+          <Link to="/guides/cheat-sheet" className="underline">
+            cheat sheet
+          </Link>
+          .
+        </p>
         <ExamSettings />
       </section>
       <section className="grid gap-4 sm:grid-cols-3">
