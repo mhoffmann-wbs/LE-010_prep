@@ -263,3 +263,26 @@ export const normaliseOutput = (text: string) =>
     .map((line) => line.trimEnd())
     .join('\n')
     .replace(/\n+$/, '')
+
+// Simulators (src/content/sims/<simId>.json): the copy around one interactive
+// part in src/sims/<simId>/, whose own schema validates `params`.
+export const simSchema = z.object({
+  id: z.string().regex(/^[a-z][a-z0-9-]*$/),
+  title: nonEmpty,
+  /** One sentence for the simulator list. */
+  description: nonEmpty,
+  /** What to try first, shown above the simulator. */
+  intro: nonEmpty,
+  /** Objectives the simulator teaches; their lessons link to it. */
+  objectives: z.array(z.string().regex(OBJECTIVE_ID)).min(1),
+  /** Exam-relevant points, shown below the simulator (`code` spans allowed). */
+  takeaways: z.array(nonEmpty).min(2),
+  /** 3–5 bank items for "Now you try", each testing one of the objectives; at least 2 on 010-200 and 1 on 010-160. */
+  tryItems: z.array(z.string()).min(3).max(5),
+  /** Sources for the facts the simulator states. */
+  links: z.array(z.object({ title: nonEmpty, url: z.url() })).min(1),
+  /** Simulator-specific copy and parameters, validated by the registry's schema. */
+  params: z.unknown(),
+})
+
+export type Sim = z.infer<typeof simSchema>

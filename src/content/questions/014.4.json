@@ -291,7 +291,7 @@
     ],
     "explanation": "`host NAME` queries DNS and prints the addresses of the name (`has address` for IPv4, `has IPv6 address` for IPv6). With an address, `host` does a reverse lookup and prints the name.",
     "sourceLinks": [
-      "https://man7.org/linux/man-pages/man1/host.1.html"
+      "https://manpages.debian.org/trixie/bind9-host/host.1.en.html"
     ]
   },
   {

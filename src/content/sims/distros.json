@@ -1,0 +1,270 @@
+{
+  "id": "distros",
+  "title": "Distribution family tree",
+  "description": "Click through the Debian, Enterprise Linux, SUSE and Alpine families, see what each distribution is built from, and compare fixed, LTS, rolling and Debian-style releases.",
+  "intro": "Open the Enterprise Linux family and follow the line Fedora, CentOS Stream, RHEL. Then click AlmaLinux and Rocky Linux and see what they have in common with RHEL. After that, compare Ubuntu LTS with Fedora in the release-model table, and try the five scenarios.",
+  "objectives": ["011.1"],
+  "takeaways": [
+    "Linux is only the kernel. A distribution adds userspace software, an installer, a package manager and a release policy. Distributions of one family share a package format and tools: Debian-based use `.deb` with `dpkg` and `apt`, Enterprise Linux uses `.rpm` with `rpm` and `dnf`, SUSE-based use `.rpm` with `rpm` and `zypper`, and Alpine uses `apk`.",
+    "Debian-based: Debian, Ubuntu (built on Debian) and Raspberry Pi OS (built on Debian). Linux Mint, which 010-160 names, is based on Ubuntu and Debian.",
+    "Enterprise Linux: Fedora is the community distribution where new things start and Red Hat sponsors it. CentOS Stream is where the next minor releases of Red Hat Enterprise Linux take shape. AlmaLinux and Rocky Linux are free, community-run distributions that aim to be compatible with RHEL. The older CentOS Linux has ended.",
+    "SUSE-based: SUSE Linux Enterprise (SLE) is the commercial product, openSUSE Leap is the free stable release that shares its core with SLE, and openSUSE Tumbleweed is the free rolling release.",
+    "Alpine has stable branches named like `v3.x` (a new one each May and November, `main` supported for about two years) and `edge`, the rolling branch the stable ones are cut from.",
+    "Release words: stable and LTS trade new features for predictability, a rolling release has no version to upgrade to and always has the newest packages, Debian keeps stable, testing and unstable at the same time, and alpha and beta are early test versions. Stable does not mean never crashes. It means little changes.",
+    "Android runs on a Linux kernel (built from upstream long-term-support kernels plus Android patches), but its userspace is not the usual GNU/Linux one, so it is not called a distribution in the desktop sense."
+  ],
+  "tryItems": ["011.1-009", "011.1-010", "011.1-019", "011.1-013", "011.1-015"],
+  "links": [
+    { "title": "Debian: releases (stable, testing, unstable) and life cycle", "url": "https://www.debian.org/releases/" },
+    { "title": "Debian FAQ: choosing a Debian distribution", "url": "https://www.debian.org/doc/manuals/debian-faq/choosing.en.html" },
+    { "title": "Ubuntu: release cycle", "url": "https://ubuntu.com/about/release-cycle" },
+    { "title": "Linux Mint: about", "url": "https://www.linuxmint.com/about.php" },
+    { "title": "Raspberry Pi: Raspberry Pi OS", "url": "https://www.raspberrypi.com/software/" },
+    { "title": "Raspberry Pi: Raspberry Pi OS follows the new Debian release (Trixie)", "url": "https://www.raspberrypi.com/news/trixie-the-new-version-of-raspberry-pi-os/" },
+    { "title": "Fedora: release life cycle", "url": "https://docs.fedoraproject.org/en-US/releases/lifecycle/" },
+    { "title": "Fedora Project", "url": "https://fedoraproject.org/" },
+    { "title": "CentOS Project: about CentOS Stream", "url": "https://www.centos.org/about/" },
+    { "title": "CentOS Linux end of life", "url": "https://centos.org/centos-linux-eol/" },
+    { "title": "Red Hat Enterprise Linux life cycle", "url": "https://access.redhat.com/support/policy/updates/errata" },
+    { "title": "AlmaLinux OS", "url": "https://almalinux.org/" },
+    { "title": "Rocky Linux: about", "url": "https://rockylinux.org/about" },
+    { "title": "Scientific Linux end of life", "url": "https://scientificlinux.org/category/uncategorized/scientific-linux-end-of-life/" },
+    { "title": "SUSE: product life cycle", "url": "https://www.suse.com/lifecycle/" },
+    { "title": "openSUSE Leap 16.0 release notes", "url": "https://doc.opensuse.org/release-notes/x86_64/openSUSE/Leap/16.0/release-notes-leap-160.txt" },
+    { "title": "openSUSE: Leap and Tumbleweed", "url": "https://www.opensuse.org/" },
+    { "title": "Alpine Linux: about", "url": "https://alpinelinux.org/about/" },
+    { "title": "Alpine Linux: releases and branches", "url": "https://alpinelinux.org/releases/" },
+    { "title": "Arch Linux: about", "url": "https://archlinux.org/about/" },
+    { "title": "Android Open Source Project: the Android kernel", "url": "https://source.android.com/docs/core/architecture/kernel" }
+  ],
+  "params": {
+    "families": [
+      { "id": "debian", "name": "Debian-based", "tools": ".deb packages: dpkg, apt", "summary": "Debian and the distributions built on it." },
+      { "id": "enterprise", "name": "Enterprise Linux (Red Hat family)", "tools": ".rpm packages: rpm, dnf", "summary": "Fedora, CentOS Stream, RHEL and the distributions compatible with RHEL." },
+      { "id": "suse", "name": "SUSE-based", "tools": ".rpm packages: rpm, zypper", "summary": "SUSE Linux Enterprise and the openSUSE distributions." },
+      { "id": "alpine", "name": "Alpine", "tools": ".apk packages: apk", "summary": "A small, security-oriented distribution with musl libc and BusyBox, popular in containers." },
+      { "id": "arch", "name": "Arch (not named in the objectives)", "tools": "pacman", "summary": "A rolling-release distribution shown here as a contrast. The exam does not ask about it." },
+      { "id": "android", "name": "Android (kernel only)", "tools": "", "summary": "A Linux kernel with Android's own userspace. It has no apt or dnf." }
+    ],
+    "distros": [
+      {
+        "id": "debian", "name": "Debian GNU/Linux", "family": "debian", "parent": null,
+        "relation": "The root of the family.", "maker": "Community project", "exams": ["010-200", "010-160"], "model": "suites",
+        "cadence": "Three lines at the same time: stable, testing and unstable (always called sid).",
+        "support": "Five years per stable release: three years of full support, then two years of Long Term Support (LTS).",
+        "summary": "New software enters unstable, moves on to testing, and the frozen testing line becomes the next stable release. The guest in this app's terminal is a Debian system.",
+        "watchOut": "Stable means the packages change little, not that nothing breaks. Testing has no permanent security support."
+      },
+      {
+        "id": "ubuntu", "name": "Ubuntu", "family": "debian", "parent": "debian",
+        "relation": "Built on Debian.", "maker": "Canonical", "exams": ["010-200", "010-160"], "model": "lts",
+        "cadence": "A new release every six months; an LTS release every two years.",
+        "support": "LTS: five years of standard security maintenance. Interim releases: nine months. Ubuntu Pro extends LTS coverage.",
+        "summary": "A Debian-based distribution with a fixed calendar. Most people who need stability choose an LTS release.",
+        "watchOut": "Only the LTS releases get the long support. The releases in between end after nine months."
+      },
+      {
+        "id": "linux-mint", "name": "Linux Mint", "family": "debian", "parent": "ubuntu",
+        "relation": "Based on Ubuntu and Debian.", "maker": "Linux Mint project", "exams": ["010-160"], "model": "fixed",
+        "cadence": "Numbered releases, not a rolling release.",
+        "support": "Not asked about on the exam.",
+        "summary": "A beginner-friendly desktop distribution that takes its packages from Ubuntu and Debian, so it uses the same apt tools.",
+        "watchOut": "Named only on 010-160. Remember it as a Debian-family member."
+      },
+      {
+        "id": "raspberry-pi-os", "name": "Raspberry Pi OS", "family": "debian", "parent": "debian",
+        "relation": "Built on Debian; a new major release follows each new Debian major release.", "maker": "Raspberry Pi", "exams": ["010-200", "010-160"], "model": "fixed",
+        "cadence": "A new major version after each new Debian major version.",
+        "support": "Continuously updated by Raspberry Pi's own engineers.",
+        "summary": "The official operating system for Raspberry Pi computers, such as the office board that shows TuxPixel's build status.",
+        "watchOut": "010-160 also lists Raspbian, which is the older name of the Raspberry Pi board's Debian-based system."
+      },
+      {
+        "id": "fedora", "name": "Fedora Linux", "family": "enterprise", "parent": null,
+        "relation": "Upstream: RHEL is developed from it.", "maker": "Fedora Project, sponsored by Red Hat", "exams": ["010-200", "010-160"], "model": "fixed",
+        "cadence": "A new release about every six months.",
+        "support": "Each release is maintained for roughly 13 months.",
+        "summary": "The community distribution for people who want fresh software and don't mind upgrading often. Mira uses it to test new libraries early.",
+        "watchOut": "Fedora is not rolling. It has numbered releases that end quickly. It is not an enterprise distribution to run for years."
+      },
+      {
+        "id": "centos-stream", "name": "CentOS Stream", "family": "enterprise", "parent": "fedora",
+        "relation": "Derived from Fedora; the next RHEL minor releases take shape here.", "maker": "CentOS Project (maintained by the RHEL team, developed in the open)", "exams": ["010-200"], "model": "fixed",
+        "cadence": "A new major version every three years.",
+        "support": "Each release is maintained for five years.",
+        "summary": "Sits between Fedora and RHEL, previewing what RHEL will get next.",
+        "watchOut": "CentOS Stream is not a rebuild of RHEL. It is where RHEL's next minor release is built."
+      },
+      {
+        "id": "rhel", "name": "Red Hat Enterprise Linux (RHEL)", "family": "enterprise", "parent": "centos-stream",
+        "relation": "Its minor releases take shape in CentOS Stream.", "maker": "Red Hat (commercial: you pay for support and updates)", "exams": ["010-200", "010-160"], "model": "fixed",
+        "cadence": "Major releases, with minor releases in between.",
+        "support": "RHEL 8, 9 and 10 have a ten-year life cycle: five years of Full Support, five years of Maintenance Support, then extra paid options.",
+        "summary": "The commercial product the whole family is organised around.",
+        "watchOut": "Its long support is a paid subscription. AlmaLinux and Rocky Linux are the free alternatives."
+      },
+      {
+        "id": "almalinux", "name": "AlmaLinux", "family": "enterprise", "parent": "rhel",
+        "relation": "Compatible with RHEL: software and kernel modules that work on RHEL should work here.", "maker": "AlmaLinux OS Foundation (non-profit, community-governed)", "exams": ["010-200"], "model": "fixed",
+        "cadence": "Follows RHEL's releases.",
+        "support": "Each minor version ends when the next minor version is released; the project publishes the dates for each major version.",
+        "summary": "A free, community-run Enterprise Linux distribution.",
+        "watchOut": "Free and RHEL-compatible, but Red Hat's support contract does not cover it."
+      },
+      {
+        "id": "rocky", "name": "Rocky Linux", "family": "enterprise", "parent": "rhel",
+        "relation": "Created to continue what CentOS had been: a free, production-ready distribution compatible with RHEL.", "maker": "Rocky Enterprise Software Foundation (not run by Red Hat)", "exams": ["010-200"], "model": "fixed",
+        "cadence": "Follows RHEL's releases.",
+        "support": "Tied to the RHEL release it follows.",
+        "summary": "Started after Red Hat announced in December 2020 that it would discontinue CentOS Linux. Its first stable release was 8.4 in June 2021.",
+        "watchOut": "It says it is not affiliated with, endorsed by or sponsored by Red Hat."
+      },
+      {
+        "id": "centos-linux", "name": "CentOS Linux (ended)", "family": "enterprise", "parent": "rhel",
+        "relation": "Was a free rebuild of RHEL.", "maker": "CentOS Project", "exams": ["010-160"], "model": "fixed", "ended": true,
+        "cadence": "Followed RHEL.",
+        "support": "CentOS Linux 8 reached end of life on 31 December 2021.",
+        "summary": "The older CentOS. The name CentOS Stream continues, but it is a different thing: a preview of RHEL, not a rebuild.",
+        "watchOut": "On 010-160 \"CentOS\" means the ended rebuild. Newer material means CentOS Stream."
+      },
+      {
+        "id": "scientific-linux", "name": "Scientific Linux (ended)", "family": "enterprise", "parent": "rhel",
+        "relation": "Was built to be compatible with RHEL, for research labs.", "maker": "Scientific Linux project", "exams": ["010-160"], "model": "fixed", "ended": true,
+        "cadence": "Followed RHEL.",
+        "support": "Scientific Linux 7 reached end of life on 30 June 2024; no security updates after that.",
+        "summary": "A distribution for scientific computing that has ended.",
+        "watchOut": "Named only on 010-160, and only as part of the Red Hat family."
+      },
+      {
+        "id": "sle", "name": "SUSE Linux Enterprise (SLE)", "family": "suse", "parent": null,
+        "relation": "The root of the family.", "maker": "SUSE (commercial)", "exams": ["010-200", "010-160"], "model": "fixed",
+        "cadence": "Major versions with service packs or minor releases.",
+        "support": "SLES 16: general support to 30 November 2035. SLES 15 SP7: to 31 July 2031. Long-term options extend both.",
+        "summary": "SUSE's commercial product, sold with support.",
+        "watchOut": "Like RHEL, the long support is paid."
+      },
+      {
+        "id": "leap", "name": "openSUSE Leap", "family": "suse", "parent": "sle",
+        "relation": "Its enterprise core is based on SLE.", "maker": "openSUSE community and SUSE", "exams": ["010-200", "010-160"], "model": "fixed",
+        "cadence": "A minor release every 12 months.",
+        "support": "About 24 months of community support for each minor release.",
+        "summary": "The free community release that shares its core with SLE. openSUSE describes it as a stable release distribution.",
+        "watchOut": "Leap is not rolling. Tumbleweed is the rolling one."
+      },
+      {
+        "id": "tumbleweed", "name": "openSUSE Tumbleweed", "family": "suse", "parent": null,
+        "relation": "The free rolling release.", "maker": "openSUSE community", "exams": ["010-200", "010-160"], "model": "rolling",
+        "cadence": "Rolling: no version numbers to upgrade between.",
+        "support": "Keep updating to stay supported.",
+        "summary": "The newest software in the SUSE world. Mira tries new engine libraries here before the studio relies on them.",
+        "watchOut": "Rolling does not mean unfinished. It means there is no next version: you keep updating."
+      },
+      {
+        "id": "alpine-edge", "name": "Alpine Linux edge", "family": "alpine", "parent": null,
+        "relation": "The rolling development branch.", "maker": "Alpine Linux project", "exams": ["010-200"], "model": "rolling",
+        "cadence": "Rolling: no minor releases.",
+        "support": "No end-of-support date.",
+        "summary": "Has its own main and community repositories, and each stable branch is cut from it.",
+        "watchOut": "edge is the rolling branch. The stable ones are the v3.x branches."
+      },
+      {
+        "id": "alpine", "name": "Alpine Linux (stable branches)", "family": "alpine", "parent": "alpine-edge",
+        "relation": "A release branch is made from edge each May and November.", "maker": "Alpine Linux project", "exams": ["010-200"], "model": "fixed",
+        "cadence": "A new stable branch (named like v3.x) each May and November.",
+        "support": "main: about two years. community: until the next stable release.",
+        "summary": "Small and security-oriented, based on musl libc and BusyBox, with its own package manager apk. Ada uses it for tiny containers.",
+        "watchOut": "Alpine's repositories are main and community. Its tools differ from Debian's: apk, musl, BusyBox."
+      },
+      {
+        "id": "arch", "name": "Arch Linux", "family": "arch", "parent": null,
+        "relation": "An independent root.", "maker": "Arch Linux project", "exams": [], "model": "rolling",
+        "cadence": "Rolling: one installation and perpetual upgrades.",
+        "support": "Keep updating.",
+        "summary": "A minimal base you add to, with its own package manager pacman. Shown for contrast, not asked about on either exam.",
+        "watchOut": "Not on the objectives. Don't spend study time on it."
+      },
+      {
+        "id": "android", "name": "Android", "family": "android", "parent": null,
+        "relation": "Uses a Linux kernel with Android's own userspace.", "maker": "Google and the Android Open Source Project", "exams": ["010-200", "010-160"], "model": null,
+        "cadence": "Not applicable: it is not a distribution with its own package family.",
+        "support": "Its kernels are built from upstream long-term-support kernels, which are supported for 2 to 6 years.",
+        "summary": "Android builds its kernels from upstream Linux long-term-support kernels plus Android-specific patches. Its userspace is not the GNU userspace of a typical distribution.",
+        "watchOut": "Android uses Linux, but sudo apt install does not work on it, and it is not called a Linux distribution in the desktop sense."
+      }
+    ],
+    "models": [
+      {
+        "id": "fixed", "name": "Fixed (point) release",
+        "idea": "A numbered version that changes little. It gets bug and security fixes, and to get the next version you upgrade.",
+        "newSoftware": "Only at the next release.", "upgrades": "Every so often, when you choose to.", "risk": "Low: the same behaviour for the whole support period.",
+        "examples": "Fedora, RHEL, AlmaLinux, Rocky Linux, SLE, openSUSE Leap, Alpine stable branches"
+      },
+      {
+        "id": "lts", "name": "LTS (Long-Term Support)",
+        "idea": "A release that is supported for much longer than a normal one.",
+        "newSoftware": "Only at the next LTS release.", "upgrades": "Rarely: Ubuntu's LTS releases come every two years.", "risk": "Lowest for servers. Ubuntu LTS gets five years of standard security maintenance; the releases in between get nine months.",
+        "examples": "Ubuntu LTS, Debian stable (five years including LTS)"
+      },
+      {
+        "id": "suites", "name": "Stable, testing and unstable (Debian)",
+        "idea": "Three lines at once. Software enters unstable, moves to testing and, when the release is frozen, testing becomes stable.",
+        "newSoftware": "Unstable first, testing next, stable last.", "upgrades": "Switching suites goes one way: stable to testing to unstable.", "risk": "Stable low, testing medium, unstable highest.",
+        "examples": "Debian"
+      },
+      {
+        "id": "rolling", "name": "Rolling release",
+        "idea": "No version numbers to upgrade between. You keep updating and always get the newest packages.",
+        "newSoftware": "As soon as it is packaged.", "upgrades": "Constantly, in small steps.", "risk": "Higher: things change under you, so it is a poor choice for a production server.",
+        "examples": "openSUSE Tumbleweed, Alpine edge, Arch Linux"
+      },
+      {
+        "id": "prerelease", "name": "Alpha and beta versions",
+        "idea": "Early test versions of a release, before it is declared ready. Alpha is rougher than beta.",
+        "newSoftware": "The next version, early.", "upgrades": "You test it and report what breaks.", "risk": "High: for testers and developers, not for work that has to run.",
+        "examples": "A distribution's next release while it is being prepared"
+      }
+    ],
+    "scenarios": [
+      {
+        "text": "Ada's build server must get five years of security updates without a reinstall, and builds must not change behaviour on their own.",
+        "options": ["lts", "rolling", "prerelease", "suites"],
+        "answer": "lts",
+        "why": "An LTS release is supported for much longer than a normal one and changes little. A rolling release changes constantly, and an alpha or beta is for testing."
+      },
+      {
+        "text": "Mira wants the newest graphics and audio libraries on a test laptop, and is happy to update every few days.",
+        "options": ["fixed", "lts", "rolling", "prerelease"],
+        "answer": "rolling",
+        "why": "A rolling release such as openSUSE Tumbleweed hands out new packages as they are ready. Fixed and LTS releases hold them back until the next version."
+      },
+      {
+        "text": "Jonas wants to try the next version of his distribution before it is declared ready, and will report any bugs he finds.",
+        "options": ["lts", "prerelease", "fixed", "suites"],
+        "answer": "prerelease",
+        "why": "Alpha and beta versions are early test versions. Alpha is rougher than beta."
+      },
+      {
+        "text": "Ada wants a system where new packages first land in one line, move on to a second one after waiting for bugs to show up, and the second line one day becomes the next release.",
+        "options": ["rolling", "lts", "suites", "fixed"],
+        "answer": "suites",
+        "why": "That is Debian's flow: unstable, then testing, then the frozen testing line becomes the new stable release."
+      },
+      {
+        "text": "Ada's team uses Alpine's edge branch for a throwaway container to see how the studio's tools behave with the newest packages.",
+        "options": ["fixed", "rolling", "lts", "prerelease"],
+        "answer": "rolling",
+        "why": "edge is Alpine's rolling branch: it has no minor releases and no end-of-support date, and the stable v3.x branches are cut from it."
+      }
+    ],
+    "notes": [
+      {
+        "title": "Android is not a distribution",
+        "text": "Android uses a Linux kernel built from upstream long-term-support kernels plus Android's patches. Its apps run in Android's own runtime, so you will not find the GNU userspace or apt there."
+      },
+      {
+        "title": "Embedded systems (010-160)",
+        "text": "An embedded system is a small computer built into a device with one job, such as a router, a TV or a thermostat. Linux is popular there because it is free, can be shrunk down and runs on many processor types. The Raspberry Pi is a general-purpose board often used to build such devices."
+      }
+    ]
+  }
+}

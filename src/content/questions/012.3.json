@@ -212,7 +212,7 @@
       { "text": "`-nocase \"readme*\"`", "correct": false, "rationale": "There is no such test in `find`." }
     ],
     "explanation": "`-name` compares names exactly; `-iname` ignores case. Quote the pattern so the shell passes the `*` to `find`.",
-    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/find.html"]
   },
   {
     "id": "012.3-015",
@@ -228,7 +228,7 @@
       { "text": "`find ~ -type d -name docs`", "correct": true, "rationale": "`-type d` limits the results to directories." }
     ],
     "explanation": "`find` combines tests: `-type d` keeps directories and `-name docs` keeps the matching names. Both must hold.",
-    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/find.html"]
   },
   {
     "id": "012.3-016",
@@ -299,7 +299,7 @@
       { "text": "`ls -d /srv/assets`", "correct": false, "rationale": "This lists only the directory itself." }
     ],
     "explanation": "`find START TESTS` searches the whole tree. A shell wildcard such as `*.png` only matches inside one directory, and the starting point has to come before the tests.",
-    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/find.html"]
   },
   {
     "id": "012.3-020",
@@ -364,7 +364,7 @@
     "caseSensitive": true,
     "verify": { "command": "find projects {answer}", "fixture": "projects" },
     "explanation": "`-name` compares the file name against a pattern; a plain name matches exactly that name.",
-    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/html_mono/find.html"]
+    "sourceLinks": ["https://www.gnu.org/software/findutils/manual/find.html"]
   },
   {
     "id": "012.3-025",

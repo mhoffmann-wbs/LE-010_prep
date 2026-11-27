@@ -1,0 +1,230 @@
+{
+  "id": "users",
+  "description": "On the build server, Mira creates an account for Jonas, sets his password, adds him to a new group, and checks who is logged in and who logged in before.",
+  "captured": "2026-11-27",
+  "environment": [
+    "Each host ran in a Docker container on Docker Desktop (arm64), so the kernel is Docker Desktop's (Linux 7.0.14-linuxkit), not the distribution's.",
+    "On the Debian hosts, systemd runs as PID 1, as on a real machine.",
+    "The hosts share a network in documentation address ranges (192.0.2.0/24 and 2001:db8:1::/64, gateway 192.0.2.1). A dnsmasq container at 192.0.2.53 answers for tuxpixel.example.",
+    "Commands ran in a login shell on an 80-column terminal, with the pagers of systemd and dpkg turned off (SYSTEMD_PAGER=cat, DPKG_PAGER=cat).",
+    "Sockets on 127.0.0.11 belong to Docker's built-in DNS service, which every container on such a network has.",
+    "nginx is set to start 2 worker processes rather than one per CPU, to keep process listings short.",
+    "Ada is logged in to the build server over SSH from the laptop during the capture, so w, who and last have a session to show.",
+    "wtmpdb and libpam-wtmpdb were installed. Debian 13's util-linux no longer provides last; the release notes name wtmpdb as its replacement, and the wtmpdb package also installs a last command."
+  ],
+  "hosts": [
+    {
+      "name": "build",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    },
+    {
+      "name": "tuxpixel",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    }
+  ],
+  "setup": [
+    {
+      "host": "build",
+      "user": "root",
+      "command": "userdel -r jonas"
+    },
+    {
+      "host": "tuxpixel",
+      "user": "ada",
+      "command": "setsid nohup expect -c 'spawn ssh -tt -o StrictHostKeyChecking=accept-new build.tuxpixel.example; expect {password: }; send \"tuxpixel[format %c 13]\"; expect {$ }; send \"top[format %c 13]\"; sleep 3600' < /dev/null > /dev/null 2>&1 & sleep 5"
+    }
+  ],
+  "steps": [
+    {
+      "key": "id-mira",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "id",
+      "output": "uid=1000(mira) gid=1000(mira) groups=1000(mira),27(sudo)",
+      "exit": 0
+    },
+    {
+      "key": "useradd",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo useradd -m -s /bin/bash jonas",
+      "output": "[sudo] password for mira:",
+      "exit": 0
+    },
+    {
+      "key": "passwd-line",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "grep jonas /etc/passwd",
+      "output": "jonas:x:1003:1003::/home/jonas:/bin/bash",
+      "exit": 0
+    },
+    {
+      "key": "shadow-denied",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "grep jonas /etc/shadow",
+      "output": "grep: /etc/shadow: Permission denied",
+      "exit": 2
+    },
+    {
+      "key": "shadow-new",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo grep jonas /etc/shadow",
+      "output": "jonas:!:20784:0:99999:7:::",
+      "exit": 0
+    },
+    {
+      "key": "passwd",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo passwd jonas",
+      "output": "New password:\nRetype new password:\npasswd: password updated successfully",
+      "exit": 0
+    },
+    {
+      "key": "shadow-set",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo grep jonas /etc/shadow",
+      "output": "jonas:$y$j9T$uRuWkoONYz2jTWL8k9RaE0$yTZZFHIKwL.wMgfUAZ7FVEvWgpPYHxmEM2Bgg6bqUvA:20784:0:99999:7:::",
+      "exit": 0
+    },
+    {
+      "key": "groupadd",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo groupadd artists",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "usermod",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo usermod -aG artists jonas",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "group-line",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "grep -E \"^(artists|jonas):\" /etc/group",
+      "output": "jonas:x:1003:\nartists:x:1004:jonas",
+      "exit": 0
+    },
+    {
+      "key": "id-jonas",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "id jonas",
+      "output": "uid=1003(jonas) gid=1003(jonas) groups=1003(jonas),1004(artists)",
+      "exit": 0
+    },
+    {
+      "key": "skel",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ls -A /etc/skel",
+      "output": ".bash_logout  .bashrc  .profile",
+      "exit": 0
+    },
+    {
+      "key": "home-denied",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ls -A /home/jonas",
+      "output": "ls: cannot open directory '/home/jonas': Permission denied",
+      "exit": 2
+    },
+    {
+      "key": "home",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo ls -lA /home/jonas",
+      "output": "total 12\n-rw-r--r-- 1 jonas jonas  220 Jul 12 16:58 .bash_logout\n-rw-r--r-- 1 jonas jonas 3526 Jul 12 16:58 .bashrc\n-rw-r--r-- 1 jonas jonas  807 Jul 12 16:58 .profile",
+      "exit": 0
+    },
+    {
+      "key": "su",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "su - jonas",
+      "output": "Password:\njonas@build:~$ whoami\njonas\njonas@build:~$ exit\nlogout",
+      "exit": 0
+    },
+    {
+      "key": "sudo-i",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo -i",
+      "output": "root@build:~# whoami\nroot\nroot@build:~# exit\nlogout",
+      "exit": 0
+    },
+    {
+      "key": "w",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "w",
+      "output": " 11:53:13 up 33 min,  1 user,  load average: 0.23, 0.19, 0.10\nUSER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU  WHAT\nada      pts/0    2001:db8:1::10   11:53   10.00s  0.00s   ?    top",
+      "exit": 0
+    },
+    {
+      "key": "who",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "who",
+      "output": "ada      sshd pts/0   2026-11-27 11:53 (2001:db8:1::10)",
+      "exit": 0
+    },
+    {
+      "key": "last",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "last",
+      "output": "root     pts/1                         Fri Nov 27 11:53 - 11:53  (00:00)\njonas    pts/1                         Fri Nov 27 11:53 - 11:53  (00:00)\nada      pts/0        2001:db8:1::10   Fri Nov 27 11:53 - still logged in\nreboot   system boot  7.0.14-linuxkit  Fri Nov 27 11:19 - still running\n\nwtmpdb begins Fri Nov 27 11:19:56 2026",
+      "exit": 0
+    },
+    {
+      "key": "wtmpdb-last",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "wtmpdb last",
+      "output": "root     pts/1                         Fri Nov 27 11:53 - 11:53  (00:00)\njonas    pts/1                         Fri Nov 27 11:53 - 11:53  (00:00)\nada      pts/0        2001:db8:1::10   Fri Nov 27 11:53 - still logged in\nreboot   system boot  7.0.14-linuxkit  Fri Nov 27 11:19 - still running\n\nwtmpdb begins Fri Nov 27 11:19:56 2026",
+      "exit": 0
+    },
+    {
+      "key": "which-last",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ls -l /usr/bin/last",
+      "output": "lrwxrwxrwx 1 root root 6 Oct 20  2025 /usr/bin/last -> wtmpdb",
+      "exit": 0
+    }
+  ]
+}

@@ -89,6 +89,27 @@ describe('pages', () => {
     expect(screen.getByRole('status')).toHaveTextContent(/Correct|It’s/)
   })
 
+  it('lists the simulators and works the permissions calculator', async () => {
+    await renderAt('/explore/sims')
+    await userEvent.click(screen.getByRole('link', { name: 'Permissions calculator' }))
+    await screen.findByRole('heading', { level: 1, name: 'Permissions calculator' })
+    await userEvent.click(await screen.findByRole('checkbox', { name: 'Group (g) write' }))
+    expect(screen.getByText('-rw-rw-r--')).toBeInTheDocument()
+    await userEvent.type(screen.getByLabelText('chmod'), 'o=,u+x{Enter}')
+    expect(screen.getByText('chmod 760 build.sh')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Now you try' })).toBeInTheDocument()
+  })
+
+  it('replays a captured transcript and highlights the answer in its output', async () => {
+    await renderAt('/explore/sims/services')
+    await userEvent.click(await screen.findByRole('button', { name: 'Show all' }))
+    expect(screen.getAllByText(/nginx\.service - A high performance web server/).length).toBeGreaterThan(1)
+    const question = screen.getByRole('group', { name: /What state is nginx in/ })
+    await userEvent.click(question.querySelector('button')!)
+    expect(screen.getAllByRole('status')[0]).toHaveTextContent(/Right|Not quite/)
+    expect(document.querySelector('mark')).toHaveTextContent('Active: inactive (dead)')
+  })
+
   it('reviews built-in flashcards and keeps their review state', async () => {
     expect(await renderAt('/explore/flashcards')).toHaveTextContent('Flashcards')
     await userEvent.click(screen.getAllByRole('link', { name: /^Review \d+/ })[0]!)

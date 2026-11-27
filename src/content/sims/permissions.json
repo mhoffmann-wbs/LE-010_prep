@@ -1,0 +1,78 @@
+{
+  "id": "permissions",
+  "title": "Permissions calculator",
+  "description": "Tick read, write and execute for owner, group and others, and see the `ls -l` letters, the octal mode and the chmod commands change together.",
+  "intro": "Start with `644`, the usual mode of a new file. Give the group write permission, and watch the second digit go from 4 to 6. Then switch to a directory and read what the same bits mean there. Finally, type `g-w,o=` into the chmod box and predict the result before you run it.",
+  "objectives": ["015.3", "015.4"],
+  "takeaways": [
+    "The nine letters are three groups of `rwx`: owner, group, others, always in that order. The character before them is the type: `-` for a file, `d` for a directory, `l` for a symbolic link.",
+    "Each octal digit adds r = 4, w = 2 and x = 1 for one class, so `rwxr-x---` is `750` and `rw-r--r--` is `644`.",
+    "An octal chmod sets every bit at once. A symbolic chmod (`u+x`, `go-w`, `o=`, `a+r`) changes only the bits it names and leaves the rest alone.",
+    "On a directory, r lists the names, w creates, deletes and renames entries, and x lets you enter it with `cd` and reach what's inside. Without x, r and w are of little use.",
+    "The sticky bit shows as `t` in the last position (`drwxrwxrwt`, octal `1777`, as on `/tmp`). In such a directory, only a file's owner, the directory's owner or root can delete or rename the file. A capital `T` means the sticky bit is set without execute for others."
+  ],
+  "tryItems": ["015.3-004", "015.3-005", "015.3-015", "015.4-002", "015.4-001"],
+  "links": [
+    { "title": "chmod(1) manual page (GNU coreutils)", "url": "https://man7.org/linux/man-pages/man1/chmod.1.html" },
+    { "title": "inode(7): file type and mode bits, and the sticky bit", "url": "https://man7.org/linux/man-pages/man7/inode.7.html" },
+    { "title": "GNU coreutils manual: symbolic modes", "url": "https://www.gnu.org/software/coreutils/manual/html_node/Symbolic-Modes.html" }
+  ],
+  "params": {
+    "owner": "mira",
+    "group": "studio",
+    "meanings": {
+      "file": {
+        "r": "Read its contents.",
+        "w": "Change its contents.",
+        "x": "Run it as a program or script."
+      },
+      "dir": {
+        "r": "List the names inside.",
+        "w": "Create, delete and rename entries (together with x).",
+        "x": "Enter it with cd and reach the entries inside."
+      }
+    },
+    "sticky": {
+      "dir": "Only a file's owner, the directory's owner or root may delete or rename the files inside, even though others can write to the directory.",
+      "file": "Linux ignores the sticky bit on files; it matters on directories."
+    },
+    "tasks": [
+      {
+        "text": "Ada's script `deploy.sh`: she can read, change and run it, the release group can read and run it, and nobody else can do anything.",
+        "kind": "file",
+        "answer": "750",
+        "why": "Owner rwx (4+2+1 = 7), group r-x (4+1 = 5), others nothing (0)."
+      },
+      {
+        "text": "Jonas's `palette.txt`: he can read and change it, and everyone else can only read it.",
+        "kind": "file",
+        "answer": "644",
+        "why": "rw- is 6 and r-- is 4. This is also what a new file gets with the usual umask 022."
+      },
+      {
+        "text": "Mira's `passwords.txt`: only she may read and change it.",
+        "kind": "file",
+        "answer": "600",
+        "why": "rw- for the owner and nothing for group and others: 6, 0, 0."
+      },
+      {
+        "text": "The directory `builds`: the studio group can add and remove builds, everyone else can list and enter it but not change it.",
+        "kind": "dir",
+        "answer": "775",
+        "why": "Changing entries needs w and x on the directory; listing and entering need r and x. So rwx, rwx, r-x."
+      },
+      {
+        "text": "A shared upload directory like `/tmp`: everyone can create files, but nobody can delete someone else's.",
+        "kind": "dir",
+        "answer": "1777",
+        "why": "rwx for all three classes, plus the sticky bit (the leading 1), which `ls -l` shows as the final `t`."
+      },
+      {
+        "text": "The directory `private`: Mira has full access, and nobody else can even enter it.",
+        "kind": "dir",
+        "answer": "700",
+        "why": "Without x, group and others can't `cd` into the directory or reach anything in it."
+      }
+    ]
+  }
+}

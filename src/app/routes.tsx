@@ -12,6 +12,7 @@ const MockExamPage = lazy(() => import('../pages/MockExamPage'))
 const TerminalPage = lazy(() => import('../pages/TerminalPage'))
 const ExercisesPage = lazy(() => import('../pages/ExercisesPage'))
 const ExplorePage = lazy(() => import('../pages/ExplorePage'))
+const SimPage = lazy(() => import('../pages/SimPage'))
 const DrillsPage = lazy(() => import('../pages/DrillsPage'))
 const FlashcardsPage = lazy(() => import('../pages/FlashcardsPage'))
 const FlashcardReviewPage = lazy(() => import('../pages/FlashcardReviewPage'))
@@ -33,6 +34,8 @@ export const routes: RouteObject[] = [
       { path: 'exercises', element: <ExercisesPage /> },
       { path: 'exercises/:exerciseId', element: <ExercisesPage /> },
       { path: 'explore', element: <ExplorePage /> },
+      { path: 'explore/sims', element: <SimPage /> },
+      { path: 'explore/sims/:simId', element: <SimPage /> },
       { path: 'explore/drills', element: <DrillsPage /> },
       { path: 'explore/drills/:deckId', element: <DrillsPage /> },
       { path: 'explore/flashcards', element: <FlashcardsPage /> },

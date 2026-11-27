@@ -1,0 +1,128 @@
+{
+  "id": "services",
+  "title": "Service console",
+  "description": "Replay real systemctl, journalctl, syslog and dmesg output from a Debian 13 build server: stop and start nginx, then find out why the game server won't start.",
+  "intro": "The in-browser terminal has no systemd, so this console replays commands that really ran on a Debian 13 server. Run each command, read what it printed, then answer from the output. In scene 2, try to find the reason for the failure in the status output before you open the journal.",
+  "objectives": ["014.3"],
+  "takeaways": [
+    "`systemctl status unit` shows whether a service is `active (running)`, `inactive (dead)` or `failed`, its main process, and its newest log lines (when you may read them). `systemctl start`, `stop` and `restart` change the state now and need root, so Mira uses `sudo`.",
+    "`systemctl enable` makes a service start at boot; it doesn't start it now. `disabled` in the `Loaded:` line means it won't start at boot, whatever its state right now.",
+    "The systemd journal collects the logs of every service and the kernel. `journalctl -u unit` shows one unit's messages, `-b` limits them to the current boot, and `-n 20` shows the last 20. Users outside the `adm` and `systemd-journal` groups see only their own messages.",
+    "`dmesg` prints the kernel ring buffer: hardware, drivers and boot messages. On Debian, normal users get `Operation not permitted`, so use `sudo dmesg`.",
+    "Classic syslog daemons such as rsyslog write plain text files: `/var/log/syslog` on Debian-based systems, `/var/log/messages` on Red Hat-based ones. Since Debian 12, rsyslog is no longer installed by default; the journal keeps the logs."
+  ],
+  "tryItems": ["014.3-019", "014.3-028", "014.3-021", "014.3-025", "014.3-026"],
+  "links": [
+    { "title": "systemctl(1) manual page", "url": "https://man7.org/linux/man-pages/man1/systemctl.1.html" },
+    { "title": "journalctl(1) manual page", "url": "https://man7.org/linux/man-pages/man1/journalctl.1.html" },
+    { "title": "dmesg(1) manual page", "url": "https://man7.org/linux/man-pages/man1/dmesg.1.html" },
+    { "title": "Debian 13 kernel configuration: CONFIG_SECURITY_DMESG_RESTRICT=y", "url": "https://salsa.debian.org/kernel-team/linux/-/blob/debian/6.12/trixie/debian/config/config" },
+    { "title": "Debian 12 release notes: rsyslog is no longer installed by default", "url": "https://www.debian.org/releases/bookworm/amd64/release-notes/ch-information.en.html#changes-to-system-logging" }
+  ],
+  "params": {
+    "transcript": "services",
+    "scenes": [
+      {
+        "title": "Stop and start nginx",
+        "text": "The build server also serves the studio's download page with nginx. Mira checks it, stops it for maintenance, and starts it again.",
+        "steps": ["status-nginx", "stop-nginx", "status-nginx-stopped", "start-nginx", "is-active-nginx"],
+        "notes": {
+          "stop-nginx": "sudo asks for Mira's own password; nothing appears as she types it. Like most commands that succeed, `systemctl stop` prints nothing.",
+          "status-nginx-stopped": "The exit status of `systemctl status` is 3 for a stopped service, so scripts can tell. The journal warning appears because Mira isn't in the `adm` group.",
+          "start-nginx": "No password this time: sudo remembers it for a few minutes."
+        },
+        "questions": [
+          {
+            "prompt": "What state is nginx in after `sudo systemctl stop nginx`?",
+            "answer": "`inactive (dead)`",
+            "distractors": ["`failed`", "`active (exited)`", "`disabled`"],
+            "why": "A service stopped on purpose is inactive. `failed` means it ended with an error, and `disabled` is about starting at boot.",
+            "evidence": { "step": "status-nginx-stopped", "text": "Active: inactive (dead)" }
+          },
+          {
+            "prompt": "nginx is stopped. Will it still start the next time the server boots?",
+            "answer": "Yes: it is still `enabled`",
+            "distractors": ["No: stopping it disables it", "No: `preset: enabled` only applies to new installs", "Only if Mira runs `systemctl start` again first"],
+            "why": "Starting and stopping change the state now; enabling and disabling decide what happens at boot. The `Loaded:` line still says `enabled`.",
+            "evidence": { "step": "status-nginx-stopped", "text": "nginx.service; enabled;" }
+          }
+        ]
+      },
+      {
+        "title": "Why won't the game server start?",
+        "text": "Ada installed a unit for the Pixel Raiders game server. Mira starts it, and `systemctl start` reports no error. Is it running?",
+        "steps": ["start-game", "status-game-failed", "journal-game"],
+        "notes": {
+          "start-game": "No error here: systemd reports only that it started the program. The program failed a moment later.",
+          "journal-game": "Mira uses `sudo`: outside the `adm` and `systemd-journal` groups she would see only her own messages."
+        },
+        "questions": [
+          {
+            "prompt": "What does `systemctl status` say about the game server?",
+            "answer": "It failed: the program exited with status 1",
+            "distractors": ["It is running but disabled", "It is still starting up", "Its unit file could not be loaded"],
+            "why": "`failed (Result: exit-code)` and `status=1/FAILURE` mean the program ran and ended with an error. The unit file itself loaded fine.",
+            "evidence": { "step": "status-game-failed", "text": "Active: failed (Result: exit-code)" }
+          },
+          {
+            "prompt": "What does the journal give as the reason?",
+            "answer": "The server can't read its settings file",
+            "distractors": ["Port 7777 is already in use", "The `pixelraiders` user doesn't exist", "The unit is disabled"],
+            "why": "The program's own error message is in the journal under its name, between systemd's lines about starting and failing.",
+            "evidence": { "step": "journal-game", "text": "cannot read /etc/pixel-raiders/server.conf" }
+          }
+        ]
+      },
+      {
+        "title": "Fix it and start it at boot",
+        "text": "Mira copies the settings file into place, restarts the service and enables it, so it comes back after a reboot.",
+        "steps": ["copy-config", "restart-game", "status-game", "enable-game", "is-enabled-game"],
+        "notes": {
+          "enable-game": "Enabling a unit links it into the target that starts at boot (`multi-user.target`). It doesn't start the service now; it is already running."
+        },
+        "questions": [
+          {
+            "prompt": "Right after the restart, would the game server start at the next boot?",
+            "answer": "No: it is running but still `disabled`",
+            "distractors": ["Yes: a running service always starts at boot", "Yes: `preset: enabled` turns it on", "No: it failed again"],
+            "why": "Before `systemctl enable`, the `Loaded:` line says `disabled`: running now says nothing about the next boot.",
+            "evidence": { "step": "status-game", "text": "pixel-raiders-server.service; disabled;" }
+          },
+          {
+            "prompt": "What did `systemctl enable` create?",
+            "answer": "A symbolic link in `multi-user.target.wants`",
+            "distractors": ["A copy of the unit in `/usr/lib/systemd/system`", "A line in `/etc/rc.local`", "A new journal file"],
+            "why": "systemd records an enabled unit as a symlink in the `.wants` directory of the target that pulls it in at boot.",
+            "evidence": { "step": "enable-game", "text": "Created symlink '/etc/systemd/system/multi-user.target.wants/pixel-raiders-server.service'" }
+          }
+        ]
+      },
+      {
+        "title": "Logs and kernel messages",
+        "text": "Mira looks at the start of the current boot in the journal, the same events in the classic syslog file, and the kernel's own messages.",
+        "steps": ["journal-boot", "syslog", "dmesg-mira", "dmesg"],
+        "notes": {
+          "journal-boot": "The journal of a boot starts with the kernel's own messages, the same lines `dmesg` shows.",
+          "syslog": "rsyslog was installed on this server for the capture; it writes the same events as plain text with a full timestamp.",
+          "dmesg": "These are the kernel's first messages at boot. The server ran in a container, so this is Docker Desktop's kernel: on a real machine you'd see Debian's."
+        },
+        "questions": [
+          {
+            "prompt": "Why does `dmesg` fail for Mira without `sudo`?",
+            "answer": "Debian lets only root read the kernel ring buffer",
+            "distractors": ["The kernel log is empty after a boot", "`dmesg` only works inside the journal", "Mira must be in the `sudo` group to run any command"],
+            "why": "Debian's kernel restricts the ring buffer to privileged users, so `dmesg` reports that the operation isn't permitted.",
+            "evidence": { "step": "dmesg-mira", "text": "read kernel buffer failed: Operation not permitted" }
+          },
+          {
+            "prompt": "Which file holds the plain-text log that rsyslog writes on this Debian server?",
+            "answer": "`/var/log/syslog`",
+            "distractors": ["`/var/log/messages`", "`/var/log/journal`", "`/etc/rsyslog.conf`"],
+            "why": "Debian-based systems name rsyslog's main file `/var/log/syslog`; Red Hat-based ones use `/var/log/messages`. `/var/log/journal` holds the journal's binary files.",
+            "evidence": { "step": "syslog", "text": "build pixel-raiders-server" }
+          }
+        ]
+      }
+    ]
+  }
+}

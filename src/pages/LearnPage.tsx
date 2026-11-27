@@ -4,6 +4,7 @@ import { Inline } from '../components/Inline'
 import { EXAM_FORMAT, EXAM_IDS, OBJECTIVES, OBJECTIVE_BY_ID, SOURCES, TOPICS, itemInExam, linesFor, objectiveLabel, objectiveName, objectivesOf, topicName } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
 import { DRILL_DECKS } from '../content/drills'
+import { SIMS } from '../content/sims'
 import { EXERCISES } from '../content/exercises'
 import { CARDS } from '../content/flashcards'
 import { LESSONS } from '../content/lessons'
@@ -82,6 +83,7 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
   const exercises = EXERCISES.filter((e) => e.objectiveId === objectiveId)
   const cardCount = CARDS.filter((c) => c.id.startsWith(`${objectiveId}-`) && itemInExam(c, track)).length
   const drills = DRILL_DECKS.filter((d) => d.objectives.includes(objectiveId))
+  const sims = SIMS.filter((s) => s.objectives.includes(objectiveId))
 
   return (
     <article className="space-y-6">
@@ -192,6 +194,11 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
         {drills.map((d) => (
           <Link key={d.id} to={`/explore/drills/${d.id}`} className="rounded border px-4 py-2">
             Drill: {d.title}
+          </Link>
+        ))}
+        {sims.map((s) => (
+          <Link key={s.id} to={`/explore/sims/${s.id}`} className="rounded border px-4 py-2">
+            Simulator: {s.title}
           </Link>
         ))}
         <Link to="/terminal" className="rounded border px-4 py-2">

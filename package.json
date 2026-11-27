@@ -19,7 +19,8 @@
     "vm:build": "bash scripts/vm/build-image.sh",
     "vm:state": "node scripts/vm/build-state.ts",
     "vm:smoke": "node scripts/vm/smoke.ts",
-    "vm:run": "node scripts/vm/run.ts"
+    "vm:run": "node scripts/vm/run.ts",
+    "transcripts:capture": "node scripts/capture-transcripts/capture.ts"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.11.0",

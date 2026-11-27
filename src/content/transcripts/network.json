@@ -1,0 +1,198 @@
+{
+  "id": "network",
+  "description": "Mira reads her laptop's network setup: addresses, routes, listening ports, name resolution, and pings to the build server.",
+  "captured": "2026-11-27",
+  "environment": [
+    "Each host ran in a Docker container on Docker Desktop (arm64), so the kernel is Docker Desktop's (Linux 7.0.14-linuxkit), not the distribution's.",
+    "On the Debian hosts, systemd runs as PID 1, as on a real machine.",
+    "The hosts share a network in documentation address ranges (192.0.2.0/24 and 2001:db8:1::/64, gateway 192.0.2.1). A dnsmasq container at 192.0.2.53 answers for tuxpixel.example.",
+    "Commands ran in a login shell on an 80-column terminal, with the pagers of systemd and dpkg turned off (SYSTEMD_PAGER=cat, DPKG_PAGER=cat).",
+    "Sockets on 127.0.0.11 belong to Docker's built-in DNS service, which every container on such a network has.",
+    "nginx is set to start 2 worker processes rather than one per CPU, to keep process listings short.",
+    "net-tools (ifconfig, route and netstat, which exam 010-160 lists) was installed for the capture; iproute2 (ip and ss) replaces it.",
+    "The laptop runs nginx and the OpenSSH server, so ss and netstat have something to list."
+  ],
+  "hosts": [
+    {
+      "name": "build",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    },
+    {
+      "name": "tuxpixel",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    }
+  ],
+  "setup": [
+    {
+      "host": "build",
+      "user": "root",
+      "command": "true"
+    }
+  ],
+  "steps": [
+    {
+      "key": "ip-addr",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ip addr show",
+      "output": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n    inet6 ::1/128 scope host proto kernel_lo\n       valid_lft forever preferred_lft forever\n2: eth0@if147: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default\n    link/ether 9e:78:3b:ae:bb:a0 brd ff:ff:ff:ff:ff:ff link-netnsid 0\n    inet 192.0.2.10/24 brd 192.0.2.255 scope global eth0\n       valid_lft forever preferred_lft forever\n    inet6 2001:db8:1::10/64 scope global nodad\n       valid_lft forever preferred_lft forever\n    inet6 fe80::9c78:3bff:feae:bba0/64 scope link tentative proto kernel_ll\n       valid_lft forever preferred_lft forever",
+      "exit": 0
+    },
+    {
+      "key": "ip-route",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ip route show",
+      "output": "default via 192.0.2.1 dev eth0\n192.0.2.0/24 dev eth0 proto kernel scope link src 192.0.2.10",
+      "exit": 0
+    },
+    {
+      "key": "ip6-route",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ip -6 route show",
+      "output": "2001:db8:1::/64 dev eth0 proto kernel metric 256 pref medium\nfe80::/64 dev eth0 proto kernel metric 256 pref medium\ndefault via 2001:db8:1::1 dev eth0 metric 1024 pref medium",
+      "exit": 0
+    },
+    {
+      "key": "ss",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ss -tulpn",
+      "output": "Netid  State   Recv-Q  Send-Q   Local Address:Port    Peer Address:Port Process\nudp    UNCONN  0       0           127.0.0.54:53           0.0.0.0:*\nudp    UNCONN  0       0        127.0.0.53%lo:53           0.0.0.0:*\nudp    UNCONN  0       0           127.0.0.11:41573        0.0.0.0:*\nudp    UNCONN  0       0              0.0.0.0:5355         0.0.0.0:*\nudp    UNCONN  0       0                 [::]:5355            [::]:*\ntcp    LISTEN  0       4096        127.0.0.11:45389        0.0.0.0:*\ntcp    LISTEN  0       4096     127.0.0.53%lo:53           0.0.0.0:*\ntcp    LISTEN  0       511            0.0.0.0:80           0.0.0.0:*\ntcp    LISTEN  0       128            0.0.0.0:22           0.0.0.0:*\ntcp    LISTEN  0       4096        127.0.0.54:53           0.0.0.0:*\ntcp    LISTEN  0       4096           0.0.0.0:5355         0.0.0.0:*\ntcp    LISTEN  0       511               [::]:80              [::]:*\ntcp    LISTEN  0       128               [::]:22              [::]:*\ntcp    LISTEN  0       4096              [::]:5355            [::]:*",
+      "exit": 0
+    },
+    {
+      "key": "ss-sudo",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo ss -tulpn",
+      "output": "[sudo] password for mira:\nNetid   State    Recv-Q   Send-Q     Local Address:Port      Peer Address:Port  Process\nudp     UNCONN   0        0             127.0.0.54:53             0.0.0.0:*      users:((\"systemd-resolve\",pid=128,fd=22))\nudp     UNCONN   0        0          127.0.0.53%lo:53             0.0.0.0:*      users:((\"systemd-resolve\",pid=128,fd=20))\nudp     UNCONN   0        0             127.0.0.11:41573          0.0.0.0:*\nudp     UNCONN   0        0                0.0.0.0:5355           0.0.0.0:*      users:((\"systemd-resolve\",pid=128,fd=11))\nudp     UNCONN   0        0                   [::]:5355              [::]:*      users:((\"systemd-resolve\",pid=128,fd=13))\ntcp     LISTEN   0        4096          127.0.0.11:45389          0.0.0.0:*\ntcp     LISTEN   0        4096       127.0.0.53%lo:53             0.0.0.0:*      users:((\"systemd-resolve\",pid=128,fd=21))\ntcp     LISTEN   0        511              0.0.0.0:80             0.0.0.0:*      users:((\"nginx\",pid=100,fd=5),(\"nginx\",pid=99,fd=5),(\"nginx\",pid=98,fd=5))\ntcp     LISTEN   0        128              0.0.0.0:22             0.0.0.0:*      users:((\"sshd\",pid=89,fd=6))\ntcp     LISTEN   0        4096          127.0.0.54:53             0.0.0.0:*      users:((\"systemd-resolve\",pid=128,fd=23))\ntcp     LISTEN   0        4096             0.0.0.0:5355           0.0.0.0:*      users:((\"systemd-resolve\",pid=128,fd=12))\ntcp     LISTEN   0        511                 [::]:80                [::]:*      users:((\"nginx\",pid=100,fd=6),(\"nginx\",pid=99,fd=6),(\"nginx\",pid=98,fd=6))\ntcp     LISTEN   0        128                 [::]:22                [::]:*      users:((\"sshd\",pid=89,fd=7))\ntcp     LISTEN   0        4096                [::]:5355              [::]:*      users:((\"systemd-resolve\",pid=128,fd=14))",
+      "exit": 0
+    },
+    {
+      "key": "resolv-conf",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "cat /etc/resolv.conf",
+      "output": "# This is /run/systemd/resolve/stub-resolv.conf managed by man:systemd-resolved(8).\n# Do not edit.\n#\n# This file might be symlinked as /etc/resolv.conf. If you're looking at\n# /etc/resolv.conf and seeing this text, you have followed the symlink.\n#\n# This is a dynamic resolv.conf file for connecting local clients to the\n# internal DNS stub resolver of systemd-resolved. This file lists all\n# configured search domains.\n#\n# Run \"resolvectl status\" to see details about the uplink DNS servers\n# currently in use.\n#\n# Third party programs should typically not access this file directly, but only\n# through the symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a\n# different way, replace this symlink by a static file or a different symlink.\n#\n# See man:systemd-resolved.service(8) for details about the supported modes of\n# operation for /etc/resolv.conf.\n\nnameserver 127.0.0.53\noptions edns0 trust-ad\nsearch tuxpixel.example",
+      "exit": 0
+    },
+    {
+      "key": "hosts",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "cat /etc/hosts",
+      "output": "127.0.0.1localhost\n127.0.1.1tuxpixel.tuxpixel.exampletuxpixel\n\n# The following lines are desirable for IPv6 capable hosts\n::1     localhost ip6-localhost ip6-loopback\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters",
+      "exit": 0
+    },
+    {
+      "key": "resolvectl",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "resolvectl status",
+      "output": "Global\n         Protocols: +LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported\n  resolv.conf mode: foreign\n       DNS Servers: 192.0.2.53\n        DNS Domain: tuxpixel.example\n\nLink 2 (eth0)\n    Current Scopes: LLMNR/IPv4 LLMNR/IPv6\n         Protocols: -DefaultRoute +LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported\n     Default Route: no",
+      "exit": 0
+    },
+    {
+      "key": "host-build",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "host build.tuxpixel.example",
+      "output": "build.tuxpixel.example has address 192.0.2.20\nbuild.tuxpixel.example has IPv6 address 2001:db8:1::20",
+      "exit": 0
+    },
+    {
+      "key": "host-reverse",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "host 192.0.2.20",
+      "output": "20.2.0.192.in-addr.arpa domain name pointer build.",
+      "exit": 0
+    },
+    {
+      "key": "host-debian",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "host www.debian.org",
+      "output": "www.debian.org has address 130.89.148.77\nwww.debian.org has IPv6 address 2001:67c:2564:a119::77",
+      "exit": 0
+    },
+    {
+      "key": "ping",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ping -c 3 build.tuxpixel.example",
+      "output": "PING build.tuxpixel.example (2001:db8:1::20) 56 data bytes\n64 bytes from build (2001:db8:1::20): icmp_seq=1 ttl=64 time=0.069 ms\n64 bytes from build (2001:db8:1::20): icmp_seq=2 ttl=64 time=0.119 ms\n64 bytes from build (2001:db8:1::20): icmp_seq=3 ttl=64 time=0.129 ms\n\n--- build.tuxpixel.example ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2030ms\nrtt min/avg/max/mdev = 0.069/0.105/0.129/0.026 ms",
+      "exit": 0
+    },
+    {
+      "key": "ping6",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ping -c 2 2001:db8:1::20",
+      "output": "PING 2001:db8:1::20 (2001:db8:1::20) 56 data bytes\n64 bytes from 2001:db8:1::20: icmp_seq=1 ttl=64 time=0.077 ms\n64 bytes from 2001:db8:1::20: icmp_seq=2 ttl=64 time=0.128 ms\n\n--- 2001:db8:1::20 ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1024ms\nrtt min/avg/max/mdev = 0.077/0.102/0.128/0.025 ms",
+      "exit": 0
+    },
+    {
+      "key": "ping-missing",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ping -c 2 files.tuxpixel.example",
+      "output": "ping: files.tuxpixel.example: Name or service not known",
+      "exit": 2
+    },
+    {
+      "key": "ifconfig",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ifconfig",
+      "output": "bash: line 1: ifconfig: command not found",
+      "exit": 127
+    },
+    {
+      "key": "ifconfig-path",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "/sbin/ifconfig",
+      "output": "eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500\n        inet 192.0.2.10  netmask 255.255.255.0  broadcast 192.0.2.255\n        inet6 fe80::9c78:3bff:feae:bba0  prefixlen 64  scopeid 0x20<link>\n        inet6 2001:db8:1::10  prefixlen 64  scopeid 0x0<global>\n        ether 9e:78:3b:ae:bb:a0  txqueuelen 0  (Ethernet)\n        RX packets 87  bytes 7490 (7.3 KiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 68  bytes 5702 (5.5 KiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0\n\nlo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536\n        inet 127.0.0.1  netmask 255.0.0.0\n        inet6 ::1  prefixlen 128  scopeid 0x10<host>\n        loop  txqueuelen 1000  (Local Loopback)\n        RX packets 32  bytes 2606 (2.5 KiB)\n        RX errors 0  dropped 0  overruns 0  frame 0\n        TX packets 32  bytes 2606 (2.5 KiB)\n        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0",
+      "exit": 0
+    },
+    {
+      "key": "route",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "/sbin/route -n",
+      "output": "Kernel IP routing table\nDestination     Gateway         Genmask         Flags Metric Ref    Use Iface\n0.0.0.0         192.0.2.1       0.0.0.0         UG    0      0        0 eth0\n192.0.2.0       0.0.0.0         255.255.255.0   U     0      0        0 eth0",
+      "exit": 0
+    },
+    {
+      "key": "netstat",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo netstat -tulpn",
+      "output": "Active Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name\ntcp        0      0 127.0.0.11:45389        0.0.0.0:*               LISTEN      -\ntcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      128/systemd-resolve\ntcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      98/nginx: master pr\ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      89/sshd: /usr/sbin/\ntcp        0      0 127.0.0.54:53           0.0.0.0:*               LISTEN      128/systemd-resolve\ntcp        0      0 0.0.0.0:5355            0.0.0.0:*               LISTEN      128/systemd-resolve\ntcp6       0      0 :::80                   :::*                    LISTEN      98/nginx: master pr\ntcp6       0      0 :::22                   :::*                    LISTEN      89/sshd: /usr/sbin/\ntcp6       0      0 :::5355                 :::*                    LISTEN      128/systemd-resolve\nudp        0      0 127.0.0.54:53           0.0.0.0:*                           128/systemd-resolve\nudp        0      0 127.0.0.53:53           0.0.0.0:*                           128/systemd-resolve\nudp        0      0 127.0.0.11:41573        0.0.0.0:*                           -\nudp        0      0 0.0.0.0:5355            0.0.0.0:*                           128/systemd-resolve\nudp6       0      0 :::5355                 :::*                                128/systemd-resolve",
+      "exit": 0
+    }
+  ]
+}

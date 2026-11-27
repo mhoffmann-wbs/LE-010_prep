@@ -27,6 +27,7 @@ const NAV_GROUPS: { id: string; label: string; links: NavEntry[] }[] = [
       { to: '/explore', label: 'Overview', end: true },
       { to: '/terminal', label: 'Terminal' },
       { to: '/exercises', label: 'Exercises' },
+      { to: '/explore/sims', label: 'Simulators' },
       { to: '/explore/drills', label: 'Matcher drills' },
     ],
   },

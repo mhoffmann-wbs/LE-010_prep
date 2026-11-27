@@ -97,7 +97,8 @@ function Options({ item, response, onChange, revealed, keyboard }: { item: Of<'s
   useShortcuts(keys, !!keyboard && !revealed)
 
   return (
-    <fieldset className="space-y-2">
+    // min-w-0: a fieldset is at least as wide as its content, so a long path would push the page sideways.
+    <fieldset className="min-w-0 space-y-2">
       <legend className="mb-2 text-sm font-medium text-slate-600">{multi ? `Choose ${COUNT_WORDS[item.select]}.` : 'Choose ONE.'}</legend>
       {options.map((option, i) => {
         const isSelected = selected.includes(i)
@@ -125,7 +126,7 @@ function Options({ item, response, onChange, revealed, keyboard }: { item: Of<'s
               {verbatim ? (
                 <pre className="min-w-0 overflow-x-auto font-mono text-sm">{option.text}</pre>
               ) : (
-                <span>
+                <span className="min-w-0 break-words">
                   <Inline text={option.text} />
                 </span>
               )}

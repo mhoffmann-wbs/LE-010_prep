@@ -1,0 +1,140 @@
+{
+  "id": "users",
+  "title": "Users and sessions",
+  "description": "Replay a real account setup on a Debian 13 server: useradd, passwd, groupadd and usermod, the lines they write to /etc/passwd, /etc/shadow and /etc/group, su and sudo, and who is logged in with w, who, last and wtmpdb last.",
+  "intro": "Jonas starts at TuxPixel today. Mira creates his account on the build server, and you replay what each command printed and changed. Watch the account files after every step: most of these commands print nothing when they succeed.",
+  "objectives": ["015.2", "015.1"],
+  "takeaways": [
+    "`useradd -m -s /bin/bash name` creates the account, its home directory (filled from `/etc/skel`) and, on Debian, a private group of the same name. Without `-m`, no home directory is made.",
+    "`/etc/passwd` is readable by everyone and holds name, `x`, UID, GID, comment, home and shell. The password hashes live in `/etc/shadow`, which only root can read; `!` there means no password is set yet.",
+    "`passwd name` (as root) sets someone else's password without asking for the old one. `groupadd group` creates a group; `usermod -aG group name` adds a supplementary group, and without `-a` it would replace them all.",
+    "`id` shows UID, GID and groups. `su - user` asks for that user's password and starts a login shell; `sudo` asks for your own password and runs one command as root, and `sudo -i` opens a root shell.",
+    "`who` lists the users logged in now, and `w` adds what each one is doing and the system's load. `last` lists past logins from the login records; on Debian 13 that job moved to `wtmpdb last`, and the wtmpdb package also provides `last`."
+  ],
+  "tryItems": ["015.2-019", "015.2-016", "015.2-017", "015.2-005", "015.1-005"],
+  "links": [
+    { "title": "useradd(8) manual page", "url": "https://man7.org/linux/man-pages/man8/useradd.8.html" },
+    { "title": "passwd(5) manual page: the /etc/passwd format", "url": "https://man7.org/linux/man-pages/man5/passwd.5.html" },
+    { "title": "shadow(5) manual page", "url": "https://man7.org/linux/man-pages/man5/shadow.5.html" },
+    { "title": "usermod(8) manual page", "url": "https://man7.org/linux/man-pages/man8/usermod.8.html" },
+    { "title": "w(1) manual page", "url": "https://man7.org/linux/man-pages/man1/w.1.html" },
+    { "title": "Debian 13 release notes: last, lastb and lastlog are replaced", "url": "https://www.debian.org/releases/trixie/release-notes/issues.en.html#last-lastb-and-lastlog-are-replaced" }
+  ],
+  "params": {
+    "transcript": "users",
+    "scenes": [
+      {
+        "title": "Create the account",
+        "text": "Mira checks her own groups, then creates Jonas's account with a home directory and bash as his shell.",
+        "steps": ["id-mira", "useradd", "passwd-line", "skel", "home-denied", "home"],
+        "notes": {
+          "id-mira": "Membership in `sudo` is what lets Mira run commands as root.",
+          "useradd": "No output: on success, useradd says nothing.",
+          "home-denied": "Debian 13 creates home directories that only their owner can open, so Mira needs `sudo` to look inside."
+        },
+        "questions": [
+          {
+            "prompt": "Which shell will Jonas get when he logs in?",
+            "answer": "`/bin/bash`",
+            "distractors": ["`/bin/sh`", "`/usr/sbin/nologin`", "`/home/jonas`"],
+            "why": "The last field of the `/etc/passwd` line is the login shell, set with `-s`. The field before it is the home directory.",
+            "evidence": { "step": "passwd-line", "text": ":/home/jonas:/bin/bash" }
+          },
+          {
+            "prompt": "Where did the files in Jonas's new home directory come from?",
+            "answer": "They were copied from `/etc/skel`",
+            "distractors": ["They were copied from Mira's home", "bash created them at his first login", "They come from `/etc/profile`"],
+            "why": "With `-m`, useradd copies the skeleton directory into the new home: the same three files, now owned by Jonas.",
+            "evidence": { "step": "home", "text": ".bash_logout" }
+          }
+        ]
+      },
+      {
+        "title": "Set a password",
+        "text": "The new account can't log in yet. Mira looks at its shadow entry, sets a password, and looks again.",
+        "steps": ["shadow-denied", "shadow-new", "passwd", "shadow-set"],
+        "notes": {
+          "passwd": "Run by root (here through sudo), passwd doesn't ask for Jonas's old password. Nothing appears as the new one is typed.",
+          "shadow-set": "The second field is now a hash of the password, never the password itself; `$y$` marks the yescrypt method."
+        },
+        "questions": [
+          {
+            "prompt": "Why can't Mira read `/etc/shadow` without `sudo`?",
+            "answer": "Only root may read it, because it holds the password hashes",
+            "distractors": ["The file is empty until a password is set", "It is a binary file", "It is locked while useradd runs"],
+            "why": "`/etc/passwd` is world-readable; the hashes moved to `/etc/shadow` so that ordinary users can't copy them.",
+            "evidence": { "step": "shadow-denied", "text": "Permission denied" }
+          },
+          {
+            "prompt": "What does the `!` in Jonas's first shadow line mean?",
+            "answer": "No usable password is set, so he can't log in with one",
+            "distractors": ["His password is an exclamation mark", "The account belongs to root", "The password expires today"],
+            "why": "useradd leaves the password field locked. After `passwd`, a hash takes its place.",
+            "evidence": { "step": "shadow-new", "text": "jonas:!:" }
+          }
+        ]
+      },
+      {
+        "title": "Groups",
+        "text": "Jonas will share artwork with the other artists, so Mira creates a group and adds him to it.",
+        "steps": ["groupadd", "usermod", "group-line", "id-jonas"],
+        "notes": {
+          "usermod": "`-a` appends: without it, `-G` would replace all of Jonas's supplementary groups."
+        },
+        "questions": [
+          {
+            "prompt": "In `/etc/group`, where does Jonas appear as a member of `artists`?",
+            "answer": "In the last field of the `artists` line",
+            "distractors": ["In the third field of the `jonas` line", "In the second field, instead of the `x`", "Only in `/etc/passwd`"],
+            "why": "A group line is name, `x`, GID and the comma-separated list of supplementary members. Jonas's primary group, `jonas`, is recorded by GID in `/etc/passwd`.",
+            "evidence": { "step": "group-line", "text": "artists:x:1004:jonas" }
+          }
+        ]
+      },
+      {
+        "title": "Switching users",
+        "text": "Mira checks that Jonas's password works with `su`, then opens a root shell with `sudo -i`.",
+        "steps": ["su", "sudo-i"],
+        "notes": {
+          "su": "`su -` asks for Jonas's password, not Mira's, and starts a login shell in his home.",
+          "sudo-i": "No password prompt: sudo still remembered Mira's. The prompt ends in `#` while she is root."
+        },
+        "questions": [
+          {
+            "prompt": "Whose password did `su - jonas` ask for?",
+            "answer": "Jonas's",
+            "distractors": ["Mira's", "root's", "None: su never asks"],
+            "why": "su asks for the password of the account you switch to. sudo asks for your own.",
+            "evidence": { "step": "su", "text": "jonas@build:~$ whoami" }
+          }
+        ]
+      },
+      {
+        "title": "Who is logged in?",
+        "text": "Ada is logged in over SSH from the laptop. Mira checks the current sessions and the login history.",
+        "steps": ["w", "who", "last", "wtmpdb-last", "which-last"],
+        "notes": {
+          "w": "Ada is running `top`; the `?` under PCPU is how this capture showed it.",
+          "last": "The su and sudo -i sessions from the previous scene appear too, on `pts/1`.",
+          "which-last": "On Debian 13, `last` comes from the wtmpdb package: it is a link to `wtmpdb`, so both print the same."
+        },
+        "questions": [
+          {
+            "prompt": "What does `w` show about Ada that `who` doesn't?",
+            "answer": "What she is running right now",
+            "distractors": ["Where she logged in from", "Which terminal she uses", "When she logged in"],
+            "why": "Both show the terminal, the time and where the login came from; `w` adds idle time, CPU use and the current command in the WHAT column.",
+            "evidence": { "step": "w", "text": "WHAT" }
+          },
+          {
+            "prompt": "Which line of `last` is still going?",
+            "answer": "Ada's SSH login from `2001:db8:1::10`",
+            "distractors": ["Jonas's su session", "root's sudo session", "None: last only lists ended sessions"],
+            "why": "`still logged in` marks a session that hasn't ended; the su and sudo sessions ended when Mira typed `exit`.",
+            "evidence": { "step": "last", "text": "still logged in" }
+          }
+        ]
+      }
+    ]
+  }
+}

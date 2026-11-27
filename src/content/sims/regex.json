@@ -1,0 +1,110 @@
+{
+  "id": "regex",
+  "title": "Regex highlighter",
+  "description": "Type an extended regular expression and watch it light up in a TuxPixel build log, with the `grep -E` command and the lines it would print.",
+  "intro": "Start with the preset `sl.me` and see which lines light up. Then change the dot to `[iy]` and predict whether the result changes before you look. Try `ghosts?`, then `files$`, and finally `o*`: ask yourself why every line matches that one.",
+  "objectives": [
+    "013.2"
+  ],
+  "takeaways": [
+    "In `grep -E` (extended regular expressions) a dot matches any one character, `[abc]` matches one character from the set, `*` repeats the item before it zero or more times, `+` one or more times and `?` makes it optional.",
+    "`^` anchors a pattern to the start of the line and `$` to the end, so `files$` finds only lines that end in `files`. To match a literal dot, write `\\.`.",
+    "`|` means or: `ERROR|WARN` prints the lines that contain either word. Without `-E`, plain `grep` reads `|`, `+`, `?` and `(` as ordinary characters, and you would need a backslash in front to give them their special meaning.",
+    "A pattern with `*` can match zero characters, so `o*` matches every line. A line is printed when the pattern matches anywhere in it, not only when it matches the whole line.",
+    "When a pattern could match more than one stretch of text, `grep` highlights the leftmost match and, from there, the longest one. Quote the pattern in single quotes so the shell does not treat `*`, `?`, `|` and `$` as its own symbols."
+  ],
+  "tryItems": [
+    "013.2-015",
+    "013.2-016",
+    "013.2-017",
+    "013.2-024",
+    "013.2-018"
+  ],
+  "links": [
+    {
+      "title": "GNU Grep manual: regular expressions",
+      "url": "https://www.gnu.org/software/grep/manual/grep.html#Regular-Expressions"
+    },
+    {
+      "title": "grep(1) manual page",
+      "url": "https://man7.org/linux/man-pages/man1/grep.1.html"
+    },
+    {
+      "title": "regex(7): POSIX regular expressions",
+      "url": "https://man7.org/linux/man-pages/man7/regex.7.html"
+    }
+  ],
+  "params": {
+    "file": "build.log",
+    "log": [
+      "09:00:01 INFO  build started for pixel-raiders 1.4.2",
+      "09:00:03 INFO  compiling sprites: 128 files",
+      "09:00:09 WARN  goblin.png is 3 pixels too wide",
+      "09:00:12 INFO  compiling levels: 7 files",
+      "09:00:15 ERROR level7.map: missing tile slime",
+      "09:00:16 ERROR level9.map: missing tile slyme",
+      "09:00:20 WARN  boss-theme.ogg is 2.1 MB, limit is 2 MB",
+      "09:00:24 INFO  packing assets into pixel-raiders-1.4.2.tar.gz",
+      "09:00:31 ERROR disk almost full on /dev/sda1",
+      "09:00:35 INFO  tested bat, ghost and ghosts: all spawn",
+      "09:00:40 INFO  build finished in 39 s with 3 errors"
+    ],
+    "presets": [
+      {
+        "pattern": "ERROR",
+        "title": "A plain word",
+        "explain": "Letters match themselves, so this prints the three lines that contain `ERROR`."
+      },
+      {
+        "pattern": "ERROR|WARN",
+        "title": "Either word",
+        "explain": "`|` means or. It needs `grep -E`; plain `grep` would look for a literal bar."
+      },
+      {
+        "pattern": "sl.me",
+        "title": "Any one character",
+        "explain": "The dot stands for exactly one character, so `slime` and `slyme` both match, but `slme` would not."
+      },
+      {
+        "pattern": "sl[iy]me",
+        "title": "One of a set",
+        "explain": "`[iy]` matches one character, `i` or `y`. It is stricter than a dot: `slume` would not match."
+      },
+      {
+        "pattern": "ghosts?",
+        "title": "Optional character",
+        "explain": "`?` makes the `s` optional, so the line matches whether it says `ghost` or `ghosts`. Highlighting shows the longer match."
+      },
+      {
+        "pattern": "[0-9]+ files",
+        "title": "One or more digits",
+        "explain": "`[0-9]` is one digit and `+` asks for one or more of them, so `128 files` and `7 files` match."
+      },
+      {
+        "pattern": "files$",
+        "title": "End of line",
+        "explain": "`$` anchors the pattern to the end of the line. `files` elsewhere in a line would not count."
+      },
+      {
+        "pattern": "^09:00:[0-2][0-9] ERROR",
+        "title": "Start of line",
+        "explain": "`^` anchors the pattern to the start of the line. Here it also fixes the seconds to 00 to 29 and requires `ERROR` right after the time."
+      },
+      {
+        "pattern": "1\\.4\\.2",
+        "title": "A literal dot",
+        "explain": "A backslash takes the special meaning away, so `\\.` is a real dot. Plain `1.4.2` would also match `1x4y2`."
+      },
+      {
+        "pattern": "(ERROR|WARN) .*e",
+        "title": "Dot and star together",
+        "explain": "`.*` means any number of any characters. It matches as much as it can, so the highlight runs to the last `e` on the line."
+      },
+      {
+        "pattern": "o*",
+        "title": "The zero trap",
+        "explain": "`o*` is allowed to match zero letters, so it matches every line. Only lines with an `o` get a highlight."
+      }
+    ]
+  }
+}

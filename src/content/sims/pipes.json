@@ -1,0 +1,194 @@
+{
+  "id": "pipes",
+  "title": "Pipes and redirection",
+  "description": "Compose a command line from a command, a stdout destination and a stderr destination, and see where each stream and each file ends up.",
+  "intro": "Start with the preset `Save the output` and notice that the error message still appears on the screen. Then pick `Everything in one file`, and switch the stderr choice to the `before` variant of `2>&1`: predict what changes before you look. Finally, send the output of `grep` through a pipe and count the lines.",
+  "objectives": [
+    "013.2"
+  ],
+  "takeaways": [
+    "Every command has three streams: standard input (0, normally the keyboard), standard output (1) and standard error (2). Both output streams go to the terminal unless you redirect them.",
+    "`>` sends stdout to a file and empties the file first. `>>` appends to the end instead. `2>` and `2>>` do the same for stderr. `<` makes a file the stdin of the command.",
+    "`|` connects the stdout of the command on its left to the stdin of the command on its right. It carries only stdout: error messages still go to the terminal unless you also redirect them.",
+    "`2>&1` makes stderr go to the place where stdout points at that moment, so the order matters: `> out.txt 2>&1` puts both in the file, but `2>&1 > out.txt` leaves the errors on the screen.",
+    "`2> /dev/null` discards error messages. `wc -l < build.log` prints only the number, while `wc -l build.log` also prints the file name."
+  ],
+  "tryItems": [
+    "013.2-003",
+    "013.2-004",
+    "013.2-005",
+    "013.2-021",
+    "013.2-022"
+  ],
+  "links": [
+    {
+      "title": "Bash Reference Manual: Redirections",
+      "url": "https://www.gnu.org/software/bash/manual/html_node/Redirections.html"
+    },
+    {
+      "title": "Bash Reference Manual: Pipelines",
+      "url": "https://www.gnu.org/software/bash/manual/html_node/Pipelines.html"
+    },
+    {
+      "title": "bash(1) manual page: REDIRECTION",
+      "url": "https://man7.org/linux/man-pages/man1/bash.1.html"
+    }
+  ],
+  "params": {
+    "buildLog": [
+      "INFO build started",
+      "ERROR missing tile",
+      "WARN sprite too wide",
+      "ERROR disk full",
+      "INFO build finished"
+    ],
+    "before": {
+      "out": [
+        "old output"
+      ],
+      "err": [
+        "old error"
+      ]
+    },
+    "commands": [
+      {
+        "id": "ls",
+        "label": "ls nothere build.log",
+        "text": "ls nothere build.log",
+        "stdout": [
+          "build.log"
+        ],
+        "stderr": [
+          "ls: cannot access 'nothere': No such file or directory"
+        ],
+        "explain": "`ls` lists `build.log` on stdout and complains about the missing `nothere` on stderr."
+      },
+      {
+        "id": "grep",
+        "label": "grep ERROR missing.log build.log",
+        "text": "grep ERROR missing.log build.log",
+        "stdout": [
+          "build.log:ERROR missing tile",
+          "build.log:ERROR disk full"
+        ],
+        "stderr": [
+          "grep: missing.log: No such file or directory"
+        ],
+        "explain": "`grep` prints the two `ERROR` lines of `build.log` on stdout, and an error for the file `missing.log` on stderr."
+      },
+      {
+        "id": "wc-file",
+        "label": "wc -l build.log",
+        "text": "wc -l build.log",
+        "stdout": [
+          "5 build.log"
+        ],
+        "stderr": [],
+        "explain": "`wc -l` given a file name counts its lines and prints the name after the number. It has nothing to say on stderr."
+      },
+      {
+        "id": "wc-stdin",
+        "label": "wc -l < build.log",
+        "text": "wc -l < build.log",
+        "stdinFile": "build.log",
+        "stdout": [
+          "5"
+        ],
+        "stderr": [],
+        "explain": "The shell opens `build.log` and connects it to stdin with `<`. `wc` never sees a file name, so it prints only the number."
+      }
+    ],
+    "presets": [
+      {
+        "title": "Save the output",
+        "explain": "`>` sends stdout to a file and empties the file first. The old line in `out.txt` is gone. The error is stderr, so it still shows on the screen.",
+        "spec": {
+          "command": "ls",
+          "stdout": "truncate",
+          "filter": "wc",
+          "stderr": "screen"
+        }
+      },
+      {
+        "title": "Keep adding to a log",
+        "explain": "`>>` appends, so the old line in `out.txt` stays and the new lines come after it. Errors still go to the screen.",
+        "spec": {
+          "command": "grep",
+          "stdout": "append",
+          "filter": "wc",
+          "stderr": "screen"
+        }
+      },
+      {
+        "title": "Hide the errors",
+        "explain": "`2>` redirects stream 2. Sending it to `/dev/null` throws the error messages away, and stdout still reaches the screen.",
+        "spec": {
+          "command": "ls",
+          "stdout": "screen",
+          "filter": "wc",
+          "stderr": "null"
+        }
+      },
+      {
+        "title": "Output and errors in separate files",
+        "explain": "Each stream has its own number: `>` is `1>` and `2>` is for errors. Neither file shows up on the screen.",
+        "spec": {
+          "command": "ls",
+          "stdout": "truncate",
+          "filter": "wc",
+          "stderr": "truncate"
+        }
+      },
+      {
+        "title": "Everything in one file",
+        "explain": "Put `> out.txt` first, then `2>&1`: stderr is pointed at wherever stdout points now, so both streams go into `out.txt`.",
+        "spec": {
+          "command": "ls",
+          "stdout": "truncate",
+          "filter": "wc",
+          "stderr": "merge"
+        }
+      },
+      {
+        "title": "The order trap",
+        "explain": "With `2>&1` before `> out.txt`, stderr copies the screen first, and only afterwards stdout moves to the file. The error stays on the screen.",
+        "spec": {
+          "command": "ls",
+          "stdout": "truncate",
+          "filter": "wc",
+          "stderr": "merge-first"
+        }
+      },
+      {
+        "title": "Count the matches",
+        "explain": "`|` connects stdout of one command to stdin of the next. `wc -l` counts the lines it receives. The error is not part of stdout, so it is not counted.",
+        "spec": {
+          "command": "grep",
+          "stdout": "pipe",
+          "filter": "wc",
+          "stderr": "screen"
+        }
+      },
+      {
+        "title": "Count the errors too",
+        "explain": "`2>&1` puts stderr into the pipe with stdout, so `wc -l` counts the error line as well.",
+        "spec": {
+          "command": "grep",
+          "stdout": "pipe",
+          "filter": "wc",
+          "stderr": "merge"
+        }
+      },
+      {
+        "title": "Read a file with <",
+        "explain": "`<` connects a file to stdin. With a file name as an argument, `wc` prints the name too. With `<` it prints only the number.",
+        "spec": {
+          "command": "wc-stdin",
+          "stdout": "screen",
+          "filter": "wc",
+          "stderr": "screen"
+        }
+      }
+    ]
+  }
+}

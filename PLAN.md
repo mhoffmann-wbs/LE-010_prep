@@ -152,7 +152,7 @@ Learners pick their exam on the home page (it can be changed on the progress pag
 ## 6. Do / Explore
 
 ### 6a. Transcript simulators (`/explore/sims`)
-`scripts/capture-transcripts/` runs a list of commands on a real **Debian 13** system (a container with systemd as PID 1, or a VM). It records them into `src/content/transcripts/<id>.json` with the distro, version and capture date. Captured hostnames and users are rewritten to TuxPixel ones, so each transcript is honest about what was rewritten. Simulators replay them:
+`scripts/capture-transcripts/` runs a list of commands on real **Debian 13** systems: Docker containers with systemd as PID 1, on a network in the documentation address ranges, with TuxPixel's hostnames, users and a DNS server for `tuxpixel.example`, so nothing is rewritten. The package transcript also uses the official Fedora, AlmaLinux, openSUSE and Alpine images. It records each step's output into `src/content/transcripts/<id>.json` with the hosts' distributions, the capture date and notes on how the containers differ from real machines (kernel, Docker's DNS, pagers off). Simulators replay them:
 
 | Simulator | What the learner does | Objectives |
 |---|---|---|
@@ -160,7 +160,7 @@ Learners pick their exam on the home page (it can be changed on the progress pag
 | SSH key flow | Steps through `ssh-keygen` → copying the key to `authorized_keys` → `ssh` login → `scp`, with the host-key prompt and permission errors | 015.1 |
 | Network reader | Reads `ip addr show`, `ip route show`, `ip -6 route show`, `ss -tulpn`, `resolv.conf`, `/etc/hosts`, `resolvectl`, `host` and `ping` output, and answers "what is the gateway / DNS server / listening port?" | 014.4 |
 | Users and sessions | `useradd`, `groupadd`, `passwd`, `id`, `w`, `last` and `wtmpdb last`, with the resulting lines in `/etc/passwd`, `/etc/shadow` and `/etc/group` | 015.2 |
-| Package tools | The same task (search, install, remove, list) in `apt`, `dnf`, `zypper` and `apk` | 011.2 |
+| Package tools | The same task (search, install, query, remove) in `apt`/`dpkg`, `dnf`/`rpm`, `yum`, `zypper` and `apk` | 011.2 |
 
 ### 6b. Concept simulators
 Copy and parameters are data in `src/content/sims/<simId>.json`. The interactive part is one folder per simulator, with pure logic tested in `model.test.ts` (AIF pattern).
@@ -252,5 +252,9 @@ Scripts:
    - 8 drill decks (`which-command`, `which-file`, `which-option`, and sorters for licences, distribution families, builtins, paths and devices; 132 cards) at `/explore/drills`, with best scores and replayable misses. Builtins were checked with `type -a` in the guest.
    - 434 built-in flashcards, at least 3 per key knowledge area of both exams, in one deck per topic filtered by the exam track (cards carry `areas` and, for exam-only material, `terms`). Leitner review, own decks, and deck files to share, ported from AIF. Lessons link to their objective's cards and drills.
    - Progress v4. Checked in headless Chrome at 360 px.
-7. **Explore II**: transcript capture, the five transcript simulators and the concept simulators.
+7. **Explore II** (done 2026-11-27):
+   - The simulator framework, ported from AIF (`/explore/sims`; lessons link to their objective's simulators), and 8 concept simulators: permissions, regex, pipes and redirection, archives, paths, the filesystem map, licences and distribution families. Every output or command they claim was run in the guest and is kept as a test case.
+   - `transcripts:capture`: Debian 13 containers with systemd, on documentation-range addresses with a studio DNS server, driven by expect on an 80-column pty, with a small terminal renderer for progress bars. Five transcripts: services (systemctl, journalctl, syslog, dmesg), ssh (keys, host keys, ssh-copy-id, scp, bad key permissions), network (ip, ss, resolv.conf, hosts, resolvectl, host, ping, and net-tools for 010-160), users (useradd, passwd, groupadd, usermod, su, sudo, w, who, last, wtmpdb last) and packages (apt, dpkg, dnf, rpm, yum, zypper, apk).
+   - Five transcript simulators replay them in scenes, with questions whose evidence a test finds in the captured output. The capture confirmed that `last` on Debian 13 is a link to wtmpdb and `yum` on AlmaLinux 10 a link to dnf.
+   - Checked in headless Chrome at 1280 and 360 px. That found a fieldset overflow in `ItemView` that also affected practice and mock.
 8. **Guides and polish**: the cheat sheet, the exam-day guide (format, pacing, price, booking via Pearson VUE/OnVUE), a mobile pass at 360 px, and accessibility (the terminal must work with a screen reader: xterm's screen-reader mode and a plain-text output mirror).

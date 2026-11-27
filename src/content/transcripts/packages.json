@@ -1,0 +1,215 @@
+{
+  "id": "packages",
+  "description": "The same job, installing the small tree program, checking it and removing it again, with the package tools of Debian, Fedora, AlmaLinux, openSUSE and Alpine.",
+  "captured": "2026-11-27",
+  "environment": [
+    "Each host ran in a Docker container on Docker Desktop (arm64), so the kernel is Docker Desktop's (Linux 7.0.14-linuxkit), not the distribution's.",
+    "On the Debian hosts, systemd runs as PID 1, as on a real machine.",
+    "The hosts share a network in documentation address ranges (192.0.2.0/24 and 2001:db8:1::/64, gateway 192.0.2.1). A dnsmasq container at 192.0.2.53 answers for tuxpixel.example.",
+    "Commands ran in a login shell on an 80-column terminal, with the pagers of systemd and dpkg turned off (SYSTEMD_PAGER=cat, DPKG_PAGER=cat).",
+    "Sockets on 127.0.0.11 belong to Docker's built-in DNS service, which every container on such a network has.",
+    "nginx is set to start 2 worker processes rather than one per CPU, to keep process listings short.",
+    "Each distribution ran in its official container image, logged in as root, with the package lists as the image ships them (Debian empties them, so apt update runs first)."
+  ],
+  "hosts": [
+    {
+      "name": "tuxpixel",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    },
+    {
+      "name": "fedora",
+      "distro": "Fedora Linux 43 (Container Image)",
+      "image": "fedora@sha256:f01112b9a1f1d0504ad962d9adfa401425033f8ab067e0a821904ebdde5b8ca5"
+    },
+    {
+      "name": "alma",
+      "distro": "AlmaLinux 10.3 (Mauve Lion)",
+      "image": "almalinux@sha256:ccf217024b3d5e268cc208d1edb384a1edee6359370cf6ea1ecbc42254e57375"
+    },
+    {
+      "name": "opensuse",
+      "distro": "openSUSE Leap 16.0",
+      "image": "opensuse/leap@sha256:a4115e2f5aea9712a7c73974fd94000a034fc3051ef29b5f7722fbf04070dd9d"
+    },
+    {
+      "name": "alpine",
+      "distro": "Alpine Linux v3.22",
+      "image": "alpine@sha256:49340b346798875b5592e5d420241f2f9cfba5f47e62ebb1446a1b34734e898f"
+    }
+  ],
+  "setup": [],
+  "steps": [
+    {
+      "key": "apt-update",
+      "host": "tuxpixel",
+      "user": "root",
+      "cwd": "~",
+      "command": "apt update",
+      "output": "Get:1 http://deb.debian.org/debian trixie InRelease [140 kB]\nGet:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]\nGet:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]\nGet:4 http://deb.debian.org/debian trixie/main arm64 Packages [9,615 kB]\nGet:5 http://deb.debian.org/debian trixie-updates/main arm64 Packages [1,108 B]\nGet:6 http://deb.debian.org/debian-security trixie-security/main arm64 Packages [312 kB]\nFetched 10.2 MB in 3s (3,352 kB/s)\n1 package can be upgraded. Run 'apt list --upgradable' to see it.",
+      "exit": 0
+    },
+    {
+      "key": "apt-search",
+      "host": "tuxpixel",
+      "user": "root",
+      "cwd": "~",
+      "command": "apt search --names-only '^tree$'",
+      "output": "tree/stable 2.2.1-1 arm64\n  displays an indented directory tree, in color",
+      "exit": 0
+    },
+    {
+      "key": "apt-install",
+      "host": "tuxpixel",
+      "user": "root",
+      "cwd": "~",
+      "command": "apt install -y tree",
+      "output": "Installing:\n  tree\n\nSummary:\n  Upgrading: 0, Installing: 1, Removing: 0, Not Upgrading: 1\n  Download size: 57.9 kB\n  Space needed: 173 kB / 222 GB available\n\nGet:1 http://deb.debian.org/debian trixie/main arm64 tree arm64 2.2.1-1 [57.9 kB]\nFetched 57.9 kB in 0s (520 kB/s)\nSelecting previously unselected package tree.\n(Reading database ... 8993 files and directories currently installed.)\nPreparing to unpack .../tree_2.2.1-1_arm64.deb ...\nUnpacking tree (2.2.1-1) ...\nSetting up tree (2.2.1-1) ...",
+      "exit": 0
+    },
+    {
+      "key": "dpkg-l",
+      "host": "tuxpixel",
+      "user": "root",
+      "cwd": "~",
+      "command": "dpkg -l tree",
+      "output": "Desired=Unknown/Install/Remove/Purge/Hold\n| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend\n|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)\n||/ Name           Version      Architecture Description\n+++-==============-============-============-=============================================\nii  tree           2.2.1-1      arm64        displays an indented directory tree, in color",
+      "exit": 0
+    },
+    {
+      "key": "dpkg-files",
+      "host": "tuxpixel",
+      "user": "root",
+      "cwd": "~",
+      "command": "dpkg -L tree",
+      "output": "/.\n/usr\n/usr/bin\n/usr/bin/tree\n/usr/share\n/usr/share/doc\n/usr/share/doc/tree\n/usr/share/doc/tree/README.gz\n/usr/share/doc/tree/TODO\n/usr/share/doc/tree/changelog.Debian.gz\n/usr/share/doc/tree/changelog.gz\n/usr/share/doc/tree/copyright\n/usr/share/man\n/usr/share/man/man1\n/usr/share/man/man1/tree.1.gz",
+      "exit": 0
+    },
+    {
+      "key": "apt-get-remove",
+      "host": "tuxpixel",
+      "user": "root",
+      "cwd": "~",
+      "command": "apt-get remove -y tree",
+      "output": "Reading package lists... Done\nBuilding dependency tree... Done\nReading state information... Done\nThe following packages will be REMOVED:\n  tree\n0 upgraded, 0 newly installed, 1 to remove and 1 not upgraded.\nAfter this operation, 173 kB disk space will be freed.\n(Reading database ... 9001 files and directories currently installed.)\nRemoving tree (2.2.1-1) ...",
+      "exit": 0
+    },
+    {
+      "key": "dnf-install",
+      "host": "fedora",
+      "user": "root",
+      "cwd": "~",
+      "command": "dnf install -y tree",
+      "output": "Updating and loading repositories:\n Fedora 43 openh264 (From Cisco) - aarc 100% |   5.7 KiB/s |   5.8 KiB |  00m01s\n Fedora 43 - aarch64 - Updates          100% |   3.6 MiB/s |  12.6 MiB |  00m04s\n Fedora 43 - aarch64                    100% |   3.1 MiB/s |  34.2 MiB |  00m11s\nRepositories loaded.\nPackage                 Arch     Version                  Repository        Size\nInstalling:\n tree                   aarch64  2.2.1-2.fc43             fedora       168.3 KiB\n\nTransaction Summary:\n Installing:         1 package\n\nTotal size of inbound packages is 61 KiB. Need to download 61 KiB.\nAfter this operation, 168 KiB extra will be used (install 168 KiB, remove 0 B).\n[1/1] tree-0:2.2.1-2.fc43.aarch64       100% | 236.6 KiB/s |  61.0 KiB |  00m00s\n--------------------------------------------------------------------------------\n[1/1] Total                             100% | 235.6 KiB/s |  61.0 KiB |  00m00s\nRunning transaction\n[1/3] Verify package files              100% |   0.0   B/s |   1.0   B |  00m00s\n[2/3] Prepare transaction               100% | 100.0   B/s |   1.0   B |  00m00s\n[3/3] Installing tree-0:2.2.1-2.fc43.aa 100% |   1.1 MiB/s | 169.7 KiB |  00m00s\nComplete!",
+      "exit": 0
+    },
+    {
+      "key": "rpm-q",
+      "host": "fedora",
+      "user": "root",
+      "cwd": "~",
+      "command": "rpm -q tree",
+      "output": "tree-2.2.1-2.fc43.aarch64",
+      "exit": 0
+    },
+    {
+      "key": "rpm-qf",
+      "host": "fedora",
+      "user": "root",
+      "cwd": "~",
+      "command": "rpm -qf /usr/bin/tree",
+      "output": "tree-2.2.1-2.fc43.aarch64",
+      "exit": 0
+    },
+    {
+      "key": "dnf-remove",
+      "host": "fedora",
+      "user": "root",
+      "cwd": "~",
+      "command": "dnf remove -y tree",
+      "output": "Package                 Arch     Version                  Repository        Size\nRemoving:\n tree                   aarch64  2.2.1-2.fc43             fedora       168.3 KiB\n\nTransaction Summary:\n Removing:           1 package\n\nAfter this operation, 168 KiB will be freed (install 0 B, remove 168 KiB).\nRunning transaction\n[1/2] Prepare transaction               100% |  76.0   B/s |   1.0   B |  00m00s\n[2/2] Removing tree-0:2.2.1-2.fc43.aarc 100% | 346.0   B/s |   9.0   B |  00m00s\nComplete!",
+      "exit": 0
+    },
+    {
+      "key": "yum-install",
+      "host": "alma",
+      "user": "root",
+      "cwd": "~",
+      "command": "yum install -y tree",
+      "output": "AlmaLinux 10 - AppStream                        1.8 MB/s | 2.2 MB     00:01\nAlmaLinux 10 - BaseOS                           4.1 MB/s |  13 MB     00:03\nAlmaLinux 10 - CRB                              598 kB/s | 532 kB     00:00\nAlmaLinux 10 - Extras                            26 kB/s |  16 kB     00:00\nDependencies resolved.\n================================================================================\n Package        Architecture      Version                Repository        Size\n================================================================================\nInstalling:\n tree           aarch64           2.1.0-8.el10           baseos            55 k\n\nTransaction Summary\n================================================================================\nInstall  1 Package\n\nTotal download size: 55 k\nInstalled size: 164 k\nDownloading Packages:\ntree-2.1.0-8.el10.aarch64.rpm                   220 kB/s |  55 kB     00:00\n--------------------------------------------------------------------------------\nTotal                                            85 kB/s |  55 kB     00:00\nRunning transaction check\nTransaction check succeeded.\nRunning transaction test\nTransaction test succeeded.\nRunning transaction\n  Preparing        :                                                        1/1\n  Installing       : tree-2.1.0-8.el10.aarch64                              1/1\n  Running scriptlet: tree-2.1.0-8.el10.aarch64                              1/1\n\nInstalled:\n  tree-2.1.0-8.el10.aarch64\n\nComplete!",
+      "exit": 0
+    },
+    {
+      "key": "yum-remove",
+      "host": "alma",
+      "user": "root",
+      "cwd": "~",
+      "command": "yum remove -y tree",
+      "output": "Dependencies resolved.\n================================================================================\n Package       Architecture     Version                  Repository        Size\n================================================================================\nRemoving:\n tree          aarch64          2.1.0-8.el10             @baseos          164 k\n\nTransaction Summary\n================================================================================\nRemove  1 Package\n\nFreed space: 164 k\nRunning transaction check\nTransaction check succeeded.\nRunning transaction test\nTransaction test succeeded.\nRunning transaction\n  Preparing        :                                                        1/1\n  Erasing          : tree-2.1.0-8.el10.aarch64                              1/1\n\nRemoved:\n  tree-2.1.0-8.el10.aarch64\n\nComplete!",
+      "exit": 0
+    },
+    {
+      "key": "yum-is-dnf",
+      "host": "alma",
+      "user": "root",
+      "cwd": "~",
+      "command": "ls -l /usr/bin/yum",
+      "output": "lrwxrwxrwx 1 root root 5 Aug 19 00:00 /usr/bin/yum -> dnf-3",
+      "exit": 0
+    },
+    {
+      "key": "zypper-install",
+      "host": "opensuse",
+      "user": "root",
+      "cwd": "~",
+      "command": "zypper --non-interactive install tree",
+      "output": "Refreshing service 'openSUSE'.\nLooking for gpg keys in repository repo-openh264 (16.0).\n  gpgkey=https://codecs.opensuse.org/openh264/openSUSE_Leap_16/repodata/repomd.xml.key\nRetrieving repository 'repo-openh264 (16.0)' metadata ....................[done]\nBuilding repository 'repo-openh264 (16.0)' cache .........................[done]\nLooking for gpg keys in repository repo-oss (16.0).\n  gpgkey=http://cdn.opensuse.org/distribution/leap/16.0/repo/oss/aarch64/repodata/repomd.xml.key\nRetrieving repository 'repo-oss (16.0)' metadata .........................[done]\nBuilding repository 'repo-oss (16.0)' cache ..............................[done]\nLoading repository data...\nReading installed packages...\nResolving package dependencies...\n\nThe following NEW package is going to be installed:\n  tree\n\n1 new package to install.\n\nPackage download size:    84.0 KiB\n\nPackage install size change:\n              |     192.9 KiB  required by packages that will be installed\n   192.9 KiB  |  -      0 B    released by packages that will be removed\n\nBackend:  classic_rpmtrans\nContinue? [y/n/v/...? shows all options] (y): y\nPreloading: tree-2.2.1-160000.2.2.aarch64.rpm [done]\nPreload finished. [success (1.2 KiB/s) ] .................................[done]\nRetrieving: tree-2.2.1-160000.2.2.aarch64 (repo-oss (16.0)) (1/1),  84.0 KiB\n\nChecking for file conflicts: .............................................[done]\n(1/1) Installing: tree-2.2.1-160000.2.2.aarch64 ..........................[done]\nRunning post-transaction scripts .........................................[done]",
+      "exit": 0
+    },
+    {
+      "key": "zypper-rpm-q",
+      "host": "opensuse",
+      "user": "root",
+      "cwd": "~",
+      "command": "rpm -q tree",
+      "output": "tree-2.2.1-160000.2.2.aarch64",
+      "exit": 0
+    },
+    {
+      "key": "zypper-remove",
+      "host": "opensuse",
+      "user": "root",
+      "cwd": "~",
+      "command": "zypper --non-interactive remove tree",
+      "output": "Reading installed packages...\nResolving package dependencies...\n\nThe following package is going to be REMOVED:\n  tree\n\n1 package to remove.\n\nPackage install size change:\n              |         0 B    required by packages that will be installed\n  -192.9 KiB  |  -  192.9 KiB  released by packages that will be removed\n\nBackend:  classic_rpmtrans\nContinue? [y/n/v/...? shows all options] (y): y\n(1/1) Removing: tree-2.2.1-160000.2.2.aarch64 ............................[done]\nRunning post-transaction scripts .........................................[done]",
+      "exit": 0
+    },
+    {
+      "key": "apk-add",
+      "host": "alpine",
+      "user": "root",
+      "cwd": "~",
+      "command": "apk add tree",
+      "output": "fetch https://dl-cdn.alpinelinux.org/alpine/v3.22/main/aarch64/APKINDEX.tar.gz\nfetch https://dl-cdn.alpinelinux.org/alpine/v3.22/community/aarch64/APKINDEX.tar.gz\n(1/1) Installing tree (2.2.1-r0)\nExecuting busybox-1.37.0-r20.trigger\nOK: 8 MiB in 17 packages",
+      "exit": 0
+    },
+    {
+      "key": "apk-info",
+      "host": "alpine",
+      "user": "root",
+      "cwd": "~",
+      "command": "apk info tree",
+      "output": "tree-2.2.1-r0 description:\nRecursive directory indented listing of files\n\ntree-2.2.1-r0 webpage:\nhttps://oldmanprogrammer.net/source.php?dir=projects/tree\n\ntree-2.2.1-r0 installed size:\n67 KiB",
+      "exit": 0
+    },
+    {
+      "key": "apk-del",
+      "host": "alpine",
+      "user": "root",
+      "cwd": "~",
+      "command": "apk del tree",
+      "output": "(1/1) Purging tree (2.2.1-r0)\nExecuting busybox-1.37.0-r20.trigger\nOK: 8 MiB in 16 packages",
+      "exit": 0
+    }
+  ]
+}

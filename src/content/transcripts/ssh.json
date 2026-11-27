@@ -1,0 +1,175 @@
+{
+  "id": "ssh",
+  "description": "Mira makes an SSH key on her laptop, logs in to the build server with her password, installs her key with ssh-copy-id, logs in with the key, copies a release with scp, and sees what happens when her private key is readable by others.",
+  "captured": "2026-11-27",
+  "environment": [
+    "Each host ran in a Docker container on Docker Desktop (arm64), so the kernel is Docker Desktop's (Linux 7.0.14-linuxkit), not the distribution's.",
+    "On the Debian hosts, systemd runs as PID 1, as on a real machine.",
+    "The hosts share a network in documentation address ranges (192.0.2.0/24 and 2001:db8:1::/64, gateway 192.0.2.1). A dnsmasq container at 192.0.2.53 answers for tuxpixel.example.",
+    "Commands ran in a login shell on an 80-column terminal, with the pagers of systemd and dpkg turned off (SYSTEMD_PAGER=cat, DPKG_PAGER=cat).",
+    "Sockets on 127.0.0.11 belong to Docker's built-in DNS service, which every container on such a network has.",
+    "nginx is set to start 2 worker processes rather than one per CPU, to keep process listings short.",
+    "Mira leaves the key passphrase empty so the capture can log in unattended; a passphrase protects the key if the laptop is stolen."
+  ],
+  "hosts": [
+    {
+      "name": "tuxpixel",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    },
+    {
+      "name": "build",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    }
+  ],
+  "setup": [
+    {
+      "host": "tuxpixel",
+      "user": "mira",
+      "command": "head -c 300000 /dev/urandom > pixel-raiders-1.1.tar.gz"
+    },
+    {
+      "host": "build",
+      "user": "mira",
+      "command": "mkdir builds"
+    }
+  ],
+  "steps": [
+    {
+      "key": "keygen",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ssh-keygen -t ed25519",
+      "output": "Generating public/private ed25519 key pair.\nEnter file in which to save the key (/home/mira/.ssh/id_ed25519):\nCreated directory '/home/mira/.ssh'.\nEnter passphrase for \"/home/mira/.ssh/id_ed25519\" (empty for no passphrase):\nEnter same passphrase again:\nYour identification has been saved in /home/mira/.ssh/id_ed25519\nYour public key has been saved in /home/mira/.ssh/id_ed25519.pub\nThe key fingerprint is:\nSHA256:H3oiUPdg4rd+pkZQcdJbb4xc7TMzg01mbrk/UnKJQhM mira@tuxpixel\nThe key's randomart image is:\n+--[ED25519 256]--+\n|        oo.    . |\n|        .o.E. .+.|\n|      o.+  +.=B..|\n|     o.+ o.oo.+@.|\n|    . ..S + ..o O|\n|     . ..+ o o = |\n|      ..+ o . + .|\n|       o.oo  . ..|\n|       .o+    . .|\n+----[SHA256]-----+",
+      "exit": 0
+    },
+    {
+      "key": "ls-ssh",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ls -l ~/.ssh",
+      "output": "total 8\n-rw------- 1 mira mira 399 Nov 27 11:52 id_ed25519\n-rw-r--r-- 1 mira mira  95 Nov 27 11:52 id_ed25519.pub",
+      "exit": 0
+    },
+    {
+      "key": "cat-pub",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "cat ~/.ssh/id_ed25519.pub",
+      "output": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZvbfvzL5WKqPYNMXEh0wc7nZaJz8KZYSozYLIB2dF0 mira@tuxpixel",
+      "exit": 0
+    },
+    {
+      "key": "first-login",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ssh build.tuxpixel.example",
+      "output": "The authenticity of host 'build.tuxpixel.example (2001:db8:1::20)' can't be established.\nED25519 key fingerprint is SHA256:GlPYikTf5yHsAxUgQ//u0ts/N6gtqwBpnEgSK9K4q/Q.\nThis key is not known by any other names.\nAre you sure you want to continue connecting (yes/no/[fingerprint])? yes\nWarning: Permanently added 'build.tuxpixel.example' (ED25519) to the list of known hosts.\nmira@build.tuxpixel.example's password:\nLinux build 7.0.14-linuxkit #1 SMP PREEMPT Tue Nov 10 17:08:40 UTC 2026 aarch64\n\nThe programs included with the Debian GNU/Linux system are free software;\nthe exact distribution terms for each program are described in the\nindividual files in /usr/share/doc/*/copyright.\n\nDebian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent\npermitted by applicable law.\nmira@build:~$ hostname\nbuild\nmira@build:~$ exit\nlogout\nConnection to build.tuxpixel.example closed.",
+      "exit": 0
+    },
+    {
+      "key": "known-hosts",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "cat ~/.ssh/known_hosts",
+      "output": "|1|TS9EGmAOeft62aQ63n/LWDaygoo=|8blJBqDhXd5S/zfWAMkPNis1Rzs= ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGnzmtZO1hjT1Q4I7vllEpsb8i0kryE/EaffEwe7yZF3\n|1|tJ49WhpDWIyG0K9m0hqwdbYCDL4=|WwOSVKbRZp7+FZEw0qzyzM7BuFs= ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj9srOID8eF1UnDUtpa04/7sIgm+8vwsWRNlN1eKK4/OjxVQQyIuQF5hzzchh2br8fenF+ZmjaVwnm57b5A9D3y4XMQHMRAjM6cZRe/Q5lhep2FAN2ty3/jLFAmfKQ68xwBqScUUbpYz6S0RsTDf8x/8tXcfqUYWUZmpeH6e9Ve5A+8bREfEQPNnxmVv/6LCn18pgCtH3uOLZApeGTCxV5jfgwtApKBKCArM9C3dVMfCLmp0ITQoR5S5LPg/Q109TPWAuiSBThX1oa7HCeKQ8Ht5L+T58Z0jGCNVg+4JceCCXs+kRlYXLZf2bNMPC44ITOvbjYQjTOvbgKuotYc4nHhRhFZ+gtoKy/iDmrRV47YU+Cy/MvjB9hCEddPHskK39XLsemek3H71S2U5iWCxYFbyGYOuJ257jcG53dYAG12OvTDlWwlVLHx26Z2ZnOssqr6QZQwRc6y/mah+yqwD7f1sXv4IM/Ak2g1kvUQv3ZIvUCNNngi9RXe4oekzuav9U=\n|1|fjrQzg2T3L6dm8mQEOlMwvnDDI4=|hANSlTsNLpSL2epzST4rtNM8/QM= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHtfNBonMrR7sbQdJTm4G0uxamDIWpFHyNuN1tb1UuuxEJLSGJkGKrxxBu+PhHFp49ZKdRvgisq1z9+EDzoV4bg=",
+      "exit": 0
+    },
+    {
+      "key": "copy-id",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ssh-copy-id build.tuxpixel.example",
+      "output": "/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: \"/home/mira/.ssh/id_ed25519.pub\"\n/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed\n/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys\nmira@build.tuxpixel.example's password:\n\nNumber of key(s) added: 1\n\nNow try logging into the machine, with: \"ssh 'build.tuxpixel.example'\"\nand check to make sure that only the key(s) you wanted were added.",
+      "exit": 0
+    },
+    {
+      "key": "key-login",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ssh build.tuxpixel.example hostname",
+      "output": "build",
+      "exit": 0
+    },
+    {
+      "key": "authorized-keys",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "cat ~/.ssh/authorized_keys",
+      "output": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJZvbfvzL5WKqPYNMXEh0wc7nZaJz8KZYSozYLIB2dF0 mira@tuxpixel",
+      "exit": 0
+    },
+    {
+      "key": "ls-authorized",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ls -la ~/.ssh",
+      "output": "total 12\ndrwx------ 2 mira mira 4096 Nov 27 11:52 .\ndrwx------ 1 mira mira 4096 Nov 27 11:52 ..\n-rw------- 1 mira mira   95 Nov 27 11:52 authorized_keys",
+      "exit": 0
+    },
+    {
+      "key": "scp",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "scp pixel-raiders-1.1.tar.gz build.tuxpixel.example:builds/",
+      "output": "pixel-raiders-1.1.tar.gz                      100%  293KB 136.4MB/s   00:00",
+      "exit": 0
+    },
+    {
+      "key": "scp-check",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ssh build.tuxpixel.example ls -l builds",
+      "output": "total 296\n-rw-r--r-- 1 mira mira 300000 Nov 27 11:52 pixel-raiders-1.1.tar.gz",
+      "exit": 0
+    },
+    {
+      "key": "key-open",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "chmod 644 ~/.ssh/id_ed25519",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "login-key-open",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ssh build.tuxpixel.example hostname",
+      "output": "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\nPermissions 0644 for '/home/mira/.ssh/id_ed25519' are too open.\nIt is required that your private key files are NOT accessible by others.\nThis private key will be ignored.\nLoad key \"/home/mira/.ssh/id_ed25519\": bad permissions\nmira@build.tuxpixel.example's password:\nbuild",
+      "exit": 0
+    },
+    {
+      "key": "key-fix",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "chmod 600 ~/.ssh/id_ed25519",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "login-key-fixed",
+      "host": "tuxpixel",
+      "user": "mira",
+      "cwd": "~",
+      "command": "ssh build.tuxpixel.example hostname",
+      "output": "build",
+      "exit": 0
+    }
+  ]
+}

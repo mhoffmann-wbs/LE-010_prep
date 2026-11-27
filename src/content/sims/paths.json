@@ -1,0 +1,96 @@
+{
+  "id": "paths",
+  "title": "Path resolver",
+  "description": "Type an absolute or relative path with `.`, `..`, `~` or `~jonas` from any current directory and watch it resolve to one absolute path, step by step.",
+  "intro": "Pick `/home/mira/studio` as the current directory and type `pixel-raiders/assets`. Then type `builds/..`, then `/tmp`, then `~jonas`. Notice that only the first two depend on where you are. Finally, try `~/studio/./builds/../pixel-raiders` and count how many steps do nothing useful.",
+  "objectives": ["012.3"],
+  "takeaways": [
+    "An absolute path starts with `/` and means the same thing from every directory. A relative path does not start with `/` and is read from the current directory, which `pwd` prints.",
+    "`.` is the current directory and `..` is its parent. At the root, `..` is still `/`, because the root is its own parent. `cd ..` goes up one level.",
+    "The shell, not the command, expands `~` to your home directory (`/home/mira` for Mira) and `~jonas` to Jonas's home. A `~` in the middle of a word is just a character, and `~` followed by an unknown name stays as typed.",
+    "`cd` with no argument, `cd ~` and `cd $HOME` all take you home; `cd -` jumps back to the previous directory.",
+    "Doubled slashes and a trailing slash change nothing: `/home//mira/` is `/home/mira`. Names are case-sensitive, so `Studio` and `studio` are two different directories.",
+    "A path to something that does not exist is still a valid path. It fails only when a command tries to use it, with \"No such file or directory\", or \"Not a directory\" when a file stands where a directory should be."
+  ],
+  "tryItems": ["012.3-006", "012.3-007", "012.3-005", "012.3-018", "012.3-022"],
+  "links": [
+    { "title": "path_resolution(7): how Linux turns a path name into a file", "url": "https://man7.org/linux/man-pages/man7/path_resolution.7.html" },
+    { "title": "Bash manual: tilde expansion", "url": "https://www.gnu.org/software/bash/manual/html_node/Tilde-Expansion.html" },
+    { "title": "realpath(1) manual page (GNU coreutils)", "url": "https://man7.org/linux/man-pages/man1/realpath.1.html" },
+    { "title": "hier(7): the layout of the filesystem", "url": "https://man7.org/linux/man-pages/man7/hier.7.html" }
+  ],
+  "params": {
+    "tree": [
+      { "path": "/", "type": "dir", "more": true },
+      { "path": "/home", "type": "dir" },
+      { "path": "/home/mira", "type": "dir" },
+      { "path": "/home/mira/.bash_logout", "type": "file" },
+      { "path": "/home/mira/.bashrc", "type": "file" },
+      { "path": "/home/mira/.profile", "type": "file" },
+      { "path": "/home/mira/studio", "type": "dir" },
+      { "path": "/home/mira/studio/builds", "type": "dir" },
+      { "path": "/home/mira/studio/pixel-raiders", "type": "dir" },
+      { "path": "/home/mira/studio/pixel-raiders/notes.txt", "type": "file" },
+      { "path": "/home/mira/studio/pixel-raiders/assets", "type": "dir" },
+      { "path": "/home/mira/studio/pixel-raiders/assets/sprites", "type": "dir" },
+      { "path": "/home/mira/studio/pixel-raiders/assets/sprites/hero.png", "type": "file" },
+      { "path": "/home/jonas", "type": "dir" },
+      { "path": "/home/ada", "type": "dir" },
+      { "path": "/etc", "type": "dir", "more": true },
+      { "path": "/etc/hostname", "type": "file" },
+      { "path": "/tmp", "type": "dir", "more": true }
+    ],
+    "users": [
+      { "name": "mira", "home": "/home/mira" },
+      { "name": "jonas", "home": "/home/jonas" },
+      { "name": "ada", "home": "/home/ada" }
+    ],
+    "me": "mira",
+    "starts": ["/home/mira", "/home/mira/studio", "/home/mira/studio/pixel-raiders/assets/sprites", "/home/mira/studio/builds", "/etc", "/tmp"],
+    "examples": ["pixel-raiders/assets", "../builds", "./notes.txt", "/etc/hostname", "~", "~jonas", "~/studio/./builds/../pixel-raiders", "../../../../..", "builds/../nothere/..", "~bob"],
+    "tasks": [
+      {
+        "text": "Mira is in `sprites`, deep inside the game project. Give a relative path to the `builds` folder next to `pixel-raiders`.",
+        "cwd": "/home/mira/studio/pixel-raiders/assets/sprites",
+        "goal": "/home/mira/studio/builds",
+        "style": "relative",
+        "why": "Each `..` climbs one level: sprites to assets, to pixel-raiders, to studio. Then `builds` goes down. `../../../builds` works."
+      },
+      {
+        "text": "Mira is in `/tmp` and wants to reach Jonas's home directory. Use the tilde form.",
+        "cwd": "/tmp",
+        "goal": "/home/jonas",
+        "style": "tilde",
+        "why": "`~jonas` is replaced by the shell with Jonas's home directory, wherever you are."
+      },
+      {
+        "text": "Mira is in `/etc` and wants her own `notes.txt` from the project folder. Use an absolute path.",
+        "cwd": "/etc",
+        "goal": "/home/mira/studio/pixel-raiders/notes.txt",
+        "style": "absolute",
+        "why": "An absolute path starts at `/` and ignores the current directory: `/home/mira/studio/pixel-raiders/notes.txt`."
+      },
+      {
+        "text": "Mira is in `studio`. Give the shortest relative path to her home directory.",
+        "cwd": "/home/mira/studio",
+        "goal": "/home/mira",
+        "style": "relative",
+        "why": "`..` is the parent of `studio`, which is her home. `cd ..` would take her there."
+      },
+      {
+        "text": "Mira is in `builds`. Give a relative path to `assets` inside the `pixel-raiders` folder.",
+        "cwd": "/home/mira/studio/builds",
+        "goal": "/home/mira/studio/pixel-raiders/assets",
+        "style": "relative",
+        "why": "Go up to `studio` with `..`, then down through `pixel-raiders` into `assets`: `../pixel-raiders/assets`."
+      },
+      {
+        "text": "Mira is in `pixel-raiders`. Use the tilde and `studio` to reach the `builds` folder.",
+        "cwd": "/home/mira/studio/pixel-raiders",
+        "goal": "/home/mira/studio/builds",
+        "style": "tilde",
+        "why": "`~` is `/home/mira`, so `~/studio/builds` always works, wherever she is."
+      }
+    ]
+  }
+}

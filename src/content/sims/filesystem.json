@@ -1,0 +1,539 @@
+{
+  "id": "filesystem",
+  "title": "Filesystem map",
+  "description": "Explore the standard Linux directories, from `/bin` to `/var/tmp`: what lives where, an example from the TuxPixel machine, and which ones are pseudo filesystems.",
+  "intro": "Open `/proc`, then `/sys` and `/dev`, and read where their data is stored: none of it is on disk. Next, compare `/tmp` with `/var/tmp`, then `/bin` with `/usr/bin`. Finally, answer the \"where would you look?\" questions without peeking at the map.",
+  "objectives": [
+    "012.1",
+    "012.2",
+    "012.3",
+    "014.2",
+    "014.3",
+    "015.4"
+  ],
+  "takeaways": [
+    "`/etc` holds system-wide configuration files; `/home` holds users' files (`~` is yours, and `/root` is the administrator's home); `/var/log` holds plain-text logs; `/boot` holds the kernel and boot files.",
+    "Commands live in `/bin` and `/usr/bin` (for all users) and in `/sbin` and `/usr/sbin` (administration). On current Debian, `/bin` and `/sbin` are symbolic links to `/usr/bin` and `/usr/sbin`, which is why a listing of both looks the same.",
+    "`/proc` (processes and kernel information), `/sys` (devices and drivers) and `/dev` (device files) are made by the kernel while the system runs. They take no disk space: what you read is produced by the kernel at that moment.",
+    "`/tmp` is for throw-away files, and nothing you put there should be relied on after a reboot. `/var/tmp` is meant for temporary files that stay across reboots. Both are writable by everyone and carry the sticky bit.",
+    "`/usr/share/doc/<package>/` holds the extra documentation packages install, such as README files and changelogs; man pages are elsewhere (`/usr/share/man`).",
+    "`/` is the top of the tree, `/root` is the administrator's home and `/home` holds everyone else's. Mixing up `/` and `/root` is a classic mistake."
+  ],
+  "tryItems": [
+    "012.1-023",
+    "012.1-024",
+    "014.2-015",
+    "014.3-020",
+    "015.4-003"
+  ],
+  "links": [
+    {
+      "title": "Filesystem Hierarchy Standard 3.0",
+      "url": "https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html"
+    },
+    {
+      "title": "hier(7): description of the file system hierarchy",
+      "url": "https://man7.org/linux/man-pages/man7/hier.7.html"
+    },
+    {
+      "title": "proc(5): the /proc filesystem",
+      "url": "https://man7.org/linux/man-pages/man5/proc.5.html"
+    },
+    {
+      "title": "sysfs(5): the /sys filesystem",
+      "url": "https://man7.org/linux/man-pages/man5/sysfs.5.html"
+    },
+    {
+      "title": "Debian wiki: UsrMerge (why /bin is a link to /usr/bin)",
+      "url": "https://wiki.debian.org/UsrMerge"
+    }
+  ],
+  "params": {
+    "directories": [
+      {
+        "path": "/",
+        "role": "The root of the whole tree",
+        "contents": "Every file and directory on the machine lives somewhere below `/`. The top level holds the main directories on this map. Do not confuse `/` with `/root`, the home directory of the administrator.",
+        "storage": "disk",
+        "storageNote": "The root filesystem is on disk; other filesystems (and the pseudo ones below) are attached to directories under it.",
+        "atTuxPixel": "Mira starts any absolute path with `/`, such as `/etc/hostname`, and it means the same thing from every directory.",
+        "examples": [
+          {
+            "command": "ls / | head -5",
+            "output": "bin\nboot\ndev\netc\nhome"
+          }
+        ],
+        "examTip": "`/` is the top of the tree and `/root` is a home directory. They are different things."
+      },
+      {
+        "path": "/bin",
+        "role": "Essential commands for all users",
+        "contents": "The programs everyone needs, even for repairs: `ls`, `cp`, `cat`, `bash`.",
+        "storage": "disk",
+        "storageNote": "Real programs stored on disk.",
+        "atTuxPixel": "When Ada types `ls`, the shell finds it through `PATH`, on a modern Debian under `/usr/bin` as well as `/bin`.",
+        "examples": [
+          {
+            "command": "readlink /bin",
+            "output": "usr/bin"
+          }
+        ],
+        "linkTo": "/usr/bin",
+        "examTip": "Traditionally `/bin` holds the essential user commands. On current Debian it is a symbolic link to `/usr/bin`, so both paths show the same programs."
+      },
+      {
+        "path": "/boot",
+        "role": "Files the machine needs to start",
+        "contents": "The Linux kernel image (`vmlinuz-…`), the initial RAM disk (`initrd.img-…`) and boot loader files.",
+        "storage": "disk",
+        "storageNote": "Ordinary files on disk, often on a small partition of their own.",
+        "atTuxPixel": "Before Mira reboots the build server after an update, she can check that a new `vmlinuz` appeared here.",
+        "examples": [
+          {
+            "command": "ls /boot | grep vmlinuz",
+            "output": "vmlinuz-6.1.0-56-686"
+          }
+        ],
+        "examTip": "`/boot` is where the kernel image lives. Together with `/dev` and `/sys` it is a hardware-related path in objective 014.2."
+      },
+      {
+        "path": "/dev",
+        "role": "Device files",
+        "contents": "Files that stand for hardware and pseudo-devices: disks (`/dev/sda`), terminals, and special ones such as `/dev/null`, `/dev/zero` and `/dev/urandom`.",
+        "storage": "pseudo",
+        "storageNote": "The kernel and udev create the entries while the system runs (type `devtmpfs`); nothing is stored on disk.",
+        "atTuxPixel": "Jonas sends noisy build messages to `/dev/null`; Ada reads random bytes from `/dev/urandom` for a test key.",
+        "examples": [
+          {
+            "command": "stat -c '%F' /dev/null",
+            "output": "character special file"
+          },
+          {
+            "command": "df --output=fstype /dev | tail -1",
+            "output": "devtmpfs"
+          }
+        ],
+        "examTip": "Disks are block devices (`b` in `ls -l`), and `/dev/null` and terminals are character devices (`c`). `/dev` is a special kernel-managed directory, not ordinary storage."
+      },
+      {
+        "path": "/etc",
+        "role": "System-wide configuration",
+        "contents": "Plain-text configuration files for the system and its services, such as `hostname`, `passwd`, `hosts` and `fstab`.",
+        "storage": "disk",
+        "storageNote": "Ordinary files on disk. Programs read them; the administrator edits them.",
+        "atTuxPixel": "Mira checks `/etc/hostname` to confirm that the guest machine is called `tuxpixel`.",
+        "examples": [
+          {
+            "command": "cat /etc/hostname",
+            "output": "tuxpixel"
+          },
+          {
+            "command": "ls /etc | head -3",
+            "output": "adduser.conf\nalternatives\napparmor.d"
+          }
+        ],
+        "examTip": "Settings for the whole machine live in `/etc`; one user's own settings live in hidden files in that user's home directory."
+      },
+      {
+        "path": "/home",
+        "role": "Home directories of ordinary users",
+        "contents": "One directory per user, such as `/home/mira`, for personal files and settings. The shell writes `~` for your own.",
+        "storage": "disk",
+        "storageNote": "Ordinary files on disk, often on a separate partition so reinstalling the system keeps them.",
+        "atTuxPixel": "Jonas keeps his sprite files under `/home/jonas`; Ada has `/home/ada`.",
+        "examples": [
+          {
+            "command": "echo /home/*",
+            "output": "/home/ada /home/jonas /home/mira"
+          }
+        ],
+        "examTip": "`~` stands for your home directory, `~jonas` for Jonas's. The administrator's home is `/root`, not under `/home`."
+      },
+      {
+        "path": "/lib",
+        "role": "Shared libraries and kernel modules",
+        "contents": "Code that programs share, and the kernel modules under `/lib/modules`.",
+        "storage": "disk",
+        "storageNote": "Real files on disk.",
+        "atTuxPixel": "The loadable driver modules of the guest's kernel are in a folder named after the kernel version.",
+        "examples": [
+          {
+            "command": "readlink /lib",
+            "output": "usr/lib"
+          },
+          {
+            "command": "ls /lib/modules",
+            "output": "6.1.0-56-686"
+          }
+        ],
+        "linkTo": "/usr/lib",
+        "examTip": "Libraries are shared code that programs load. Like `/bin`, `/lib` is a link to `/usr/lib` on current Debian."
+      },
+      {
+        "path": "/proc",
+        "role": "Processes and kernel data as files",
+        "contents": "A folder per running process, named by its PID (`/proc/1234/`), plus system facts such as `/proc/cpuinfo` and `/proc/meminfo`.",
+        "storage": "pseudo",
+        "storageNote": "A pseudo filesystem (type `proc`): the kernel makes the content up when you read it, and nothing is on disk.",
+        "atTuxPixel": "When Ada wonders what a stuck program is, `/proc/<PID>/` tells her. On this machine, process 1 is `le-init`; on a normal Debian it is `systemd`.",
+        "examples": [
+          {
+            "command": "cat /proc/1/comm",
+            "output": "le-init"
+          },
+          {
+            "command": "df --output=fstype /proc | tail -1",
+            "output": "proc"
+          }
+        ],
+        "examTip": "`/proc` is a pseudo filesystem. Its files look like text files but report the live state of processes and the kernel."
+      },
+      {
+        "path": "/root",
+        "role": "Home directory of the administrator",
+        "contents": "Personal files of the `root` user. Ordinary users cannot enter it.",
+        "storage": "disk",
+        "storageNote": "Ordinary files on disk.",
+        "atTuxPixel": "Mira does not work as root; she uses `sudo` and her own `/home/mira`.",
+        "examples": [
+          {
+            "command": "stat -c '%A %U' /root",
+            "output": "drwx------ root"
+          }
+        ],
+        "examTip": "`/root` is not `/`. It is root's home directory, outside `/home` and closed to everyone else."
+      },
+      {
+        "path": "/run",
+        "role": "Data from the running system",
+        "contents": "Small runtime files made since the last boot: PID files, sockets and lock files.",
+        "storage": "ram",
+        "storageNote": "A tmpfs (a filesystem in memory), so it starts empty at every boot.",
+        "atTuxPixel": "Services started on a machine write their PID and socket files here.",
+        "examples": [
+          {
+            "command": "df --output=fstype /run | tail -1",
+            "output": "tmpfs"
+          }
+        ],
+        "examTip": "`/run` is runtime data in memory; it is rebuilt at every boot and not meant for your files."
+      },
+      {
+        "path": "/sbin",
+        "role": "Essential system administration commands",
+        "contents": "Programs for the administrator, such as `fsck` and `reboot`.",
+        "storage": "disk",
+        "storageNote": "Real programs stored on disk.",
+        "atTuxPixel": "Mira uses `sudo` to run tools from here and from `/usr/sbin`.",
+        "examples": [
+          {
+            "command": "readlink /sbin",
+            "output": "usr/sbin"
+          }
+        ],
+        "linkTo": "/usr/sbin",
+        "examTip": "`/sbin` and `/usr/sbin` hold administration programs. On current Debian `/sbin` is a link to `/usr/sbin`."
+      },
+      {
+        "path": "/sys",
+        "role": "Devices and drivers as files",
+        "contents": "The kernel's view of hardware, drivers and buses: `/sys/class/net/` for network interfaces, `/sys/block/` for disks.",
+        "storage": "pseudo",
+        "storageNote": "A pseudo filesystem (type `sysfs`) made by the kernel; nothing is stored on disk.",
+        "atTuxPixel": "Ada lists `/sys/class/net` to see which network interfaces a machine has. The browser guest shows only the loopback interface `lo`.",
+        "examples": [
+          {
+            "command": "ls /sys/class/net",
+            "output": "lo"
+          },
+          {
+            "command": "df --output=fstype /sys | tail -1",
+            "output": "sysfs"
+          }
+        ],
+        "examTip": "`/sys` is a pseudo filesystem like `/proc`, but about devices and drivers rather than processes."
+      },
+      {
+        "path": "/tmp",
+        "role": "Temporary files for everyone",
+        "contents": "Scratch files that programs and users make and that may disappear at any time.",
+        "storage": "varies",
+        "storageNote": "Distributions either clean it at boot (when it lives on disk) or mount it as a tmpfs in memory. On the guest it is a tmpfs.",
+        "atTuxPixel": "Jonas exports a quick preview there. If he needs it tomorrow, he moves it out.",
+        "examples": [
+          {
+            "command": "stat -c '%A' /tmp",
+            "output": "drwxrwxrwt"
+          },
+          {
+            "command": "df --output=fstype /tmp | tail -1",
+            "output": "tmpfs"
+          }
+        ],
+        "examTip": "Everyone can write to `/tmp`, and the sticky bit (`t`) stops users deleting each other's files. Do not rely on its content surviving a reboot."
+      },
+      {
+        "path": "/usr",
+        "role": "Programs and read-only data",
+        "contents": "The big section for installed software: `bin`, `sbin`, `lib`, `share`, `local` and more.",
+        "storage": "disk",
+        "storageNote": "Real files on disk, changed only when software is installed or updated.",
+        "atTuxPixel": "Almost every program Mira runs, from `tar` to `grep`, is under `/usr`.",
+        "examples": [
+          {
+            "command": "ls /usr | head -4",
+            "output": "bin\ngames\ninclude\nlib"
+          }
+        ],
+        "examTip": "`/usr` is not user data and not the home directories; it is where installed software lives."
+      },
+      {
+        "path": "/usr/bin",
+        "role": "Most programs for all users",
+        "contents": "The commands you type every day: `tar`, `gzip`, `grep`, `find`.",
+        "storage": "disk",
+        "storageNote": "Real programs stored on disk.",
+        "atTuxPixel": "This is where `tar` and `gzip` live, for the assets archive.",
+        "examples": [
+          {
+            "command": "command -v tar gzip",
+            "output": "/usr/bin/tar\n/usr/bin/gzip"
+          }
+        ],
+        "examTip": "Normal commands for all users are in `/usr/bin` (and `/bin`). Both are normally in your `PATH`."
+      },
+      {
+        "path": "/usr/sbin",
+        "role": "Administration programs",
+        "contents": "Tools for managing the machine, such as `useradd`, `adduser` and `groupadd`, mainly meant for root.",
+        "storage": "disk",
+        "storageNote": "Real programs stored on disk.",
+        "atTuxPixel": "Mira runs `sudo useradd` to add a user; the program is here.",
+        "examples": [
+          {
+            "command": "ls /usr/sbin/useradd",
+            "output": "/usr/sbin/useradd"
+          },
+          {
+            "command": "echo $PATH",
+            "output": "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+          }
+        ],
+        "examTip": "Administration programs are in `/usr/sbin` and `/sbin`. An ordinary user's `PATH` usually does not list them, as the output of `echo $PATH` shows."
+      },
+      {
+        "path": "/usr/share",
+        "role": "Shared, architecture-independent data",
+        "contents": "Files that work the same on any processor type: documentation (`doc`), manual pages (`man`), icons, locale data and more.",
+        "storage": "disk",
+        "storageNote": "Real files on disk.",
+        "atTuxPixel": "The man pages Mira reads and the documentation Ada looks up both come from here.",
+        "examples": [
+          {
+            "command": "ls /usr/share | grep -E '^(doc|man)$'",
+            "output": "doc\nman"
+          }
+        ],
+        "examTip": "Documentation is under `/usr/share`: manual pages in `man`, other package documentation in `doc`."
+      },
+      {
+        "path": "/usr/share/doc",
+        "role": "Documentation that comes with packages",
+        "contents": "One folder per installed package with its README, changelog, copyright notice and example files.",
+        "storage": "disk",
+        "storageNote": "Ordinary files on disk.",
+        "atTuxPixel": "Before configuring a tool, Mira looks here for the package's examples.",
+        "examples": [
+          {
+            "command": "ls /usr/share/doc | head -3",
+            "output": "adduser\napt\nbase-files"
+          }
+        ],
+        "examTip": "Besides man pages, packages install extra documentation under `/usr/share/doc/<package>/`."
+      },
+      {
+        "path": "/var",
+        "role": "Data that changes while the system runs",
+        "contents": "Logs, caches, mail and print queues, package databases and other files that grow and change.",
+        "storage": "disk",
+        "storageNote": "Ordinary files on disk, often on its own partition so a runaway log cannot fill the root filesystem.",
+        "atTuxPixel": "The game server's logs and caches pile up here.",
+        "examples": [
+          {
+            "command": "ls /var | head -4",
+            "output": "backups\ncache\nlib\nlocal"
+          }
+        ],
+        "examTip": "`/var` is for variable data. The two parts you must know are `/var/log` and `/var/tmp`."
+      },
+      {
+        "path": "/var/log",
+        "role": "Log files",
+        "contents": "Plain-text logs written by the system and services, such as `dpkg.log` and, on many systems, `syslog` or `auth.log`.",
+        "storage": "disk",
+        "storageNote": "Ordinary files on disk. Logrotate renames and compresses old ones.",
+        "atTuxPixel": "Ada reads the build daemon's log here with `tail` or `less`.",
+        "examples": [
+          {
+            "command": "ls /var/log | head -3",
+            "output": "alternatives.log\napt\nbtmp"
+          }
+        ],
+        "examTip": "Most plain-text log files are under `/var/log`. On systemd machines the journal holds more, read with `journalctl`."
+      },
+      {
+        "path": "/var/tmp",
+        "role": "Temporary files that survive a reboot",
+        "contents": "Scratch files that must stay available after the machine restarts.",
+        "storage": "disk",
+        "storageNote": "Kept on disk, and not cleaned at boot.",
+        "atTuxPixel": "Jonas parks a half-finished export here when it must still be there after Mira reboots the server.",
+        "examples": [
+          {
+            "command": "stat -c '%A' /var/tmp",
+            "output": "drwxrwxrwt"
+          },
+          {
+            "command": "df --output=fstype /var/tmp | tail -1",
+            "output": "9p"
+          }
+        ],
+        "examTip": "Compare `/tmp` and `/var/tmp`: both are world-writable with the sticky bit, but only `/var/tmp` is meant to keep files across reboots. (`9p` is how this browser guest attaches its disk.)"
+      }
+    ],
+    "quiz": [
+      {
+        "text": "Mira wants to change which name the machine calls itself. Where is the setting file?",
+        "options": [
+          "/etc",
+          "/home",
+          "/var/log",
+          "/proc"
+        ],
+        "answer": "/etc",
+        "why": "System-wide settings are text files in `/etc`; here it is `/etc/hostname`."
+      },
+      {
+        "text": "Ada wants to see which processes are running by looking at files, one folder per process ID.",
+        "options": [
+          "/sys",
+          "/proc",
+          "/run",
+          "/var"
+        ],
+        "answer": "/proc",
+        "why": "Each process has a folder `/proc/<PID>/`, filled in by the kernel."
+      },
+      {
+        "text": "Jonas wants the plain-text log that the build daemon wrote yesterday.",
+        "options": [
+          "/var/log",
+          "/etc",
+          "/boot",
+          "/tmp"
+        ],
+        "answer": "/var/log",
+        "why": "Services write their text logs under `/var/log`."
+      },
+      {
+        "text": "Mira needs the Linux kernel image the machine boots from.",
+        "options": [
+          "/boot",
+          "/lib",
+          "/dev",
+          "/home"
+        ],
+        "answer": "/boot",
+        "why": "The kernel (`vmlinuz-…`) and the initial RAM disk are in `/boot`."
+      },
+      {
+        "text": "Jonas wants a scratch folder for a preview that can vanish at the next reboot.",
+        "options": [
+          "/tmp",
+          "/var/tmp",
+          "/etc",
+          "/root"
+        ],
+        "answer": "/tmp",
+        "why": "`/tmp` is for short-lived files that may be cleaned or lost at a reboot. `/var/tmp` is for files that must survive one."
+      },
+      {
+        "text": "Ada's test export has to survive the server's nightly reboot, so she wants a temporary place that is kept.",
+        "options": [
+          "/tmp",
+          "/var/tmp",
+          "/run",
+          "/proc"
+        ],
+        "answer": "/var/tmp",
+        "why": "Only `/var/tmp` is meant to keep its files across reboots."
+      },
+      {
+        "text": "Mira wants the device file for the first SATA disk.",
+        "options": [
+          "/dev",
+          "/sys",
+          "/boot",
+          "/usr"
+        ],
+        "answer": "/dev",
+        "why": "Disks are device files such as `/dev/sda`, made by the kernel in `/dev`."
+      },
+      {
+        "text": "Where does Jonas keep his personal sprite files?",
+        "options": [
+          "/home",
+          "/root",
+          "/usr",
+          "/var"
+        ],
+        "answer": "/home",
+        "why": "Every ordinary user has a home directory under `/home`, such as `/home/jonas`."
+      },
+      {
+        "text": "Mira asks where the programs `ls` and `cp` are stored on a current Debian machine.",
+        "options": [
+          "/usr/bin",
+          "/usr/sbin",
+          "/etc",
+          "/usr/share/doc"
+        ],
+        "answer": "/usr/bin",
+        "why": "Everyday commands are in `/usr/bin` (and `/bin`, which links to it)."
+      },
+      {
+        "text": "Ada wants the README and changelog that came with an installed package.",
+        "options": [
+          "/usr/share/doc",
+          "/etc",
+          "/var/log",
+          "/boot"
+        ],
+        "answer": "/usr/share/doc",
+        "why": "Package documentation lives in `/usr/share/doc/<package>/`."
+      },
+      {
+        "text": "Where would Mira find `useradd`, a tool for creating users?",
+        "options": [
+          "/usr/sbin",
+          "/usr/bin",
+          "/home",
+          "/dev"
+        ],
+        "answer": "/usr/sbin",
+        "why": "Administration programs are kept in `/usr/sbin` (and `/sbin`)."
+      },
+      {
+        "text": "Ada wants to know which network interfaces the kernel found, by looking at files about hardware and drivers.",
+        "options": [
+          "/sys",
+          "/etc",
+          "/var",
+          "/usr"
+        ],
+        "answer": "/sys",
+        "why": "`/sys/class/net/` lists the network interfaces. `/sys` shows devices and drivers."
+      }
+    ]
+  }
+}

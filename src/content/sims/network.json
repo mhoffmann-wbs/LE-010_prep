@@ -1,0 +1,152 @@
+{
+  "id": "network",
+  "title": "Network reader",
+  "description": "Read real ip, ss, resolv.conf, /etc/hosts, resolvectl, host and ping output from Mira's Debian 13 laptop, and find the address, the gateway, the DNS server and the listening ports.",
+  "intro": "These commands ran on Mira's laptop on the studio network, and you replay what they printed. After each scene, answer from the output: the right line is highlighted once you pick. The addresses come from ranges reserved for documentation, so they never clash with real networks.",
+  "objectives": ["014.4"],
+  "takeaways": [
+    "`ip addr show` lists each interface with its addresses: `inet` lines are IPv4, `inet6` lines IPv6, and the number after the slash is the prefix length. `lo` is the loopback interface, `127.0.0.1` and `::1`.",
+    "`ip route show` lists the IPv4 routes; the `default via` line names the gateway (router) for everything outside the local network. `ip -6 route show` does the same for IPv6.",
+    "`ss -tulpn` lists listening TCP and UDP sockets with numeric ports; only root sees the process names of other users' sockets. Port 22 is SSH, 80 HTTP, 53 DNS.",
+    "`/etc/hosts` maps names to addresses locally and is checked first; `/etc/resolv.conf` names the DNS server (`nameserver`) and the search domain. With systemd-resolved, it points at the local stub `127.0.0.53`, and `resolvectl status` shows the real DNS servers.",
+    "`host name` asks DNS for a name's addresses, and `host address` asks for the name. `ping` tests whether a host answers; `Name or service not known` means the name didn't resolve, before any packet was sent.",
+    "For 010-160: `ifconfig`, `route` and `netstat` (package net-tools) are the older tools that `ip addr`, `ip route` and `ss` replace. They live in `/sbin`, which isn't in a normal user's PATH on Debian."
+  ],
+  "tryItems": ["014.4-010", "014.4-011", "014.4-007", "014.4-015", "014.4-020"],
+  "links": [
+    { "title": "ip-address(8) manual page", "url": "https://man7.org/linux/man-pages/man8/ip-address.8.html" },
+    { "title": "ip-route(8) manual page", "url": "https://man7.org/linux/man-pages/man8/ip-route.8.html" },
+    { "title": "ss(8) manual page", "url": "https://man7.org/linux/man-pages/man8/ss.8.html" },
+    { "title": "resolv.conf(5) manual page", "url": "https://man7.org/linux/man-pages/man5/resolv.conf.5.html" },
+    { "title": "hosts(5) manual page", "url": "https://man7.org/linux/man-pages/man5/hosts.5.html" },
+    { "title": "resolvectl(1) manual page", "url": "https://man7.org/linux/man-pages/man1/resolvectl.1.html" },
+    { "title": "RFC 5737: IPv4 address blocks reserved for documentation", "url": "https://www.rfc-editor.org/rfc/rfc5737" },
+    { "title": "RFC 3849: IPv6 address prefix reserved for documentation", "url": "https://www.rfc-editor.org/rfc/rfc3849" }
+  ],
+  "params": {
+    "transcript": "network",
+    "scenes": [
+      {
+        "title": "Addresses and routes",
+        "text": "Mira looks at her laptop's interfaces and where it sends traffic.",
+        "steps": ["ip-addr", "ip-route", "ip6-route"],
+        "notes": {
+          "ip-addr": "`eth0@if…` is the wired interface. The `fe80::` address is a link-local IPv6 address that every IPv6 interface makes for itself."
+        },
+        "questions": [
+          {
+            "prompt": "What is the laptop's IPv4 address, with its prefix length?",
+            "answer": "`192.0.2.10/24`",
+            "distractors": ["`127.0.0.1/8`", "`192.0.2.255/24`", "`192.0.2.1/24`"],
+            "why": "The `inet` line under `eth0` holds it. `127.0.0.1` belongs to the loopback, `192.0.2.255` is the broadcast address (`brd`), and `192.0.2.1` is the gateway.",
+            "evidence": { "step": "ip-addr", "text": "inet 192.0.2.10/24" }
+          },
+          {
+            "prompt": "Which address is the default gateway for IPv4?",
+            "answer": "`192.0.2.1`",
+            "distractors": ["`192.0.2.10`", "`192.0.2.0`", "`192.0.2.53`"],
+            "why": "`default via` names the router that gets every packet with no more specific route. The other line covers the local network, reached directly.",
+            "evidence": { "step": "ip-route", "text": "default via 192.0.2.1" }
+          }
+        ]
+      },
+      {
+        "title": "Who is listening?",
+        "text": "Mira checks which programs accept connections on her laptop, first as herself, then with `sudo`.",
+        "steps": ["ss", "ss-sudo"],
+        "notes": {
+          "ss": "As a normal user, the Process column stays empty: Mira may not see other users' processes.",
+          "ss-sudo": "`systemd-resolve` is the local DNS stub; the sockets on `127.0.0.11` belong to Docker's built-in DNS in the capture's container, which a normal laptop doesn't have."
+        },
+        "questions": [
+          {
+            "prompt": "Which program listens on TCP port 22?",
+            "answer": "`sshd`, the SSH server",
+            "distractors": ["`nginx`, the web server", "`systemd-resolve`, the DNS stub", "Nothing: port 22 is closed"],
+            "why": "Only root sees the process names. The `0.0.0.0:22` line ends in `sshd`.",
+            "evidence": { "step": "ss-sudo", "text": "users:((\"sshd\"" }
+          },
+          {
+            "prompt": "On which port does nginx accept web requests?",
+            "answer": "80",
+            "distractors": ["22", "53", "443"],
+            "why": "The `0.0.0.0:80` line belongs to nginx. 443 would be HTTPS, which isn't set up on this laptop.",
+            "evidence": { "step": "ss-sudo", "text": "0.0.0.0:80" }
+          }
+        ]
+      },
+      {
+        "title": "How names are resolved",
+        "text": "Mira looks at the two files that decide how her laptop turns names into addresses, and asks systemd-resolved which DNS server it really uses.",
+        "steps": ["hosts", "resolv-conf", "resolvectl"],
+        "notes": {
+          "resolv-conf": "On Debian with systemd-resolved, this file is written by resolved: programs ask the local stub, and the stub asks the real server."
+        },
+        "questions": [
+          {
+            "prompt": "Which DNS server does the laptop really ask?",
+            "answer": "`192.0.2.53`",
+            "distractors": ["`127.0.0.53`", "`127.0.1.1`", "`192.0.2.1`"],
+            "why": "`/etc/resolv.conf` only names the local stub `127.0.0.53`. `resolvectl status` shows the server behind it.",
+            "evidence": { "step": "resolvectl", "text": "DNS Servers: 192.0.2.53" }
+          },
+          {
+            "prompt": "Mira types `host build`. Which line makes the short name work?",
+            "answer": "`search tuxpixel.example` in `/etc/resolv.conf`",
+            "distractors": ["`127.0.1.1` in `/etc/hosts`", "`options edns0 trust-ad`", "`nameserver 127.0.0.53`"],
+            "why": "The search domain is appended to names without a dot, so `build` is tried as `build.tuxpixel.example`.",
+            "evidence": { "step": "resolv-conf", "text": "search tuxpixel.example" }
+          }
+        ]
+      },
+      {
+        "title": "Look up and ping",
+        "text": "Mira asks DNS about the build server, then checks that it answers, and tries a server that doesn't exist yet.",
+        "steps": ["host-build", "ping", "ping6", "ping-missing"],
+        "notes": {
+          "ping": "The name has an IPv6 address too, and ping used it. `ping -4` forces IPv4."
+        },
+        "questions": [
+          {
+            "prompt": "What went wrong with `ping -c 2 files.tuxpixel.example`?",
+            "answer": "The name couldn't be resolved, so no packet was sent",
+            "distractors": ["The server is down and didn't answer", "A firewall dropped the packets", "Mira needs `sudo` to ping"],
+            "why": "A host that is down shows lost packets in the statistics. Here ping stopped at the name lookup.",
+            "evidence": { "step": "ping-missing", "text": "Name or service not known" }
+          },
+          {
+            "prompt": "How many of the three echo requests to the build server got an answer?",
+            "answer": "All three",
+            "distractors": ["None", "Two", "One"],
+            "why": "The statistics line counts sent and received packets: 0% packet loss.",
+            "evidence": { "step": "ping", "text": "3 packets transmitted, 3 received, 0% packet loss" }
+          }
+        ]
+      },
+      {
+        "title": "The older tools (010-160)",
+        "text": "An old guide tells Mira to use `ifconfig`, `route` and `netstat`. They come from the net-tools package, installed on this laptop for the capture.",
+        "steps": ["ifconfig", "ifconfig-path", "route", "netstat"],
+        "notes": {
+          "ifconfig": "`ifconfig` is in `/sbin`, which isn't in a normal user's PATH on Debian. With the full path it works."
+        },
+        "questions": [
+          {
+            "prompt": "Why did plain `ifconfig` fail for Mira?",
+            "answer": "Its directory isn't in her PATH",
+            "distractors": ["It needs root to run", "It was removed from Linux", "It only works with `sudo`"],
+            "why": "The shell searches only the PATH directories. `/sbin/ifconfig` runs fine as Mira.",
+            "evidence": { "step": "ifconfig", "text": "ifconfig: command not found" }
+          },
+          {
+            "prompt": "In `route -n`, which line is the default gateway?",
+            "answer": "The one with destination `0.0.0.0` and gateway `192.0.2.1`",
+            "distractors": ["The one with gateway `0.0.0.0`", "The one with destination `192.0.2.0`", "The one with the `U` flag only"],
+            "why": "`route` writes the default route as destination `0.0.0.0` with the `G` (gateway) flag; `ip route` calls it `default via`.",
+            "evidence": { "step": "route", "text": "192.0.2.1" }
+          }
+        ]
+      }
+    ]
+  }
+}

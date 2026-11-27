@@ -1,0 +1,115 @@
+{
+  "id": "packages",
+  "title": "Package tools",
+  "description": "Replay one job, installing the small tree program, checking it and removing it, with apt and dpkg on Debian, dnf and rpm on Fedora, yum on AlmaLinux, zypper on openSUSE and apk on Alpine.",
+  "intro": "Every distribution family has its own package format and tools, but the job is the same. These commands really ran on each distribution, logged in as root. Compare how each tool asks the same questions: what's available, install it, is it installed, which package owns this file, remove it.",
+  "objectives": ["011.2"],
+  "takeaways": [
+    "Debian and its derivatives use `.deb` packages: `dpkg` installs, lists and queries single packages, and `apt` (or the older, script-friendly `apt-get`) fetches them from repositories with their dependencies. `apt update` refreshes the package lists first.",
+    "Red Hat-based distributions use `.rpm` packages: `rpm` queries and installs single files, and `dnf` fetches from repositories. On current Enterprise Linux, `yum` is a link to dnf and takes the same commands.",
+    "openSUSE and SUSE Linux Enterprise also use RPM packages, with `zypper` as the repository tool; `rpm -q` works there too.",
+    "Alpine Linux uses `apk`: `apk add` installs, `apk del` removes, `apk info` describes.",
+    "`dpkg -l name` and `rpm -q name` ask whether a package is installed; `dpkg -L name` lists its files, and `dpkg -S file` or `rpm -qf file` names the package a file belongs to."
+  ],
+  "tryItems": ["011.2-032", "011.2-033", "011.2-035", "011.2-039", "011.2-029"],
+  "links": [
+    { "title": "apt(8) manual page (Debian)", "url": "https://manpages.debian.org/trixie/apt/apt.8.en.html" },
+    { "title": "dpkg(1) manual page (Debian)", "url": "https://manpages.debian.org/trixie/dpkg/dpkg.1.en.html" },
+    { "title": "DNF command reference", "url": "https://dnf5.readthedocs.io/en/latest/commands/" },
+    { "title": "rpm(8) manual page", "url": "https://man7.org/linux/man-pages/man8/rpm.8.html" },
+    { "title": "openSUSE: zypper usage", "url": "https://en.opensuse.org/SDB:Zypper_usage" },
+    { "title": "Alpine Linux: Alpine Package Keeper", "url": "https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper" }
+  ],
+  "params": {
+    "transcript": "packages",
+    "scenes": [
+      {
+        "title": "Debian: apt and dpkg",
+        "text": "On Debian 13, root refreshes the package lists, searches, installs `tree`, asks dpkg about it, and removes it with `apt-get`.",
+        "steps": ["apt-update", "apt-search", "apt-install", "dpkg-l", "dpkg-files", "apt-get-remove"],
+        "notes": {
+          "apt-update": "This only refreshes the lists of available packages; it installs nothing.",
+          "dpkg-l": "`ii` in the first column means desired: install, status: installed."
+        },
+        "questions": [
+          {
+            "prompt": "Which tool did the actual unpacking during `apt install`?",
+            "answer": "`dpkg`",
+            "distractors": ["`apt-get`", "`rpm`", "`tar`"],
+            "why": "apt downloads the `.deb` file and resolves dependencies, then hands the file to dpkg, which unpacks and sets it up. The `.deb` file name shows in the output.",
+            "evidence": { "step": "apt-install", "text": "Preparing to unpack .../tree_2.2.1-1_arm64.deb" }
+          },
+          {
+            "prompt": "Where did the `tree` program itself get installed?",
+            "answer": "`/usr/bin/tree`",
+            "distractors": ["`/usr/share/doc/tree`", "`/opt/tree/bin`", "`/usr/local/bin/tree`"],
+            "why": "`dpkg -L` lists every file a package installed. Programs from the distribution go to `/usr/bin`; `/usr/local` is for software you build yourself.",
+            "evidence": { "step": "dpkg-files", "text": "/usr/bin/tree" }
+          }
+        ]
+      },
+      {
+        "title": "Fedora: dnf and rpm",
+        "text": "On Fedora 43, root installs `tree` with dnf, queries it with rpm, and removes it.",
+        "steps": ["dnf-install", "rpm-q", "rpm-qf", "dnf-remove"],
+        "notes": {
+          "dnf-install": "dnf refreshed the repository metadata on its own before installing; on Debian, that is the separate `apt update`."
+        },
+        "questions": [
+          {
+            "prompt": "Which command tells you which package the file `/usr/bin/tree` belongs to on Fedora?",
+            "answer": "`rpm -qf /usr/bin/tree`",
+            "distractors": ["`rpm -q /usr/bin/tree`", "`dnf install /usr/bin/tree`", "`dpkg -S /usr/bin/tree`"],
+            "why": "`-q` queries the package database and `-f` asks by file. `dpkg -S` is the Debian equivalent.",
+            "evidence": { "step": "rpm-qf", "text": "tree-2.2.1-2.fc43" }
+          }
+        ]
+      },
+      {
+        "title": "AlmaLinux: yum",
+        "text": "Exam 010-160 lists `yum`. On AlmaLinux 10, a rebuild of Red Hat Enterprise Linux, root installs and removes `tree` with it, then looks at what `yum` is.",
+        "steps": ["yum-install", "yum-remove", "yum-is-dnf"],
+        "questions": [
+          {
+            "prompt": "What is `yum` on AlmaLinux 10?",
+            "answer": "A symbolic link to dnf",
+            "distractors": ["A separate, older program", "An alias defined in root's `.bashrc`", "A wrapper around `apt`"],
+            "why": "dnf replaced yum, and the name stays as a link so old commands and scripts keep working.",
+            "evidence": { "step": "yum-is-dnf", "text": "/usr/bin/yum -> dnf-3" }
+          }
+        ]
+      },
+      {
+        "title": "openSUSE: zypper",
+        "text": "On openSUSE Leap 16.0, root installs `tree` with zypper, checks it with rpm, and removes it.",
+        "steps": ["zypper-install", "zypper-rpm-q", "zypper-remove"],
+        "notes": {
+          "zypper-install": "`--non-interactive` answered the `Continue?` question with its default, yes."
+        },
+        "questions": [
+          {
+            "prompt": "Why does `rpm -q` work on openSUSE?",
+            "answer": "openSUSE packages are RPM packages",
+            "distractors": ["zypper installs rpm as a compatibility layer", "openSUSE is based on Fedora", "rpm is part of every Linux distribution"],
+            "why": "SUSE uses the RPM format like Red Hat, with its own repository tool, zypper.",
+            "evidence": { "step": "zypper-rpm-q", "text": "tree-2.2.1-160000.2.2" }
+          }
+        ]
+      },
+      {
+        "title": "Alpine: apk",
+        "text": "On Alpine Linux 3.22, root adds `tree`, asks apk about it, and deletes it.",
+        "steps": ["apk-add", "apk-info", "apk-del"],
+        "questions": [
+          {
+            "prompt": "Which apk subcommand removed the package?",
+            "answer": "`apk del`",
+            "distractors": ["`apk remove`", "`apk purge`", "`apk erase`"],
+            "why": "apk uses `add` and `del`. Its output calls the step purging, but the subcommand is `del`.",
+            "evidence": { "step": "apk-del", "text": "Purging tree" }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -8,10 +8,11 @@ import { SOURCES } from '../src/content/blueprint.ts'
 const root = join(import.meta.dirname, '../src/content')
 const urls = new Set<string>(Object.values(SOURCES).filter((v) => v.startsWith('https://')))
 
-// Every https URL in content files (blueprint comments, questions, later lessons and guides).
+// Every https URL in content files (blueprint comments, questions, lessons, simulators). Captured
+// transcripts are skipped: URLs in them are what the commands printed, not sources.
 const walk = (dir: string): string[] =>
   readdirSync(dir).flatMap((f) => (statSync(join(dir, f)).isDirectory() ? walk(join(dir, f)) : [join(dir, f)]))
-for (const file of walk(root).filter((f) => /\.(json|mdx|ts)$/.test(f) && !f.endsWith('.test.ts')))
+for (const file of walk(root).filter((f) => /\.(json|mdx|ts)$/.test(f) && !f.endsWith('.test.ts') && !f.includes('/transcripts/')))
   for (const [url] of readFileSync(file, 'utf8').matchAll(/https:\/\/[^\s"'`<>)\]]+/g)) urls.add(url.replace(/[.,;:]$/, ''))
 
 // Some sites serve missing pages with HTTP 200 and a not-found title.

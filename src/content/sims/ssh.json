@@ -1,0 +1,128 @@
+{
+  "id": "ssh",
+  "title": "SSH key flow",
+  "description": "Replay a real SSH setup between Mira's laptop and the build server: make a key pair, confirm the host key, install the public key, log in without a password, copy a file with scp, and break it with bad permissions.",
+  "intro": "The in-browser terminal has no network, so these commands ran on two real Debian 13 machines and you replay what they printed. Watch which file is private and which is public, and where the public key ends up.",
+  "objectives": ["015.1"],
+  "takeaways": [
+    "`ssh-keygen -t ed25519` makes a key pair in `~/.ssh`: `id_ed25519` is the private key (mode `600`, never share it), `id_ed25519.pub` the public key, which you may give to anyone.",
+    "A server accepts a key when its public half is a line in `~/.ssh/authorized_keys` of the account you log in to. `ssh-copy-id host` appends it for you, logging in once with the password.",
+    "On the first connection, ssh shows the server's host key fingerprint and asks whether to trust it; the answer is stored in `~/.ssh/known_hosts`. If that key changes later, ssh warns you.",
+    "`ssh user@host` opens a remote shell; `ssh host command` runs one command and returns. Without `user@`, ssh uses your local user name. The default port is TCP 22.",
+    "`scp file host:dir/` copies over the same SSH connection, with the same keys and passwords.",
+    "ssh ignores a private key that others can read and falls back to asking for the password, so keep `~/.ssh/id_ed25519` at mode `600`."
+  ],
+  "tryItems": ["015.1-019", "015.1-020", "015.1-024", "015.1-016", "015.1-022"],
+  "links": [
+    { "title": "ssh-keygen(1) manual page", "url": "https://man.openbsd.org/ssh-keygen.1" },
+    { "title": "ssh(1) manual page", "url": "https://man.openbsd.org/ssh.1" },
+    { "title": "sshd(8) manual page: AUTHORIZED_KEYS FILE FORMAT", "url": "https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT" },
+    { "title": "scp(1) manual page", "url": "https://man.openbsd.org/scp.1" },
+    { "title": "ssh-copy-id(1) manual page", "url": "https://manpages.debian.org/trixie/openssh-client/ssh-copy-id.1.en.html" }
+  ],
+  "params": {
+    "transcript": "ssh",
+    "scenes": [
+      {
+        "title": "Make a key pair",
+        "text": "On her laptop `tuxpixel`, Mira creates an Ed25519 key pair. She presses Enter at every question: the default file, and no passphrase.",
+        "steps": ["keygen", "ls-ssh", "cat-pub"],
+        "notes": {
+          "keygen": "The randomart picture is a visual form of the fingerprint, meant for comparing keys by eye.",
+          "ls-ssh": "Look at the permissions: only Mira can read the private key."
+        },
+        "questions": [
+          {
+            "prompt": "Which file may Mira paste into a chat or an email?",
+            "answer": "`id_ed25519.pub`",
+            "distractors": ["`id_ed25519`", "Both files, since they belong together", "Neither: keys never leave the laptop"],
+            "why": "The `.pub` file is the public key, readable by everyone (`-rw-r--r--`). The private key `id_ed25519` is readable only by Mira and must stay that way.",
+            "evidence": { "step": "ls-ssh", "text": "-rw------- 1 mira mira 399" }
+          },
+          {
+            "prompt": "What did `ssh-keygen` add at the end of the public key line?",
+            "answer": "A comment with Mira's user and host name",
+            "distractors": ["The passphrase in plain text", "The server's address", "The key's expiry date"],
+            "why": "The last field of a public key line is a free-text comment, by default `user@host`. It helps you tell keys apart in `authorized_keys`.",
+            "evidence": { "step": "cat-pub", "text": " mira@tuxpixel" }
+          }
+        ]
+      },
+      {
+        "title": "First login with a password",
+        "text": "Mira logs in to the build server for the first time. Her account there has the same name, so she doesn't need `mira@`.",
+        "steps": ["first-login", "known-hosts"],
+        "notes": {
+          "first-login": "Mira typed `yes` after checking the fingerprint with Ada, then her password, which isn't shown. Inside the session, the prompt names the server.",
+          "known-hosts": "Debian stores the host names hashed (the `|1|` lines), so the file doesn't reveal which servers Mira uses."
+        },
+        "questions": [
+          {
+            "prompt": "Why does ssh ask whether to continue connecting?",
+            "answer": "It has never seen this server's host key",
+            "distractors": ["Mira's key isn't on the server yet", "The password is about to expire", "Port 22 is closed"],
+            "why": "The question is about trusting the server, not about Mira's account. After `yes`, ssh adds the server's key to `~/.ssh/known_hosts`.",
+            "evidence": { "step": "first-login", "text": "can't be established." }
+          }
+        ]
+      },
+      {
+        "title": "Install the key and log in with it",
+        "text": "Mira installs her public key on the server with `ssh-copy-id`, then runs a command there without typing a password.",
+        "steps": ["copy-id", "key-login", "authorized-keys", "ls-authorized"],
+        "notes": {
+          "copy-id": "This is the last time she needs the password: ssh-copy-id logs in with it to append her public key.",
+          "authorized-keys": "This command ran on the build server itself: the line is exactly Mira's `id_ed25519.pub`."
+        },
+        "questions": [
+          {
+            "prompt": "Where on the server did Mira's public key end up?",
+            "answer": "`~/.ssh/authorized_keys` in her account on the server",
+            "distractors": ["`~/.ssh/known_hosts` on the server", "`/etc/ssh/sshd_config`", "`~/.ssh/id_ed25519.pub` on the server"],
+            "why": "sshd checks the `authorized_keys` file of the account being logged in to. `known_hosts` is the other direction: servers the client trusts.",
+            "evidence": { "step": "authorized-keys", "text": "ssh-ed25519 " }
+          },
+          {
+            "prompt": "What does `ssh build.tuxpixel.example hostname` do?",
+            "answer": "Runs `hostname` on the server and prints its output locally",
+            "distractors": ["Renames the server", "Opens a shell and types `hostname` into it, then stays connected", "Looks up the server's IP address"],
+            "why": "A command after the host name runs remotely instead of a login shell, and ssh returns when it ends.",
+            "evidence": { "step": "key-login", "text": "build" }
+          }
+        ]
+      },
+      {
+        "title": "Copy a release with scp",
+        "text": "Mira copies a build to the `builds` folder in her home directory on the server and checks that it arrived.",
+        "steps": ["scp", "scp-check"],
+        "questions": [
+          {
+            "prompt": "In `scp pixel-raiders-1.1.tar.gz build.tuxpixel.example:builds/`, what does `builds/` after the colon refer to?",
+            "answer": "The `builds` folder in Mira's home directory on the server",
+            "distractors": ["A folder `builds` in the current local directory", "`/builds` at the root of the server", "A file named `builds` on the laptop"],
+            "why": "After `host:`, a relative path starts in the remote user's home directory. The listing on the server shows the file there.",
+            "evidence": { "step": "scp-check", "text": "pixel-raiders-1.1.tar.gz" }
+          }
+        ]
+      },
+      {
+        "title": "When the private key is too open",
+        "text": "Mira makes her private key readable by everyone, by mistake, and connects again.",
+        "steps": ["key-open", "login-key-open", "key-fix", "login-key-fixed"],
+        "notes": {
+          "login-key-open": "ssh skipped the key and fell back to the password, which Mira typed.",
+          "login-key-fixed": "With mode 600 again, the key works and no password is needed."
+        },
+        "questions": [
+          {
+            "prompt": "Why did ssh ask for the password again?",
+            "answer": "It ignored the private key because others could read it",
+            "distractors": ["The server deleted her public key", "The host key changed", "`chmod` changed the key's contents"],
+            "why": "ssh refuses to use a private key that isn't private and says so; then it tries the next method, the password.",
+            "evidence": { "step": "login-key-open", "text": "This private key will be ignored." }
+          }
+        ]
+      }
+    ]
+  }
+}

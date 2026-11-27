@@ -1,0 +1,204 @@
+{
+  "id": "services",
+  "description": "Mira checks nginx and the Pixel Raiders game server on the build server with systemctl, reads their logs with journalctl and /var/log/syslog, and looks at the kernel messages with dmesg.",
+  "captured": "2026-11-27",
+  "environment": [
+    "Each host ran in a Docker container on Docker Desktop (arm64), so the kernel is Docker Desktop's (Linux 7.0.14-linuxkit), not the distribution's.",
+    "On the Debian hosts, systemd runs as PID 1, as on a real machine.",
+    "The hosts share a network in documentation address ranges (192.0.2.0/24 and 2001:db8:1::/64, gateway 192.0.2.1). A dnsmasq container at 192.0.2.53 answers for tuxpixel.example.",
+    "Commands ran in a login shell on an 80-column terminal, with the pagers of systemd and dpkg turned off (SYSTEMD_PAGER=cat, DPKG_PAGER=cat).",
+    "Sockets on 127.0.0.11 belong to Docker's built-in DNS service, which every container on such a network has.",
+    "nginx is set to start 2 worker processes rather than one per CPU, to keep process listings short.",
+    "rsyslog was installed so that /var/log/syslog exists; since Debian 12 it is no longer installed by default, and the systemd journal keeps the logs.",
+    "The game server is a stand-in script (see the setup), so its log lines are what that script prints."
+  ],
+  "hosts": [
+    {
+      "name": "build",
+      "distro": "Debian GNU/Linux 13 (trixie)",
+      "image": "le010/capture, built by scripts/capture-transcripts/Dockerfile from debian:trixie@sha256:3cda3ca472ce45507a5109c6a3907093e24d9ae67d55954c9a07a45665dafba2"
+    }
+  ],
+  "setup": [
+    {
+      "host": "build",
+      "user": "root",
+      "command": "useradd --system --no-create-home --shell /usr/sbin/nologin pixelraiders && mkdir -p /etc/pixel-raiders"
+    },
+    {
+      "host": "build",
+      "user": "root",
+      "command": "cat > /usr/local/bin/pixel-raiders-server <<'LE_EOF'\n#!/bin/bash\n# Stand-in for the Pixel Raiders game server: it reads its settings and stays running.\nconf=/etc/pixel-raiders/server.conf\nif [ ! -r \"$conf\" ]; then\n  echo \"pixel-raiders-server: cannot read $conf\" >&2\n  exit 1\nfi\n. \"$conf\"\necho \"Pixel Raiders server 1.1: map $MAP, up to $MAX_PLAYERS players\"\nwhile sleep 30; do echo \"players online: 0\"; done\nLE_EOF\nchmod 755 /usr/local/bin/pixel-raiders-server"
+    },
+    {
+      "host": "build",
+      "user": "root",
+      "command": "cat > /etc/systemd/system/pixel-raiders-server.service <<'LE_EOF'\n[Unit]\nDescription=Pixel Raiders game server\nAfter=network.target\n\n[Service]\nUser=pixelraiders\nExecStart=/usr/local/bin/pixel-raiders-server\n\n[Install]\nWantedBy=multi-user.target\nLE_EOF\nchmod 644 /etc/systemd/system/pixel-raiders-server.service"
+    },
+    {
+      "host": "build",
+      "user": "root",
+      "command": "systemctl daemon-reload"
+    },
+    {
+      "host": "build",
+      "user": "mira",
+      "command": "cat > server.conf <<'LE_EOF'\nMAP=lava-caves\nMAX_PLAYERS=8\nLE_EOF"
+    }
+  ],
+  "steps": [
+    {
+      "key": "status-nginx",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "systemctl status nginx",
+      "output": "● nginx.service - A high performance web server and a reverse proxy server\n     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)\n     Active: active (running) since Fri 2026-11-27 11:52:47 UTC; 869ms ago\n Invocation: fc7c98435a3c4bc98f83548a99eae290\n       Docs: man:nginx(8)\n   Main PID: 98 (nginx)\n      Tasks: 3 (limit: 9563)\n     Memory: 2.9M (peak: 3.8M)\n        CPU: 13ms\n     CGroup: /system.slice/nginx.service\n             ├─ 98 \"nginx: master process /usr/sbin/nginx -g daemon on; master_…\n             ├─ 99 \"nginx: worker process\"\n             └─100 \"nginx: worker process\"",
+      "exit": 0
+    },
+    {
+      "key": "stop-nginx",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo systemctl stop nginx",
+      "output": "[sudo] password for mira:",
+      "exit": 0
+    },
+    {
+      "key": "status-nginx-stopped",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "systemctl status nginx",
+      "output": "○ nginx.service - A high performance web server and a reverse proxy server\n     Loaded: loaded (/usr/lib/systemd/system/nginx.service; enabled; preset: enabled)\n     Active: inactive (dead) since Fri 2026-11-27 11:52:48 UTC; 60ms ago\n   Duration: 1.170s\n Invocation: fc7c98435a3c4bc98f83548a99eae290\n       Docs: man:nginx(8)\n    Process: 261 ExecStop=/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid (code=exited, status=0/SUCCESS)\n   Main PID: 98 (code=exited, status=0/SUCCESS)\n   Mem peak: 4.6M\n        CPU: 19ms\n\nWarning: some journal files were not opened due to insufficient permissions.",
+      "exit": 3
+    },
+    {
+      "key": "start-nginx",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo systemctl start nginx",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "is-active-nginx",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "systemctl is-active nginx",
+      "output": "active",
+      "exit": 0
+    },
+    {
+      "key": "start-game",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo systemctl start pixel-raiders-server",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "status-game-failed",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "systemctl status pixel-raiders-server",
+      "output": "× pixel-raiders-server.service - Pixel Raiders game server\n     Loaded: loaded (/etc/systemd/system/pixel-raiders-server.service; disabled; preset: enabled)\n     Active: failed (Result: exit-code) since Fri 2026-11-27 11:52:48 UTC; 41ms ago\n   Duration: 2ms\n Invocation: bc35b673807e47f9a7215ffe8a8dd2eb\n    Process: 334 ExecStart=/usr/local/bin/pixel-raiders-server (code=exited, status=1/FAILURE)\n   Main PID: 334 (code=exited, status=1/FAILURE)\n   Mem peak: 1.7M\n        CPU: 2ms",
+      "exit": 3
+    },
+    {
+      "key": "journal-game",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo journalctl -u pixel-raiders-server",
+      "output": "Nov 27 11:52:48 build systemd[1]: Started pixel-raiders-server.service - Pixel Raiders game server.\nNov 27 11:52:48 build pixel-raiders-server[334]: pixel-raiders-server: cannot read /etc/pixel-raiders/server.conf\nNov 27 11:52:48 build systemd[1]: pixel-raiders-server.service: Main process exited, code=exited, status=1/FAILURE\nNov 27 11:52:48 build systemd[1]: pixel-raiders-server.service: Failed with result 'exit-code'.",
+      "exit": 0
+    },
+    {
+      "key": "copy-config",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo cp server.conf /etc/pixel-raiders/",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "restart-game",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo systemctl restart pixel-raiders-server",
+      "output": "",
+      "exit": 0
+    },
+    {
+      "key": "status-game",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "systemctl status pixel-raiders-server",
+      "output": "● pixel-raiders-server.service - Pixel Raiders game server\n     Loaded: loaded (/etc/systemd/system/pixel-raiders-server.service; disabled; preset: enabled)\n     Active: active (running) since Fri 2026-11-27 11:52:48 UTC; 38ms ago\n Invocation: 81739ccbebc64f54ab0f93a8405b1f80\n   Main PID: 402 (pixel-raiders-s)\n      Tasks: 2 (limit: 9563)\n     Memory: 836K (peak: 1.7M)\n        CPU: 2ms\n     CGroup: /system.slice/pixel-raiders-server.service\n             ├─402 /bin/bash /usr/local/bin/pixel-raiders-server\n             └─403 sleep 30",
+      "exit": 0
+    },
+    {
+      "key": "enable-game",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo systemctl enable pixel-raiders-server",
+      "output": "Created symlink '/etc/systemd/system/multi-user.target.wants/pixel-raiders-server.service' → '/etc/systemd/system/pixel-raiders-server.service'.",
+      "exit": 0
+    },
+    {
+      "key": "is-enabled-game",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "systemctl is-enabled pixel-raiders-server",
+      "output": "enabled",
+      "exit": 0
+    },
+    {
+      "key": "journal-boot",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo journalctl -b | head -n 12",
+      "output": "Nov 27 11:52:47 build kernel: Booting Linux on physical CPU 0x0000000000 [0x610f0000]\nNov 27 11:52:47 build kernel: Linux version 7.0.14-linuxkit (root@buildkitsandbox) (gcc (Alpine 15.2.0) 15.2.0, GNU ld (GNU Binutils) 2.45.1) #1 SMP PREEMPT Tue Nov 10 17:08:40 UTC 2026 ()\nNov 27 11:52:47 build kernel: OF: reserved mem: Reserved memory: No reserved-memory node in the DT\nNov 27 11:52:47 build kernel: psci: probing for conduit method from DT.\nNov 27 11:52:47 build kernel: psci: PSCIv1.1 detected in firmware.\nNov 27 11:52:47 build kernel: psci: Using standard PSCI v0.2 function IDs\nNov 27 11:52:47 build kernel: psci: Trusted OS migration not required\nNov 27 11:52:47 build kernel: psci: SMC Calling Convention v1.1\nNov 27 11:52:47 build kernel: Zone ranges:\nNov 27 11:52:47 build kernel:   DMA      [mem 0x0000000070000000-0x00000000ffffffff]\nNov 27 11:52:47 build kernel:   DMA32    empty\nNov 27 11:52:47 build kernel:   Normal   [mem 0x0000000100000000-0x000000026fffffff]",
+      "exit": 0
+    },
+    {
+      "key": "syslog",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo tail -n 6 /var/log/syslog",
+      "output": "2026-11-27T11:52:48.852636+00:00 build systemd[1]: Started pixel-raiders-server.service - Pixel Raiders game server.\n2026-11-27T11:52:48.855097+00:00 build pixel-raiders-server[402]: Pixel Raiders server 1.1: map lava-caves, up to 8 players\n2026-11-27T11:52:48.931432+00:00 build systemd[1]: Reload requested from client PID 434 ('systemctl') (unit init.scope)...\n2026-11-27T11:52:48.931472+00:00 build systemd[1]: Reloading...\n2026-11-27T11:52:48.965248+00:00 build systemd[1]: Reloading finished in 33 ms.\n2026-11-27T11:52:49.003210+00:00 build kernel: ICMPv6: NA: 9e:89:b5:d2:59:07 advertised our address 2001:db8:1::2 on eth0!",
+      "exit": 0
+    },
+    {
+      "key": "dmesg-mira",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "dmesg",
+      "output": "dmesg: read kernel buffer failed: Operation not permitted",
+      "exit": 1
+    },
+    {
+      "key": "dmesg",
+      "host": "build",
+      "user": "mira",
+      "cwd": "~",
+      "command": "sudo dmesg | head -n 8",
+      "output": "[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x610f0000]\n[    0.000000] Linux version 7.0.14-linuxkit (root@buildkitsandbox) (gcc (Alpine 15.2.0) 15.2.0, GNU ld (GNU Binutils) 2.45.1) #1 SMP PREEMPT Tue Nov 10 17:08:40 UTC 2026 ()\n[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT\n[    0.000000] psci: probing for conduit method from DT.\n[    0.000000] psci: PSCIv1.1 detected in firmware.\n[    0.000000] psci: Using standard PSCI v0.2 function IDs\n[    0.000000] psci: Trusted OS migration not required\n[    0.000000] psci: SMC Calling Convention v1.1",
+      "exit": 0
+    }
+  ]
+}

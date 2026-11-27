@@ -1,0 +1,173 @@
+{
+  "id": "licences",
+  "title": "Licence chooser",
+  "description": "Answer a few questions about your code, art or docs and see which open licences fit and why the others don't.",
+  "intro": "Start with TuxPixel's game engine: code, others may use it in commercial games, and you want changed copies to stay shared. Then switch to Jonas's art pack and change one answer at a time. Watch which licences drop out and read the reason. When you feel sure, try the eight scenarios at the bottom.",
+  "objectives": ["011.3"],
+  "takeaways": [
+    "Copyleft licences (`GPL`, `LGPL`, `AGPL`) require that anyone who shares the software or a changed version passes on the same freedoms. Permissive licences (`MIT`, `BSD`, `Apache 2.0`) mostly ask only that the licence text and copyright notice are kept, so a company may close its own changes.",
+    "The `LGPL` is the library version of copyleft: programs that use the library may stay closed, but changes to the library itself are shared. The `AGPL` adds a term for users who reach a program over a network, so a modified web service has to offer its source.",
+    "Creative Commons licences are built from four elements: `BY` (credit the creator, in every CC licence), `SA` (adaptations under the same licence, which is copyleft for content), `NC` (non-commercial use only) and `ND` (no changed versions). `CC0` gives up the rights as far as the law allows and asks for nothing.",
+    "Use Creative Commons for art, music and text, and a software licence for code: Creative Commons advises against its licences for software, with `CC0` as the exception that is fine. Free software must allow commercial use, so `NC` and `ND` licences do not meet the free or open source definitions.",
+    "\"Free\" means freedom, not price, and \"open source\" is the Open Source Initiative's definition. The FSF writes the free software definition and the OSI approves licences against the Open Source Definition. A copyleft licence is not \"more free\" or \"less free\": it just chooses to protect the freedoms of later users."
+  ],
+  "tryItems": ["011.3-001", "011.3-002", "011.3-003", "011.3-004", "011.3-005"],
+  "links": [
+    { "title": "GNU: licences (GPL, LGPL, AGPL)", "url": "https://www.gnu.org/licenses/licenses.html" },
+    { "title": "GNU: What is copyleft?", "url": "https://www.gnu.org/licenses/copyleft.html" },
+    { "title": "GNU: What is free software? (free software can be commercial)", "url": "https://www.gnu.org/philosophy/free-sw.html" },
+    { "title": "GNU LGPL 3.0 text (section 4, combined works)", "url": "https://www.gnu.org/licenses/lgpl-3.0.html" },
+    { "title": "Open Source Initiative: licences", "url": "https://opensource.org/licenses" },
+    { "title": "Open Source Initiative: the MIT licence", "url": "https://opensource.org/license/mit" },
+    { "title": "Open Source Initiative: the BSD 3-Clause licence", "url": "https://opensource.org/license/bsd-3-clause" },
+    { "title": "Apache License 2.0 (sections 3 and 4)", "url": "https://www.apache.org/licenses/LICENSE-2.0" },
+    { "title": "Creative Commons: about the licences", "url": "https://creativecommons.org/share-your-work/cclicenses/" },
+    { "title": "Creative Commons: CC0 1.0", "url": "https://creativecommons.org/publicdomain/zero/1.0/" },
+    { "title": "Creative Commons FAQ: software", "url": "https://creativecommons.org/faq/" }
+  ],
+  "params": {
+    "licences": [
+      {
+        "id": "gpl", "name": "GNU General Public License", "short": "GPL", "family": "copyleft", "applies": "code",
+        "copyleft": "program", "commercial": true, "changes": true, "credit": true,
+        "summary": "The best-known copyleft licence: copies and changed versions you pass on must keep the same freedoms.",
+        "conditions": ["Whoever passes on the program, changed or not, must pass on the same freedoms (source code and the GPL itself).", "Selling copies and commercial use are allowed."],
+        "watchOut": "Copyleft is not the same as \"must be free of charge\". You may sell GPL software, but you may not take away the buyer's freedoms."
+      },
+      {
+        "id": "lgpl", "name": "GNU Lesser General Public License", "short": "LGPL", "family": "copyleft", "applies": "code",
+        "copyleft": "library", "commercial": true, "changes": true, "credit": true,
+        "summary": "Copyleft made for libraries: changes to the library stay shared, but other programs may use it and stay closed.",
+        "conditions": ["Changes to the library itself are shared under the LGPL.", "A program that only uses the library may carry terms of its own choice, as long as users can still change the library and debug such changes."],
+        "watchOut": "The \"Lesser\" is about how far copyleft reaches, not about quality. Use it for a library that closed programs should be able to use."
+      },
+      {
+        "id": "agpl", "name": "GNU Affero General Public License", "short": "AGPL", "family": "copyleft", "applies": "code",
+        "copyleft": "network", "commercial": true, "changes": true, "credit": true,
+        "summary": "The GPL plus a term for network use: users who interact with a modified program over a network can get its source.",
+        "conditions": ["Everything the GPL asks.", "Users who interact with the licensed software over a network must be able to receive its source."],
+        "watchOut": "With the plain GPL, running a modified program as a web service shares nothing, because nobody receives a copy. The AGPL closes that gap."
+      },
+      {
+        "id": "mit", "name": "MIT licence", "short": "MIT", "family": "permissive", "applies": "code",
+        "copyleft": "none", "commercial": true, "changes": true, "credit": true,
+        "summary": "A very short permissive licence: do nearly anything, keep the copyright and permission notice.",
+        "conditions": ["Include the copyright notice and the permission notice in all copies or substantial portions."],
+        "watchOut": "Someone may build a closed, sold product on MIT code and never share their changes."
+      },
+      {
+        "id": "bsd", "name": "BSD 3-Clause licence", "short": "BSD", "family": "permissive", "applies": "code",
+        "copyleft": "none", "commercial": true, "changes": true, "credit": true,
+        "summary": "Permissive like MIT, with an extra clause that stops others using your name to promote what they build.",
+        "conditions": ["Keep the copyright notice, the conditions and the disclaimer in source copies.", "Reproduce them in the documentation of binary copies.", "Don't use the names of the copyright holder or contributors to endorse derived products without permission."],
+        "watchOut": "\"BSD licence\" can mean the 2-clause or 3-clause version. The 3-clause one is the one with the no-endorsement rule."
+      },
+      {
+        "id": "apache", "name": "Apache License 2.0", "short": "Apache 2.0", "family": "permissive", "applies": "code",
+        "copyleft": "none", "commercial": true, "changes": true, "credit": true,
+        "summary": "Permissive, with an explicit patent grant from contributors and a duty to mark changed files.",
+        "conditions": ["Give recipients a copy of the licence.", "Mark modified files with prominent notices.", "Keep copyright, patent and attribution notices, and carry a NOTICE file along if there is one.", "Contributors grant a patent licence; it ends for anyone who sues claiming the work infringes a patent."],
+        "watchOut": "It is permissive: derivatives may use other terms for their own changes and need not release their source."
+      },
+      {
+        "id": "cc-by", "name": "Creative Commons Attribution", "short": "CC BY", "family": "creative-commons", "applies": "content",
+        "copyleft": "none", "commercial": true, "changes": true, "credit": true,
+        "summary": "The most open CC licence: reuse, remix and sell, as long as the creator is credited.",
+        "conditions": ["Give credit to the creator."],
+        "watchOut": "It is the permissive end of Creative Commons: remixes may carry any licence."
+      },
+      {
+        "id": "cc-by-sa", "name": "Creative Commons Attribution-ShareAlike", "short": "CC BY-SA", "family": "creative-commons", "applies": "content",
+        "copyleft": "adaptations", "commercial": true, "changes": true, "credit": true,
+        "summary": "Like CC BY, but adaptations must be shared under the same or a compatible licence: copyleft for content.",
+        "conditions": ["Give credit to the creator.", "License adaptations under the same or a compatible licence."],
+        "watchOut": "Commercial use is allowed. SA is not NC."
+      },
+      {
+        "id": "cc-by-nc", "name": "Creative Commons Attribution-NonCommercial", "short": "CC BY-NC", "family": "creative-commons", "applies": "content",
+        "copyleft": "none", "commercial": false, "changes": true, "credit": true,
+        "summary": "Others may remix and build on the work, but only for non-commercial purposes, and must credit the creator.",
+        "conditions": ["Give credit to the creator.", "Use only for non-commercial purposes."],
+        "watchOut": "NC is not a free or open licence: free software and open source both require that commercial use is allowed."
+      },
+      {
+        "id": "cc-by-nc-sa", "name": "Creative Commons Attribution-NonCommercial-ShareAlike", "short": "CC BY-NC-SA", "family": "creative-commons", "applies": "content",
+        "copyleft": "adaptations", "commercial": false, "changes": true, "credit": true,
+        "summary": "Non-commercial use only, with credit, and adaptations shared under the same or a compatible licence.",
+        "conditions": ["Give credit to the creator.", "Use only for non-commercial purposes.", "License adaptations under the same or a compatible licence."],
+        "watchOut": "It combines two limits: SA keeps remixes shared, NC keeps them non-commercial."
+      },
+      {
+        "id": "cc-by-nd", "name": "Creative Commons Attribution-NoDerivatives", "short": "CC BY-ND", "family": "creative-commons", "applies": "content",
+        "copyleft": "none", "commercial": true, "changes": false, "credit": true,
+        "summary": "Others may copy and share the work, even commercially, but only unchanged, and must credit the creator.",
+        "conditions": ["Give credit to the creator.", "Share only the unadapted work."],
+        "watchOut": "ND forbids sharing remixes. It does not forbid commercial use."
+      },
+      {
+        "id": "cc-by-nc-nd", "name": "Creative Commons Attribution-NonCommercial-NoDerivatives", "short": "CC BY-NC-ND", "family": "creative-commons", "applies": "content",
+        "copyleft": "none", "commercial": false, "changes": false, "credit": true,
+        "summary": "The most restrictive CC licence: unchanged copies only, non-commercial only, with credit.",
+        "conditions": ["Give credit to the creator.", "Share only the unadapted work.", "Use only for non-commercial purposes."],
+        "watchOut": "People may share it, but not remix it and not sell it."
+      },
+      {
+        "id": "cc0", "name": "CC0 1.0 Public Domain Dedication", "short": "CC0", "family": "dedication", "applies": "both",
+        "copyleft": "none", "commercial": true, "changes": true, "credit": false,
+        "summary": "Waives the creator's copyright and related rights as far as the law allows. No conditions, not even credit.",
+        "conditions": ["None. People should only avoid suggesting that you endorse their use."],
+        "watchOut": "CC0 is a dedication, not a licence with conditions. Creative Commons says it is acceptable for software, unlike its other licences."
+      }
+    ],
+    "scenarios": [
+      {
+        "text": "Ada wants other small studios to build on the Pixel Raiders engine, even in closed commercial games. She wants an explicit patent grant from everyone who contributes code.",
+        "options": ["mit", "apache", "gpl", "cc-by"],
+        "answer": "apache",
+        "why": "MIT and Apache 2.0 are both permissive, but only Apache 2.0 spells out a patent licence from contributors. The GPL would force closed games to share, and CC BY is not for code."
+      },
+      {
+        "text": "Ada wants anyone who ships a modified copy of the engine to share their changes with the same freedoms.",
+        "options": ["bsd", "gpl", "mit", "cc0"],
+        "answer": "gpl",
+        "why": "That is copyleft. BSD, MIT and CC0 let others keep their changes closed."
+      },
+      {
+        "text": "The studio runs a level-sharing website. Ada fears that a rival could run a modified version of the code as a service and never share it.",
+        "options": ["gpl", "agpl", "lgpl", "mit"],
+        "answer": "agpl",
+        "why": "The AGPL's network term gives people who use the program over a network a right to its source. With the GPL, a service gives nobody a copy, so nothing has to be shared."
+      },
+      {
+        "text": "Mira writes a physics library. Closed commercial games should be able to use it, but fixes to the library itself should flow back.",
+        "options": ["gpl", "lgpl", "agpl", "cc-by-sa"],
+        "answer": "lgpl",
+        "why": "The LGPL is copyleft for the library only; programs that use it may carry their own terms. The GPL and AGPL would pull the whole game under copyleft."
+      },
+      {
+        "text": "Jonas publishes a sprite pack. Fans may remix and even sell it, they must credit him, and remixes must be shared the same way.",
+        "options": ["cc-by", "cc-by-sa", "cc-by-nc-sa", "cc-by-nd"],
+        "answer": "cc-by-sa",
+        "why": "BY is credit, SA is same-terms adaptations. NC would forbid selling and ND would forbid remixes."
+      },
+      {
+        "text": "Jonas lets fans share his soundtrack preview, but only unchanged and never for profit. He still wants to be credited.",
+        "options": ["cc-by", "cc-by-nc", "cc-by-nc-nd", "cc0"],
+        "answer": "cc-by-nc-nd",
+        "why": "NC rules out profit and ND rules out changed versions. CC BY-NC would still allow remixes."
+      },
+      {
+        "text": "The modding guide should be easy to translate and copy, even into paid books. The studio only asks to be named.",
+        "options": ["cc-by", "cc-by-nc", "cc-by-nd", "gpl"],
+        "answer": "cc-by",
+        "why": "CC BY allows everything, commercial use and changes included, with credit. NC forbids paid books, ND forbids translations, and the GPL is a software licence."
+      },
+      {
+        "text": "Jonas has made twenty placeholder icons and wants nobody to have to credit him or ask anything.",
+        "options": ["cc-by", "cc0", "mit", "cc-by-sa"],
+        "answer": "cc0",
+        "why": "CC0 waives the rights as far as the law allows, and asks for nothing. Every other choice here still asks for credit or a notice."
+      }
+    ]
+  }
+}

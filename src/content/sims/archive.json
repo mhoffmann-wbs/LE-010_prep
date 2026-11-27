@@ -1,0 +1,81 @@
+{
+  "id": "archive",
+  "title": "Archive chooser",
+  "description": "Pick an action, a compression and a few options, and see the matching `tar`, `zip` or `gzip` command, its file extension and what every part does.",
+  "intro": "Leave the tool on `tar` and the action on Create, then switch the compression from gzip to bzip2 to xz and watch two things change together: the letter after `-c` and the extension. Next, choose List and Extract and read the note about compression letters. Finally, try the tasks: they use Jonas's sprites, Ada's release and Mira's assets.",
+  "objectives": ["013.1"],
+  "takeaways": [
+    "`tar` only bundles files into one archive. A compression program is a separate step, which `tar` calls for you: `z` is gzip, `j` is bzip2 and `J` is xz. That is why the names are `.tar.gz`, `.tar.bz2` and `.tar.xz`.",
+    "One action letter is required: `c` creates, `t` lists and `x` extracts. `f` takes the archive name and comes last in the group, so `tar -czf assets.tar.gz assets/` works and `tar -cfz assets.tar.gz assets/` does not.",
+    "`v` is verbose and only prints file names. `-C directory` extracts into another existing directory; `unzip -d directory` does the same and creates it if needed.",
+    "`gzip`, `bzip2` and `xz` compress one file and replace it with `file.gz`, `file.bz2` or `file.xz` unless you pass `-k`. `-d` (or `gunzip`, `bunzip2`, `unxz`) decompresses. They never bundle a directory.",
+    "ZIP is both: `zip` bundles and compresses in one go, with the archive name first, and `unzip` extracts. For a directory you need `-r`; without it only the empty folder entry is stored. Use ZIP when the receiver runs Windows.",
+    "List without unpacking with `tar -tf`, `unzip -l`, `gzip -l` or `xz -l`. GNU `tar` detects the compression when it reads, but a wrong letter, such as `-xzf` on a `.tar.bz2`, fails."
+  ],
+  "tryItems": ["013.1-002", "013.1-009", "013.1-014", "013.1-006", "013.1-010"],
+  "links": [
+    { "title": "GNU tar manual: the operations (create, list, extract) and compression options", "url": "https://www.gnu.org/software/tar/manual/html_node/Operations.html" },
+    { "title": "tar(1) manual page", "url": "https://man7.org/linux/man-pages/man1/tar.1.html" },
+    { "title": "zip(1) and unzip(1) manual pages (Info-ZIP)", "url": "https://manpages.debian.org/trixie/zip/zip.1.en.html" },
+    { "title": "gzip manual (GNU)", "url": "https://www.gnu.org/software/gzip/manual/gzip.html" },
+    { "title": "xz(1) manual page", "url": "https://manpages.debian.org/trixie/xz-utils/xz.1.en.html" }
+  ],
+  "params": {
+    "sources": [
+      { "id": "assets", "label": "assets/ (everything)", "path": "assets/", "base": "assets" },
+      { "id": "sprites", "label": "assets/sprites/ (Jonas's sprites)", "path": "assets/sprites/", "base": "sprites" }
+    ],
+    "destination": "out",
+    "file": "level1.txt",
+    "tasks": [
+      {
+        "text": "Jonas's sprites must go to the publisher as one compressed file. The publisher uses Linux and only wants it to be a small `.tar.gz`. Pick the command that creates it.",
+        "source": "sprites",
+        "tool": "tar",
+        "action": "create",
+        "compression": "gzip",
+        "why": "`-c` creates, `z` adds gzip and `f` names `sprites.tar.gz`."
+      },
+      {
+        "text": "Ada ships the whole assets folder to a tester who uses Windows. Pick the command that creates a file that opens there without extra tools.",
+        "source": "assets",
+        "tool": "zip",
+        "action": "create",
+        "compression": "none",
+        "why": "`zip -r assets.zip assets/` makes a ZIP file, which Windows opens natively. The `-r` includes the folder's contents."
+      },
+      {
+        "text": "Mira received `sprites.tar.bz2` and wants to see which files it holds, without unpacking anything.",
+        "source": "sprites",
+        "tool": "tar",
+        "action": "list",
+        "compression": "bzip2",
+        "why": "`-t` lists, `j` names bzip2 and `f` takes the file. Nothing is written to disk."
+      },
+      {
+        "text": "Ada archives an old release for the shelf. Nobody opens it often, so size matters more than speed. Pick the command that creates an xz-compressed archive of assets.",
+        "source": "assets",
+        "tool": "tar",
+        "action": "create",
+        "compression": "xz",
+        "why": "xz usually gives the smallest result of the three, but it is the slowest. The capital `J` selects it."
+      },
+      {
+        "text": "Mira has `assets.tar.gz` and wants its files unpacked, with a compression flag in the command.",
+        "source": "assets",
+        "tool": "tar",
+        "action": "extract",
+        "compression": "gzip",
+        "why": "`-x` extracts, `z` matches the gzip compression and `f` names the archive."
+      },
+      {
+        "text": "Jonas wants `level1.txt` compressed on its own, and he wants to keep the original text file next to the result.",
+        "source": "assets",
+        "tool": "single",
+        "action": "create",
+        "compression": "gzip",
+        "why": "`gzip -k level1.txt` writes `level1.txt.gz` and keeps the original. Without `-k` it would delete the original."
+      }
+    ]
+  }
+}
