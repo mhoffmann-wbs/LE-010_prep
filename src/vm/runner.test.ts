@@ -54,7 +54,7 @@ describe('VmRunner', () => {
 
   it('times out when the guest never answers, and keeps serving later runs', async () => {
     const guest = fakeGuest((id) => (id === '1' ? null : { exit: 0, output: 'ok' }))
-    const runner = new VmRunner(guest.emulator, new ArrayBuffer(8), 20)
+    const runner = new VmRunner(guest.emulator, new ArrayBuffer(8), { timeoutMs: 20 })
     await expect(runner.run({ command: 'hang' })).rejects.toBeInstanceOf(RunError)
     await expect(runner.run({ command: 'echo ok' })).resolves.toEqual({ exit: 0, output: 'ok' })
   })

@@ -42,15 +42,22 @@ export class VmRunner {
   // Plain fields: Node's type stripping (the scripts) has no parameter properties.
   private readonly emulator: V86
   private readonly snapshot: ArrayBuffer
+  private readonly timeoutS: number
   private readonly timeoutMs: number
 
   /**
    * @param snapshot the saved state (zstd-compressed is fine) that every run after the first restores
-   * @param timeoutMs how long a run may take, including the reset; the guest kills commands after JOB_TIMEOUT_S
+   * @param timeoutS seconds the guest lets a command run before killing it
+   * @param timeoutMs how long a run may take, including the reset
    */
-  constructor(emulator: V86, snapshot: ArrayBuffer, timeoutMs = (JOB_TIMEOUT_S + 10) * 1000) {
+  constructor(
+    emulator: V86,
+    snapshot: ArrayBuffer,
+    { timeoutS = JOB_TIMEOUT_S, timeoutMs = (timeoutS + 10) * 1000 }: { timeoutS?: number; timeoutMs?: number } = {},
+  ) {
     this.emulator = emulator
     this.snapshot = snapshot
+    this.timeoutS = timeoutS
     this.timeoutMs = timeoutMs
     emulator.add_listener('serial1-output-byte', (byte: number) => this.receive(byte))
   }
@@ -77,7 +84,7 @@ export class VmRunner {
       const result = await Promise.race([
         new Promise<RunResult>((resolve) => {
           this.pending.set(id, resolve)
-          sendLine(this.emulator, `job ${id} ${toBase64(jobScript(job))}`)
+          sendLine(this.emulator, `job ${id} ${toBase64(jobScript(job, this.timeoutS))}`)
         }),
         new Promise<never>((_, reject) => {
           timer = setTimeout(() => reject(new RunError('timeout', `no answer after ${this.timeoutMs / 1000} s`)), this.timeoutMs)

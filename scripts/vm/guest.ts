@@ -12,7 +12,7 @@ const STATE = path.join(VM_DIR, 'state.bin.zst')
 
 export const guestBuilt = () => existsSync(STATE)
 
-export async function restoreGuest(): Promise<{ emulator: V86; runner: VmRunner }> {
+export async function restoreGuest(timeoutS?: number): Promise<{ emulator: V86; runner: VmRunner }> {
   const bytes = readFileSync(STATE)
   const snapshot = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer
   const emulator = new V86({
@@ -26,5 +26,5 @@ export async function restoreGuest(): Promise<{ emulator: V86; runner: VmRunner 
   })
   await new Promise<void>((resolve) => emulator.add_listener('emulator-started', () => resolve()))
   syncClock(emulator)
-  return { emulator, runner: new VmRunner(emulator, snapshot) }
+  return { emulator, runner: new VmRunner(emulator, snapshot, { timeoutS }) }
 }

@@ -127,7 +127,7 @@ Learners pick their exam on the home page (it can be changed on the progress pag
 
 ### 5a. Guest image
 - **Debian 12 bookworm i386** is the last Debian release with an i386 kernel and installer, and it has LTS until mid-2028. v86 runs only 32-bit guests, and Debian 13 has no i386 kernel. The userland is bash, GNU coreutils, grep, sed, findutils, less, tar, gzip, bzip2, xz-utils, zip/unzip, man-db with the relevant man pages, file, procps, iproute2 and nano/vim-tiny. There's no systemd as PID 1, because boot time and size matter more.
-- `scripts/vm/` builds the rootfs from the digest-pinned `i386/debian:bookworm` Docker image, as v86's own Debian tooling does. It exports the rootfs for v86 (a 9p filesystem; the kernel and initrd load from it), boots it once headless and saves a **state snapshot**, so the learner's terminal restores instead of booting. CI builds it into `public/vm/` (git-ignored) on every deploy.
+- `scripts/vm/` builds the rootfs from the digest-pinned `i386/debian:bookworm` Docker image, as v86's own Debian tooling does. It exports the rootfs for v86 (a 9p filesystem; the kernel and initrd load from it), boots it once headless and saves a **state snapshot**, so the learner's terminal restores instead of booting. CI builds it into `public/vm/` (git-ignored) when its recipe changes and caches it between deploys.
 - The image is deliberately **Debian-only**. Lessons say where RHEL, SUSE or Alpine differ (package tools, `/etc` layout) and show those outputs only through transcripts.
 - **Phase 0 spike: go.** These numbers are from 2026-11-24, on an M-series Mac with Chrome and a local server:
   - Guest RAM is 128 MB.
@@ -146,7 +146,7 @@ Learners pick their exam on the home page (it can be changed on the progress pag
 
 ### 5c. Verification: never trust a hand-written output
 - Running v86 inside Vitest would be slow. Instead, `npm run content:verify` runs every lesson snippet, `output` item and runnable `fill` answer (later also exercises and flashcard commands) **in the learner's own guest**: v86 in Node, on a few worker threads, through the same runner as lesson cells, with the fixture applied. It records the results in `src/content/verified.json`, keyed by a hash of the job script (command, user, fixture) and the guest recipe.
-- `npm test` stays offline and fast: it fails when any claimed output differs from its verified record, or when a record is missing or stale. CI rebuilds the guest and runs `content:verify --all`, so a changed image can't pass.
+- `npm test` stays offline and fast: it fails when any claimed output differs from its verified record, or when a record is missing or stale. When the guest's recipe changes (or its cache expires), CI rebuilds it and runs `content:verify --all`, so a changed image can't pass.
 - The plan was to verify in Docker and spot-check v86 against it. The first spot check found real drift: v86's 9p filesystem lists directories in creation order, Docker's overlay in hash order, so `tar` printed different member orders. Verification therefore runs in v86 itself, and `vm:smoke` checks the runner instead.
 
 ## 6. Do / Explore

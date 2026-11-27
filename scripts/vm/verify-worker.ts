@@ -1,10 +1,10 @@
 // One guest for content:verify: restores the snapshot, then runs each job it is
 // sent and posts back what it printed.
 import { parentPort } from 'node:worker_threads'
-import type { Job } from '../../src/vm/job.ts'
+import { type Job, VERIFY_TIMEOUT_S } from '../../src/vm/job.ts'
 import { restoreGuest } from './guest.ts'
 
-const { runner } = await restoreGuest()
+const { runner } = await restoreGuest(VERIFY_TIMEOUT_S)
 parentPort!.on('message', ({ i, job }: { i: number; job: Job }) => {
   runner.run(job).then(
     (record) => parentPort!.postMessage({ i, record }),

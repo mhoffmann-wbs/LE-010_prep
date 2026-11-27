@@ -18,6 +18,13 @@ export const JOB_VERSION = 1
 /** Seconds a command may run before it's killed. */
 export const JOB_TIMEOUT_S = 10
 
+/**
+ * content:verify's limit. CI's runners emulate the guest several times slower
+ * than a desktop, so man or sudo can pass 10 s there. The limit only cuts off
+ * runaway commands, so verified records stay keyed by the default script.
+ */
+export const VERIFY_TIMEOUT_S = 60
+
 export const DEFAULT_USER = 'mira'
 
 /** Fixture users and the guest's own; anything else would fail at chown. */
@@ -95,7 +102,7 @@ export const PATHS = {
 }
 
 /** The whole script for one run, executed by bash as root. */
-export function jobScript({ command, user = DEFAULT_USER, fixture }: Job): string {
+export function jobScript({ command, user = DEFAULT_USER, fixture }: Job, timeoutS = JOB_TIMEOUT_S): string {
   const h = home(user)
   return [
     `# le-job v${JOB_VERSION}`,
@@ -115,7 +122,7 @@ export function jobScript({ command, user = DEFAULT_USER, fixture }: Job): strin
       `HOME=${h} USER=${user} LOGNAME=${user} SHELL=/bin/bash PATH=${user === 'root' ? PATHS.root : PATHS.user}`,
       'LANG=en_US.UTF-8 TERM=xterm-256color',
       // timeout kills the command's whole process group and exits with 124.
-      `script -qec 'stty cols 80 rows 24; umask 022; exec timeout -k 1 ${JOB_TIMEOUT_S} bash /run/le-cmd' /dev/null < /dev/null`,
+      `script -qec 'stty cols 80 rows 24; umask 022; exec timeout -k 1 ${timeoutS} bash /run/le-cmd' /dev/null < /dev/null`,
     ].join(' '),
   ]
     .filter(Boolean)

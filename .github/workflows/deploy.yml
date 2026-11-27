@@ -28,13 +28,31 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
-      # The learner's Linux: build the i386 guest and boot it once to save its state.
-      - run: sudo apt-get install -y python3-zstandard zstd
-      - run: npm run vm:build
-      - run: npm run vm:state
+      # The learner's Linux, public/vm/, is cached by what goes into it. On a hit,
+      # npm test (verify.test.ts) has already checked every claim against
+      # verified.json, so the guest isn't rebuilt and nothing is rerun.
+      - id: vm-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: public/vm
+          key: vm-${{ hashFiles('scripts/vm/Dockerfile', 'scripts/vm/le-init', 'scripts/vm/build-image.sh', 'scripts/vm/build-state.ts', 'scripts/vm/v86/**', 'src/vm/config.ts', 'package-lock.json') }}
+      # On a miss, build the i386 guest and boot it once to save its state.
+      - if: steps.vm-cache.outputs.cache-hit != 'true'
+        run: sudo apt-get install -y python3-zstandard zstd
+      - if: steps.vm-cache.outputs.cache-hit != 'true'
+        run: npm run vm:build
+      - if: steps.vm-cache.outputs.cache-hit != 'true'
+        run: npm run vm:state
       - run: npm run vm:smoke
       # Rerun every claimed output in the fresh guest: package updates can change them.
-      - run: npm run content:verify -- --all
+      # Only a guest that passes is cached.
+      - if: steps.vm-cache.outputs.cache-hit != 'true'
+        run: npm run content:verify -- --all
+      - if: steps.vm-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: public/vm
+          key: ${{ steps.vm-cache.outputs.cache-primary-key }}
       - run: npm run build
         env:
           BASE_PATH: /LE-010_prep/
