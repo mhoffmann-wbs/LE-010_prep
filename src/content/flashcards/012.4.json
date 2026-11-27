@@ -190,5 +190,29 @@
     ],
     "front": "How do you stop the shell from expanding `*`?",
     "back": "Quote it: `echo \"*\"` prints a star, which is how a pattern reaches a command that expands it itself."
+  },
+  {
+    "id": "012.4-c25",
+    "areas": [
+      "012.4.3"
+    ],
+    "front": "Which glob notations match one character that is not in a set, or one digit?",
+    "back": "`[!abc]` and `[^abc]` match one character not listed. `[[:digit:]]` matches one digit; other classes are `[:alpha:]`, `[:upper:]`, `[:lower:]` and `[:alnum:]`."
+  },
+  {
+    "id": "012.4-c26",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What happens to the copy when you run `cp -r dir dest`?",
+    "back": "If `dest` exists, the copy lands inside it as `dest/dir`. If it doesn't, the copy is named `dest`."
+  },
+  {
+    "id": "012.4-c27",
+    "areas": [
+      "012.4.1"
+    ],
+    "front": "What does `echo text > file` do if `file` already exists?",
+    "back": "It silently replaces the content. `>>` appends instead."
   }
 ]

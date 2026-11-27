@@ -865,5 +865,260 @@
       }
     ],
     "explanation": "Open core: free core, paid extras under a proprietary licence."
+  },
+  {
+    "id": "011.3-024",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2"
+    ],
+    "terms": [
+      "011.3.t1",
+      "011.3.t2"
+    ],
+    "stem": "Ada reads that the BSD licence has only two clauses. Which duty does the 2-clause BSD licence put on people who redistribute the code?",
+    "options": [
+      {
+        "text": "Share any changes only with the original authors.",
+        "correct": false,
+        "rationale": "Sharing changes is not demanded."
+      },
+      {
+        "text": "Keep the copyright notice and the disclaimer.",
+        "correct": true,
+        "rationale": "That is the whole duty."
+      },
+      {
+        "text": "Publish the source of every changed version under the same licence.",
+        "correct": false,
+        "rationale": "That is copyleft, as in the GPL."
+      },
+      {
+        "text": "Pay the original authors a fee for each copy.",
+        "correct": false,
+        "rationale": "No fee is required."
+      }
+    ],
+    "explanation": "The 2-clause BSD licence is permissive: redistributing code requires keeping the copyright notice and the disclaimer, nothing more.",
+    "sourceLinks": [
+      "https://opensource.org/license/bsd-2-clause"
+    ]
+  },
+  {
+    "id": "011.3-025",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2"
+    ],
+    "terms": [
+      "011.3.t2"
+    ],
+    "stem": "Which operating systems belong to the BSD family?",
+    "options": [
+      {
+        "text": "Debian, Ubuntu and Linux Mint, all Linux distributions",
+        "correct": false,
+        "rationale": "Those are Debian-family Linux distributions."
+      },
+      {
+        "text": "Fedora, Rocky and Alma",
+        "correct": false,
+        "rationale": "Those are Enterprise Linux distributions."
+      },
+      {
+        "text": "Tumbleweed, Leap and SLE",
+        "correct": false,
+        "rationale": "Those are SUSE-family Linux distributions."
+      },
+      {
+        "text": "FreeBSD, NetBSD and OpenBSD",
+        "correct": true,
+        "rationale": "These three are the BSD systems."
+      }
+    ],
+    "explanation": "FreeBSD, NetBSD and OpenBSD are BSD operating systems, and they use BSD licences. The others are Linux distributions."
+  },
+  {
+    "id": "011.3-026",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2"
+    ],
+    "terms": [
+      "011.3.t1"
+    ],
+    "stem": "Ada wants to put the modding manual under a copyleft licence made for documentation. Which licence from the GNU project fits?",
+    "options": [
+      {
+        "text": "CC0",
+        "correct": false,
+        "rationale": "CC0 gives up rights instead of keeping the work free through copyleft."
+      },
+      {
+        "text": "Apache License 2.0",
+        "correct": false,
+        "rationale": "Apache 2.0 is a permissive software licence."
+      },
+      {
+        "text": "GNU Free Documentation License",
+        "correct": true,
+        "rationale": "The FDL is made for documentation."
+      },
+      {
+        "text": "The BSD 2-Clause licence, a permissive software licence",
+        "correct": false,
+        "rationale": "BSD is a permissive software licence."
+      }
+    ],
+    "explanation": "The GNU FDL is the GNU project’s copyleft licence for manuals and other documentation.",
+    "sourceLinks": [
+      "https://www.gnu.org/licenses/fdl-1.3.html"
+    ]
+  },
+  {
+    "id": "011.3-027",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2"
+    ],
+    "terms": [
+      "011.3.t1"
+    ],
+    "stem": "Which statement about the Apache License 2.0 is correct?",
+    "options": [
+      {
+        "text": "It is a strong copyleft licence like the GPL.",
+        "correct": false,
+        "rationale": "Permissive licences do not require sharing changes."
+      },
+      {
+        "text": "It only covers documents, pictures and other creative content.",
+        "correct": false,
+        "rationale": "It is a software licence."
+      },
+      {
+        "text": "It forbids any commercial use of the code.",
+        "correct": false,
+        "rationale": "Commercial use is allowed."
+      },
+      {
+        "text": "It is a permissive licence that also gives users a patent grant.",
+        "correct": true,
+        "rationale": "Permissive with a patent grant."
+      }
+    ],
+    "explanation": "Apache 2.0 is permissive: you may reuse the code in proprietary products, and it adds a patent grant.",
+    "sourceLinks": [
+      "https://www.apache.org/licenses/LICENSE-2.0"
+    ]
+  },
+  {
+    "id": "011.3-028",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.1"
+    ],
+    "terms": [
+      "011.3.t4"
+    ],
+    "stem": "Part of the community disagrees with the direction of an open source project and starts its own version from a copy of the source. What is this called?",
+    "options": [
+      {
+        "text": "A rolling release",
+        "correct": false,
+        "rationale": "A rolling release is an update model."
+      },
+      {
+        "text": "A fork",
+        "correct": true,
+        "rationale": "Forking is copying and diverging."
+      },
+      {
+        "text": "A patch release",
+        "correct": false,
+        "rationale": "A patch release is a small update by the same project."
+      },
+      {
+        "text": "A mirror",
+        "correct": false,
+        "rationale": "A mirror is only a copy of the files, not a new direction."
+      }
+    ],
+    "explanation": "A fork is a copy of a project’s source code that is developed separately. LibreOffice (from OpenOffice.org) and MariaDB (from MySQL) are forks."
+  },
+  {
+    "id": "011.3-029",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.3"
+    ],
+    "stem": "What does a proprietary licence give the people who use the software?",
+    "options": [
+      {
+        "text": "The right to share changed versions as they like.",
+        "correct": false,
+        "rationale": "Sharing changes is a free-software freedom."
+      },
+      {
+        "text": "A copy of the source code.",
+        "correct": false,
+        "rationale": "Source code is typically not included."
+      },
+      {
+        "text": "Rights of use set by the owner, but not ownership of the software.",
+        "correct": true,
+        "rationale": "Use rights only."
+      },
+      {
+        "text": "Ownership of the program once they have paid for it.",
+        "correct": false,
+        "rationale": "Buying a licence does not transfer ownership."
+      }
+    ],
+    "explanation": "A proprietary licence grants certain rights of use on the owner’s terms. The owner keeps control, and the user does not become the owner."
+  },
+  {
+    "id": "011.3-030",
+    "objectiveId": "011.3",
+    "kind": "single",
+    "areas": [
+      "011.3.2"
+    ],
+    "terms": [
+      "011.3.t1"
+    ],
+    "stem": "Which statement about the LGPL is correct?",
+    "options": [
+      {
+        "text": "It is a permissive licence that was made for pictures and music.",
+        "correct": false,
+        "rationale": "It is for software, not pictures."
+      },
+      {
+        "text": "It is the licence of the Linux kernel.",
+        "correct": false,
+        "rationale": "The kernel uses the GPL."
+      },
+      {
+        "text": "It has the same terms as CC BY.",
+        "correct": false,
+        "rationale": "CC BY is a Creative Commons licence."
+      },
+      {
+        "text": "It is a weaker copyleft licence made for libraries.",
+        "correct": true,
+        "rationale": "Library-friendly copyleft."
+      }
+    ],
+    "explanation": "The LGPL is a weaker copyleft made for libraries, so programs that merely use the library need not use the same licence.",
+    "sourceLinks": [
+      "https://www.gnu.org/licenses/licenses.html"
+    ]
   }
 ]

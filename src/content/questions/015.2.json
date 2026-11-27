@@ -1053,5 +1053,182 @@
     "command": "ls -A /etc/skel",
     "output": ".bash_logout  .bashrc  .profile",
     "mode": "type"
+  },
+  {
+    "id": "015.2-031",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.1",
+      "015.2.2"
+    ],
+    "stem": "Which statement about the fields of `/etc/shadow` is correct?",
+    "explanation": "A shadow line has nine fields. The third counts days since 1 January 1970, and a 0 there makes the user pick a new password at the next login.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/shadow.5.html"
+    ],
+    "options": [
+      {
+        "text": "The third field is the last password change, counted in days since 1970.",
+        "correct": true,
+        "rationale": "Dates in shadow are day counts from 1970-01-01."
+      },
+      {
+        "text": "The line has seven fields, the same as `/etc/passwd`.",
+        "correct": false,
+        "rationale": "Shadow has nine fields."
+      },
+      {
+        "text": "The second field is the UID of the account.",
+        "correct": false,
+        "rationale": "The second field is the password hash."
+      },
+      {
+        "text": "The last field holds the login shell.",
+        "correct": false,
+        "rationale": "The shell is in `/etc/passwd`; the last shadow field is reserved."
+      }
+    ]
+  },
+  {
+    "id": "015.2-032",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "What does the file `/etc/gshadow` hold?",
+    "explanation": "It is the group counterpart of `/etc/shadow`: group passwords and the lists of group administrators and members, readable only by root.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man5/gshadow.5.html"
+    ],
+    "options": [
+      {
+        "text": "The home directories of all groups.",
+        "correct": false,
+        "rationale": "Groups have no home directory."
+      },
+      {
+        "text": "Group passwords, administrators and members, in four fields per line.",
+        "correct": true,
+        "rationale": "Four fields: group, password, administrators, members."
+      },
+      {
+        "text": "The hashed passwords of every user, in nine fields.",
+        "correct": false,
+        "rationale": "That is `/etc/shadow`."
+      },
+      {
+        "text": "A copy of `/etc/group` that everybody may read.",
+        "correct": false,
+        "rationale": "It is not a public copy; only root can read it."
+      }
+    ]
+  },
+  {
+    "id": "015.2-033",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "Mira runs `passwd -d noah`. What is the result?",
+    "explanation": "`-d` deletes the password, which leaves an empty one. That differs from `-l`, which locks the account by putting `!` before the hash.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/passwd.1.html"
+    ],
+    "options": [
+      {
+        "text": "The account is removed.",
+        "correct": false,
+        "rationale": "Removing an account is `userdel`."
+      },
+      {
+        "text": "Noah's home directory is deleted.",
+        "correct": false,
+        "rationale": "`passwd` never touches the home directory."
+      },
+      {
+        "text": "The password is deleted, so the account has an empty password.",
+        "correct": true,
+        "rationale": "This is what `-d` does, and it is risky."
+      },
+      {
+        "text": "The account is locked so that nobody can log in.",
+        "correct": false,
+        "rationale": "Locking is `passwd -l`."
+      }
+    ]
+  },
+  {
+    "id": "015.2-034",
+    "objectiveId": "015.2",
+    "kind": "single",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "Which `useradd` option makes sure that no home directory is created for the new account?",
+    "explanation": "`-M` means no home directory, while `-m` creates one from `/etc/skel`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/useradd.8.html"
+    ],
+    "options": [
+      {
+        "text": "`--create-home`",
+        "correct": false,
+        "rationale": "This long form of `-m` creates the home directory."
+      },
+      {
+        "text": "`-d`",
+        "correct": false,
+        "rationale": "This sets the path of the home directory."
+      },
+      {
+        "text": "`-r`",
+        "correct": false,
+        "rationale": "This makes a system account."
+      },
+      {
+        "text": "`-M`",
+        "correct": true,
+        "rationale": "It never creates a home directory."
+      }
+    ]
+  },
+  {
+    "id": "015.2-035",
+    "objectiveId": "015.2",
+    "kind": "fill",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "Finish the command so that the account `noah` expires on 31 January 2027.",
+    "explanation": "`-e` sets the account's expiry date as YYYY-MM-DD, and it ends up in field 8 of `/etc/shadow`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man8/useradd.8.html"
+    ],
+    "accept": [
+      "-e 2027-01-31 noah"
+    ],
+    "prefix": "$ useradd",
+    "caseSensitive": true,
+    "verify": {
+      "command": "useradd {answer}",
+      "user": "root"
+    }
+  },
+  {
+    "id": "015.2-036",
+    "objectiveId": "015.2",
+    "kind": "output",
+    "areas": [
+      "015.2.2"
+    ],
+    "stem": "As root, Mira tries to delete the group of her own account. What does she see?",
+    "explanation": "A group can't be removed while it is the primary group of a user. Change or delete the user first.",
+    "command": "groupdel mira",
+    "user": "root",
+    "output": "groupdel: cannot remove the primary group of user 'mira'",
+    "mode": "type"
   }
 ]

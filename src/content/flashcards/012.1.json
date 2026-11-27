@@ -230,5 +230,29 @@
     ],
     "front": "Why does `echo \"*\"` print a star while `echo *` lists file names?",
     "back": "Quotes switch off the special meaning, so the shell does not expand the `*`. Unquoted, the shell replaces it with matching names."
+  },
+  {
+    "id": "012.1-c30",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What is the order in which Bash looks up the first word of a command line?",
+    "back": "Alias, keyword, function, builtin, then the programs in the `PATH` directories. `type -t NAME` shows which one wins."
+  },
+  {
+    "id": "012.1-c31",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "What does `!word` do at the prompt, and what does `history -c` do?",
+    "back": "`!word` repeats the most recent line that starts with `word`. `history -c` clears the shell's history list."
+  },
+  {
+    "id": "012.1-c32",
+    "areas": [
+      "012.1.1"
+    ],
+    "front": "How do you read the prompt `mira@tuxpixel:~$`?",
+    "back": "User `mira`, host `tuxpixel`, current directory `~` (the home directory); `$` marks a normal user, `#` marks root."
   }
 ]

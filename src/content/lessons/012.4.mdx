@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '012.4',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: '`touch` creates an empty file, `mkdir` a directory (`-p` for a whole chain), `cp` copies (`-r` for directories), `mv` moves and renames, `rm` deletes (`-r` for directories) and `rmdir` removes empty directories. There is no trash can: deleted is gone. File names are case sensitive. Wildcards, or globs (`*`, `?`, `[abc]`), are expanded by the shell before the command runs.',
   areasCovered: ['012.4.1', '012.4.2', '012.4.3'],
   termsCovered: ['012.4.t1', '012.4.t2'],
@@ -51,6 +51,21 @@ ls todo.txt ideas.txt
 
 ```output
 ideas.txt  todo.txt
+```
+
+`touch` is not the only way to make a file. The shell can send the output of a command into a file with `>` (the full story is in [lesson 013.2](/learn/013.2)). If the file doesn't exist, it is created. If it does exist, `>` **replaces** its content without asking:
+
+```bash fixture=basics-art
+cd art
+echo "Ada was here" > todo.txt
+cat todo.txt
+echo "second" > todo.txt
+cat todo.txt
+```
+
+```output
+Ada was here
+second
 ```
 
 #### Creating directories: mkdir
@@ -111,6 +126,27 @@ ls backup
 readme.md
 ```
 
+The same command can mean two things for a directory with `-r`. When the destination directory **exists**, the copy lands **inside** it; when the name does not exist yet, the copy **becomes** that name:
+
+```bash fixture=basics-art
+cd art
+mkdir old
+cp readme.md backup
+cp -r backup old
+cp -r backup fresh
+ls old
+ls fresh
+ls old/backup
+```
+
+```output
+backup
+readme.md
+readme.md
+```
+
+`old` existed, so the copy is `old/backup`. `fresh` did not, so `fresh` is the copy.
+
 To copy several files into a directory, put the directory **last**: `cp hero1.png hero2.png backup`.
 
 `cp` refuses to copy a **directory** by itself. Add `-r` (**r**ecursive: the directory and everything inside it):
@@ -127,7 +163,7 @@ cp: -r not specified; omitting directory 'backup'
 backup	backup2
 ```
 
-Two more options protect you. `-i` (**i**nteractive) asks before it overwrites an existing file, and `-v` (**v**erbose) prints what it does. Without `-i`, `cp` silently **replaces** a destination that exists.
+Two more options protect you. `-i` (**i**nteractive) asks before it overwrites an existing file, and `-v` (**v**erbose) prints what it does. Without `-i`, `cp` silently **replaces** a destination that exists. `mv -i` asks in the same way, and `cp -iv` combines the two options.
 
 ```bash static
 cp -i hero1.png hero2.png
@@ -191,7 +227,7 @@ The options to know:
 | `-i` | **I**nteractive: ask before every removal |
 | `-f` | **F**orce: never ask, and ignore files that don't exist |
 
-`-f` is risky: `rm -rf NAME` deletes a whole tree silently. A mistyped name or an unexpected wildcard can wipe out your work, and as `root` even the whole system. Read the line twice before pressing Enter.
+`rm -ri NAME` combines them: it asks before descending into a directory and before every file. `-f` is risky: `rm -rf NAME` deletes a whole tree silently. A mistyped name or an unexpected wildcard can wipe out your work, and as `root` even the whole system. Read the line twice before pressing Enter.
 
 A safety trick: put `echo` in front of the command first. It shows what the shell would pass, and deletes nothing:
 
@@ -246,6 +282,9 @@ A **glob** (wildcard pattern) is a name pattern with special characters. The she
 | `[abc]` | One character from the list: `a`, `b` or `c` |
 | `[a-z]` | One character in the range |
 | `[!abc]` | One character that is **not** in the list |
+| `[^abc]` | The same as `[!abc]`; Bash accepts both |
+| `[[:digit:]]` | One digit. Other classes: `[[:alpha:]]` letters, `[[:upper:]]` and `[[:lower:]]` for case, `[[:alnum:]]` letters and digits |
+| `[a-cx-z]` | Several ranges and single characters can share one bracket |
 
 Let's try them on the art folder. `echo` shows what the shell produces:
 
@@ -262,6 +301,23 @@ hero1.png hero2.png hero3.png
 boss1.png boss2.png
 hero1.png hero2.png
 hero1.png hero2.png hero3.png slime.png
+```
+
+Character classes and ranges work the same way:
+
+```bash fixture=basics-art
+cd art
+echo hero[[:digit:]].png
+echo [^bh]*.png
+echo [a-bs]*.png
+echo [[:upper:]]*
+```
+
+```output
+hero1.png hero2.png hero3.png
+slime.png
+boss10.png boss1.png boss2.png slime.png
+Notes.txt
 ```
 
 - `hero*` is everything that starts with `hero`.
@@ -354,12 +410,20 @@ readme.md
   <p>`mkdir a/b/c` fails if `a/b` doesn't exist. `mkdir -p a/b/c` creates every missing level and is not an error when they already exist. `touch` creates files only: an empty file, or an updated time if it exists.</p>
 </Callout>
 
+<Callout title="> overwrites, it does not append">
+  <p>`echo text > file` creates `file` when it is missing and silently replaces its content when it exists. Appending needs `>>` ([lesson 013.2](/learn/013.2)).</p>
+</Callout>
+
+<Callout title="cp -r into an existing directory or onto a new name">
+  <p>`cp -r backup old` puts the copy inside `old` (as `old/backup`) when `old` already exists. If `old` does not exist, the copy is named `old`. `mv` follows the same rule.</p>
+</Callout>
+
 <Callout title="Names are case sensitive">
   <p>`File.txt` and `file.txt` are two different files. A command with the wrong case reports "No such file or directory".</p>
 </Callout>
 
 <Callout title="The shell expands globs, not the command">
-  <p>`*` matches any number of characters (even none), `?` exactly one, `[abc]` one of the listed characters, `[!abc]` one that is not listed. With `boss?.png`, the file `boss10.png` does not match. Put a pattern in quotes and the shell leaves it alone.</p>
+  <p>`*` matches any number of characters (even none), `?` exactly one, `[abc]` one of the listed characters, `[!abc]` or `[^abc]` one that is not listed, and `[[:digit:]]` one digit. With `boss?.png`, the file `boss10.png` does not match. Put a pattern in quotes and the shell leaves it alone.</p>
 </Callout>
 
 ## Try it

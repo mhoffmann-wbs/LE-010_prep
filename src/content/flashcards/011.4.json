@@ -290,5 +290,29 @@
     ],
     "front": "Why does Ada prefer a configuration management tool to setting up twenty servers by hand?",
     "back": "Hand work is slow and error-prone. A tool applies the same description to many machines, again and again, with the same result."
+  },
+  {
+    "id": "011.4-c37",
+    "areas": [
+      "011.4.2"
+    ],
+    "front": "Which two hypervisors should you know?",
+    "back": "KVM, which is built into the Linux kernel, and Xen."
+  },
+  {
+    "id": "011.4-c38",
+    "areas": [
+      "011.4.6"
+    ],
+    "front": "Block-device versus filesystem-level encryption?",
+    "back": "Block-device encryption (LUKS) hides everything on the disk, including file names, sizes and layout. Filesystem-level encryption protects files but may leave names and sizes visible."
+  },
+  {
+    "id": "011.4-c39",
+    "areas": [
+      "011.4.1"
+    ],
+    "front": "How does an HPC cluster work?",
+    "back": "A head node schedules jobs onto many nodes that share storage and a fast network and work in parallel, sometimes with GPUs."
   }
 ]

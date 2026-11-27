@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '011.4',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Linux runs on desktops, laptops, phones, servers, virtual machines, cloud instances, embedded devices and HPC clusters. A client asks and a server answers. vi and nano are common text editors. Configuration management tools such as Ansible set up many machines from a description. Protect accounts with long unique passwords in a password manager, multi-factor authentication and passkeys; protect data with HTTPS and storage encryption; handle USB sticks with care.',
   areasCovered: ['011.4.1', '011.4.2', '011.4.3', '011.4.4', '011.4.5', '011.4.6', '011.4.v1', '011.4.v2', '011.4.v3'],
   termsCovered: ['011.4.t1', '011.4.t2', '011.4.t3', '011.4.t4', '011.4.t5', '011.4.t6', '011.4.t7', '011.4.t8', '011.4.vt1', '011.4.vt2', '011.4.vt3', '011.4.vt4', '011.4.vt5'],
@@ -18,6 +18,9 @@ export const meta = {
     { title: 'Cryptsetup and LUKS', url: 'https://gitlab.com/cryptsetup/cryptsetup/-/wikis/home' },
     { title: 'CISA: using caution with USB drives', url: 'https://www.cisa.gov/news-events/news/using-caution-usb-drives' },
     { title: 'Raspberry Pi', url: 'https://www.raspberrypi.com/' },
+    { title: 'KVM (Kernel-based Virtual Machine)', url: 'https://linux-kvm.org/' },
+    { title: 'Xen Project', url: 'https://xenproject.org/' },
+    { title: 'USBGuard', url: 'https://usbguard.github.io/' },
   ],
 }
 
@@ -57,13 +60,13 @@ tty
 | **Embedded systems** | Routers, TVs, cars, cameras, smart home devices, Raspberry Pi projects | One fixed job, small, often no visible Linux |
 | **HPC clusters** | Supercomputers for weather, science and AI | Thousands of linked machines that share one big job |
 
-An **embedded system** is a computer built into a product. Linux is popular for it because it's free, can be trimmed down and runs on many chip types. **HPC** (high-performance computing) joins many servers, called *nodes*, into a **cluster**. The vast majority of the world's biggest supercomputers run Linux.
+An **embedded system** is a computer built into a product. Linux is popular for it because it's free, can be trimmed down and runs on many chip types. **HPC** (high-performance computing) joins many servers, called *nodes*, into a **cluster**. A *head node* takes the jobs people submit and schedules them onto the other nodes, which share storage and talk over a fast network. A job is split so that its parts run in parallel, and some nodes carry GPUs for the heavy number crunching. The vast majority of the world's biggest supercomputers run Linux.
 
 </ExamOnly>
 
 ### Virtualization, containers and cloud computing
 
-**Virtualization** lets one physical machine host several **virtual machines**. A program called a **hypervisor** gives each VM its own pretend hardware and its own complete operating system with its own kernel. VMs are isolated from each other, which makes them good for testing and for running many servers on a few machines. (This app's terminal is a small VM too: it runs a whole Linux in your browser.)
+**Virtualization** lets one physical machine host several **virtual machines**. A program called a **hypervisor** gives each VM its own pretend hardware and its own complete operating system with its own kernel. Two hypervisors to know are **KVM**, which is built into the Linux kernel itself, and **Xen**. VMs are isolated from each other, which makes them good for testing and for running many servers on a few machines. (This app's terminal is a small VM too: it runs a whole Linux in your browser.)
 
 **Containers** are lighter. A container packs one application with the files it needs, but it **shares the host's kernel**, so it starts in a moment and takes little space. Docker and Podman are well-known tools. The rule of thumb: a VM contains a whole operating system, a container contains an application.
 
@@ -155,6 +158,8 @@ A new server needs software installed, files in place and services running. Doin
 
 **Data at rest.** A lost laptop or USB stick exposes everything on it. **Storage encryption** scrambles the data on the disk so that it's useless without the key or passphrase. On Linux the usual tool is **LUKS** (set up with `cryptsetup`), and installers can offer full-disk encryption. A strong passphrase matters, as the encryption is only as strong as that.
 
+Encryption can sit at two levels. **Block-device encryption** (LUKS) scrambles the whole partition or disk, so file names, sizes and the directory layout are hidden too. **Filesystem-level** (stacked) encryption works on top of an ordinary filesystem and protects individual files or directories, and then names, sizes and the folder structure may still be visible to someone with the disk.
+
 **Secure handling of USB devices.** A USB stick can carry malware, and a stick or cable that looks harmless can be a trick. So:
 
 - Do not plug in a USB device you found or were handed by a stranger.
@@ -162,6 +167,7 @@ A new server needs software installed, files in place and services running. Doin
 - Encrypt sticks that carry private data, and keep backups, since sticks are easy to lose.
 - Eject (unmount) a stick before pulling it out, so the data is fully written.
 - Turn off auto-running where you can.
+- Administrators can go further: restrict who may mount removable drives, and allow only known devices by vendor and product ID. A Linux tool for this is **USBGuard**.
 
 <ExamOnly exam="010-160">
 
@@ -282,6 +288,10 @@ xterm-256color
 
 <Callout title="HTTPS protects the connection, not the site">
   <p>HTTPS encrypts the traffic between you and the server, and checks the server's certificate. It does not prove that the site is honest. Storage encryption (such as LUKS) protects data at rest, HTTPS protects data in transit.</p>
+</Callout>
+
+<Callout title="Where the encryption sits">
+  <p>Block-device encryption (LUKS) hides everything on the disk, including names and sizes. Filesystem-level encryption protects files, but may leave names and sizes visible.</p>
 </Callout>
 
 <Callout title="Config management describes, not types">

@@ -625,5 +625,215 @@
     "mode": "type",
     "output": "rmdir (1)            - remove empty directories",
     "explanation": "The pattern `^rmdir$` matches only the page whose name is exactly `rmdir`, so one line is printed with its section and description."
+  },
+  {
+    "id": "012.2-042",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": [
+      "012.2.1"
+    ],
+    "terms": [
+      "012.2.t1"
+    ],
+    "stem": "Jonas is deep inside a long man page and has just passed the part he needed. Which key sequence searches backward from his position?",
+    "options": [
+      {
+        "text": "`?word` followed by Enter",
+        "correct": true,
+        "rationale": "Correct: `?` searches backward, and `n` or `N` then continue the search."
+      },
+      {
+        "text": "`/word` followed by Enter",
+        "correct": false,
+        "rationale": "`/` searches forward, towards the end of the page."
+      },
+      {
+        "text": "`b`",
+        "correct": false,
+        "rationale": "`b` scrolls back one screen; it does not search for text."
+      },
+      {
+        "text": "`h`",
+        "correct": false,
+        "rationale": "`h` opens the pager's help screen."
+      }
+    ],
+    "explanation": "The pager (usually `less`) uses `/` to search forward and `?` to search backward. `n` repeats the search in the same direction and `N` in the opposite one."
+  },
+  {
+    "id": "012.2-043",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": [
+      "012.2.1"
+    ],
+    "terms": [
+      "012.2.t1"
+    ],
+    "stem": "Mira searched a man page with `/option` and wants to jump to the next match. Which key does that?",
+    "options": [
+      {
+        "text": "`q`",
+        "correct": false,
+        "rationale": "`q` quits the pager."
+      },
+      {
+        "text": "`g`",
+        "correct": false,
+        "rationale": "`g` goes to the top of the page."
+      },
+      {
+        "text": "Space",
+        "correct": false,
+        "rationale": "Space scrolls down one screen; it does not jump to a match."
+      },
+      {
+        "text": "`n`",
+        "correct": true,
+        "rationale": "Correct: `n` repeats the last search in the same direction."
+      }
+    ],
+    "explanation": "After a search, `n` finds the next match in the same direction and `N` the previous one."
+  },
+  {
+    "id": "012.2-044",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": [
+      "012.2.1"
+    ],
+    "terms": [
+      "012.2.t1"
+    ],
+    "stem": "Which program does `man` normally use to show a page one screen at a time?",
+    "options": [
+      {
+        "text": "A pager, usually `less`",
+        "correct": true,
+        "rationale": "Correct: that is why `q`, `/` and Space work in a man page."
+      },
+      {
+        "text": "`cat`, which prints the file in one go",
+        "correct": false,
+        "rationale": "`cat` would not let you scroll or search."
+      },
+      {
+        "text": "`info`, which opens a node tree",
+        "correct": false,
+        "rationale": "`info` is a separate reader for a different format."
+      },
+      {
+        "text": "`vi`, which opens it for editing",
+        "correct": false,
+        "rationale": "Man pages are shown read-only; an editor is not the default."
+      }
+    ],
+    "explanation": "`man` pipes the formatted page through a pager, most often `less`. That is why the same keys work as in `less`."
+  },
+  {
+    "id": "012.2-045",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": [
+      "012.2.1"
+    ],
+    "terms": [
+      "012.2.t1"
+    ],
+    "stem": "Ada is looking for the man section that describes the kernel's internal routines. It is rarely installed and not part of the standard layout. Which section number is it?",
+    "options": [
+      {
+        "text": "2",
+        "correct": false,
+        "rationale": "Section 2 describes system calls, the kernel functions programs can call."
+      },
+      {
+        "text": "4",
+        "correct": false,
+        "rationale": "Section 4 describes special files, mostly in `/dev`."
+      },
+      {
+        "text": "9",
+        "correct": true,
+        "rationale": "Correct: section 9 is the non-standard section for kernel routines."
+      },
+      {
+        "text": "7",
+        "correct": false,
+        "rationale": "Section 7 holds conventions and overviews, not kernel internals."
+      }
+    ],
+    "explanation": "Sections 1 to 8 are the standard ones. Section 9, kernel routines, is marked non-standard in the `man` manual page and is often missing."
+  },
+  {
+    "id": "012.2-046",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": [
+      "012.2.2"
+    ],
+    "terms": [
+      "012.2.t3"
+    ],
+    "stem": "Where does a Debian system keep the READMEs, change logs and licence files that come with each installed package?",
+    "options": [
+      {
+        "text": "In one directory per package under `/usr/share/doc/`",
+        "correct": true,
+        "rationale": "Correct: for example `/usr/share/doc/bash`."
+      },
+      {
+        "text": "In `/usr/share/man/`, next to the man pages",
+        "correct": false,
+        "rationale": "That directory holds the man pages themselves."
+      },
+      {
+        "text": "In the `/etc` directory, with the configuration",
+        "correct": false,
+        "rationale": "`/etc` holds configuration files, not documentation."
+      },
+      {
+        "text": "In the `/var/doc` directory, managed by cron",
+        "correct": false,
+        "rationale": "There is no such standard directory."
+      }
+    ],
+    "explanation": "Packages install their extra documentation in `/usr/share/doc/<package>`, and the package manager manages those files."
+  },
+  {
+    "id": "012.2-047",
+    "objectiveId": "012.2",
+    "kind": "single",
+    "areas": [
+      "012.2.2"
+    ],
+    "terms": [
+      "012.2.t2"
+    ],
+    "stem": "Mira wants a quick reminder of the options of `cp`, not the long manual. What is the best fit?",
+    "options": [
+      {
+        "text": "`cp --help`",
+        "correct": true,
+        "rationale": "Correct: it prints a short usage summary and the list of options."
+      },
+      {
+        "text": "`man -k cp`",
+        "correct": false,
+        "rationale": "This searches the descriptions of all man pages for the word."
+      },
+      {
+        "text": "`ls /usr/share/doc/cp`",
+        "correct": false,
+        "rationale": "`cp` has no directory of that name; it is part of a larger package."
+      },
+      {
+        "text": "`cp --version`",
+        "correct": false,
+        "rationale": "This prints only the version of the program."
+      }
+    ],
+    "explanation": "`--help` gives the usage line and the options at a glance. The man page is the full reference."
   }
 ]

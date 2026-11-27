@@ -1407,5 +1407,288 @@
     "sourceLinks": [
       "https://dnf.readthedocs.io/"
     ]
+  },
+  {
+    "id": "011.2-040",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "stem": "Which format does LibreOffice use for its documents by default?",
+    "options": [
+      {
+        "text": "PGP, the file format for signed email",
+        "correct": false,
+        "rationale": "PGP is an encryption standard, not a document format."
+      },
+      {
+        "text": "ODF, the OpenDocument Format",
+        "correct": true,
+        "rationale": "ODF is its native format."
+      },
+      {
+        "text": "DEB, the Debian package format",
+        "correct": false,
+        "rationale": "`.deb` files are packages."
+      },
+      {
+        "text": "SVG, a vector graphics format",
+        "correct": false,
+        "rationale": "SVG is for drawings, and Inkscape’s native format."
+      }
+    ],
+    "explanation": "LibreOffice saves Writer, Calc and Impress files in ODF by default, and it can also read and write many other formats."
+  },
+  {
+    "id": "011.2-041",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "stem": "Jonas wants to design a small database for the studio’s asset list with LibreOffice. Which component is made for that?",
+    "options": [
+      {
+        "text": "Writer",
+        "correct": false,
+        "rationale": "Writer is a word processor."
+      },
+      {
+        "text": "Impress",
+        "correct": false,
+        "rationale": "Impress makes presentations."
+      },
+      {
+        "text": "Base",
+        "correct": true,
+        "rationale": "Base is the database front end."
+      },
+      {
+        "text": "Math",
+        "correct": false,
+        "rationale": "Math edits mathematical formulas."
+      }
+    ],
+    "explanation": "Base is the database part of LibreOffice. Math writes formulas, Writer handles text and Impress handles slides."
+  },
+  {
+    "id": "011.2-042",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.1"
+    ],
+    "terms": [
+      "011.2.t1"
+    ],
+    "stem": "Ada signs a release file with GPG so that others can check who made it. Which standard does GPG implement?",
+    "options": [
+      {
+        "text": "ODF",
+        "correct": false,
+        "rationale": "ODF is a document format."
+      },
+      {
+        "text": "LAMP",
+        "correct": false,
+        "rationale": "LAMP is a web stack."
+      },
+      {
+        "text": "NFS",
+        "correct": false,
+        "rationale": "NFS shares directories."
+      },
+      {
+        "text": "OpenPGP",
+        "correct": true,
+        "rationale": "OpenPGP is the standard behind GPG."
+      }
+    ],
+    "explanation": "GnuPG implements OpenPGP. It uses a key pair: the private key signs and decrypts, and the public key verifies and encrypts."
+  },
+  {
+    "id": "011.2-043",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3"
+    ],
+    "stem": "Which program is a small, lightweight web server, in the same job as Apache HTTPD and NGINX?",
+    "options": [
+      {
+        "text": "MariaDB",
+        "correct": false,
+        "rationale": "MariaDB stores data."
+      },
+      {
+        "text": "lighttpd",
+        "correct": true,
+        "rationale": "lighttpd serves web pages."
+      },
+      {
+        "text": "Moodle",
+        "correct": false,
+        "rationale": "Moodle is a learning platform."
+      },
+      {
+        "text": "Kodi",
+        "correct": false,
+        "rationale": "Kodi is a media center."
+      }
+    ],
+    "explanation": "lighttpd is a lightweight web server. Moodle and Kodi are applications, and MariaDB is a database server."
+  },
+  {
+    "id": "011.2-044",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3"
+    ],
+    "stem": "Each time a player opens the forum page, a PHP program builds it from rows in a database. What is this kind of web content called?",
+    "options": [
+      {
+        "text": "Raster content, because it is built from pixels.",
+        "correct": false,
+        "rationale": "Raster means pixel images, a different idea."
+      },
+      {
+        "text": "Compiled content, because PHP is always compiled.",
+        "correct": false,
+        "rationale": "PHP is interpreted, and ‘compiled content’ is not a web term."
+      },
+      {
+        "text": "Dynamic content, because it is generated for each request.",
+        "correct": true,
+        "rationale": "The page is built per request."
+      },
+      {
+        "text": "Static content, because it is stored as a ready-made file.",
+        "correct": false,
+        "rationale": "Static pages don’t need a program."
+      }
+    ],
+    "explanation": "Static content is a stored file sent as it is. Dynamic content is generated by a program for each request, often from a database."
+  },
+  {
+    "id": "011.2-045",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.3"
+    ],
+    "terms": [
+      "011.2.t3"
+    ],
+    "stem": "Which statement about Samba is correct?",
+    "options": [
+      {
+        "text": "It shares directories between Unix machines only, and cannot talk to Windows.",
+        "correct": false,
+        "rationale": "That describes NFS, and Samba works with Windows."
+      },
+      {
+        "text": "It is a relational database server that stores data in tables.",
+        "correct": false,
+        "rationale": "Databases are MariaDB, MySQL and PostgreSQL."
+      },
+      {
+        "text": "It is a package manager for the SUSE family.",
+        "correct": false,
+        "rationale": "zypper is the SUSE package manager."
+      },
+      {
+        "text": "It shares files and printers with Windows computers, and can act as an Active Directory domain controller.",
+        "correct": true,
+        "rationale": "Both file sharing and the directory role are Samba’s."
+      }
+    ],
+    "explanation": "Samba speaks the protocols of Windows networks: it shares files and printers, and Samba 4 can also be an Active Directory domain controller.",
+    "sourceLinks": [
+      "https://www.samba.org/"
+    ]
+  },
+  {
+    "id": "011.2-046",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.6"
+    ],
+    "terms": [
+      "011.2.t5"
+    ],
+    "stem": "Mira removed a program with `sudo apt remove`, but its settings are still in `/etc`. Which command removes the program and its configuration files?",
+    "options": [
+      {
+        "text": "`dpkg -l`",
+        "correct": false,
+        "rationale": "dpkg -l only lists installed packages."
+      },
+      {
+        "text": "`sudo apt purge`",
+        "correct": true,
+        "rationale": "purge deletes the configuration too."
+      },
+      {
+        "text": "`sudo apt update`",
+        "correct": false,
+        "rationale": "update only refreshes the package list."
+      },
+      {
+        "text": "`apt search`",
+        "correct": false,
+        "rationale": "search only looks up packages."
+      }
+    ],
+    "explanation": "`apt remove` keeps configuration files. `apt purge` removes them as well."
+  },
+  {
+    "id": "011.2-047",
+    "objectiveId": "011.2",
+    "kind": "single",
+    "areas": [
+      "011.2.6"
+    ],
+    "terms": [
+      "011.2.t5"
+    ],
+    "stem": "Jonas runs Fedora and wants to find packages whose description mentions audio. Which command does that?",
+    "options": [
+      {
+        "text": "`zypper add audio`",
+        "correct": false,
+        "rationale": "zypper has no add command; it is for SUSE anyway."
+      },
+      {
+        "text": "`dpkg -S audio`",
+        "correct": false,
+        "rationale": "dpkg -S names the package that owns a file."
+      },
+      {
+        "text": "`dnf search audio`",
+        "correct": true,
+        "rationale": "dnf is Fedora’s tool."
+      },
+      {
+        "text": "`apt search audio`",
+        "correct": false,
+        "rationale": "apt is for Debian-family systems."
+      }
+    ],
+    "explanation": "`dnf search` looks through the repositories on the Red Hat family. `apt search` is the Debian equivalent."
   }
 ]

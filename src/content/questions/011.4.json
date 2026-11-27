@@ -1466,5 +1466,199 @@
       }
     ],
     "explanation": "The terms overlap, and in practice people use both for the text interface."
+  },
+  {
+    "id": "011.4-043",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.2"
+    ],
+    "terms": [
+      "011.4.t2"
+    ],
+    "stem": "Which hypervisor is built into the Linux kernel itself?",
+    "options": [
+      {
+        "text": "Podman",
+        "correct": false,
+        "rationale": "Podman runs containers."
+      },
+      {
+        "text": "KVM",
+        "correct": true,
+        "rationale": "KVM lives in the kernel."
+      },
+      {
+        "text": "Docker",
+        "correct": false,
+        "rationale": "Docker runs containers."
+      },
+      {
+        "text": "Ansible",
+        "correct": false,
+        "rationale": "Ansible manages configuration."
+      }
+    ],
+    "explanation": "KVM is part of the Linux kernel and turns Linux into a hypervisor. Docker and Podman run containers, and Ansible is configuration management.",
+    "sourceLinks": [
+      "https://linux-kvm.org/"
+    ]
+  },
+  {
+    "id": "011.4-044",
+    "objectiveId": "011.4",
+    "kind": "multi",
+    "areas": [
+      "011.4.2"
+    ],
+    "terms": [
+      "011.4.t2"
+    ],
+    "stem": "Which of these are hypervisors? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "Xen",
+        "correct": true,
+        "rationale": "Xen is a hypervisor."
+      },
+      {
+        "text": "Ansible",
+        "correct": false,
+        "rationale": "Ansible is a configuration tool."
+      },
+      {
+        "text": "KVM",
+        "correct": true,
+        "rationale": "KVM is a hypervisor."
+      },
+      {
+        "text": "Nextcloud",
+        "correct": false,
+        "rationale": "Nextcloud is file sync."
+      },
+      {
+        "text": "nano",
+        "correct": false,
+        "rationale": "nano is a text editor."
+      }
+    ],
+    "explanation": "Xen and KVM are hypervisors. Ansible manages configuration, Nextcloud syncs files and nano is an editor.",
+    "sourceLinks": [
+      "https://xenproject.org/",
+      "https://linux-kvm.org/"
+    ]
+  },
+  {
+    "id": "011.4-045",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.6"
+    ],
+    "terms": [
+      "011.4.t7"
+    ],
+    "stem": "How does block-device encryption such as LUKS differ from encrypting single files on top of a filesystem?",
+    "options": [
+      {
+        "text": "It encrypts only the file contents and leaves the disk readable.",
+        "correct": false,
+        "rationale": "That describes filesystem-level encryption."
+      },
+      {
+        "text": "It encrypts the network traffic while it travels.",
+        "correct": false,
+        "rationale": "Network traffic is protected by TLS."
+      },
+      {
+        "text": "It works only after the disk has been unmounted.",
+        "correct": false,
+        "rationale": "The device is usable while it is unlocked and mounted."
+      },
+      {
+        "text": "It encrypts the whole device, so file names, sizes and folder layout are hidden too.",
+        "correct": true,
+        "rationale": "The whole device is covered."
+      }
+    ],
+    "explanation": "Block-device encryption scrambles everything on the device, including the metadata. Filesystem-level encryption protects files and may leave names and sizes visible.",
+    "sourceLinks": [
+      "https://gitlab.com/cryptsetup/cryptsetup/-/wikis/home"
+    ]
+  },
+  {
+    "id": "011.4-046",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.1"
+    ],
+    "terms": [
+      "011.4.t3"
+    ],
+    "stem": "Mira submits a big simulation job to the university’s HPC cluster. Which node takes the job and schedules it onto the other nodes?",
+    "options": [
+      {
+        "text": "The USB node",
+        "correct": false,
+        "rationale": "There is no such node."
+      },
+      {
+        "text": "The swap node",
+        "correct": false,
+        "rationale": "There is no such node."
+      },
+      {
+        "text": "The head node",
+        "correct": true,
+        "rationale": "Scheduling is the head node’s job."
+      },
+      {
+        "text": "A client browser",
+        "correct": false,
+        "rationale": "A browser is a client."
+      }
+    ],
+    "explanation": "In an HPC cluster a head node accepts jobs and distributes them to the compute nodes, which run the parts in parallel."
+  },
+  {
+    "id": "011.4-047",
+    "objectiveId": "011.4",
+    "kind": "single",
+    "areas": [
+      "011.4.6"
+    ],
+    "terms": [
+      "011.4.t8"
+    ],
+    "stem": "Which measure lets an administrator allow only known USB devices, identified by vendor and product, to be used?",
+    "options": [
+      {
+        "text": "Installing a second hypervisor",
+        "correct": false,
+        "rationale": "Hypervisors host VMs."
+      },
+      {
+        "text": "Allow-listing devices, for example with USBGuard",
+        "correct": true,
+        "rationale": "That is device allow-listing."
+      },
+      {
+        "text": "Choosing a longer master password",
+        "correct": false,
+        "rationale": "A password doesn’t control USB devices."
+      },
+      {
+        "text": "Turning on HTTPS in the browser",
+        "correct": false,
+        "rationale": "HTTPS protects web traffic."
+      }
+    ],
+    "explanation": "Tools such as USBGuard let administrators authorise only known devices and block the rest.",
+    "sourceLinks": [
+      "https://usbguard.github.io/"
+    ]
   }
 ]

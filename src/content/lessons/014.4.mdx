@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '014.4',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Computers on a network have IP addresses (IPv4 like `192.0.2.10`, IPv6 like `2001:db8::10`). A router connects networks, and a machine sends everything not local to its default gateway. Names become addresses through DNS (`/etc/hosts`, `/etc/resolv.conf`, `host`, `resolvectl`). Query with `ip addr show`, `ip route show`, `ip -6 route show`, `ss` and `ping`. DHCP, SLAAC and DHCPv6 configure a machine automatically.',
   areasCovered: ['014.4.1', '014.4.2', '014.4.3', '014.4.4'],
   termsCovered: ['014.4.t1', '014.4.t2', '014.4.t3', '014.4.t4', '014.4.t5', '014.4.t6', '014.4.t7', '014.4.t8', '014.4.vt1', '014.4.vt2', '014.4.vt3', '014.4.vt4'],
@@ -31,9 +31,11 @@ A **network** is a set of computers that can send data to each other. The **Inte
 
 ### IPv4 and IPv6
 
-**IPv4** addresses have 32 bits, written as four numbers from 0 to 255 separated by dots: `192.0.2.10`. There are only about 4 billion of them, which isn't enough, so networks use **private** ranges inside the LAN (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) that are never used on the Internet, and the router translates between inside and outside.
+**IPv4** addresses have 32 bits, written as four numbers from 0 to 255 separated by dots: `192.0.2.10`. There are only about 4 billion of them, which isn't enough, so networks use **private** ranges inside the LAN (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) that are never used on the Internet, and the router translates between inside and outside. That translation is **NAT** (network address translation), in its common form also called **masquerading**: the router swaps a private source address for its own public one and remembers the connection, so the replies find their way back to the right machine.
 
-**IPv6** has 128 bits, written as eight groups of hexadecimal digits separated by colons: `2001:db8:0:0:0:0:0:10`. Leading zeros may be dropped, and one run of zero groups may be replaced by `::`, so this is `2001:db8::10`. IPv6 has enough addresses that every device can have a public one. Special ones: `::1` is the machine itself (loopback) and addresses starting `fe80:` are **link-local**, valid only on the local link.
+**IPv6** has 128 bits, written as eight groups of hexadecimal digits separated by colons: `2001:db8:0:0:0:0:0:10`. Leading zeros may be dropped, and one run of zero groups may be replaced by `::`, so this is `2001:db8::10`. IPv6 has enough addresses that every device can have a public one. Special ones: `::1` is the machine itself (loopback) and addresses starting `fe80:` are **link-local**, valid only on the local link (`fe80::/10`) and set up by every IPv6 interface on its own. Two more kinds: **unique local** addresses (`fc00::/7`, in practice starting `fd`) are IPv6's counterpart of the private IPv4 ranges, used inside a site but never routed on the Internet, and **global** addresses (today from `2000::/3`) are the public ones. An IPv6 network normally has a `/64` prefix: the first 64 bits name the network and the last 64, the **interface ID**, name the machine. An Internet provider usually gives a customer a larger block, often a `/48` or `/56`, which can be split into many `/64` networks.
+
+The prefix can also be written as a **netmask** (subnet mask) in dotted form, like an IPv4 address with the network bits set to 1: `255.255.255.0` is `/24`, `255.255.0.0` is `/16` and `255.255.255.128` is `/25`. Old tools and some settings screens ask for the mask, newer ones for the prefix length.
 
 The `/24` or `/64` after an address, as in `192.0.2.10/24`, is the **prefix length**: how many of the leading bits name the network. The rest names the machine within it. `/24` means that `192.0.2.1` to `192.0.2.254` are neighbours.
 
@@ -49,6 +51,25 @@ ip -4 addr show lo | grep inet | awk '{print $2}'
 
 ```output
 127.0.0.1/8
+```
+
+### The link layer and the layers of TCP/IP
+
+Network software is built in layers, each using the one below. The practical **TCP/IP model** has four:
+
+| Layer | Job | Examples |
+|---|---|---|
+| Application | what programs say to each other | HTTP, DNS, SSH |
+| Transport | which program gets the data, and how reliably | TCP, UDP (ports) |
+| Internet | addresses and routing between networks | IP, ICMP (ping) |
+| Link | delivery between two machines on the same network | Ethernet, WiFi |
+
+The textbook **OSI model** splits the same job into seven layers. You only need to know that it exists and that it is a reference model, whereas TCP/IP is what the Internet really uses.
+
+On the link layer, a machine is identified by the **MAC address** of its network interface: 48 bits, written as six pairs of hex digits such as `52:54:00:12:34:56`. It is built into the card, and it only matters on the local link, because a router does not pass it on. A frame sent to the special broadcast address `ff:ff:ff:ff:ff:ff` reaches every machine on the link. `ip link show` lists the interfaces and their MAC addresses (on a `link/ether` line), without IP addresses:
+
+```bash static
+ip link show
 ```
 
 ## Walkthrough
@@ -134,6 +155,12 @@ host 192.0.2.10
 
 For a name, `host` prints lines saying `has address` (IPv4) and `has IPv6 address`. For an address, it prints the name `domain name pointer`. `dig` and `nslookup` do the same with more detail.
 
+DNS stores facts as **records** of different types. Know these five: **A** (a name's IPv4 address), **AAAA** (its IPv6 address), **CNAME** (an alias: this name is another name), **MX** (the mail server for a domain) and **PTR** (the reverse: the name behind an address). Ask for one type with `host -t`:
+
+```bash static
+host -t MX tuxpixel.example
+```
+
 **`resolvectl`** is the front end of `systemd-resolved`, the DNS resolver service on many systemd distributions. On such a system `/etc/resolv.conf` may just point to a local stub resolver (`127.0.0.53`), so the real servers are not in that file. `resolvectl status` shows them, per interface, and `resolvectl query NAME` looks up a name through the resolver (both shown, not run):
 
 ```bash static
@@ -182,7 +209,7 @@ Typing addresses on every laptop would be slow and error-prone, so networks conf
 
 <ExamOnly exam="010-200">
 
-**DHCP** (Dynamic Host Configuration Protocol) is how IPv4 machines get settings. A DHCP server, often built into the router, answers with an address on **lease** (valid for some hours, then renewed), the prefix length (subnet mask), the default gateway and the DNS servers. The machine then writes those into its address, routing table and `/etc/resolv.conf`. You rarely set up an address by hand, apart from servers that need a fixed one.
+**DHCP** (Dynamic Host Configuration Protocol) is how IPv4 machines get settings. A DHCP server, often built into the router, answers with an address on **lease** (valid for some hours, then renewed), the prefix length (subnet mask), the default gateway and the DNS servers. The machine then writes those into its address, routing table and `/etc/resolv.conf`. You rarely set up an address by hand, apart from servers that need a fixed one. As root, Mira can add one for a test with `ip addr add 192.0.2.50/24 dev enp3s0` (this is lost at the next reboot; the permanent way is the distribution's network configuration).
 
 **SLAAC** (Stateless Address Autoconfiguration) is the IPv6 way. A router regularly announces the network's prefix (a **router advertisement**), and each machine builds its own address from that prefix plus an identifier of its own, checking that no one else already uses it. No server keeps a list of who has which address, hence "stateless".
 

@@ -227,5 +227,45 @@
     ],
     "front": "Which log files hold general and authentication messages, depending on the distribution?",
     "back": "General messages go to `/var/log/syslog` or `/var/log/messages`, and authentication messages to `/var/log/auth.log` or `/var/log/secure`. Kernel messages also reach syslog."
+  },
+  {
+    "id": "014.3-c29",
+    "areas": [
+      "014.3.1"
+    ],
+    "front": "What do the endings `.conf`, `rc` and `.d` mean in /etc?",
+    "back": "`.conf` is a program's settings file, `rc` holds start-up settings (`bash.bashrc`), and a `.d` directory holds many small files that together form one configuration."
+  },
+  {
+    "id": "014.3-c30",
+    "areas": [
+      "014.3.1"
+    ],
+    "front": "Where do a user's personal settings live?",
+    "back": "In dotfiles in the home directory, such as `.bashrc`, `.profile` and `.bash_history`, and in the `.ssh/` directory."
+  },
+  {
+    "id": "014.3-c31",
+    "areas": [
+      "014.3.1"
+    ],
+    "front": "Name the usual places for programs.",
+    "back": "`/usr/bin` and `/usr/sbin` (the distribution's own), `/usr/local/bin` (installed by hand), `/opt` (large add-on packages) and `~/.local/bin` (a user's own)."
+  },
+  {
+    "id": "014.3-c32",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "Which keys in top sort by memory, CPU, PID and time?",
+    "back": "`M` memory, `P` CPU, `N` PID, `T` running time. `R` reverses the order and `q` quits."
+  },
+  {
+    "id": "014.3-c33",
+    "areas": [
+      "014.3.2"
+    ],
+    "front": "What do us, sy, ni and id mean in top's %Cpu line?",
+    "back": "User programs, system (kernel), programs with a changed nice value, and idle time."
   }
 ]

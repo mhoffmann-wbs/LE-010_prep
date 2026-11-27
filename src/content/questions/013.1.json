@@ -975,5 +975,222 @@
     "fixture": "assets",
     "output": "all.tar.gz",
     "mode": "type"
+  },
+  {
+    "id": "013.1-031",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Ada archives an absolute path with `tar -cf logs.tar /var/log/syslog`. What does `tar` do with the leading slash of the member name?",
+    "explanation": "GNU `tar` protects against overwriting system files on extraction by storing relative names, and it tells you so.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "It keeps the slash, so extraction always writes to `/var/log/syslog`.",
+        "correct": false,
+        "rationale": "That only happens with `-P`."
+      },
+      {
+        "text": "It refuses the path and exits without making an archive.",
+        "correct": false,
+        "rationale": "Absolute paths are accepted; only the stored name changes."
+      },
+      {
+        "text": "It removes the slash, prints a notice, and stores `var/log/syslog`.",
+        "correct": true,
+        "rationale": "The notice reads \"Removing leading `/' from member names\"."
+      },
+      {
+        "text": "It replaces the slash with `~`, so the file lands in the home directory.",
+        "correct": false,
+        "rationale": "`tar` never rewrites a name this way."
+      }
+    ]
+  },
+  {
+    "id": "013.1-032",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2"
+    ],
+    "stem": "Which `tar` option keeps the leading `/` of absolute file names in the archive?",
+    "explanation": "The option is the capital letter; the default removes the slash.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-P`",
+        "correct": true,
+        "rationale": "`-P` (`--absolute-names`) stores names exactly as given."
+      },
+      {
+        "text": "`-C`",
+        "correct": false,
+        "rationale": "`-C` changes the directory before working."
+      },
+      {
+        "text": "`-v`",
+        "correct": false,
+        "rationale": "`-v` only lists files while working."
+      },
+      {
+        "text": "`-J`",
+        "correct": false,
+        "rationale": "`-J` selects xz compression."
+      }
+    ]
+  },
+  {
+    "id": "013.1-033",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t2",
+      "013.1.t3"
+    ],
+    "stem": "Jonas runs `tar -rf backup.tar.gz notes.txt` to add one more file. What happens?",
+    "explanation": "Appending and updating need a plain archive, because a compressed stream can't be extended in place.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tar` appends the file and recompresses the archive.",
+        "correct": false,
+        "rationale": "It never recompresses for you."
+      },
+      {
+        "text": "`tar` appends the file and leaves the gzip layer as it was.",
+        "correct": false,
+        "rationale": "That would corrupt the archive, so `tar` refuses."
+      },
+      {
+        "text": "`tar` replaces the whole archive with one that holds only `notes.txt`.",
+        "correct": false,
+        "rationale": "Nothing is overwritten; the command just fails."
+      },
+      {
+        "text": "`tar` stops with the error \"Cannot update compressed archives\".",
+        "correct": true,
+        "rationale": "`-r` and `-u` work only on uncompressed `.tar` files."
+      }
+    ]
+  },
+  {
+    "id": "013.1-034",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "Which statement about the numbered levels of `gzip` is correct?",
+    "explanation": "Levels trade time against size; the default sits in the middle.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-1` compresses best and `-9` is the fastest.",
+        "correct": false,
+        "rationale": "It is the other way round."
+      },
+      {
+        "text": "`-1` is fastest but compresses least; `-9` is slowest but compresses most.",
+        "correct": true,
+        "rationale": "A higher level spends more time to save more space."
+      },
+      {
+        "text": "The level decides which file ending `gzip` adds.",
+        "correct": false,
+        "rationale": "The ending is always `.gz`."
+      },
+      {
+        "text": "A level of `-0` stores the file in a ZIP archive.",
+        "correct": false,
+        "rationale": "`gzip` has no `-0` level and does not make ZIP files."
+      }
+    ]
+  },
+  {
+    "id": "013.1-035",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t4"
+    ],
+    "stem": "Jonas wants `zip` to store his files without compressing them at all. Which option does he use?",
+    "explanation": "ZIP levels run from none to maximum.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-1`",
+        "correct": false,
+        "rationale": "Level 1 compresses, but as fast as possible."
+      },
+      {
+        "text": "`-9`",
+        "correct": false,
+        "rationale": "Level 9 compresses as much as possible."
+      },
+      {
+        "text": "`-r`",
+        "correct": false,
+        "rationale": "`-r` makes `zip` descend into directories."
+      },
+      {
+        "text": "`-0`",
+        "correct": true,
+        "rationale": "Level 0 only stores the files."
+      }
+    ]
+  },
+  {
+    "id": "013.1-036",
+    "objectiveId": "013.1",
+    "areas": [
+      "013.1.1",
+      "013.1.2"
+    ],
+    "terms": [
+      "013.1.t3"
+    ],
+    "stem": "Mira wants to read `build.log.gz` on screen without unpacking it. Which command does that?",
+    "explanation": "`zcat` decompresses to standard output and leaves the `.gz` file alone.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tar -tf build.log.gz`",
+        "correct": false,
+        "rationale": "That lists archive members, and a `.gz` log is not a tar archive."
+      },
+      {
+        "text": "`zip -l build.log.gz`",
+        "correct": false,
+        "rationale": "`zip` does not read gzip files."
+      },
+      {
+        "text": "`zcat build.log.gz`",
+        "correct": true,
+        "rationale": "It prints the decompressed text and keeps the file."
+      },
+      {
+        "text": "`gzip build.log.gz`",
+        "correct": false,
+        "rationale": "That tries to compress it again."
+      }
+    ]
   }
 ]

@@ -1126,5 +1126,300 @@
     "sourceLinks": [
       "https://man7.org/linux/man-pages/man8/ss.8.html"
     ]
+  },
+  {
+    "id": "014.4-031",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "stem": "Mira reads `52:54:00:12:34:56` on the `link/ether` line of her laptop's `ip link show` output. What is this value?",
+    "options": [
+      {
+        "text": "The laptop's IPv6 address, written in a short form that leaves out zero groups.",
+        "correct": false,
+        "rationale": "An IPv6 address has 128 bits, written with colons in groups of four hex digits."
+      },
+      {
+        "text": "The MAC address of the network interface, a 48-bit address that only matters on the local link.",
+        "correct": true,
+        "rationale": "MAC addresses are six pairs of hex digits and identify the interface on its link."
+      },
+      {
+        "text": "The port number of the SSH service, written in hexadecimal.",
+        "correct": false,
+        "rationale": "A port is a single number from 0 to 65535."
+      },
+      {
+        "text": "The time of the last DHCP lease, written as six pairs of hex digits.",
+        "correct": false,
+        "rationale": "Lease times are not shown on the link line."
+      }
+    ],
+    "explanation": "A MAC address has 48 bits, written as six hex pairs. It belongs to the network interface, is used only between machines on the same link, and is not passed on by routers."
+  },
+  {
+    "id": "014.4-032",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "stem": "In the four-layer TCP/IP model, which layer do the protocols TCP and UDP, with their port numbers, belong to?",
+    "options": [
+      {
+        "text": "The link layer, which delivers frames on one network.",
+        "correct": false,
+        "rationale": "Ethernet and WiFi work on the link layer."
+      },
+      {
+        "text": "The internet layer, which gives machines IP addresses.",
+        "correct": false,
+        "rationale": "IP and ICMP are on the internet layer."
+      },
+      {
+        "text": "The application layer, together with HTTP and SSH.",
+        "correct": false,
+        "rationale": "Those are application protocols; TCP and UDP carry them."
+      },
+      {
+        "text": "The transport layer.",
+        "correct": true,
+        "rationale": "TCP and UDP decide which program receives the data, using ports."
+      }
+    ],
+    "explanation": "TCP/IP has four layers: link (Ethernet, WiFi), internet (IP), transport (TCP, UDP) and application (HTTP, DNS, SSH). The OSI model is the seven-layer reference version of the same idea."
+  },
+  {
+    "id": "014.4-033",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "terms": [
+      "014.4.t5"
+    ],
+    "stem": "A settings screen asks Ada for the subnet mask of the studio's `/24` network. Which value is right?",
+    "options": [
+      {
+        "text": "255.255.255.0",
+        "correct": true,
+        "rationale": "It has 24 bits set to 1, which is a `/24`."
+      },
+      {
+        "text": "255.255.0.0",
+        "correct": false,
+        "rationale": "This mask has 16 bits set, so it is a `/16`."
+      },
+      {
+        "text": "255.0.0.0",
+        "correct": false,
+        "rationale": "This mask has 8 bits set, so it is a `/8`."
+      },
+      {
+        "text": "255.255.255.255",
+        "correct": false,
+        "rationale": "This mask has all 32 bits set, so it names a single address."
+      }
+    ],
+    "explanation": "A dotted netmask writes the prefix length as an address with the network bits set to 1. `/24` is `255.255.255.0`, `/16` is `255.255.0.0` and `/8` is `255.0.0.0`."
+  },
+  {
+    "id": "014.4-034",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "stem": "All laptops in the office use private IPv4 addresses, yet they reach the Internet through the one public address of the router. Which technique makes that possible?",
+    "options": [
+      {
+        "text": "DHCP, which hands the public address to each laptop in turn.",
+        "correct": false,
+        "rationale": "DHCP gives out settings; it does not translate addresses."
+      },
+      {
+        "text": "DNS, which converts private addresses into public ones.",
+        "correct": false,
+        "rationale": "DNS turns names into addresses."
+      },
+      {
+        "text": "NAT (masquerading), where the router replaces the private source address by its own and remembers the connection.",
+        "correct": true,
+        "rationale": "NAT lets many private addresses share one public one."
+      },
+      {
+        "text": "SLAAC, which builds a new public address from the router's prefix.",
+        "correct": false,
+        "rationale": "SLAAC is an IPv6 method; it is not used for this translation."
+      }
+    ],
+    "explanation": "With NAT (also called masquerading) the router rewrites the private source address of outgoing packets to its own public address, and uses its table of connections to send the replies to the right machine."
+  },
+  {
+    "id": "014.4-035",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "terms": [
+      "014.4.t5"
+    ],
+    "stem": "Which IPv6 address is a unique local address, the counterpart of the private IPv4 ranges?",
+    "options": [
+      {
+        "text": "`fe80::1a2b:3c4d`",
+        "correct": false,
+        "rationale": "`fe80::/10` is the link-local range."
+      },
+      {
+        "text": "`fd12:3456:789a::10`",
+        "correct": true,
+        "rationale": "Unique local addresses come from `fc00::/7`, which in practice means they start with `fd`."
+      },
+      {
+        "text": "`::1`",
+        "correct": false,
+        "rationale": "`::1` is the loopback address."
+      },
+      {
+        "text": "`2001:db8::10`",
+        "correct": false,
+        "rationale": "That belongs to the range reserved for documentation, and is of the global kind."
+      }
+    ],
+    "explanation": "Link-local addresses start `fe80`, unique local ones come from `fc00::/7` (in practice `fd...`), and global ones are the public addresses. `::1` is loopback."
+  },
+  {
+    "id": "014.4-036",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.1"
+    ],
+    "terms": [
+      "014.4.t5"
+    ],
+    "stem": "A typical IPv6 LAN uses a `/64` prefix. How are the 128 bits of one address split?",
+    "options": [
+      {
+        "text": "The first 64 bits name the network and the last 64 bits, the interface ID, name the machine.",
+        "correct": true,
+        "rationale": "This is the usual split."
+      },
+      {
+        "text": "The first 64 bits name the machine and the last 64 bits name the network.",
+        "correct": false,
+        "rationale": "The network part comes first."
+      },
+      {
+        "text": "The first 32 bits are the IPv4 address and the others are zeros.",
+        "correct": false,
+        "rationale": "An IPv6 address is not made of an IPv4 address."
+      },
+      {
+        "text": "All 128 bits name the network, so one `/64` network holds a single machine.",
+        "correct": false,
+        "rationale": "A `/64` leaves 64 bits for the machines."
+      }
+    ],
+    "explanation": "The prefix length tells how many leading bits name the network. With `/64`, the other 64 bits are the interface ID for the machine. Providers often hand out a `/48` or `/56`, which can be split into many `/64` networks."
+  },
+  {
+    "id": "014.4-037",
+    "objectiveId": "014.4",
+    "kind": "single",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4",
+      "014.4.t8"
+    ],
+    "stem": "Jonas wants to know which server receives the email for `tuxpixel.example`. Which kind of DNS record holds that answer?",
+    "options": [
+      {
+        "text": "An MX record.",
+        "correct": true,
+        "rationale": "MX records name the mail servers of a domain."
+      },
+      {
+        "text": "A PTR record, because it points to the mail server's address.",
+        "correct": false,
+        "rationale": "PTR records map an address back to a name."
+      },
+      {
+        "text": "A CNAME record, because it lists the mail server's IPv6 address.",
+        "correct": false,
+        "rationale": "A CNAME makes one name an alias of another."
+      },
+      {
+        "text": "An AAAA record, since it is the only record type that mail uses.",
+        "correct": false,
+        "rationale": "AAAA records hold IPv6 addresses."
+      }
+    ],
+    "explanation": "A is a name's IPv4 address, AAAA its IPv6 address, CNAME an alias for another name, MX the mail server of a domain and PTR the name behind an address."
+  },
+  {
+    "id": "014.4-038",
+    "objectiveId": "014.4",
+    "kind": "fill",
+    "areas": [
+      "014.4.2"
+    ],
+    "terms": [
+      "014.4.t4"
+    ],
+    "stem": "Type the name of the DNS record type that maps a host name to an IPv6 address.",
+    "accept": [
+      "AAAA"
+    ],
+    "caseSensitive": false,
+    "explanation": "An AAAA record holds an IPv6 address, and an A record an IPv4 address."
+  },
+  {
+    "id": "014.4-039",
+    "objectiveId": "014.4",
+    "kind": "multi",
+    "areas": [
+      "014.4.1"
+    ],
+    "terms": [
+      "014.4.t5"
+    ],
+    "stem": "Which TWO statements about IPv6 addresses are correct? (Choose TWO.)",
+    "select": 2,
+    "options": [
+      {
+        "text": "An address that starts with `fe80` is link-local and is valid only on its own link.",
+        "correct": true,
+        "rationale": "That is the link-local range."
+      },
+      {
+        "text": "An IPv6 address has 32 bits and is written as four numbers separated by dots.",
+        "correct": false,
+        "rationale": "That is IPv4; IPv6 has 128 bits."
+      },
+      {
+        "text": "A `/64` prefix leaves 64 bits for the interface ID.",
+        "correct": true,
+        "rationale": "The other half of the address names the machine."
+      },
+      {
+        "text": "Every IPv6 address begins with `fd`, which marks it as a public address.",
+        "correct": false,
+        "rationale": "`fd` addresses are private (unique local), not public."
+      },
+      {
+        "text": "An IPv6 address has to be typed in full, because `::` is not allowed.",
+        "correct": false,
+        "rationale": "`::` replaces one run of zero groups."
+      }
+    ],
+    "explanation": "IPv6 has 128 bits. Addresses that start `fe80` are link-local, and with a `/64` prefix, half of the bits are the interface ID. `::` shortens one run of zero groups."
   }
 ]

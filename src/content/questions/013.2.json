@@ -1483,5 +1483,221 @@
         "rationale": "The error message is still printed on screen because stream 2 points at the screen."
       }
     ]
+  },
+  {
+    "id": "013.2-046",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Ada runs `ls nothere 2>> errors.txt` twice. What does `errors.txt` contain afterwards?",
+    "explanation": "`2>>` is the appending form of `2>`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Only the message of the second run.",
+        "correct": false,
+        "rationale": "That is what `2>` would do, since it replaces the content."
+      },
+      {
+        "text": "Both error messages, one after the other.",
+        "correct": true,
+        "rationale": "`2>>` adds to the end of the file each time."
+      },
+      {
+        "text": "Nothing, because errors can't be written to files.",
+        "correct": false,
+        "rationale": "Stream 2 can be redirected like any other stream."
+      },
+      {
+        "text": "The normal output of `ls`, because `2>>` appends stream 1.",
+        "correct": false,
+        "rationale": "Stream 1 is redirected with `>` or `>>`, not with a leading 2."
+      }
+    ]
+  },
+  {
+    "id": "013.2-047",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.2"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Mira wants the normal output of `ls nothere build.log` in `out.txt` and its error message in `err.txt`. Which command does that?",
+    "explanation": "Each stream needs its own redirection.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`ls nothere build.log > out.txt err.txt`",
+        "correct": false,
+        "rationale": "Without the 2, `err.txt` is just another argument for `ls`."
+      },
+      {
+        "text": "`ls nothere build.log 2> out.txt > out.txt`",
+        "correct": false,
+        "rationale": "Both streams would be written into one file."
+      },
+      {
+        "text": "`ls nothere build.log | out.txt | err.txt`",
+        "correct": false,
+        "rationale": "A pipe connects commands, not files."
+      },
+      {
+        "text": "`ls nothere build.log > out.txt 2> err.txt`",
+        "correct": true,
+        "rationale": "`>` takes stream 1 and `2>` takes stream 2, each to its own file."
+      }
+    ]
+  },
+  {
+    "id": "013.2-048",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which lines of a file does `grep 'a*b'` print?",
+    "explanation": "`*` allows zero repeats of the previous item, so only the `b` is required.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Only lines that contain at least one `a` followed by `b`.",
+        "correct": false,
+        "rationale": "That would be `aa*b` (or `a+b` with `-E`)."
+      },
+      {
+        "text": "Only lines that are exactly `ab`.",
+        "correct": false,
+        "rationale": "No anchors are given, so the line may hold more text."
+      },
+      {
+        "text": "Every line that contains a `b`, with or without an `a` before it.",
+        "correct": true,
+        "rationale": "Zero `a`s followed by `b` already matches."
+      },
+      {
+        "text": "Every line that contains `a*b` literally, with a star.",
+        "correct": false,
+        "rationale": "In a regular expression the star is an operator, not a character."
+      }
+    ]
+  },
+  {
+    "id": "013.2-049",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.3",
+      "013.2.v1"
+    ],
+    "terms": [
+      "013.2.t1",
+      "013.2.vt1"
+    ],
+    "stem": "Which lines does `grep '^[sb]at$'` match?",
+    "explanation": "The anchors and the bracket set together describe the whole line.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "Only the lines `sat` and `bat`.",
+        "correct": true,
+        "rationale": "One character from the set `s` or `b`, then `at`, and nothing else on the line."
+      },
+      {
+        "text": "Any line that contains `sat` or `bat`, even with more text.",
+        "correct": false,
+        "rationale": "`^` and `$` pin the pattern to the whole line."
+      },
+      {
+        "text": "The lines `sbat` and `sat`.",
+        "correct": false,
+        "rationale": "The brackets match exactly one character."
+      },
+      {
+        "text": "Lines that start with `s` or `b`, whatever follows.",
+        "correct": false,
+        "rationale": "`at$` also requires the line to end in `at` after exactly one character."
+      }
+    ]
+  },
+  {
+    "id": "013.2-050",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t3"
+    ],
+    "stem": "Ada wants to watch `server.log` and see new lines as they are written. Which command does that?",
+    "explanation": "`tail` follows a file with one option.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`head -f server.log`",
+        "correct": false,
+        "rationale": "`head` has no follow mode."
+      },
+      {
+        "text": "`less -n server.log`",
+        "correct": false,
+        "rationale": "`less` pages through a file; it doesn't follow it."
+      },
+      {
+        "text": "`cat -f server.log`",
+        "correct": false,
+        "rationale": "`cat` has no `-f` option."
+      },
+      {
+        "text": "`tail -f server.log`",
+        "correct": true,
+        "rationale": "`-f` keeps running and prints appended lines; Ctrl+C stops it."
+      }
+    ]
+  },
+  {
+    "id": "013.2-051",
+    "objectiveId": "013.2",
+    "areas": [
+      "013.2.1"
+    ],
+    "terms": [
+      "013.2.t7"
+    ],
+    "stem": "Jonas wants to delete all the digits from a line of text. Which command is correct?",
+    "explanation": "`tr` reads standard input only, so the text must arrive through a pipe or `<`.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`tr -d '0-9' scores.txt`",
+        "correct": false,
+        "rationale": "`tr` takes no file name; it treats the extra word as an error."
+      },
+      {
+        "text": "`echo 'lvl9 boss3' | tr -d '0-9'`",
+        "correct": true,
+        "rationale": "`-d` deletes the listed characters, here every digit."
+      },
+      {
+        "text": "`tr -s '0-9' < scores.txt`",
+        "correct": false,
+        "rationale": "`-s` squeezes repeats instead of deleting."
+      },
+      {
+        "text": "`cut -d '0-9' scores.txt`",
+        "correct": false,
+        "rationale": "`cut` selects fields; it doesn't delete characters."
+      }
+    ]
   }
 ]

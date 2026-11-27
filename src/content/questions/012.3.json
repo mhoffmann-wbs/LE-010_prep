@@ -506,5 +506,288 @@
     "output": "pixel-raiders/\nwebsite/",
     "explanation": "With `-F`, `ls` appends a `/` to each directory name. `-1` prints one entry per line instead of columns.",
     "sourceLinks": ["https://man7.org/linux/man-pages/man1/ls.1.html"]
+  },
+  {
+    "id": "012.3-034",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "Mira wants to see which release files are biggest. What does this command print?",
+    "command": "cd release; ls -1S",
+    "output": "hero.png\ntheme.ogg\ncredits.txt\nlevel10.txt\nlevel2.txt\nlevel1.txt",
+    "mode": "choice",
+    "fixture": "basics-sizes",
+    "options": [
+      {
+        "text": "level1.txt\nlevel2.txt\nlevel10.txt\ncredits.txt\ntheme.ogg\nhero.png",
+        "correct": false,
+        "rationale": "That is the order of `ls -1Sr`, smallest first."
+      },
+      {
+        "text": "credits.txt\nhero.png\nlevel1.txt\nlevel10.txt\nlevel2.txt\ntheme.ogg",
+        "correct": false,
+        "rationale": "That is plain alphabetical order, as `ls -1` prints it."
+      },
+      {
+        "text": "hero.png\ntheme.ogg\ncredits.txt\nlevel10.txt\nlevel2.txt\nlevel1.txt",
+        "correct": true,
+        "rationale": "Largest first, as `-S` does."
+      },
+      {
+        "text": "theme.ogg\nhero.png\ncredits.txt\nlevel10.txt\nlevel1.txt\nlevel2.txt",
+        "correct": false,
+        "rationale": "That is the order of `ls -1X`, grouped by extension."
+      }
+    ],
+    "explanation": "`-S` sorts by size, largest first, and `-1` puts one name on each line. `hero.png` is 30 bytes and `level1.txt` is 4."
+  },
+  {
+    "id": "012.3-035",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "Ada lists the release folder grouped by file extension. Type what this command prints.",
+    "command": "cd release; ls -1X",
+    "output": "theme.ogg\nhero.png\ncredits.txt\nlevel10.txt\nlevel1.txt\nlevel2.txt",
+    "mode": "type",
+    "fixture": "basics-sizes",
+    "explanation": "`-X` sorts by extension: `.ogg`, then `.png`, then the three `.txt` files. Files with the same extension are sorted by name, and `level10.txt` comes before `level1.txt` because `0` sorts before `.`."
+  },
+  {
+    "id": "012.3-036",
+    "objectiveId": "012.3",
+    "kind": "output",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "Jonas wants the smallest file first. Type what this command prints.",
+    "command": "cd release; ls -1Sr",
+    "output": "level1.txt\nlevel2.txt\nlevel10.txt\ncredits.txt\ntheme.ogg\nhero.png",
+    "mode": "type",
+    "fixture": "basics-sizes",
+    "explanation": "`-S` sorts largest first, and `-r` reverses that, so the smallest file comes first."
+  },
+  {
+    "id": "012.3-037",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "Mira runs `ls -lt` and sees the most recently modified file at the top. Which option, added to the command, shows files by their last access time instead?",
+    "options": [
+      {
+        "text": "`-c`, which would sort by the status-change time",
+        "correct": false,
+        "rationale": "`-c` uses the time of the last status (inode) change, not the access time."
+      },
+      {
+        "text": "`-S`, which would sort by size",
+        "correct": false,
+        "rationale": "`-S` replaces the time sort with a size sort."
+      },
+      {
+        "text": "`-u`, the last access time",
+        "correct": true,
+        "rationale": "Correct: with `-t`, `-u` sorts by access time instead of modification time."
+      },
+      {
+        "text": "`-X`, which would sort by extension",
+        "correct": false,
+        "rationale": "`-X` sorts by extension and has nothing to do with times."
+      }
+    ],
+    "explanation": "`-t` sorts by time. By default that is the modification time; `-u` selects access time and `-c` the status-change time."
+  },
+  {
+    "id": "012.3-038",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "What does the `-r` option do in `ls -lSr`?",
+    "options": [
+      {
+        "text": "It lists subdirectories recursively",
+        "correct": false,
+        "rationale": "That is `-R`, in capital letters."
+      },
+      {
+        "text": "It reverses the sort order",
+        "correct": true,
+        "rationale": "Correct: `-r` reverses whichever order is in use."
+      },
+      {
+        "text": "It restricts the listing to regular files",
+        "correct": false,
+        "rationale": "`ls` has no such option; `find -type f` would do that."
+      },
+      {
+        "text": "It removes the entries it lists",
+        "correct": false,
+        "rationale": "`ls` never deletes anything."
+      }
+    ],
+    "explanation": "Lower-case `-r` reverses the order; upper-case `-R` recurses. Mixing up that pair is a common slip."
+  },
+  {
+    "id": "012.3-039",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "In the output of `ls -l`, which column comes right after the owner and the group?",
+    "options": [
+      {
+        "text": "The size in bytes",
+        "correct": true,
+        "rationale": "Correct: after the owner and group come the size, then the date and time, then the name."
+      },
+      {
+        "text": "The number of hard links",
+        "correct": false,
+        "rationale": "The link count sits before the owner, right after the permissions."
+      },
+      {
+        "text": "The file name",
+        "correct": false,
+        "rationale": "The name is the last column."
+      },
+      {
+        "text": "The permission string",
+        "correct": false,
+        "rationale": "The permissions are the first column."
+      }
+    ],
+    "explanation": "A long listing reads: type and permissions, link count, owner, group, size, date and time, name."
+  },
+  {
+    "id": "012.3-040",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "Jonas has a file called `boss fight.ogg`. Which command removes exactly that file?",
+    "options": [
+      {
+        "text": "`rm boss fight.ogg`",
+        "correct": false,
+        "rationale": "The shell passes two names, `boss` and `fight.ogg`."
+      },
+      {
+        "text": "`rm boss+fight.ogg`",
+        "correct": false,
+        "rationale": "A plus sign doesn't stand for a space in a file name."
+      },
+      {
+        "text": "`rm 'boss fight.ogg'`",
+        "correct": true,
+        "rationale": "Correct: the quotes keep the space inside one argument."
+      },
+      {
+        "text": "`rm boss-fight.ogg`",
+        "correct": false,
+        "rationale": "That names a different file."
+      }
+    ],
+    "explanation": "Quotes or a backslash before the space (`boss\\ fight.ogg`) make the shell treat the name as one word."
+  },
+  {
+    "id": "012.3-041",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": [
+      "012.3.5"
+    ],
+    "terms": [
+      "012.3.t7"
+    ],
+    "stem": "The release folder holds `level1.txt`, `level2.txt` and `level10.txt`. Which `find` command lists only the first two?",
+    "options": [
+      {
+        "text": "`find . -name \"level?.txt\"`",
+        "correct": true,
+        "rationale": "Correct: `?` matches exactly one character."
+      },
+      {
+        "text": "`find . -name \"level*.txt\"`",
+        "correct": false,
+        "rationale": "`*` also matches `10`, so all three would be listed."
+      },
+      {
+        "text": "`find . -name \"level??.txt\"`",
+        "correct": false,
+        "rationale": "This needs exactly two characters and lists only `level10.txt`."
+      },
+      {
+        "text": "`find . -type level.txt`",
+        "correct": false,
+        "rationale": "`-type` takes a one-letter type such as `f` or `d`, not a name."
+      }
+    ],
+    "explanation": "In `find -name`, as in shell globbing, `?` stands for one character and `*` for any number of characters, including none. Quote the pattern so `find` sees it."
+  },
+  {
+    "id": "012.3-042",
+    "objectiveId": "012.3",
+    "kind": "single",
+    "areas": [
+      "012.3.1"
+    ],
+    "terms": [
+      "012.3.t1"
+    ],
+    "stem": "With `ls -lh`, what does a size shown as `4.0K` mean?",
+    "options": [
+      {
+        "text": "About 4 kilobytes",
+        "correct": true,
+        "rationale": "Correct: `K` stands for kilobytes (units of 1024 bytes)."
+      },
+      {
+        "text": "4 kilobits per second, a transfer speed",
+        "correct": false,
+        "rationale": "`ls` shows file sizes, not speeds."
+      },
+      {
+        "text": "The file has 4 links and a `K` permission",
+        "correct": false,
+        "rationale": "Links and permissions are separate columns."
+      },
+      {
+        "text": "The file is 4.0 characters long",
+        "correct": false,
+        "rationale": "Sizes are in bytes, scaled with a unit letter by `-h`."
+      }
+    ],
+    "explanation": "`-h` scales sizes to `K`, `M` or `G`. Without it, the size is given in bytes."
   }
 ]

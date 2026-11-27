@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '013.1',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'An archive bundles many files into one file; compression makes a file smaller. `tar` makes archives: `tar -cf` creates, `tar -tf` lists, `tar -xf` extracts, and `-z`, `-j`, `-J` add gzip, bzip2 or xz compression (`.tar.gz`, `.tar.bz2`, `.tar.xz`). `gzip`, `bzip2` and `xz` compress one file each; `zip -r` and `unzip` do both jobs at once.',
   areasCovered: ['013.1.1', '013.1.2'],
   termsCovered: ['013.1.t1', '013.1.t2', '013.1.t3', '013.1.t4'],
@@ -102,6 +102,23 @@ Release 0.9. Sprites are 32x32.
 ```
 
 (The fixture already has `assets/README.md`, so `tar` simply writes the same file again.) A habit worth building: **list first with `-t`**, then extract. You then know where the files will land and whether the archive holds one tidy folder or a hundred loose files.
+
+**Absolute paths.** If you give `tar` a path that starts with `/`, it strips that slash from the names it stores and tells you so. Archives therefore unpack *below* where you are instead of overwriting system files. `-P` (`--absolute-names`) keeps the slash, and then the member is stored with its full path (list it with `-P` as well, or `tar` repeats the warning):
+
+```bash fixture=assets
+tar -cf safe.tar /home/mira/assets/README.md
+tar -tf safe.tar
+tar -cPf full.tar /home/mira/assets/README.md
+tar -tPf full.tar
+```
+
+```output
+tar: Removing leading `/' from member names
+home/mira/assets/README.md
+/home/mira/assets/README.md
+```
+
+**Adding to an archive.** `-r` appends files to an existing archive and `-u` appends only files that are newer than the stored copy. Both work only on a plain, uncompressed `.tar`; on a `.tar.gz` `tar` stops with "Cannot update compressed archives". To change a compressed archive, unpack it, change the files and create it again.
 
 The leading dash is optional for the first option group of `tar`, so `tar cf a.tar dir`, `tar -cf a.tar dir` and `tar -c -f a.tar dir` all mean the same. Use the dash form, as in this course; the exam may show either.
 
@@ -212,6 +229,10 @@ exit status: 2
 ```
 
 That is the reason `tar` exists. To compress a whole directory you first bundle it (`tar`), then compress the one bundle; `tar -czf` does both steps for you. The result `backup.tar.gz` is the same as running `tar -cf backup.tar assets` and then `gzip backup.tar`.
+
+The three compressors accept a level from `-1` (fastest, biggest result) to `-9` (slowest, smallest result). `gzip` and `xz` use `-6` when you give no level, and `bzip2` uses `-9`. A higher level costs more time (and, for `xz`, more memory) to save some space. Likewise `zip` takes `-0` to `-9`, where `-0` only stores the files without compressing them. Compression here is **lossless**: decompressing gives back the exact original bytes, unlike lossy formats such as JPEG or MP3.
+
+To read a compressed text file without unpacking it, use `zcat`, `bzcat` and `xzcat` (they print the decompressed data), `zgrep` to search it, or `zless` to page through it. The original stays as it is.
 
 ### ZIP: archive and compression in one tool
 
@@ -324,6 +345,10 @@ assets
 
 <Callout title="Compressors replace the original and take single files">
   <p>`gzip file` leaves only `file.gz` unless you add `-k`. To undo it, use `gunzip file.gz` or `gzip -d file.gz`. `bzip2` and `xz` work the same way (`bunzip2`, `unxz`, or `-d`). None of them takes a directory: use `tar` for that.</p>
+</Callout>
+
+<Callout title="Only plain tar archives can be updated">
+  <p>`tar -r` and `tar -u` add to an archive, but only to an uncompressed one. On `backup.tar.gz` they fail with "Cannot update compressed archives".</p>
 </Callout>
 
 <Callout title="zip needs -r for a directory">

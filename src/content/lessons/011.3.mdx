@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '011.3',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Free software gives users four freedoms: run, study and change, share, and share changes. Open source software meets the Open Source Definition. The FSF backs the first idea and the OSI the second. Copyleft licences (GPL) require that changes stay free; permissive licences (BSD) mostly just ask for credit. Creative Commons licences do the same job for content such as art and text. Proprietary software keeps those freedoms from you, which affects your digital autonomy and sovereignty.',
   areasCovered: ['011.3.1', '011.3.2', '011.3.3', '011.3.4', '011.3.v1', '011.3.v2'],
   termsCovered: ['011.3.t1', '011.3.t2', '011.3.t3', '011.3.t4', '011.3.t5', '011.3.t6', '011.3.t7', '011.3.t8', '011.3.vt1', '011.3.vt2', '011.3.vt3'],
@@ -8,7 +8,10 @@ export const meta = {
     { title: 'GNU: What is free software? (the four freedoms)', url: 'https://www.gnu.org/philosophy/free-sw.html' },
     { title: 'GNU: What is copyleft?', url: 'https://www.gnu.org/licenses/copyleft.html' },
     { title: 'GNU: licences (GPL, LGPL, AGPL)', url: 'https://www.gnu.org/licenses/licenses.html' },
+    { title: 'GNU: Free Documentation License', url: 'https://www.gnu.org/licenses/fdl-1.3.html' },
     { title: 'Free Software Foundation', url: 'https://www.fsf.org/' },
+    { title: 'Open Source Initiative: BSD 2-Clause licence', url: 'https://opensource.org/license/bsd-2-clause' },
+    { title: 'Apache License 2.0', url: 'https://www.apache.org/licenses/LICENSE-2.0' },
     { title: 'Open Source Initiative: the Open Source Definition', url: 'https://opensource.org/osd' },
     { title: 'Open Source Initiative: BSD 3-Clause licence', url: 'https://opensource.org/license/bsd-3-clause' },
     { title: 'Creative Commons: about the licences', url: 'https://creativecommons.org/share-your-work/cclicenses/' },
@@ -57,6 +60,8 @@ The FSF's four essential freedoms are numbered from 0:
 
 The Open Source Definition (maintained by the OSI) has ten criteria. A few are free redistribution, source code must be available, derived works must be allowed, and no discrimination against people or fields of work. A licence the OSI approves counts as an open source licence.
 
+Both movements rely on people being allowed to **fork** a project: to copy its source code and take it in a new direction, as the licence allows, when they disagree with its owners. LibreOffice (from OpenOffice.org) and MariaDB (from MySQL) began as forks.
+
 In practice nearly every free software licence is also an open source licence, and the other way round. People who want to speak about both at once say "free and open source software". The two groups differ in their emphasis, not mostly in which programs they accept.
 
 <ExamOnly exam="010-160">
@@ -77,7 +82,9 @@ Free and open source licences fall into two groups, and the difference is what h
 
 **Copyleft** is a play on the word *copyright*. It uses copyright law to keep software free: the author says "you may copy and change this, as long as the people you give it to get the same freedoms". The **GPL** is the best-known copyleft licence. The Linux kernel is under the GPL, and so are many GNU tools. The **LGPL** is a weaker version made for libraries, and the **AGPL** extends the idea to programs people only use over a network, so that running a modified version as a web service still means sharing its source.
 
-A **permissive** licence puts very few conditions on reuse. The **BSD** licences ask mostly that you keep the copyright notice and that you don't use the authors' names to promote your product. A company may take BSD-licensed code, improve it, and sell the result without releasing its changes.
+A **permissive** licence puts very few conditions on reuse. The **BSD** licences ask mostly that you keep the copyright notice and that you don't use the authors' names to promote your product. A company may take BSD-licensed code, improve it, and sell the result without releasing its changes. The short **2-clause BSD licence** asks for two things: keep the copyright notice and the disclaimer. The **BSD family** of operating systems (FreeBSD, NetBSD and OpenBSD) grew out of the same tradition. The **Apache License 2.0** is another permissive licence; it also gives users a patent grant.
+
+Critics call strong copyleft "viral" because the licence follows the code into everything built on it. Two licences can also be **incompatible**: you may not be able to combine code under both into one program.
 
 You can read both on this system. A GPL licence starts with its name and version:
 
@@ -107,11 +114,13 @@ The six licences are **CC BY**, **CC BY-SA**, **CC BY-NC**, **CC BY-NC-SA**, **C
 
 Creative Commons licences are not meant for software. For code, use a software licence.
 
+Manuals have their own copyleft licence too: the **GNU Free Documentation License (GNU FDL)** from the GNU project. It works like the GPL for documentation: copies and changed versions stay free.
+
 <ExamOnly exam="010-200">
 
 ### Proprietary software
 
-**Proprietary software** (also called non-free) is software whose owner decides what you can do with it. You typically get only a binary, a licence that limits use, and no source code. Examples are commercial office suites and many games. It can be sold, free of charge, or shown with ads, so price isn't the test. The test is the freedoms.
+**Proprietary software** (also called non-free) is software whose owner decides what you can do with it. You typically get only a binary, a licence that limits use, and no source code. Examples are commercial office suites and many games. It can be sold, free of charge, or shown with ads, so price isn't the test. The test is the freedoms. With a proprietary licence you are granted certain **rights of use**; you do not become the owner, and the owner can set the terms.
 
 Proprietary doesn't mean "bad", and a lot of useful work is done with it. But there are consequences, the main one being dependence on the owner.
 
@@ -121,7 +130,7 @@ Proprietary doesn't mean "bad", and a lot of useful work is done with it. But th
 
 **Digital sovereignty** is the same idea at the level of a country, a public body or a company: control over their own digital infrastructure, data and rules. A government that depends wholly on one foreign company's proprietary software can't easily inspect it, fix it, or switch away.
 
-Free and open source software supports both, because you may read it, change it, run it yourself and switch to a different supplier. It does not make them automatic: you still need skills, money and good decisions. Organisations disagree on how much it contributes. The Free Software Foundation Europe argues that sovereignty needs free software, while the Open Source Initiative describes open source as a global commons that nobody owns and encourages joining the development communities. There is no single agreed definition, so on the exam remember the common ground: open licences give users **control and the ability to leave**, while a proprietary product can leave them **dependent on one vendor** (vendor lock-in).
+Free and open source software supports both, because its source can be audited by anyone (it is transparent, so there are no hidden surprises) and because you may read it, change it, run it yourself and switch to a different supplier. It does not make them automatic: you still need skills, money and good decisions. Organisations disagree on how much it contributes. The Free Software Foundation Europe argues that sovereignty needs free software, while the Open Source Initiative describes open source as a global commons that nobody owns and encourages joining the development communities. There is no single agreed definition, so on the exam remember the common ground: open licences give users **control and the ability to leave**, while a proprietary product can leave them **dependent on one vendor** (vendor lock-in).
 
 </ExamOnly>
 

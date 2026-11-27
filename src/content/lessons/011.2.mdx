@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '011.2',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Know what the big open source programs are for: desktop apps (LibreOffice, Firefox, GIMP), web apps and servers (Nextcloud, Apache, NGINX, databases, Samba), code tools (Git, languages) and package managers. Software comes in packages from repositories. `dpkg`, `apt` and `apt-get` work with `.deb` packages; `rpm`, `dnf`, `zypper` and `apk` belong to the other families.',
   areasCovered: ['011.2.1', '011.2.2', '011.2.3', '011.2.4', '011.2.5', '011.2.6', '011.2.v1'],
   termsCovered: ['011.2.t1', '011.2.t2', '011.2.t3', '011.2.t4', '011.2.t5', '011.2.vt1', '011.2.vt2', '011.2.vt3', '011.2.vt4', '011.2.vt5'],
@@ -27,6 +27,8 @@ export const meta = {
     { title: 'MariaDB', url: 'https://mariadb.org/' },
     { title: 'PostgreSQL', url: 'https://www.postgresql.org/' },
     { title: 'Samba', url: 'https://www.samba.org/' },
+    { title: 'lighttpd', url: 'https://www.lighttpd.net/' },
+    { title: 'OpenPGP', url: 'https://www.openpgp.org/' },
     { title: 'Debian reference: package management with apt and dpkg', url: 'https://www.debian.org/doc/manuals/debian-reference/ch02.en.html' },
     { title: 'dnf documentation', url: 'https://dnf.readthedocs.io/' },
     { title: 'openSUSE: zypper', url: 'https://en.opensuse.org/Portal:Zypper' },
@@ -60,7 +62,7 @@ These are the programs you click on in a graphical desktop.
 
 | Program | What it is for |
 |---|---|
-| **LibreOffice** | Office suite: word processor, spreadsheet, presentations |
+| **LibreOffice** | Office suite. Its parts: **Writer** (word processor), **Calc** (spreadsheet), **Impress** (presentations), **Draw** (drawings and diagrams), **Math** (formulas) and **Base** (databases). Its native file format is **ODF**, the OpenDocument Format. |
 | **Thunderbird** | Email, calendar and news client |
 | **Firefox** | Web browser |
 | **Chromium** | Open source web browser. **Chrome** is Google's browser built on it, with some proprietary parts added. |
@@ -68,7 +70,7 @@ These are the programs you click on in a graphical desktop.
 | **GIMP** | Photo editing and raster images (pixels) |
 | **Inkscape** | Vector graphics (shapes and lines that scale without getting blurry) |
 | **VLC** | Plays almost any audio or video file |
-| **GPG** (GnuPG) | Encrypts and signs files and emails. It is a command line tool. |
+| **GPG** (GnuPG) | Encrypts and signs files and emails. It is a command line tool that implements the **OpenPGP** standard and works with a key pair: a public key you hand out and a private key you keep. |
 | **R** | Language and environment for statistics and charts |
 
 <ExamOnly exam="010-160">
@@ -102,13 +104,13 @@ A **server application** runs in the background and answers requests from other 
 
 | Program | What it is for |
 |---|---|
-| **Apache HTTPD**, **NGINX** | Web servers: they deliver web pages. NGINX is also often used as a reverse proxy in front of other programs. |
-| **MariaDB**, **MySQL**, **PostgreSQL** | Database servers: they store structured data and answer queries. MariaDB started as a fork of MySQL. |
-| **NFS** | Network File System: share directories between Unix and Linux machines |
+| **Apache HTTPD**, **NGINX**, **lighttpd** | Web servers: they deliver web pages. NGINX is also often used as a reverse proxy in front of other programs, and lighttpd is a small, light server. |
+| **MariaDB**, **MySQL**, **PostgreSQL** | Relational database servers: they keep structured data in tables and answer queries. MariaDB started as a fork of MySQL (a **fork** is a copy of a project's source that is developed on its own from then on). |
+| **NFS** | Network File System: share directories between Unix and Linux machines. It can even serve a whole system tree to thin or diskless clients that boot from it. |
 | **Nextcloud**, **ownCloud** | Your own file sync and sharing "cloud" (like Dropbox), with calendars and contacts |
-| **Samba** | Shares files and printers with Windows computers, using their protocols |
+| **Samba** | Shares files and printers with Windows computers, using their protocols. It can also act as an Active Directory domain controller. |
 
-Web servers are often combined with a database and a programming language to run a site. A well-known stack is **LAMP**: Linux, Apache, MariaDB or MySQL, and PHP.
+Web servers are often combined with a database and a programming language to run a site. A well-known stack is **LAMP**: Linux, Apache, MariaDB or MySQL, and PHP. The server sends **static** content (a file such as an image or a fixed HTML page) exactly as it is stored. **Dynamic** content is built for each request by a program, usually from data in a database.
 
 <ExamOnly exam="010-160">
 
@@ -179,6 +181,15 @@ sudo apk add gimp            # the same on Alpine, as root
 
 `rpm` and `dpkg` can install a single downloaded file, but they do not fetch dependencies, which is why you normally use `apt`, `dnf` or `zypper`.
 
+The high-level tools also search the repositories, and installing or removing needs administrator rights (`sudo`). Removing a package leaves its configuration files in place, so a later reinstall finds your settings. On Debian-based systems, `purge` removes the configuration too:
+
+```bash static
+apt search audio             # search package names and descriptions (Debian family)
+dnf search audio             # the same on Fedora, RHEL, AlmaLinux, Rocky
+sudo apt remove gimp         # remove the program, keep its configuration files
+sudo apt purge gimp          # remove the program and its configuration files
+```
+
 <ExamOnly exam="010-160">
 
 Exam 010-160 lists **yum** instead of `dnf`. `yum` was the high-level tool of the Red Hat family before `dnf` replaced it. It does the same job (`yum install gimp`), and the older versions of RHEL and CentOS shipped it. Exam 010-160 does not list `apt`, `zypper` or `apk`.
@@ -244,6 +255,10 @@ no git
 
 <Callout title="Low-level or high-level">
   <p>`dpkg` and `rpm` work on package files you already have and don't fetch dependencies. `apt`, `dnf`, `zypper` and `apk` use repositories and resolve dependencies.</p>
+</Callout>
+
+<Callout title="Remove keeps the settings">
+  <p>`apt remove` deletes the program but keeps its configuration files. `apt purge` deletes both. Installing and removing software needs root rights, usually through `sudo`.</p>
 </Callout>
 
 <Callout title="Chromium is not Chrome, and Git is not GitHub">

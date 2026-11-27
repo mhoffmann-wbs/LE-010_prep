@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '012.1',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'The shell (`bash`) reads a line, splits it into a command, options and arguments, and runs it. Variables hold text: `name=Mira` makes a local one, `export` hands it to programs you start, and `$PATH` lists the directories where the shell looks for programs. Double quotes allow `$` expansion, single quotes allow nothing, and a backslash escapes one character. `type` tells you whether a command is a builtin or a program.',
   areasCovered: ['012.1.1', '012.1.2', '012.1.3', '012.1.4'],
   termsCovered: ['012.1.t1', '012.1.t2', '012.1.t3', '012.1.t4', '012.1.t5', '012.1.t6', '012.1.t7'],
@@ -42,9 +42,11 @@ echo Pixel Raiders is out
 Pixel Raiders is out
 ```
 
+On Debian and many other systems the prompt looks like `mira@tuxpixel:~$`. Read it in pieces: `mira` is the user, `tuxpixel` the host name, `~` the current directory (the home directory, here `/home/mira`) and the last character shows the kind of user. A `$` means a normal user and a `#` means root. If Mira changes into `/var/log`, the `~` becomes `/var/log`. Other distributions and custom settings can change the prompt, so treat it as a hint, not a guarantee.
+
 Useful keys in Bash: the **Tab** key completes a name for you, the up arrow brings back the previous line, and **Ctrl+C** stops a running program.
 
-Your shell also remembers the lines you typed. The `history` command lists them with numbers, oldest first. `!!` repeats the last line and `!42` repeats line 42. The **Ctrl+R** key searches the history as you type. Bash keeps the history in a hidden file in your home, `~/.bash_history`.
+Your shell also remembers the lines you typed. The `history` command lists them with numbers, oldest first. `!!` repeats the last line and `!42` repeats line 42. `!ssh` repeats the most recent line that *starts with* `ssh`. `history -c` clears the history list of the current shell. The **Ctrl+R** key searches the history as you type. Bash keeps the history in a hidden file in your home, `~/.bash_history`.
 
 ```bash static
 history
@@ -170,7 +172,7 @@ env | grep ^HOME
 HOME=/home/mira
 ```
 
-Remove a variable with `unset name`.
+Remove a variable with `unset name`. As with `export`, you give the name, not the value.
 
 #### The PATH variable
 
@@ -235,6 +237,8 @@ Cost: $5
 It costs $5 today
 ```
 
+Inside double quotes four characters keep their special meaning: `$` (variables), the backtick (old-style command substitution), `\` (before `$`, a backtick, `"` or another backslash) and, in an interactive shell, `!` (history expansion). Everything else, including `*` and `~`, is literal there.
+
 Quotes can sit side by side, and the shell glues the pieces together: `"a"b'c'` becomes `abc`. Quotes also matter for the `*` wildcard (see [lesson 012.4](/learn/012.4)): `echo "*"` prints a star, while an unquoted `*` is replaced by the names of the files in the directory.
 
 A related feature is **command substitution**: `$(command)` is replaced by what the command prints.
@@ -272,6 +276,23 @@ type is a shell builtin
 For an external command, `type` shows the full path of the file that would run. For a name that is neither, it prints "not found" and exits with a non-zero status. `type -t NAME` prints just the kind: `builtin`, `file`, `alias` or `keyword`.
 
 Some names are both: `echo` is a builtin, but a program `/usr/bin/echo` exists too. The builtin wins, because the shell checks builtins first.
+
+The full lookup order for the first word is: an **alias** (a nickname you defined with `alias`), then a shell **keyword** such as `if`, then a **function** you defined, then a **builtin**, and last the programs found through `PATH`. `type -t` shows which one wins. Here Mira defines an alias and a function and asks about five names (`shopt -s expand_aliases` is only needed because these cells run non-interactively; in your own terminal aliases work without it):
+
+```bash
+shopt -s expand_aliases
+alias ll='ls -l'
+greet() { echo hi; }
+type -t ll greet if cd ls
+```
+
+```output
+alias
+function
+keyword
+builtin
+file
+```
 
 <ExamOnly exam="010-200">
 
@@ -353,6 +374,14 @@ a b c   d
 </Predict>
 
 ## Exam traps
+
+<Callout title="The shell looks for a command in a fixed order">
+  <p>Alias first, then keyword, function, builtin, and only then the directories in `PATH`. That is why a function or alias called `ls` hides the program `/usr/bin/ls`, and why `type ls` can print "aliased to" instead of a path.</p>
+</Callout>
+
+<Callout title="unset takes a name, not a value">
+  <p>`unset color` removes the variable `color`. `unset $color` first expands to the *value* (say `green`) and tries to unset a variable of that name, leaving `color` in place.</p>
+</Callout>
 
 <Callout title="export makes a copy for child programs">
   <p>A plain `name=value` creates a local variable that only this shell sees. `export name` turns it into an environment variable, which programs started afterwards inherit. Never write `export $name`: that would export the variable named by the *value*.</p>

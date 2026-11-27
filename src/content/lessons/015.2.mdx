@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '015.2',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Accounts live in plain text files: `/etc/passwd` (one line per user: name, `x`, UID, GID, comment, home, shell), `/etc/group` (one line per group with its members), and `/etc/shadow` (the password hashes, readable only by root). `id` shows who you are, `who`, `w` and `last` show who is or was logged in. As root, `useradd` creates a user (`-m` makes the home from the template `/etc/skel`), `groupadd` creates a group, and `passwd` sets or changes a password.',
   areasCovered: ['015.2.1', '015.2.2'],
   termsCovered: ['015.2.t1', '015.2.t2', '015.2.t3', '015.2.t4'],
@@ -71,7 +71,21 @@ cat /etc/shadow
 cat: /etc/shadow: Permission denied
 ```
 
-(`stat -c` prints the octal mode, owner, group and name. Modes are the subject of [lesson 015.3](/learn/015.3).) A line in `/etc/shadow` also has colon-separated fields: the name, the **hash** of the password (never the password itself), then dates and limits such as the last change and the maximum age. If the hash field is `!` or `*`, no password can match, so the account has **no usable password**: it is locked.
+(`stat -c` prints the octal mode, owner, group and name. Modes are the subject of [lesson 015.3](/learn/015.3).) A line in `/etc/shadow` also has colon-separated fields: the name, the **hash** of the password (never the password itself), then dates and limits such as the last change and the maximum age. If the hash field is `!` or `*`, no password can match, so the account has **no usable password**: it is locked. A shadow line has **nine** fields:
+
+| # | Holds |
+|---|---|
+| 1 | the login name |
+| 2 | the password hash (or `!`, `*`) |
+| 3 | the date of the last password change, as **days since 1 January 1970** (`0` means "must change it at next login") |
+| 4 | the minimum number of days between changes |
+| 5 | the maximum number of days the password stays valid |
+| 6 | how many days before it expires the user gets a warning |
+| 7 | how many days after expiry the account is still usable (inactive period) |
+| 8 | the date the whole account expires, again in days since 1970 |
+| 9 | reserved for future use |
+
+Groups have a counterpart too, **`/etc/gshadow`**, protected exactly like `/etc/shadow` (mode `640`, owner root, group `shadow`). It has **four** fields: group name, a (hashed) group password, the group's administrators and its members. Group passwords are rarely used, so on most systems the second field is `!` or `*`.
 
 ### The group database: /etc/group
 
@@ -86,7 +100,7 @@ sudo:x:27:mira
 mira:x:1000:
 ```
 
-The group `sudo` has Mira as a member. The group `mira` has **no** listed members: it's Mira's **primary group**, which `/etc/passwd` records in field 4 (GID 1000). Debian gives each new user a private group with the same name. A user can additionally be a member of any number of **supplementary groups** (the list in `/etc/group`), and a file's group permissions apply to all of them.
+(The comment field of `/etc/passwd`, GECOS, can hold several pieces of information, separated by commas: full name, room, phone numbers.) The group `sudo` has Mira as a member. The group `mira` has **no** listed members: it's Mira's **primary group**, which `/etc/passwd` records in field 4 (GID 1000). Debian gives each new user a private group with the same name. A user can additionally be a member of any number of **supplementary groups** (the list in `/etc/group`), and a file's group permissions apply to all of them.
 
 ### Who am I? id, groups and who
 
@@ -134,6 +148,7 @@ Three more commands tell you about **sessions**, meaning who is logged in now an
 | `who` | one line per logged-in user: name, terminal, login time |
 | `w` | the same plus what each user is running, and the load on the machine |
 | `last` | the history of logins and reboots, newest first |
+| `lastb` | the **failed** login attempts (root only; read from `/var/log/btmp`) |
 
 ```bash
 who
@@ -170,6 +185,12 @@ Because the replacement needs a PAM module to record logins, a Debian 13 system 
 | `-G GROUP,GROUP` | extra, supplementary groups |
 | `-u 1500` | a chosen UID (otherwise the next free one) |
 | `-r` | a **system** user (UID below 1000) |
+| `-d /srv/noah` | a different home directory path (add `-m` to create it) |
+| `-M` | **never** create the home directory |
+| `-e 2027-01-31` | the date the account **expires** |
+| `-f 30` | days after a password expires before the account is disabled (`-1` turns it off) |
+
+The groups named with `-g` or `-G` must **exist already**, or `useradd` stops with an error.
 
 A new intern, Noah, joins TuxPixel. The cells here run as root, and they start from a clean guest each time, so you can try anything:
 
@@ -266,7 +287,17 @@ Root can set anyone's password, without knowing the old one, with `passwd NAME`:
 sudo passwd noah
 ```
 
-Both ask you to type the new password twice, and show nothing while you type. Useful root options: `passwd -l noah` **locks** the account (puts `!` in front of the hash), `passwd -u noah` unlocks it and `passwd -e noah` expires the password so Noah must choose a new one at the next login. `passwd -S noah` shows the status.
+Both ask you to type the new password twice, and show nothing while you type. Useful root options: `passwd -l noah` **locks** the account (puts `!` in front of the hash), `passwd -u noah` unlocks it and `passwd -e noah` expires the password so Noah must choose a new one at the next login. `passwd -S noah` shows the status. `passwd -d noah` **deletes** the password, which leaves the account with an *empty* one: that is not the same as locking it, and it is risky on a machine others can reach.
+
+A group can't be removed while it is still some user's **primary** group:
+
+```bash user=root
+groupdel mira
+```
+
+```output
+groupdel: cannot remove the primary group of user 'mira'
+```
 
 ### User IDs
 
@@ -349,6 +380,10 @@ uid=1003(noah) gid=1004(noah) groups=1004(noah),1003(review)
 
 <Callout title="usermod -G replaces, -aG adds">
   <p>`usermod -G playtest jonas` **replaces** Jonas's supplementary groups with only `playtest`. `usermod -aG playtest jonas` **adds** it to the groups he already has. Always write `-aG` together.</p>
+</Callout>
+
+<Callout title="Shadow has nine fields, gshadow four">
+  <p>`/etc/shadow`: name, hash, last change (days since 1970), minimum, maximum, warning, inactive, expiry and one reserved field. `/etc/gshadow`: group, password, administrators, members. A `0` in the last-change field forces a new password at the next login.</p>
 </Callout>
 
 <Callout title="Standard users start at 1000">

@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '012.3',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Linux keeps every file in one tree that starts at `/`. A path that starts with `/` is absolute; any other path is relative to where you are (`pwd`). `.` is "here", `..` is "one up" and `~` is your home directory. Names that start with a dot are hidden: `ls -a` shows them. `find` searches a tree by name.',
   areasCovered: ['012.3.1', '012.3.2', '012.3.3', '012.3.4', '012.3.5'],
   termsCovered: ['012.3.t1', '012.3.t2', '012.3.t3', '012.3.t4', '012.3.t5', '012.3.t6', '012.3.t7'],
@@ -73,6 +73,8 @@ docs/  README.md  src/
 
 Linux doesn't rely on file extensions. `README.md` ends in `.md` only so people (and editors) know it's Markdown; to Linux it's just a name.
 
+A file name may contain spaces, but the shell splits a command line at spaces. To use such a name as **one** argument, put it in quotes (`"boss fight.ogg"`) or escape each space with a backslash (`boss\ fight.ogg`). Without either, the command sees two names, `boss` and `fight.ogg`.
+
 ### Common options for ls
 
 An **option** changes what a command does. Options start with a dash and come before the path. These are the ones to know for the exam:
@@ -86,10 +88,36 @@ An **option** changes what a command does. Options start with a dash and come be
 | `-R` | **Recursive**: also list every directory inside, and the ones inside those |
 | `-d` | List a directory **itself**, not what's in it |
 | `-F` | Mark the type: `/` for directories, `*` for programs |
+| `-S` | Sort by **size**, largest first |
+| `-X` | Sort alphabetically by file name **extension** (`.ogg` before `.png`) |
 | `-t` | Sort by modification time, newest first |
 | `-r` | Reverse the sort order |
+| `-u`, `-c` | With `-t` (or `-lt`): use the last **access** time (`-u`) or the last **status change** time (`-c`) instead of the modification time |
 
-Short options can be combined: `ls -la` is the same as `ls -l -a`.
+Short options can be combined: `ls -la` is the same as `ls -l -a`. Sort options combine with `-r` too. In Mira's release folder, `-S` puts the biggest file first and `-Sr` the smallest first (`-1` prints one name per line):
+
+```bash fixture=basics-sizes
+cd release
+ls -1S
+ls -1Sr
+```
+
+```output
+hero.png
+theme.ogg
+credits.txt
+level10.txt
+level2.txt
+level1.txt
+level1.txt
+level2.txt
+level10.txt
+credits.txt
+theme.ogg
+hero.png
+```
+
+With `-h` the sizes get a unit suffix: `K` for kilobytes, `M` for megabytes, `G` for gigabytes (powers of 1024). Files under 1024 bytes show as a plain number.
 
 ```bash fixture=projects
 ls -l projects
@@ -101,7 +129,7 @@ drwxr-xr-x 4 mira mira 0 Nov  2 09:30 pixel-raiders
 drwxr-xr-x 2 mira mira 0 Nov  2 09:30 website
 ```
 
-The first letter of each line is the type: `d` for a directory, `-` for an ordinary file and `l` for a symbolic link. The rest of the line (permissions, owner, group, size, date) is the subject of [lesson 015.3](/learn/015.3). Ignore the `total` line, and don't expect directory sizes in this course's terminal to match a real disk: its filesystem reports directories as size 0.
+The first letter of each line is the type: `d` for a directory, `-` for an ordinary file and `l` for a symbolic link. Read a long-listing line from left to right: the type and permissions (`drwxr-xr-x`), the link count, the owner, the group, the size in bytes, the modification date and time, and the name. How the permission letters work is the subject of [lesson 015.3](/learn/015.3). Ignore the `total` line, and don't expect directory sizes in this course's terminal to match a real disk: its filesystem reports directories as size 0.
 
 ### Hidden files and directories
 
@@ -286,6 +314,7 @@ Useful tests to combine with `-name`:
 | Test | Matches |
 |---|---|
 | `-name "*.png"` | names matching the pattern, case-sensitive |
+| `-name "level?.txt"` | `?` stands for exactly one character, so `level1.txt` matches but `level10.txt` does not |
 | `-iname "readme*"` | the same, ignoring upper and lower case |
 | `-type f` | ordinary files only |
 | `-type d` | directories only |
@@ -298,7 +327,7 @@ find . -type d -name docs
 ./projects/pixel-raiders/docs
 ```
 
-With no tests at all, `find projects` simply lists everything below `projects`. Searching from `/` works too, but as an ordinary user you'll see "Permission denied" for directories you may not read.
+With no tests at all, `find projects` simply lists everything below `projects`. `find` prints entries in the order it meets them in the directories, which isn't guaranteed to be alphabetical. Pipe the result through `sort` when the order matters. Searching from `/` works too, but as an ordinary user you'll see "Permission denied" for directories you may not read.
 
 </ExamOnly>
 
@@ -355,6 +384,10 @@ pwd
 
 <Callout title="Absolute means it starts with /">
   <p>The test is the first character, nothing else. `/etc/hosts` is absolute. `etc/hosts`, `./run.sh`, `../notes.txt` and `docs/` are all relative. `~/notes.txt` looks relative, but the shell turns it into `/home/…/notes.txt`, an absolute path, before the command sees it.</p>
+</Callout>
+
+<Callout title="Sort options of ls">
+  <p>`-S` sorts by size (largest first), `-X` by extension, `-t` by modification time (newest first) and `-r` reverses any of them. With `-t`, `-u` switches to access time and `-c` to status-change time. A quoted `"*.txt"` in `find -name` is for `find`; an unquoted one is expanded by the shell.</p>
 </Callout>
 
 <Callout title="Hidden is just a leading dot">

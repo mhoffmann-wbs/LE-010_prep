@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '014.1',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Linux is a kernel plus free software, packaged by distributions such as Debian, Ubuntu and Fedora. You can install it from an ISO file on installation media, next to Windows (dual boot), in a virtual machine, inside Windows with WSL, or start it in the cloud from an OS image. `uname -s` prints `Linux`; `/etc/os-release` names the distribution.',
   areasCovered: ['014.1.1', '014.1.2', '014.1.3', '014.1.v1'],
   termsCovered: ['014.1.t1', '014.1.t2', '014.1.t3', '014.1.t4', '014.1.vt1', '014.1.vt2'],
@@ -27,9 +27,9 @@ The big differences from the other two:
 | Cost and licence | Paid, closed source | Comes with Apple hardware, mostly closed source | Free, open source: you may use, study, change and share it |
 | Runs on | Most PCs | Apple computers only | Almost anything: PCs, servers, phones, routers, Raspberry Pis |
 | Choice | One vendor's editions | One vendor's releases | Hundreds of distributions and several desktops |
-| Software install | Installers, Microsoft Store | App Store, installers | A package manager and its repositories (see [lesson 011.2](/learn/011.2)) |
+| Software install | Installer files (`.exe`, `.msi`) and the Microsoft Store | Disk images and installer packages (`.dmg`, `.pkg`) and the App Store | A package manager that fetches packages (`.deb`, `.rpm`) from the distribution's repositories (see [lesson 011.2](/learn/011.2)) |
 
-Linux and macOS are both Unix-like, so the command line feels similar. Windows differs most: drive letters (`C:\`) instead of one tree, and `\` instead of `/` in paths.
+Linux and macOS are both Unix-like, so the command line feels similar. macOS is built on **Darwin**, Apple's open-source core, which grew out of the BSD family of Unix systems; Linux was written separately and shares no kernel code with it. Windows differs most: drive letters (`C:\`) instead of one tree, and `\` instead of `/` in paths.
 
 Ask the guest which kernel and distribution it runs:
 
@@ -48,6 +48,12 @@ Linux
 ### Installation media and ISO files
 
 To install Linux you first need the installer. Distributions publish it as an **ISO file**, a single file that is an exact copy of an optical disc (`.iso`). You download it, then put it on **installation media**: a USB stick (most common today) or a DVD. You boot the computer from that medium, usually by pressing a key at power-on to open the boot menu, and the installer starts. Many ISOs are also **live images**: you can try the system from the stick without changing the disk.
+
+An ISO holds the installer's files and the boot information, so a computer can start from it. To get it onto a USB stick you must **write the image to the stick**: simply copying the `.iso` file onto it as an ordinary file gives a stick that won't boot. Graphical tools do this for you (Fedora Media Writer, balenaEtcher, Rufus on Windows), and on Linux `dd` does it. The next command overwrites the whole target device, so check its name with `lsblk` first:
+
+```bash static
+sudo dd if=debian-12.iso of=/dev/sdb bs=4M status=progress
+```
 
 Two good habits: check the download against the **checksum** the project publishes (a corrupt or tampered ISO is a risk), and choose the right **architecture** (a 64-bit PC needs the `amd64` ISO, a Raspberry Pi needs an ARM image).
 
@@ -86,6 +92,8 @@ A **virtual machine** (VM) is a pretend computer, run as a program inside your n
 A **cloud instance** is a virtual server you rent from a cloud provider by the hour. You choose a size (CPUs, memory), an OS image and a region, and it starts in a minute. No installer, no ISO: the image is copied to a virtual disk. Linux dominates here: it is free, scriptable and light.
 
 Provisioning means setting the new server up for its job. On first boot, a tool such as **cloud-init** reads **user data** you supplied with the instance and applies it: it can create user accounts, inject your **SSH public key** (so you log in without a password, see [lesson 015.1](/learn/015.1)), set the hostname and install software. TuxPixel runs its build server and the "Pixel Raiders" test server as cloud instances, and Ada creates a new one from the same image and user data whenever a fresh machine is needed. You then connect with SSH and work on the command line.
+
+The usual workflow: at creation you pick or upload your **SSH key pair**'s public half, and later you log in with the private half instead of a password. You manage the instance in the provider's web dashboard, with its command-line tool or through its **API** (the way Ada's scripts do it): you can start, stop, resize or delete it. Billing is **pay per use**, so a stopped or deleted instance stops costing compute, and TuxPixel only runs the big build server while a build is going. Note that a **container** is lighter than a VM: it shares the host's kernel instead of running its own.
 
 </ExamOnly>
 

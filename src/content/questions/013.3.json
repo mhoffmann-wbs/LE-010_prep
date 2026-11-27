@@ -1924,5 +1924,180 @@
     "fixture": "q013-scripts",
     "output": "checking art/bat.png\nchecking art/hero.png\nchecking art/slime.png\ndone",
     "mode": "type"
+  },
+  {
+    "id": "013.3-061",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Which of these is a valid variable name in a bash script?",
+    "explanation": "Names use letters, digits and underscores, and cannot start with a digit.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`2nd_level`",
+        "correct": false,
+        "rationale": "A name must not start with a digit."
+      },
+      {
+        "text": "`level-2`",
+        "correct": false,
+        "rationale": "A dash isn't allowed in a name; the shell would read it differently."
+      },
+      {
+        "text": "`level_2`",
+        "correct": true,
+        "rationale": "Letters, an underscore and a digit that is not the first character."
+      },
+      {
+        "text": "`level 2`",
+        "correct": false,
+        "rationale": "A space ends the name."
+      }
+    ]
+  },
+  {
+    "id": "013.3-062",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Jonas sets `Score=10` and later runs `echo \"$score\"`. What is printed?",
+    "explanation": "Variable names are case sensitive, so `score` is a different, unset variable.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`10`, because bash ignores case in names.",
+        "correct": false,
+        "rationale": "Bash is case sensitive here."
+      },
+      {
+        "text": "An empty line, because `score` was never set.",
+        "correct": true,
+        "rationale": "`Score` and `score` are two separate variables."
+      },
+      {
+        "text": "`Score`, the name itself.",
+        "correct": false,
+        "rationale": "Only single quotes would keep the text; and a name isn't printed that way anyway."
+      },
+      {
+        "text": "An error message and a non-zero exit status.",
+        "correct": false,
+        "rationale": "Reading an unset variable is not an error; it expands to nothing."
+      }
+    ]
+  },
+  {
+    "id": "013.3-063",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t3"
+    ],
+    "stem": "Mira writes `crew=Carol Smith` in a script. What happens?",
+    "explanation": "The unquoted space ends the assignment; the rest is read as a command.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`crew` holds the text `Carol Smith`.",
+        "correct": false,
+        "rationale": "That needs `crew=\"Carol Smith\"`."
+      },
+      {
+        "text": "`crew` holds a list with two elements.",
+        "correct": false,
+        "rationale": "Plain bash variables hold one string."
+      },
+      {
+        "text": "The shell prints a syntax error before running anything.",
+        "correct": false,
+        "rationale": "It is valid syntax; it simply runs an unexpected command."
+      },
+      {
+        "text": "The shell tries to run a command called `Smith`, with `crew=Carol` set only for it.",
+        "correct": true,
+        "rationale": "Quotes are needed to keep two words in one value."
+      }
+    ]
+  },
+  {
+    "id": "013.3-064",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Ada wants a script to continue only if the variable `lives` holds a number greater than 0. Which test does that?",
+    "explanation": "`-gt` compares numbers, while `=` compares text.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`[ \"$lives\" -gt 0 ]`",
+        "correct": true,
+        "rationale": "`-gt` means \"greater than\" for numbers."
+      },
+      {
+        "text": "`[ \"$lives\" > 0 ]`",
+        "correct": false,
+        "rationale": "Inside `[ ]` the `>` is an output redirection, not a comparison."
+      },
+      {
+        "text": "`[ \"$lives\" = gt 0 ]`",
+        "correct": false,
+        "rationale": "`=` compares text and takes one value on its right."
+      },
+      {
+        "text": "`[\"$lives\" -gt 0]`",
+        "correct": false,
+        "rationale": "The brackets need a space on each side."
+      }
+    ]
+  },
+  {
+    "id": "013.3-065",
+    "objectiveId": "013.3",
+    "areas": [
+      "013.3.1"
+    ],
+    "terms": [
+      "013.3.t5"
+    ],
+    "stem": "Which operator in `[ ]` tests whether two numbers are NOT equal?",
+    "explanation": "Numeric tests use letter operators.",
+    "kind": "single",
+    "options": [
+      {
+        "text": "`-nq`",
+        "correct": false,
+        "rationale": "There is no such operator."
+      },
+      {
+        "text": "`-ne`",
+        "correct": true,
+        "rationale": "\"Not equal\" for numbers."
+      },
+      {
+        "text": "`-neq`",
+        "correct": false,
+        "rationale": "The numeric operators are two letters long, so `-ne` is correct and this longer spelling doesn't exist."
+      },
+      {
+        "text": "`-lt`",
+        "correct": false,
+        "rationale": "That is \"less than\"."
+      }
+    ]
   }
 ]

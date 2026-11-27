@@ -760,5 +760,136 @@
       }
     ],
     "explanation": "Linux and macOS are both Unix-like systems, so they share the single directory tree, a similar shell and many tools. They differ in origin and licence: macOS is Apple’s mostly closed-source system for its own hardware, while Linux is open source and runs on almost anything."
+  },
+  {
+    "id": "014.1-022",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.2"
+    ],
+    "terms": [
+      "014.1.t1"
+    ],
+    "stem": "Jonas downloaded the studio's chosen distribution as an ISO file and copied it onto a USB stick like any other file. The laptop refuses to boot from the stick. What is the likely cause and fix?",
+    "options": [
+      {
+        "text": "The stick must be formatted as NTFS first, and then the ISO has to be unpacked into its root directory.",
+        "correct": false,
+        "rationale": "Unpacking by hand is not the usual route."
+      },
+      {
+        "text": "An ISO can only be used in a virtual machine, so a stick can never boot from it, whatever tool is used.",
+        "correct": false,
+        "rationale": "ISO files boot from USB sticks all the time once they are written correctly."
+      },
+      {
+        "text": "The ISO has to be written to the stick with a tool such as `dd` or Rufus.",
+        "correct": true,
+        "rationale": "These tools write the image, with its boot information, directly to the device."
+      },
+      {
+        "text": "USB sticks only boot Windows installers, so a Linux ISO has to be burned to a DVD in every case.",
+        "correct": false,
+        "rationale": "Linux installers boot from USB sticks routinely."
+      }
+    ],
+    "explanation": "An ISO is a disc image with the installer files and boot information. Copying the file onto a stick just stores it; the image must be written to the device, using `dd` on Linux or a graphical tool such as Fedora Media Writer, balenaEtcher or Rufus."
+  },
+  {
+    "id": "014.1-023",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1"
+    ],
+    "stem": "Mira's friend asks how a Mac's operating system is related to the Unix family. Which answer is correct?",
+    "options": [
+      {
+        "text": "macOS is built on Darwin, which has roots in the BSD family of Unix systems, so it is Unix-like.",
+        "correct": true,
+        "rationale": "Darwin is Apple's open-source core, and its BSD heritage explains the familiar command line."
+      },
+      {
+        "text": "macOS is built on the Linux kernel and is a distribution that Apple has renamed and restyled.",
+        "correct": false,
+        "rationale": "macOS does not use the Linux kernel."
+      },
+      {
+        "text": "macOS has no relation to Unix at all, and its command line works exactly like the Windows one.",
+        "correct": false,
+        "rationale": "The macOS Terminal runs a Unix-style shell, much like Linux does."
+      },
+      {
+        "text": "macOS is built on Windows NT, which is why macOS also has drive letters in its paths.",
+        "correct": false,
+        "rationale": "NT is Windows' kernel; macOS paths start at `/` like Linux ones."
+      }
+    ],
+    "explanation": "macOS sits on Darwin, whose BSD heritage makes it Unix-like. That is why the Terminal feels so close to Linux, even though the two systems share no kernel."
+  },
+  {
+    "id": "014.1-024",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.1"
+    ],
+    "stem": "Ada has to install a program on three machines: a Windows PC, a MacBook and a Debian server. Which pairing of system and typical install format is correct?",
+    "options": [
+      {
+        "text": "Windows with `.exe`, macOS with `.dmg`, Debian with `.deb` packages.",
+        "correct": true,
+        "rationale": "These are the usual formats of each system, and Debian's package manager fetches the `.deb` files itself."
+      },
+      {
+        "text": "Windows with `.deb`, macOS with `.exe` and Debian with `.dmg`, because Linux uses Apple's formats.",
+        "correct": false,
+        "rationale": "These formats are mixed up between the three systems."
+      },
+      {
+        "text": "Windows with `.rpm`, macOS with `.msi` and Debian with `.pkg`, because all three share one format.",
+        "correct": false,
+        "rationale": "Each system family has its own formats, and these are not the usual ones."
+      },
+      {
+        "text": "All three always use `.iso` files, which are installed by double-clicking them.",
+        "correct": false,
+        "rationale": "An ISO is an installation medium for the operating system, not a program installer."
+      }
+    ],
+    "explanation": "Windows installers are mostly `.exe` or `.msi`, macOS uses `.dmg` and `.pkg` (or the App Store), and Debian-based Linux uses `.deb` packages from repositories (Fedora-style systems use `.rpm`)."
+  },
+  {
+    "id": "014.1-025",
+    "objectiveId": "014.1",
+    "kind": "single",
+    "areas": [
+      "014.1.3"
+    ],
+    "stem": "Ada starts a cloud instance for a build run. Which description of normal cloud use is correct?",
+    "options": [
+      {
+        "text": "She must travel to the provider's data centre, install the system from an ISO by hand and pay one flat price for a whole year of use.",
+        "correct": false,
+        "rationale": "Cloud instances start from images, and billing follows the time they run."
+      },
+      {
+        "text": "She registers her public SSH key, starts the instance, logs in with the private key and pays only while it exists.",
+        "correct": true,
+        "rationale": "This is the usual cloud workflow: key pair, management interfaces and pay per use."
+      },
+      {
+        "text": "The instance can only be started once it has been dual-booted next to the provider's own Windows system on the same disk.",
+        "correct": false,
+        "rationale": "Dual boot is about one physical machine; cloud instances are virtual."
+      },
+      {
+        "text": "Instances can never be stopped or resized once they exist, so every change means buying a new physical machine.",
+        "correct": false,
+        "rationale": "Instances are started, stopped and resized in the provider's interface."
+      }
+    ],
+    "explanation": "A cloud instance is a virtual server. You supply the public half of an SSH key pair, manage it through the dashboard, command-line tool or API (start, stop, resize, delete) and are billed for the time it runs."
   }
 ]

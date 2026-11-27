@@ -169,5 +169,53 @@
     ],
     "front": "What is the difference between SLAAC and DHCPv6?",
     "back": "SLAAC is stateless: machines build their own address. DHCPv6 is stateful: a server hands out and tracks addresses, and can also just deliver extra settings such as DNS servers."
+  },
+  {
+    "id": "014.4-c22",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "What is a MAC address?",
+    "back": "A 48-bit hardware address of a network interface, written as six hex pairs. It is used only on the local link; `ip link show` lists it."
+  },
+  {
+    "id": "014.4-c23",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "Name the four layers of the TCP/IP model.",
+    "back": "Link (Ethernet, WiFi), internet (IP), transport (TCP, UDP) and application (HTTP, DNS, SSH)."
+  },
+  {
+    "id": "014.4-c24",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "What is NAT (masquerading)?",
+    "back": "The router replaces the private source address of outgoing traffic with its own public address and remembers the connection, so many private machines share one public address."
+  },
+  {
+    "id": "014.4-c25",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "Which netmask is /24, and which is /16?",
+    "back": "`255.255.255.0` is /24, and `255.255.0.0` is /16."
+  },
+  {
+    "id": "014.4-c26",
+    "areas": [
+      "014.4.1"
+    ],
+    "front": "Name the three kinds of IPv6 address to know.",
+    "back": "Link-local (`fe80::/10`), unique local (`fc00::/7`, in practice `fd...`) and global (public)."
+  },
+  {
+    "id": "014.4-c27",
+    "areas": [
+      "014.4.2"
+    ],
+    "front": "Which DNS record types are A, AAAA, CNAME, MX and PTR?",
+    "back": "A is an IPv4 address, AAAA an IPv6 address, CNAME an alias, MX the mail server, and PTR the name for an address."
   }
 ]

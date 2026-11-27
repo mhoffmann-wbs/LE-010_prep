@@ -152,5 +152,37 @@
     ],
     "front": "Do device files such as `/dev/sda` store data on a disk?",
     "back": "No. They are doors to the kernel, so programs can use `cat`, `>` and other file tools on hardware. Pseudo-devices like `/dev/null` have no hardware at all."
+  },
+  {
+    "id": "014.2-c19",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "BIOS or UEFI: what is the difference?",
+    "back": "Both are firmware that starts the machine. UEFI is the modern one, with Secure Boot and support for large disks; BIOS is the old one."
+  },
+  {
+    "id": "014.2-c20",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "What is swap space?",
+    "back": "Disk space the kernel uses when RAM runs short. It keeps programs running but is much slower than RAM."
+  },
+  {
+    "id": "014.2-c21",
+    "areas": [
+      "014.2.1"
+    ],
+    "front": "What do lscpu, lspci, lsusb and lsblk list?",
+    "back": "The processor, the PCI devices (graphics and network cards), the USB devices, and the disks and partitions."
+  },
+  {
+    "id": "014.2-c22",
+    "areas": [
+      "014.2.2"
+    ],
+    "front": "What do the two numbers in `ls -l /dev/sda` mean?",
+    "back": "The major number (the driver) and the minor number (the device), shown where a normal file shows its size."
   }
 ]

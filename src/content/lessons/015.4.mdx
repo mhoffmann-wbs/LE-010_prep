@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '015.4',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: '`/tmp` and `/var/tmp` are directories where every user may create files. `/tmp` is cleared at reboot (or sooner); `/var/tmp` keeps files longer, across reboots. Both have the sticky bit set (`drwxrwxrwt`, mode `1777`): you may delete only your own files there. A symbolic link is a small file that points to another path; `ln -s TARGET LINK` makes one, `ls -l` shows `link -> target`, and `rm link` removes only the link. If the target goes away, the link is left dangling. `ls -d` lists a directory itself.',
   areasCovered: ['015.4.1', '015.4.2'],
   termsCovered: ['015.4.t1', '015.4.t2', '015.4.t3'],
@@ -66,6 +66,18 @@ stat -c '%A %U %G %n' /tmp /var/tmp
 ```output
 drwxrwxrwt root root /tmp
 drwxrwxrwt root root /var/tmp
+```
+
+Programs also keep **runtime data** in **`/run`**: PID files, sockets and lock files of the services running right now. It lives in memory (a `tmpfs`) and is **empty again after every boot**. The old name `/var/run` is just a symbolic link to `/run`:
+
+```bash
+stat -f -c %T /run
+readlink /var/run
+```
+
+```output
+tmpfs
+/run
 ```
 
 ### The sticky bit
@@ -145,7 +157,34 @@ pixel-raiders-1.1.tar
 
 `ls -l` shows a link by its **first character `l`**, and by an arrow after the name: `latest -> pixel-raiders-1.1.tar`. The permissions of a link itself show as `rwxrwxrwx`, because the permissions of the **target** are the ones that count. (This course's terminal doesn't draw the mode bits of links as a real system does, so try it on a real machine to see it.)
 
-A link's target is stored **exactly as you typed it**. `ln -s pixel-raiders-1.1.tar latest` is a **relative** link, found from the directory the link is in. A link to `/home/mira/builds/pixel-raiders-1.1.tar` is **absolute**. A relative target is resolved from the link's own directory, not from where you are when you open it. Links can also point to **directories**, and to files on other disks, which hard links can't.
+`ln -s` stores the target text exactly as you give it, which goes wrong if the link is in another directory than the one you are in. **`ln -rs`** (relative) works the path out for you, from the link's own directory:
+
+```bash
+cd ~
+mkdir -p proj/docs proj/bin
+ln -rs proj/docs proj/bin/docs
+readlink proj/bin/docs
+```
+
+```output
+../docs
+```
+
+A link's target is stored **exactly as you typed it**. `ln -s pixel-raiders-1.1.tar latest` is a **relative** link, found from the directory the link is in. A link to `/home/mira/builds/pixel-raiders-1.1.tar` is **absolute**. A relative target is resolved from the link's own directory, not from where you are when you open it. Links can also point to **directories**, and to files on other disks, which hard links can't. Inside a directory reached through a link, `pwd` shows the path you used, while `pwd -P` prints the real **physical** one:
+
+```bash
+cd ~
+mkdir -p proj/docs
+ln -s proj/docs pl
+cd pl
+pwd
+pwd -P
+```
+
+```output
+/home/mira/pl
+/home/mira/proj/docs
+```
 
 ### Deleting a link and dangling links
 

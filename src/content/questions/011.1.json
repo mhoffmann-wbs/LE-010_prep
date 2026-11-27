@@ -1344,5 +1344,151 @@
       }
     ],
     "explanation": "Web and internet services, databases and containers all run in data centers, mostly on Linux."
+  },
+  {
+    "id": "011.1-039",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.4"
+    ],
+    "stem": "Jonas’ phone runs Android and has the Google Play Store on it. Which statement fits best?",
+    "options": [
+      {
+        "text": "The Play Store is part of the Linux kernel and ships with every kernel.",
+        "correct": false,
+        "rationale": "The Play Store is an app, not a kernel part."
+      },
+      {
+        "text": "Android is entirely proprietary, so it contains no open source code at all.",
+        "correct": false,
+        "rationale": "The Android base system is open source."
+      },
+      {
+        "text": "Android’s base system is open source, but the Play Store and Google’s services are proprietary parts added on top.",
+        "correct": true,
+        "rationale": "The base is open, and the proprietary Google layer is separate."
+      },
+      {
+        "text": "Everything on the phone is open source, because Android uses the Linux kernel.",
+        "correct": false,
+        "rationale": "A Linux kernel doesn’t make every program on top of it open source."
+      }
+    ],
+    "explanation": "The Android Open Source Project is open source, but a phone as sold usually carries Google’s proprietary layer (Play Store, services, apps) on top, so it is not fully open source.",
+    "sourceLinks": [
+      "https://source.android.com/"
+    ]
+  },
+  {
+    "id": "011.1-040",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t3"
+    ],
+    "stem": "Mira’s friend uses openSUSE Leap and mentions YaST. What is YaST?",
+    "options": [
+      {
+        "text": "The package format that Alpine Linux uses for its software.",
+        "correct": false,
+        "rationale": "Alpine’s format is `.apk`."
+      },
+      {
+        "text": "The name of openSUSE’s rolling release branch.",
+        "correct": false,
+        "rationale": "The rolling release is called Tumbleweed."
+      },
+      {
+        "text": "A Debian front end for `dpkg` that resolves dependencies.",
+        "correct": false,
+        "rationale": "On Debian that job is done by `apt`."
+      },
+      {
+        "text": "SUSE’s own tool for installing and configuring the system, such as disks, users and software.",
+        "correct": true,
+        "rationale": "YaST belongs to the SUSE family and covers setup tasks."
+      }
+    ],
+    "explanation": "YaST is the installation and configuration tool of the SUSE family (openSUSE and SUSE Linux Enterprise).",
+    "sourceLinks": [
+      "https://yast.opensuse.org/"
+    ]
+  },
+  {
+    "id": "011.1-041",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.2"
+    ],
+    "terms": [
+      "011.1.t2"
+    ],
+    "stem": "How is Red Hat Enterprise Linux (RHEL) sold?",
+    "options": [
+      {
+        "text": "As a rolling release that has no version numbers.",
+        "correct": false,
+        "rationale": "RHEL has numbered releases."
+      },
+      {
+        "text": "As a commercial product with a subscription that covers updates and support.",
+        "correct": true,
+        "rationale": "Support and updates come through a paid subscription."
+      },
+      {
+        "text": "It is community-run, with no company behind it.",
+        "correct": false,
+        "rationale": "Red Hat is a company, and it sells RHEL."
+      },
+      {
+        "text": "As a free rebuild that other vendors publish after each release.",
+        "correct": false,
+        "rationale": "Rebuilds are AlmaLinux and Rocky Linux, not RHEL."
+      }
+    ],
+    "explanation": "Red Hat sells RHEL subscriptions. AlmaLinux and Rocky Linux are the free, community-driven distributions aiming for RHEL compatibility.",
+    "sourceLinks": [
+      "https://www.centos.org/about/"
+    ]
+  },
+  {
+    "id": "011.1-042",
+    "objectiveId": "011.1",
+    "kind": "single",
+    "areas": [
+      "011.1.3"
+    ],
+    "terms": [
+      "011.1.t5"
+    ],
+    "stem": "Ada’s server runs a stable release that has been in maintenance for a year. Which updates should she expect?",
+    "options": [
+      {
+        "text": "No updates at all, because stable releases are never changed.",
+        "correct": false,
+        "rationale": "Stable still gets security fixes."
+      },
+      {
+        "text": "A switch to the unstable line once a year.",
+        "correct": false,
+        "rationale": "Releases don’t move to unstable by themselves."
+      },
+      {
+        "text": "Security and bug fixes, while the programs keep their versions.",
+        "correct": true,
+        "rationale": "Frozen versions with fixes only."
+      },
+      {
+        "text": "New major versions of the desktop and the compiler every month.",
+        "correct": false,
+        "rationale": "New major versions are what rolling releases bring."
+      }
+    ],
+    "explanation": "In the maintenance phase of a stable release the package versions stay frozen, and only security and bug fixes arrive."
   }
 ]

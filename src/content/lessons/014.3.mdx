@@ -1,10 +1,11 @@
 export const meta = {
   objectiveId: '014.3',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'A program is a file; a process is a running copy of it, with a PID. `ps` lists processes, `top` shows them live and `free` shows memory. On systemd systems, services are controlled with `systemctl start|stop|status` and their messages read with `journalctl`; the kernel ring buffer is read with `dmesg`. Settings live in `/etc/`, logs in `/var/log/` and live kernel data in `/proc/`.',
   areasCovered: ['014.3.1', '014.3.2', '014.3.3', '014.3.4', '014.3.v1', '014.3.v2', '014.3.v3'],
   termsCovered: ['014.3.t1', '014.3.t2', '014.3.t3', '014.3.t4', '014.3.t5', '014.3.t6', '014.3.vt1', '014.3.vt2', '014.3.vt3'],
   links: [
+    { title: 'top(1) manual page (procps-ng)', url: 'https://man7.org/linux/man-pages/man1/top.1.html' },
     { title: 'ps(1) manual page', url: 'https://man7.org/linux/man-pages/man1/ps.1.html' },
     { title: 'top(1) manual page', url: 'https://man7.org/linux/man-pages/man1/top.1.html' },
     { title: 'free(1) manual page', url: 'https://man7.org/linux/man-pages/man1/free.1.html' },
@@ -57,6 +58,36 @@ artifact_dir=/srv/builds
 
 Lines that start with `#` are comments. Settings that affect only one user live in hidden files in their home directory instead.
 
+Names in `/etc` follow a few habits that help you guess what a file is:
+
+- **Plain names** for a single setting or table: `hostname`, `hosts`, `passwd`.
+- **`*rc`** (from "run commands") for a shell or program's start-up settings: `bash.bashrc` is read by every user's bash.
+- **`*.conf`** for a program's settings: `sysctl.conf`, `resolv.conf`.
+- **`*.d` directories** hold many small files that together make one configuration, such as `cron.d`, `sudoers.d` and `profile.d`. A package can drop in its own file without editing a big shared one.
+- Settings for software you installed yourself, outside the package manager, go in `/usr/local/etc` instead.
+
+A user's own settings are **dotfiles**, files whose name starts with a dot (hidden from a plain `ls`), directly in the home directory: `.bashrc` and `.profile` configure the shell, `.bash_history` remembers the commands you typed, and a `.ssh/` directory holds SSH keys. Mira's home starts with a few of them:
+
+```bash
+ls -a ~ | grep bash
+```
+
+```output
+.bash_logout
+.bashrc
+```
+
+Where does a program itself live? `/usr/bin` holds the normal commands, `/usr/sbin` the administration ones, `/usr/local/bin` programs the admin installed by hand, `/opt` big third-party packages in a folder of their own, and `~/.local/bin` a user's own programs. On current Debian `/bin` is only a link to `/usr/bin`, so one command shows up twice. `type -a` lists every place a name is found, in search order:
+
+```bash
+type -a ls
+```
+
+```output
+ls is /usr/bin/ls
+ls is /bin/ls
+```
+
 ### Listing processes with ps
 
 `ps` shows a **snapshot** of processes. Without options it shows only yours in the current terminal. These forms are the ones to know:
@@ -90,7 +121,7 @@ ps -o pid,user,comm -p 1
 
 ### Watching processes with top
 
-`top` is a live version of `ps`: it redraws every few seconds and sorts by CPU use. The top lines give the time, how long the machine has been up, the **load average** (how busy the CPU is over 1, 5 and 15 minutes), the number of tasks and memory use. Below is a table of processes. Keys inside `top`: `q` quits, `k` kills a process (it asks for the PID), `M` sorts by memory, `P` by CPU and `h` shows help. Press `q` to leave. For a one-time print you can use `top -b -n 1`, where `-b` is batch mode.
+`top` is a live version of `ps`: it redraws every few seconds and sorts by CPU use. The top lines give the time, how long the machine has been up, the **load average** (how busy the CPU is over 1, 5 and 15 minutes), the number of tasks and memory use. Below is a table of processes. Keys inside `top`: `q` quits, `k` kills a process (it asks for the PID), `M` sorts by memory, `P` by CPU, `N` by PID, `T` by running time, `R` reverses the order and `h` shows help. The line starting `%Cpu(s)` splits the CPU's time into shares: `us` for user programs, `sy` for the kernel (system), `ni` for programs with a changed nice value and `id` for idle time, among a few others. A high `id` means the CPU has little to do. Press `q` to leave. For a one-time print you can use `top -b -n 1`, where `-b` is batch mode.
 
 ```bash static
 top

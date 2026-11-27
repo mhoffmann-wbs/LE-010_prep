@@ -241,7 +241,7 @@ Scripts:
    - 19 lessons with 252 verified snippet claims (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`), with `<ExamOnly>` blocks for each exam's own material. Each cites its sources and links to its lessons in the LPI Learning Materials (§1).
    - `vm:run` to try a command in the guest while writing.
 4. **Question bank** (done 2026-11-26):
-   - 666 items (target 600): every objective at or over target, and every area at 5 or more and every term tested, on both exams. Concept objectives overshoot so each exam's own lines count on that exam.
+   - 666 items (target 600), 782 after the 2026-11-27 gap check against the LPI Learning Materials: every objective at or over target, and every area at 5 or more and every term tested, on both exams. Concept objectives overshoot so each exam's own lines count on that exam.
    - Kind mix: 58% single, 13% multi, 15% fill, 15% output. 518 runnable claims verified in the guest.
    - The `q014-dns` and `q013-scripts` fixtures were added for items.
 5. **Exercises** (done 2026-11-26):

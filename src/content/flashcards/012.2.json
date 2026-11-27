@@ -158,5 +158,21 @@
     ],
     "front": "When should Mira use `find` instead of `locate`?",
     "back": "When she needs a current result: `find` searches the real disk, which is slower but always up to date."
+  },
+  {
+    "id": "012.2-c21",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "In a man page, how do you search backward, and how do you repeat a search?",
+    "back": "`?word` searches backward (`/word` forward). `n` repeats in the same direction, `N` in the opposite one."
+  },
+  {
+    "id": "012.2-c22",
+    "areas": [
+      "012.2.1"
+    ],
+    "front": "Which man section holds kernel routines?",
+    "back": "Section 9 (non-standard, often not installed). Section 2 is system calls and section 8 is administration commands."
   }
 ]

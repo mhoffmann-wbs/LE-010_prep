@@ -86,5 +86,21 @@
     ],
     "front": "What command prints where a symbolic link points?",
     "back": "`readlink latest`. `stat -c %F` names the file type, and `ls -F` marks links with an `@`."
+  },
+  {
+    "id": "015.4-c12",
+    "areas": [
+      "015.4.1"
+    ],
+    "front": "What is `/run`?",
+    "back": "A memory-backed directory for runtime data (PID files, sockets), empty after every boot. `/var/run` links to it."
+  },
+  {
+    "id": "015.4-c13",
+    "areas": [
+      "015.4.2"
+    ],
+    "front": "What does `ln -rs` do?",
+    "back": "Creates a symbolic link whose target is computed relative to the link's own directory, e.g. `../docs`."
   }
 ]

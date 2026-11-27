@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '013.3',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'A shell script is a text file of commands. Its first line, the shebang `#!/bin/bash`, names the interpreter. Make it executable with `chmod +x` and run it as `./script.sh`, or run `bash script.sh` without the permission. Variables are set as `name=value` (no spaces) and read as `$name`; the arguments are `$1`, `$2`, `$#`, `$@`, and `$0` is the script. `$?` holds the exit status of the last command (0 means success), `exit N` ends the script with status N. `if [ -f file ]` tests a file, `[ "$a" = "$b" ]` compares text, and `for x in list` loops.',
   areasCovered: ['013.3.1', '013.3.v1'],
   termsCovered: ['013.3.t1', '013.3.t2', '013.3.t3', '013.3.t4', '013.3.t5', '013.3.t6', '013.3.t7', '013.3.t8'],
@@ -133,6 +133,20 @@ Built by Ada
 Built by $who
 Built by Adas
 ```
+
+A variable name may contain letters, digits and underscores, but must **not start with a digit**: `level2` and `_tmp` are fine, `2lives=3` is not (the shell takes it for a command). Names are **case sensitive**, so `Lives` and `lives` are two different variables:
+
+```bash
+Lives=1
+lives=2
+echo "$Lives $lives"
+```
+
+```output
+1 2
+```
+
+A value with a space needs quotes. Without them, the shell stops at the space: `crew=Carol Smith` sets `crew=Carol` just for the one command `Smith`, which most likely doesn't exist, and `crew` stays unset in your shell.
 
 Braces, as in `${who}s`, mark where the name ends. An unset variable is simply empty. (Variables set in a script exist only while that script runs.) The shell also provides ready-made variables like `$HOME` (your home directory) and `$USER` (your name):
 
@@ -332,7 +346,27 @@ with spaces: 1
 without spaces: 0
 ```
 
-The second test "succeeded" although the two values are different. The second trap is the quotes. If `$a` were empty or held two words, an unquoted `[ $a = "x" ]` would break, so always write `"$a"`. (For numbers there are other operators, such as `-eq`, but text equality is what the objective names.)
+The second test "succeeded" although the two values are different. The second trap is the quotes. If `$a` were empty or held two words, an unquoted `[ $a = "x" ]` would break, so always write `"$a"`. For **numbers**, `[ ]` has its own operators (the objective only names text equality, but you may meet these):
+
+| Test | True when |
+|---|---|
+| `-eq` | equal |
+| `-ne` | not equal |
+| `-gt` / `-ge` | greater than / greater than or equal |
+| `-lt` / `-le` | less than / less than or equal |
+
+```bash
+lives=3
+[ "$lives" -gt 0 ] && echo "still alive"
+[ "$lives" -eq 0 ] || echo "not game over"
+```
+
+```output
+still alive
+not game over
+```
+
+Keep `=` and `-eq` apart: `=` compares text and `-eq` compares numbers.
 
 </ExamOnly>
 
@@ -547,6 +581,10 @@ exit status: 4
 
 <Callout title="No spaces around = when setting a variable">
   <p>`name=Mira` sets it. `name = Mira` runs a command called `name`. You read it with `$name`; you never write the `$` when setting it. Single quotes stop the replacement: `echo '$name'` prints `$name`.</p>
+</Callout>
+
+<Callout title="Variable names and quoting values">
+  <p>Names use letters, digits and `_`, never start with a digit, and are case sensitive (`Score` is not `score`). `crew=Carol Smith` without quotes does not set a two-word value: write `crew="Carol Smith"`.</p>
 </Callout>
 
 <Callout title="$0, $1, $#, $@, $?">

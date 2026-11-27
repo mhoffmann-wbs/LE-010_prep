@@ -1071,5 +1071,250 @@
     "sourceLinks": [
       "https://man7.org/linux/man-pages/man5/sysfs.5.html"
     ]
+  },
+  {
+    "id": "014.2-031",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1"
+    ],
+    "stem": "Mira starts the studio's new file server. Before the boot loader or the kernel runs anything, which part of the machine does the first work?",
+    "options": [
+      {
+        "text": "The firmware (BIOS or UEFI) on the motherboard, which tests the hardware and starts a boot loader.",
+        "correct": true,
+        "rationale": "The firmware is the first code to run after power-on."
+      },
+      {
+        "text": "The kernel in `/boot`, which tests the hardware and then asks the user which boot loader to run.",
+        "correct": false,
+        "rationale": "The kernel runs after the boot loader, not before it."
+      },
+      {
+        "text": "The swap space, which holds a first copy of the system in case the disk fails.",
+        "correct": false,
+        "rationale": "Swap is disk space used as overflow for memory."
+      },
+      {
+        "text": "The first user's `.bashrc` file, which decides which disk the machine boots from.",
+        "correct": false,
+        "rationale": "That file is read only after the system is up and a user has logged in."
+      }
+    ],
+    "explanation": "At power-on the firmware, either the old BIOS or the modern UEFI, checks the hardware and hands over to a boot loader. The boot loader loads the kernel, and only then does Linux start."
+  },
+  {
+    "id": "014.2-032",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1"
+    ],
+    "stem": "Ada's laptop has the modern firmware that supports Secure Boot and very large disks. Which firmware is that?",
+    "options": [
+      {
+        "text": "BIOS, because it was built to check boot loader signatures and big disks.",
+        "correct": false,
+        "rationale": "Secure Boot and big-disk support belong to the newer firmware."
+      },
+      {
+        "text": "UEFI, the modern replacement for the BIOS.",
+        "correct": true,
+        "rationale": "UEFI offers Secure Boot and handles large disks."
+      },
+      {
+        "text": "GRUB, because it is the firmware chip that is soldered to the motherboard.",
+        "correct": false,
+        "rationale": "GRUB is a boot loader on disk, not firmware on the motherboard."
+      },
+      {
+        "text": "LVM, because it is the layer that starts the machine before the kernel does.",
+        "correct": false,
+        "rationale": "LVM manages volumes and has nothing to do with starting the machine."
+      }
+    ],
+    "explanation": "UEFI replaced the old BIOS on modern PCs. GRUB is a boot loader that the firmware starts from disk, and LVM is a storage layer."
+  },
+  {
+    "id": "014.2-033",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1"
+    ],
+    "stem": "On the studio's build server, `free -m` shows that RAM is almost full and the swap line is in use. What does that mean?",
+    "options": [
+      {
+        "text": "The disk is full, and the kernel is about to delete files to make room.",
+        "correct": false,
+        "rationale": "Swap does not delete anything; a full disk is a different problem."
+      },
+      {
+        "text": "The kernel has moved rarely used data from RAM to disk, which frees memory but is slower.",
+        "correct": true,
+        "rationale": "That is exactly what swap space is for."
+      },
+      {
+        "text": "The processor is 32-bit, so it can only use a part of the installed RAM.",
+        "correct": false,
+        "rationale": "The address limit of a 32-bit system has nothing to do with the swap line."
+      },
+      {
+        "text": "The machine has no swap partition, so the swap numbers are only an estimate.",
+        "correct": false,
+        "rationale": "Numbers on the swap line mean that swap space exists and is used."
+      }
+    ],
+    "explanation": "Swap space is disk space the kernel uses as overflow when RAM runs short. It keeps programs running, but the disk is much slower than RAM."
+  },
+  {
+    "id": "014.2-034",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1"
+    ],
+    "stem": "Jonas wants to know which USB devices and which graphics card Mira's new workstation has. Which pair of commands lists them?",
+    "options": [
+      {
+        "text": "`lsusb` for the USB devices and `lspci` for the graphics card.",
+        "correct": true,
+        "rationale": "The USB bus is listed by `lsusb`, and `lspci` lists PCI devices such as graphics and network cards."
+      },
+      {
+        "text": "`lsblk` for the USB devices and `lscpu` for the graphics card.",
+        "correct": false,
+        "rationale": "`lsblk` lists block devices and `lscpu` describes the processor."
+      },
+      {
+        "text": "`lspci` for the USB devices and `lsusb` for the graphics card.",
+        "correct": false,
+        "rationale": "The two are swapped here."
+      },
+      {
+        "text": "`lsmod` for the USB devices and `lsblk` for the graphics card.",
+        "correct": false,
+        "rationale": "`lsmod` lists kernel modules, and `lsblk` lists disks."
+      }
+    ],
+    "explanation": "`lspci` lists the devices on the PCI bus (graphics card, network card, controllers), `lsusb` lists USB devices, `lscpu` describes the processor and `lsblk` lists disks and partitions."
+  },
+  {
+    "id": "014.2-035",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.1"
+    ],
+    "terms": [
+      "014.2.t1"
+    ],
+    "stem": "Mira runs `uname -m` on two machines. The first prints `x86_64` and the second prints `i686`. What follows?",
+    "options": [
+      {
+        "text": "The first is a 64-bit PC and the second a 32-bit PC, which can address at most 4 GiB of memory.",
+        "correct": true,
+        "rationale": "`x86_64` (also called amd64) is 64-bit x86, and `i686` is 32-bit."
+      },
+      {
+        "text": "The first is an ARM board and the second a 64-bit PC, because ARM names always contain an underscore.",
+        "correct": false,
+        "rationale": "`x86_64` is an Intel/AMD name, and ARM prints names such as `aarch64`."
+      },
+      {
+        "text": "Both are 64-bit machines, and the names only show which vendor built the processor.",
+        "correct": false,
+        "rationale": "The names show the architecture, and `i686` is the 32-bit one."
+      },
+      {
+        "text": "The first one has no swap space, and the second one has no graphics card.",
+        "correct": false,
+        "rationale": "The architecture name says nothing about swap or graphics."
+      }
+    ],
+    "explanation": "`x86_64` or `amd64` is the 64-bit x86 architecture, and `i386` or `i686` is 32-bit. A 32-bit system can address at most 4 GiB of memory."
+  },
+  {
+    "id": "014.2-036",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3"
+    ],
+    "stem": "Ada lists device files and sees `brw-rw---- 1 root disk 8, 0 /dev/sda`. What are the two numbers `8, 0`?",
+    "options": [
+      {
+        "text": "The size of the disk in gigabytes and the number of its partitions.",
+        "correct": false,
+        "rationale": "Device files have no size; those numbers are not capacity."
+      },
+      {
+        "text": "The major number, which names the driver, and the minor number, which names the device of that driver.",
+        "correct": true,
+        "rationale": "Where a normal file shows its size, a device file shows its major and minor numbers."
+      },
+      {
+        "text": "The day and month on which the device was added to the system.",
+        "correct": false,
+        "rationale": "The date follows the two numbers in the listing."
+      },
+      {
+        "text": "The group and user ID of the device's owner.",
+        "correct": false,
+        "rationale": "Owner and group are the names that come before the two numbers."
+      }
+    ],
+    "explanation": "A device file stores no data, so `ls -l` shows the major and minor numbers in place of a size. The leading `b` marks a block device, such as a disk."
+  },
+  {
+    "id": "014.2-037",
+    "objectiveId": "014.2",
+    "kind": "single",
+    "areas": [
+      "014.2.2"
+    ],
+    "terms": [
+      "014.2.t3"
+    ],
+    "stem": "Mira installs a brand-new NVMe SSD and creates a partition `/dev/nvme0n1p1` on it. What must she do before she can save files there?",
+    "options": [
+      {
+        "text": "Nothing: a new partition can store files at once as it comes.",
+        "correct": false,
+        "rationale": "A fresh partition holds no filesystem yet."
+      },
+      {
+        "text": "Create a filesystem on the partition, and then mount it.",
+        "correct": true,
+        "rationale": "A filesystem has to exist before files can be stored, and it is made available by mounting it."
+      },
+      {
+        "text": "Load the `nvme` module with `lsusb`, since NVMe drives hang off the USB bus.",
+        "correct": false,
+        "rationale": "NVMe drives sit on the PCIe bus, and `lsusb` loads nothing."
+      },
+      {
+        "text": "Add the partition to `/dev/zero`, so that the kernel can see it as a block device.",
+        "correct": false,
+        "rationale": "`/dev/zero` is a pseudo-device that has no part in this."
+      }
+    ],
+    "explanation": "A new partition is empty and has no filesystem. It needs one before files can be stored, and the filesystem is then mounted into the directory tree."
   }
 ]

@@ -229,5 +229,21 @@
     ],
     "front": "Why is a typical Android phone not a Linux distribution in the desktop sense?",
     "back": "Its userspace is Android’s own: apps run in Android’s runtime, there is no package manager like `apt` and usually no ordinary shell for the user."
+  },
+  {
+    "id": "011.1-c29",
+    "areas": [
+      "011.1.2"
+    ],
+    "front": "What is YaST?",
+    "back": "SUSE’s tool for installing and configuring a system (disks, users, software, network). It belongs to openSUSE and SUSE Linux Enterprise."
+  },
+  {
+    "id": "011.1-c30",
+    "areas": [
+      "011.1.4"
+    ],
+    "front": "Why isn’t Android as shipped fully open source?",
+    "back": "The base (AOSP) is open source, but most phones add Google’s proprietary layer: the Play Store, Google’s services and apps."
   }
 ]

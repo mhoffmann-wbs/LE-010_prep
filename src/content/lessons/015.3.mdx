@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '015.3',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Every file has an owner, a group and nine permission bits: read, write and execute for the owner, the group and everyone else. `ls -l` shows them as `-rwxr-xr--`; the first character is the type. `chmod` changes them, either with numbers (r=4, w=2, x=1, so `755`, `644`) or with letters (`u+x`, `g-w`, `o=`, `a+r`). `chown user:group file` changes who owns it. On a directory, r means "list the names", w means "create and delete entries" and x means "enter it and reach what is inside".',
   areasCovered: ['015.3.1'],
   termsCovered: ['015.3.t1', '015.3.t2'],
@@ -57,7 +57,7 @@ Read one line, `-rw-r----- 1 ada release 26 Nov  2 09:30 release-notes.txt`, fro
 | `Nov  2 09:30` | date | last modification |
 | `release-notes.txt` | name | |
 
-So the release notes belong to Ada, whose group is `release`. Ada may read and write them, members of `release` (Mira is one) may read them, and everybody else, such as Jonas, may do nothing. Directories and programs look like this (`ls` sorts the names you give it):
+`ls -lh` adds **h**uman-readable sizes such as `1.4M` instead of bytes. So the release notes belong to Ada, whose group is `release`. Ada may read and write them, members of `release` (Mira is one) may read them, and everybody else, such as Jonas, may do nothing. Directories and programs look like this (`ls` sorts the names you give it):
 
 ```bash fixture=sec-perms
 cd studio

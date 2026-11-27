@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '012.2',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Linux documents itself. `man NAME` opens the manual page of a command (`q` quits, `/` searches, the number picks a section: `man 5 passwd`). `man -k WORD` searches the short descriptions. Most commands also print a quick summary with `--help`. Longer documentation and examples live in `/usr/share/doc/`. On 010-160 you also use `info` pages and `locate`.',
   areasCovered: ['012.2.1', '012.2.2', '012.2.v1'],
   termsCovered: ['012.2.t1', '012.2.t2', '012.2.t3', '012.2.vt1', '012.2.vt2'],
@@ -29,7 +29,7 @@ A good habit: when you meet an unknown command, run it with `--help` first, then
 
 ### Man pages
 
-A **man page** (manual page) is the official reference for one command, file format or topic. `man` opens it in a **pager**, a program that shows a long text one screen at a time. Because the pager shows the text of the page itself, you can search and scroll.
+A **man page** (manual page) is the official reference for one command, file format or topic. `man` opens it in a **pager**, a program that shows a long text one screen at a time. Because the pager shows the text of the page itself, you can search and scroll. On most systems that pager is `less`, so the keys below are the same ones you use in `less` anywhere else.
 
 ```bash static
 man ls
@@ -43,7 +43,8 @@ These keys work inside the pager:
 | `b` | Previous page |
 | Arrow keys, `j` and `k` | Line by line |
 | `/word` then Enter | Search forward for "word" |
-| `n` and `N` | Next and previous match |
+| `?word` then Enter | Search **backward** for "word" |
+| `n` and `N` | Repeat the search in the same direction, or in the opposite direction |
 | `g` and `G` | Go to the top and to the end |
 | `q` | **Quit** |
 | `h` | Help for the pager |
@@ -106,6 +107,7 @@ Man pages are grouped into numbered **sections**. The same name can exist in mor
 | 6 | Games |
 | 7 | Miscellaneous: concepts, conventions, overviews |
 | 8 | System administration commands (usually for root) |
+| 9 | Kernel routines (non-standard, rarely installed) |
 
 `passwd` is both a command (section 1: change your password) and a file (section 5: the format of `/etc/passwd`). `man passwd` shows the first it finds, section 1. Ask for the file with `man 5 passwd`. The page header always shows the section in brackets, like `PASSWD(5)`.
 
@@ -167,7 +169,7 @@ Usage: cp [OPTION]... [-T] SOURCE DEST
   or:  cp [OPTION]... -t DIRECTORY SOURCE...
 ```
 
-The text starts with a `Usage:` line, which is the same synopsis as in the man page, followed by the options. The output can be long. Pipe it into `head` to see the start, or into `less` to scroll through it.
+The text starts with a `Usage:` line, which is the same synopsis as in the man page, followed by the options. `--help` is a quick reminder of the syntax and options; the man page is the full reference, with explanations, examples and related pages. The output can be long. Pipe it into `head` to see the start, or into `less` to scroll through it.
 
 Be careful with `-h`: it doesn't always mean help. In `ls -lh` it means **human-readable** sizes, and in `df -h` as well. `--help` is the safe choice, and `--version` prints the version of a program.
 
@@ -188,7 +190,7 @@ If you give a command a wrong option, it often prints an error and a hint like "
 
 ### Documentation directory
 
-Besides man pages, packages install extra documentation in **`/usr/share/doc/`**: one directory per package, named after it. You find README files, licence texts (`copyright`), change logs (`changelog.gz`) and often an `examples` folder with sample configuration files.
+Besides man pages, packages install extra documentation in **`/usr/share/doc/`**: one directory per package, named after it. The package manager puts the files there when it installs the package and removes them again with it, so you don't edit them by hand. You find README files, licence texts (`copyright`), change logs (`changelog.gz`) and often an `examples` folder with sample configuration files. Projects also ship plain-text files with conventional names, for example `README` (start here), `INSTALL` (how to build or set it up), `NEWS` (what changed between releases), `AUTHORS` (who wrote it) and `COPYING` or `LICENSE` (the licence terms).
 
 ```bash
 ls /usr/share/doc/adduser
@@ -278,7 +280,7 @@ passwd (5)           - the password file
 </Callout>
 
 <Callout title="Quit with q">
-  <p>`man` opens a pager. `q` quits it, `/word` searches, Space moves down a page.</p>
+  <p>`man` opens a pager. `q` quits it, `/word` searches forward, `?word` searches backward, `n` jumps to the next match and `N` to the previous one, Space moves down a page.</p>
 </Callout>
 
 <Callout title="man -k and apropos search descriptions">

@@ -712,5 +712,285 @@
     "mode": "type",
     "output": "1 $x 1",
     "explanation": "Double quotes and no quotes expand the variable, so two of the words become `1`. Single quotes keep `$x` literal."
+  },
+  {
+    "id": "012.1-050",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.1"
+    ],
+    "terms": [
+      "012.1.t6"
+    ],
+    "stem": "Ada defines a shell function called `ls` that prints a joke. She then types `ls` in the same shell. What does Bash run?",
+    "options": [
+      {
+        "text": "The program `/usr/bin/ls`, because programs always win",
+        "correct": false,
+        "rationale": "Programs are searched last, after aliases, functions and builtins."
+      },
+      {
+        "text": "Her function, because functions are checked before `PATH`",
+        "correct": true,
+        "rationale": "Right: Bash looks at aliases, keywords, functions and builtins before it searches `PATH`."
+      },
+      {
+        "text": "It reports an error because the name is already taken",
+        "correct": false,
+        "rationale": "Bash lets you define a function with the same name as a program; the function simply hides it."
+      },
+      {
+        "text": "Both, one after the other",
+        "correct": false,
+        "rationale": "Bash runs only the first match it finds."
+      }
+    ],
+    "explanation": "The lookup order for the first word is alias, keyword, function, builtin and finally the directories in `PATH`. A function or alias named `ls` therefore hides the program. `type ls` shows what the name currently means."
+  },
+  {
+    "id": "012.1-051",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.1"
+    ],
+    "terms": [
+      "012.1.t6"
+    ],
+    "stem": "Jonas runs `type -t ll` and gets the answer `alias`. What does that tell him?",
+    "options": [
+      {
+        "text": "`ll` is a nickname defined in his shell for another command",
+        "correct": true,
+        "rationale": "Correct: `alias` means the name was set up with the `alias` command."
+      },
+      {
+        "text": "`ll` is a program stored in `/usr/bin`",
+        "correct": false,
+        "rationale": "For a program `type -t` prints `file`."
+      },
+      {
+        "text": "`ll` is built into Bash itself",
+        "correct": false,
+        "rationale": "For a builtin `type -t` prints `builtin`."
+      },
+      {
+        "text": "`ll` is a function with a body of several commands",
+        "correct": false,
+        "rationale": "For a function `type -t` prints `function`."
+      }
+    ],
+    "explanation": "`type -t NAME` prints one word for the kind of command: `alias`, `keyword`, `function`, `builtin` or `file`."
+  },
+  {
+    "id": "012.1-052",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.1"
+    ],
+    "terms": [
+      "012.1.t3"
+    ],
+    "stem": "Mira wants to rerun the most recent command line that began with `git`, without retyping it. Which entry does that?",
+    "options": [
+      {
+        "text": "`!!`",
+        "correct": false,
+        "rationale": "This repeats the very last line, whatever it was."
+      },
+      {
+        "text": "`history -c`",
+        "correct": false,
+        "rationale": "This clears the history list; it runs nothing."
+      },
+      {
+        "text": "`!git`",
+        "correct": true,
+        "rationale": "Correct: `!word` repeats the most recent line that starts with that word."
+      },
+      {
+        "text": "`!1`",
+        "correct": false,
+        "rationale": "This repeats the line numbered 1 in the history, not the latest one starting with `git`."
+      }
+    ],
+    "explanation": "`!!` repeats the previous line, `!N` repeats line number N and `!word` repeats the latest line starting with `word`."
+  },
+  {
+    "id": "012.1-053",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.1"
+    ],
+    "terms": [
+      "012.1.t3"
+    ],
+    "stem": "Ada typed a password into a command by accident and wants the shell to forget every line it remembers in this session. Which command empties the history list?",
+    "options": [
+      {
+        "text": "`history -c`",
+        "correct": true,
+        "rationale": "Correct: `-c` clears the history list of the current shell."
+      },
+      {
+        "text": "`history -l`",
+        "correct": false,
+        "rationale": "There is no such option for clearing; it is not what empties the list."
+      },
+      {
+        "text": "`unset history`",
+        "correct": false,
+        "rationale": "`history` is a builtin command, not a variable."
+      },
+      {
+        "text": "`!history`",
+        "correct": false,
+        "rationale": "This would repeat the latest line starting with `history`."
+      }
+    ],
+    "explanation": "`history -c` clears the in-memory list. The file `~/.bash_history` is written from the list when the shell exits, so it is a separate thing."
+  },
+  {
+    "id": "012.1-054",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.1"
+    ],
+    "terms": [
+      "012.1.t1"
+    ],
+    "stem": "Mira's prompt reads `mira@tuxpixel:/var/log$`. Which statement is correct?",
+    "options": [
+      {
+        "text": "She is the root user, working on the host `mira`",
+        "correct": false,
+        "rationale": "Root's prompt usually ends in `#`, and the name before the `@` is the user."
+      },
+      {
+        "text": "She is a normal user, on the host `tuxpixel`, in `/var/log`",
+        "correct": true,
+        "rationale": "Correct: user, `@`, host name, `:`, current directory, then `$` for a normal user."
+      },
+      {
+        "text": "She is a normal user whose home directory is `/var/log`",
+        "correct": false,
+        "rationale": "A home directory would be shown as `~`; here the current directory is `/var/log`."
+      },
+      {
+        "text": "She is logged in to a host called `/var/log`",
+        "correct": false,
+        "rationale": "The part after the colon is a directory, not a host."
+      }
+    ],
+    "explanation": "A typical Bash prompt shows `user@host:directory` followed by `$` for a normal user or `#` for root. The home directory is abbreviated `~`."
+  },
+  {
+    "id": "012.1-055",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.3"
+    ],
+    "terms": [
+      "012.1.t5"
+    ],
+    "stem": "Jonas set `color=green` and now wants to remove the variable. Which command does it?",
+    "options": [
+      {
+        "text": "`unset $color`",
+        "correct": false,
+        "rationale": "This expands to `unset green` and leaves `color` alone."
+      },
+      {
+        "text": "`unset color`",
+        "correct": true,
+        "rationale": "Correct: `unset` takes the variable's name, without a dollar sign."
+      },
+      {
+        "text": "`export -n $color`",
+        "correct": false,
+        "rationale": "This also expands the value first, and `-n` only stops exporting; it does not remove."
+      },
+      {
+        "text": "`color=`",
+        "correct": false,
+        "rationale": "This sets the variable to an empty string, but it still exists."
+      }
+    ],
+    "explanation": "Like `export`, `unset` wants a name. Writing `$color` hands it the value instead. `color=` leaves an empty variable, which `set` still lists."
+  },
+  {
+    "id": "012.1-056",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.2"
+    ],
+    "terms": [
+      "012.1.t2"
+    ],
+    "stem": "Mira writes `ls --all` in one place and `ls -a` in another. Which statement about these option forms is correct?",
+    "options": [
+      {
+        "text": "Long options start with two dashes and a word; short ones use one dash and one letter",
+        "correct": true,
+        "rationale": "Correct: many options exist in both forms, such as `-a` and `--all`."
+      },
+      {
+        "text": "Both forms must be written with the same number of dashes",
+        "correct": false,
+        "rationale": "The number of dashes is exactly what tells the two forms apart."
+      },
+      {
+        "text": "Long options can be combined behind one dash, like `-all`",
+        "correct": false,
+        "rationale": "Only short options combine; `-all` would be read as `-a -l -l`."
+      },
+      {
+        "text": "Short options are only for root, long ones for everyone",
+        "correct": false,
+        "rationale": "Options do not depend on the user."
+      }
+    ],
+    "explanation": "Short options (`-a`) can be combined (`-la`). Long options (`--all`) are spelled out and used one by one."
+  },
+  {
+    "id": "012.1-057",
+    "objectiveId": "012.1",
+    "kind": "single",
+    "areas": [
+      "012.1.4"
+    ],
+    "terms": [
+      "012.1.t2"
+    ],
+    "stem": "Which of these lines prints the text `Cost: $5` exactly as written?",
+    "options": [
+      {
+        "text": "`echo \"Cost: $5\"`",
+        "correct": false,
+        "rationale": "Inside double quotes `$5` is still expanded, here to an empty value."
+      },
+      {
+        "text": "`echo 'Cost: $5'`",
+        "correct": true,
+        "rationale": "Correct: single quotes keep every character literal."
+      },
+      {
+        "text": "`echo \"Cost: ${5}\"`",
+        "correct": false,
+        "rationale": "Inside double quotes `${5}` is expanded too, again to an empty value."
+      },
+      {
+        "text": "`echo Cost: $5`",
+        "correct": false,
+        "rationale": "Without quotes `$5` is expanded as well."
+      }
+    ],
+    "explanation": "Only single quotes (or a backslash before the `$`) stop the expansion. Double quotes still expand `$`, backticks and `\\`."
   }
 ]

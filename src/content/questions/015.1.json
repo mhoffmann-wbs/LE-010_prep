@@ -1039,5 +1039,112 @@
     "command": "stat -c '%U %G %a' /etc/shadow",
     "output": "root shadow 640",
     "mode": "type"
+  },
+  {
+    "id": "015.1-032",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.3"
+    ],
+    "stem": "Mira wants to add a rule to `/etc/sudoers`. Which command is the safe way to edit it?",
+    "explanation": "`visudo` locks the file and checks the syntax before saving, so a typo cannot lock everyone out of `sudo`.",
+    "sourceLinks": [
+      "https://www.sudo.ws/docs/man/visudo.man/"
+    ],
+    "options": [
+      {
+        "text": "`nano /etc/sudoers`",
+        "correct": false,
+        "rationale": "A plain editor does not check the syntax, and a mistake can break `sudo` for everybody."
+      },
+      {
+        "text": "`visudo`",
+        "correct": true,
+        "rationale": "It validates the rules before the file is saved."
+      },
+      {
+        "text": "`sudoedit --check /etc/shadow`",
+        "correct": false,
+        "rationale": "That is the password file, not the sudo rules."
+      },
+      {
+        "text": "`sudo -e /etc/passwd`",
+        "correct": false,
+        "rationale": "This edits the user database, not the sudo rules."
+      }
+    ]
+  },
+  {
+    "id": "015.1-033",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.1",
+      "015.1.3"
+    ],
+    "stem": "Jonas only needs to restart one service on the build machine. Which choice follows the principle of least privilege?",
+    "explanation": "Least privilege means giving an account only the rights its job needs. A narrow rule for one command is safer than full root access.",
+    "sourceLinks": [
+      "https://www.sudo.ws/docs/man/visudo.man/"
+    ],
+    "options": [
+      {
+        "text": "Give him the root password so he can do any job without asking.",
+        "correct": false,
+        "rationale": "That hands over every right, not just the one he needs."
+      },
+      {
+        "text": "Put him in the `sudo` group so he can run anything as root.",
+        "correct": false,
+        "rationale": "Far more power than one restart needs."
+      },
+      {
+        "text": "Add a `sudoers.d` rule that lets him run only that restart command as root.",
+        "correct": true,
+        "rationale": "He gets exactly the right he needs and nothing else."
+      },
+      {
+        "text": "Make his account UID 0 so that permission checks stop.",
+        "correct": false,
+        "rationale": "This turns him into a second root."
+      }
+    ]
+  },
+  {
+    "id": "015.1-034",
+    "objectiveId": "015.1",
+    "kind": "single",
+    "areas": [
+      "015.1.4",
+      "015.1.5"
+    ],
+    "stem": "Ada keeps her key for the release server in `~/.ssh/release_key`. Which command makes `ssh` use it to log in as `ada`?",
+    "explanation": "`-i` names the identity file, which is the private key. The file you name is never the `.pub` one.",
+    "sourceLinks": [
+      "https://man.openbsd.org/ssh"
+    ],
+    "options": [
+      {
+        "text": "`ssh -i ~/.ssh/release_key ada@tuxpixel.example`",
+        "correct": true,
+        "rationale": "`-i` selects the private key to use for the login."
+      },
+      {
+        "text": "`ssh -p ~/.ssh/release_key ada@tuxpixel.example`",
+        "correct": false,
+        "rationale": "`-p` sets the port number, not a key."
+      },
+      {
+        "text": "`ssh -l ~/.ssh/release_key tuxpixel.example`",
+        "correct": false,
+        "rationale": "`-l` names the login user, not a key file."
+      },
+      {
+        "text": "`ssh -k ~/.ssh/release_key ada@tuxpixel.example`",
+        "correct": false,
+        "rationale": "This is not an option for choosing a key."
+      }
+    ]
   }
 ]

@@ -253,5 +253,37 @@
     ],
     "front": "What is a web application?",
     "back": "A program that runs on a server and that you use in your browser, so nothing is installed on your computer. Moodle, Jitsi and GitLab are examples."
+  },
+  {
+    "id": "011.2-c30",
+    "areas": [
+      "011.2.1"
+    ],
+    "front": "Which components does LibreOffice have?",
+    "back": "Writer (text), Calc (spreadsheets), Impress (slides), Draw (drawings), Math (formulas) and Base (databases). Native format: ODF."
+  },
+  {
+    "id": "011.2-c31",
+    "areas": [
+      "011.2.1"
+    ],
+    "front": "What standard does GPG implement?",
+    "back": "OpenPGP. A key pair lets you encrypt and sign: the public key is shared, the private key stays secret."
+  },
+  {
+    "id": "011.2-c32",
+    "areas": [
+      "011.2.6"
+    ],
+    "front": "`apt remove` versus `apt purge`?",
+    "back": "`remove` deletes the program but keeps its configuration files. `purge` deletes both. Both need root."
+  },
+  {
+    "id": "011.2-c33",
+    "areas": [
+      "011.2.3"
+    ],
+    "front": "Static versus dynamic web content?",
+    "back": "Static: a stored file sent unchanged. Dynamic: built by a program for each request, often from a database."
   }
 ]

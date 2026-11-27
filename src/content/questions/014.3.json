@@ -1642,5 +1642,206 @@
     "sourceLinks": [
       "https://man7.org/linux/man-pages/man1/free.1.html"
     ]
+  },
+  {
+    "id": "014.3-046",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.1"
+    ],
+    "terms": [
+      "014.3.t4"
+    ],
+    "stem": "Mira finds the directory `/etc/cron.d/` with several small files in it. What does the `.d` ending usually tell her?",
+    "options": [
+      {
+        "text": "The directory is a hidden one, so the files in it are only visible to the root user.",
+        "correct": false,
+        "rationale": "Hidden files start with a dot; a `.d` ending has nothing to do with visibility."
+      },
+      {
+        "text": "Each file inside is a binary program, and `.d` stands for \"daemon executable\".",
+        "correct": false,
+        "rationale": "The files inside such directories are plain-text settings."
+      },
+      {
+        "text": "It was made by the kernel while the system runs, and it is lost when the machine is switched off.",
+        "correct": false,
+        "rationale": "That describes `/proc` and `/sys`, not directories in `/etc`."
+      },
+      {
+        "text": "It holds many small configuration files that together make up one setting, so a package can add its own file.",
+        "correct": true,
+        "rationale": "This is the usual meaning of a `*.d` directory in `/etc`."
+      }
+    ],
+    "explanation": "A `*.d` directory in `/etc` holds a set of small configuration files, such as `cron.d`, `sudoers.d` or `profile.d`. A package can drop in a file without editing a shared one."
+  },
+  {
+    "id": "014.3-047",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.1"
+    ],
+    "terms": [
+      "014.3.t4"
+    ],
+    "stem": "Jonas wants his shell prompt changed only for himself, not for the other users. Where do his personal shell settings live?",
+    "options": [
+      {
+        "text": "In the hidden file `.bashrc` in his home directory.",
+        "correct": true,
+        "rationale": "Per-user settings are dotfiles in the home directory."
+      },
+      {
+        "text": "In `/etc/bash.bashrc`, which applies to every user on the machine.",
+        "correct": false,
+        "rationale": "That file is read for all users, so it isn't the place for a personal change."
+      },
+      {
+        "text": "In `/proc/self/bashrc`, which the kernel builds for each user.",
+        "correct": false,
+        "rationale": "`/proc` has no such file."
+      },
+      {
+        "text": "In `/usr/local/bin`, next to the programs that he has installed.",
+        "correct": false,
+        "rationale": "That directory holds programs, not settings."
+      }
+    ],
+    "explanation": "User-specific settings are dotfiles in the home directory, such as `~/.bashrc` or `~/.profile`. Files under `/etc` apply to the whole system."
+  },
+  {
+    "id": "014.3-048",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.1"
+    ],
+    "terms": [
+      "014.3.t4"
+    ],
+    "stem": "Ada installs the Pixel Raiders level editor by unpacking a vendor's archive, with its own libraries, into a folder of its own. Where is the traditional place for such software?",
+    "options": [
+      {
+        "text": "`/opt`",
+        "correct": true,
+        "rationale": "`/opt` is meant for large optional software that comes as its own package."
+      },
+      {
+        "text": "`/proc`",
+        "correct": false,
+        "rationale": "`/proc` is made up by the kernel and has no disk behind it."
+      },
+      {
+        "text": "`/dev`",
+        "correct": false,
+        "rationale": "`/dev` holds device files, not programs."
+      },
+      {
+        "text": "`/boot`",
+        "correct": false,
+        "rationale": "`/boot` holds the kernel and the boot loader's files."
+      }
+    ],
+    "explanation": "`/opt` holds add-on software that brings everything in one folder. `/usr/bin` is for the distribution's own commands, and `/usr/local/bin` for programs the administrator installed by hand."
+  },
+  {
+    "id": "014.3-049",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Mira has `top` open and wants the process list sorted by memory use instead of CPU use. Which key does she press?",
+    "options": [
+      {
+        "text": "`P`",
+        "correct": false,
+        "rationale": "`P` sorts by CPU use, which is the default view."
+      },
+      {
+        "text": "`M`",
+        "correct": true,
+        "rationale": "`M` sorts by memory use."
+      },
+      {
+        "text": "`N`",
+        "correct": false,
+        "rationale": "`N` sorts by PID."
+      },
+      {
+        "text": "`T`",
+        "correct": false,
+        "rationale": "`T` sorts by running time."
+      }
+    ],
+    "explanation": "Inside `top`, `M` sorts by memory, `P` by CPU, `N` by PID and `T` by running time. `R` reverses the order, and `q` quits.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
+    "id": "014.3-050",
+    "objectiveId": "014.3",
+    "kind": "single",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "The `%Cpu(s)` line in `top` on the build server reads `us 3.0, sy 1.0, ni 0.0, id 95.5`. What does the `id` value mean?",
+    "options": [
+      {
+        "text": "95.5 percent of the CPU time was spent idle, so the CPU has little to do.",
+        "correct": true,
+        "rationale": "`id` is idle time."
+      },
+      {
+        "text": "95.5 percent of the CPU time was spent on the kernel's own work.",
+        "correct": false,
+        "rationale": "Kernel (system) time is the `sy` field."
+      },
+      {
+        "text": "95.5 percent of the memory is in use by identified processes.",
+        "correct": false,
+        "rationale": "The `%Cpu(s)` line is about CPU time, not memory."
+      },
+      {
+        "text": "95.5 processes are waiting for their ID to be assigned.",
+        "correct": false,
+        "rationale": "The line shows percentages, not process counts."
+      }
+    ],
+    "explanation": "The `%Cpu(s)` line splits CPU time: `us` is user programs, `sy` the kernel, `ni` programs with a changed nice value and `id` idle time.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
+  },
+  {
+    "id": "014.3-051",
+    "objectiveId": "014.3",
+    "kind": "fill",
+    "areas": [
+      "014.3.2"
+    ],
+    "terms": [
+      "014.3.t1"
+    ],
+    "stem": "Type the single key that makes `top` sort its list by memory use.",
+    "accept": [
+      "M"
+    ],
+    "caseSensitive": true,
+    "explanation": "Inside `top`, an uppercase `M` sorts by memory, and `P` by CPU use.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/top.1.html"
+    ]
   }
 ]

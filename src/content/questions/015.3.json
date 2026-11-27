@@ -1005,5 +1005,75 @@
     "user": "root",
     "output": "jonas:design",
     "mode": "type"
+  },
+  {
+    "id": "015.3-031",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "stem": "Which command lists the files in the current directory with sizes shown as `4.0K` or `1.2M`?",
+    "explanation": "`-h` means human-readable and goes with `-l`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ls.1.html"
+    ],
+    "options": [
+      {
+        "text": "`ls -lh`",
+        "correct": true,
+        "rationale": "`-h` turns byte counts into units such as K and M."
+      },
+      {
+        "text": "`ls -lS`",
+        "correct": false,
+        "rationale": "`-S` sorts by size but still prints bytes."
+      },
+      {
+        "text": "`ls -la`",
+        "correct": false,
+        "rationale": "`-a` shows hidden files, not units."
+      },
+      {
+        "text": "`ls -ld`",
+        "correct": false,
+        "rationale": "`-d` lists the directory itself."
+      }
+    ]
+  },
+  {
+    "id": "015.3-032",
+    "objectiveId": "015.3",
+    "kind": "single",
+    "areas": [
+      "015.3.1"
+    ],
+    "stem": "Jonas has read-only access (`r--`) to a file, but owns the directory it is in. Which statement is right?",
+    "explanation": "Deleting a file is a change to the directory, so the directory's `w` and `x` bits decide, not the file's own permissions.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man7/inode.7.html"
+    ],
+    "options": [
+      {
+        "text": "He cannot delete it, because the file is read-only.",
+        "correct": false,
+        "rationale": "The file's own bits don't matter for deleting it."
+      },
+      {
+        "text": "He can delete it only if he is root.",
+        "correct": false,
+        "rationale": "An owner with `w` and `x` on the directory can do it."
+      },
+      {
+        "text": "He can delete it, as long as he has `w` and `x` on the directory.",
+        "correct": true,
+        "rationale": "Removing an entry is a change of the directory."
+      },
+      {
+        "text": "He can delete it only after `chmod +w` on the file.",
+        "correct": false,
+        "rationale": "The file's mode doesn't need to change."
+      }
+    ]
   }
 ]

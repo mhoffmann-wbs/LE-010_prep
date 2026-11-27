@@ -501,5 +501,91 @@
     "user": "ada",
     "output": "rm: cannot remove '/tmp/jonas-sketch.txt': Operation not permitted\nstatus 1",
     "mode": "type"
+  },
+  {
+    "id": "015.4-016",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.1"
+    ],
+    "stem": "What is true about the directory `/run`?",
+    "explanation": "`/run` holds runtime data such as PID files and sockets. It lives in memory and starts empty at every boot. `/var/run` is a link to it.",
+    "sourceLinks": [
+      "https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s15.html"
+    ],
+    "options": [
+      {
+        "text": "It is the place for files that must survive a reboot.",
+        "correct": false,
+        "rationale": "That describes `/var/tmp`."
+      },
+      {
+        "text": "It stores the home directories of the system users.",
+        "correct": false,
+        "rationale": "Those are in `/home` or elsewhere."
+      },
+      {
+        "text": "It holds runtime data such as PID files, and is empty after a boot.",
+        "correct": true,
+        "rationale": "It is a memory-backed tmpfs."
+      },
+      {
+        "text": "It is a link to `/tmp` for all users.",
+        "correct": false,
+        "rationale": "`/var/run` is a link to `/run`, not the other way round."
+      }
+    ]
+  },
+  {
+    "id": "015.4-017",
+    "objectiveId": "015.4",
+    "kind": "output",
+    "areas": [
+      "015.4.2"
+    ],
+    "terms": [
+      "015.4.t3"
+    ],
+    "stem": "Mira creates a relative symbolic link from another directory with `-r`. What does `readlink` print?",
+    "explanation": "`ln -rs` works out the path from the link's own directory, so the target is stored as `../docs`.",
+    "command": "cd ~ && mkdir -p proj/docs proj/bin && ln -rs proj/docs proj/bin/docs && readlink proj/bin/docs",
+    "output": "../docs",
+    "mode": "type"
+  },
+  {
+    "id": "015.4-018",
+    "objectiveId": "015.4",
+    "kind": "single",
+    "areas": [
+      "015.4.2"
+    ],
+    "stem": "Mira is in `/home/mira/proj/` and wants `bin/docs` to point at `docs` in the same folder as `bin`. Which command lets `ln` work out the relative path for her?",
+    "explanation": "`-r` makes the link target relative to the link's location, so it is stored as `../docs`.",
+    "sourceLinks": [
+      "https://man7.org/linux/man-pages/man1/ln.1.html"
+    ],
+    "options": [
+      {
+        "text": "`ln -rs docs bin/docs`",
+        "correct": true,
+        "rationale": "With `-r`, ln computes the relative target."
+      },
+      {
+        "text": "`ln -s -p docs bin/docs`",
+        "correct": false,
+        "rationale": "`-p` is not an option of `ln` that does this."
+      },
+      {
+        "text": "`ln -h docs bin/docs`",
+        "correct": false,
+        "rationale": "`-h` does not create a relative link."
+      },
+      {
+        "text": "`ln docs bin/docs`",
+        "correct": false,
+        "rationale": "Without `-s` it is a hard link, which can't point at a directory."
+      }
+    ]
   }
 ]

@@ -1,0 +1,29 @@
+{
+  "description": "Mira's release folder: a sprite, a sound and four text files, each with a different size.",
+  "entries": [
+    {
+      "path": "/home/mira/release/hero.png",
+      "content": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n"
+    },
+    {
+      "path": "/home/mira/release/theme.ogg",
+      "content": "xxxxxxxxxxxxxxxxxxx\n"
+    },
+    {
+      "path": "/home/mira/release/credits.txt",
+      "content": "xxxxxxxxx\n"
+    },
+    {
+      "path": "/home/mira/release/level1.txt",
+      "content": "xxx\n"
+    },
+    {
+      "path": "/home/mira/release/level2.txt",
+      "content": "xxxxx\n"
+    },
+    {
+      "path": "/home/mira/release/level10.txt",
+      "content": "xxxxxxx\n"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '015.1',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Linux knows three kinds of accounts: `root` (user ID 0, may do anything), standard users (the people, IDs from 1000) and system users (IDs below 1000, made for services, no interactive login). Work as a standard user and borrow power only when needed: `sudo command` runs one command as root using your own password, `su` switches to another account using that account\'s password. `ssh user@host` opens a shell on another machine, `scp` copies files over the same secure connection, and `ssh-keygen` makes a key pair whose public half goes into `~/.ssh/authorized_keys` on the server.',
   areasCovered: ['015.1.1', '015.1.2', '015.1.3', '015.1.4', '015.1.5'],
   termsCovered: ['015.1.t1', '015.1.t2', '015.1.t3', '015.1.t4', '015.1.vt1', '015.1.vt2'],
@@ -12,6 +12,7 @@ export const meta = {
     { title: 'ssh-keygen(1) manual page (OpenSSH)', url: 'https://man.openbsd.org/ssh-keygen' },
     { title: 'sshd(8) manual page: the authorized_keys file format', url: 'https://man.openbsd.org/sshd.8#AUTHORIZED_KEYS_FILE_FORMAT' },
     { title: 'Debian Policy: UID and GID classes', url: 'https://www.debian.org/doc/debian-policy/ch-opersys.html#uid-and-gid-classes' },
+    { title: 'visudo(8) manual page', url: 'https://www.sudo.ws/docs/man/visudo.man/' },
     { title: 'login.defs(5) manual page', url: 'https://man7.org/linux/man-pages/man5/login.defs.5.html' },
   ],
 }
@@ -26,7 +27,7 @@ Every process on a Linux machine runs **as** some account, and that account deci
 | **standard users** | `1000` and up on Debian | people: Mira, Jonas, Ada | yes |
 | **system users** | below `1000` | services and programs (a web server, a mail system) | no |
 
-`root` can read, change and delete **everything**, and no permission check stops it. That makes a mistake as root very expensive, so the rule is: **work as a standard user, and borrow root's power for one command at a time**. This lesson covers how to borrow it (`sudo`, `su`), how to reach another machine (`ssh`, `scp`) and how to log in there without a password (key authentication).
+`root` can read, change and delete **everything**, and no permission check stops it. That makes a mistake as root very expensive, so the rule is: **work as a standard user, and borrow root's power for one command at a time**. This habit is called the principle of **least privilege**: every person and program gets only the rights needed for the job, and no more. This lesson covers how to borrow it (`sudo`, `su`), how to reach another machine (`ssh`, `scp`) and how to log in there without a password (key authentication).
 
 You can see which kind of account you are with `id`:
 
@@ -87,7 +88,13 @@ You don't log in as root. Instead you ask for root's power for a single command.
 sudo apt update
 ```
 
-Which users may use `sudo` is configured in `/etc/sudoers`. On Debian and Ubuntu, every member of the group `sudo` may run any command as root; on Red Hat-family systems the group is called `wheel`. Mira is in `sudo`, Jonas and Ada are not. This guest has no real keyboard for typing a password into a cell, so the next one hands it over on standard input with `-S`; at a real prompt you'd simply type it (and never put a password on a command line like this):
+Which users may use `sudo` is configured in `/etc/sudoers`. On Debian and Ubuntu, every member of the group `sudo` may run any command as root; on Red Hat-family systems the group is called `wheel`. Mira is in `sudo`, Jonas and Ada are not. Never edit `/etc/sudoers` with an ordinary text editor: a typo can lock every admin out of `sudo`. The command **`visudo`** opens it in an editor and checks the syntax before saving. Extra rules can live as small files in `/etc/sudoers.d/`, and `sudo visudo -f /etc/sudoers.d/ada-builds` edits one of them with the same check.
+
+```bash static
+sudo visudo
+```
+
+This guest has no real keyboard for typing a password into a cell, so the next one hands it over on standard input with `-S`; at a real prompt you'd simply type it (and never put a password on a command line like this):
 
 ```bash
 echo tuxpixel | sudo -S -p "" id
@@ -285,6 +292,10 @@ status 1
 
 <Callout title="sudo asks for YOUR password, su for the target's">
   <p>`sudo` checks that you are allowed (via `/etc/sudoers` or the group `sudo`) and asks for your own password. `su` knows nothing about permission lists: it asks for the password of the account you switch to, root's if you give no name.</p>
+</Callout>
+
+<Callout title="Edit sudoers with visudo">
+  <p>The rules are in `/etc/sudoers` (and the files in `/etc/sudoers.d/`). `visudo` is the safe way to change them, because it refuses to save a file with a syntax error.</p>
 </Callout>
 
 <Callout title="su vs. su -">

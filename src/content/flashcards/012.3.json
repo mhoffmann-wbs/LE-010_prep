@@ -215,5 +215,21 @@
     ],
     "front": "What does `find projects` do with no tests?",
     "back": "It lists everything below `projects`."
+  },
+  {
+    "id": "012.3-c28",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "Which `ls` options sort by size, by extension and by modification time?",
+    "back": "`-S` (largest first), `-X` (extension) and `-t` (newest first). `-r` reverses the order."
+  },
+  {
+    "id": "012.3-c29",
+    "areas": [
+      "012.3.1"
+    ],
+    "front": "What do `-u` and `-c` change when used with `ls -t`?",
+    "back": "`-u` sorts by last access time and `-c` by last status-change time, instead of the modification time."
   }
 ]

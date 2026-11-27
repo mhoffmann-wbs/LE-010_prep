@@ -137,5 +137,29 @@
     ],
     "front": "How does `ls -l` show the owner’s name if files only store numbers?",
     "back": "It looks up the UID in `/etc/passwd` and the GID in `/etc/group`. Files store the numbers."
+  },
+  {
+    "id": "015.2-c18",
+    "areas": [
+      "015.2.2"
+    ],
+    "front": "How many fields has a line of `/etc/shadow`, and what is the third?",
+    "back": "Nine. The third is the date of the last password change in days since 1970-01-01. A 0 forces a new password at next login."
+  },
+  {
+    "id": "015.2-c19",
+    "areas": [
+      "015.2.2"
+    ],
+    "front": "What is `/etc/gshadow`?",
+    "back": "The group counterpart of shadow: group, password, administrators and members (four fields), readable only by root."
+  },
+  {
+    "id": "015.2-c20",
+    "areas": [
+      "015.2.2"
+    ],
+    "front": "What do `useradd -M`, `-d` and `-e` do?",
+    "back": "`-M` creates no home directory, `-d` sets the home path (with `-m` it is created), `-e` sets the date the account expires."
   }
 ]

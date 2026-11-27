@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '011.1',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'Linux is the kernel; a distribution adds userspace tools, a package manager and a release policy. The main families are Debian-based (Debian, Ubuntu, Raspberry Pi OS), Enterprise Linux (RHEL, AlmaLinux, Rocky Linux, Fedora, CentOS Stream), SUSE-based (SLE, openSUSE Leap and Tumbleweed) and Alpine. Releases come as stable, testing, unstable, LTS or rolling. Android uses the Linux kernel but not the usual GNU userspace.',
   areasCovered: ['011.1.1', '011.1.2', '011.1.3', '011.1.4', '011.1.v1', '011.1.v2'],
   termsCovered: ['011.1.t1', '011.1.t2', '011.1.t3', '011.1.t4', '011.1.t5', '011.1.vt1', '011.1.vt2', '011.1.vt3', '011.1.vt4', '011.1.vt5'],
@@ -19,6 +19,8 @@ export const meta = {
     { title: 'Raspberry Pi OS', url: 'https://www.raspberrypi.com/software/' },
     { title: 'Linux Mint: about', url: 'https://www.linuxmint.com/about.php' },
     { title: 'Scientific Linux end of life', url: 'https://scientificlinux.org/category/uncategorized/scientific-linux-end-of-life/' },
+    { title: 'Android Open Source Project', url: 'https://source.android.com/' },
+    { title: 'YaST (openSUSE)', url: 'https://yast.opensuse.org/' },
     { title: 'Android Open Source Project: the Android kernel', url: 'https://source.android.com/docs/core/architecture/kernel' },
   ],
 }
@@ -69,15 +71,15 @@ Hundreds of distros exist, but most belong to a few **families**. Members of a f
 | **SUSE-based** | `.rpm`, `rpm`, `zypper` | SUSE Linux Enterprise (SLE), openSUSE Leap, openSUSE Tumbleweed |
 | **Alpine** | `.apk`, `apk` | Alpine Linux |
 
-**Debian-based.** *Debian GNU/Linux* is a community project run by volunteers. *Ubuntu* is built on Debian and is made by the company Canonical. *Raspberry Pi OS* is the official system for Raspberry Pi boards and is based on Debian. The guest in this app's terminal is a Debian system.
+**Debian-based.** *Debian GNU/Linux* is a community project run by volunteers. *Ubuntu* is built on Debian and is made by the company Canonical. *Raspberry Pi OS* is the official system for Raspberry Pi boards and is based on Debian. The guest in this app's terminal is a Debian system. Raspberry Pi OS is built for the Raspberry Pi's ARM processor and its hardware, such as the GPIO pins and the camera connector.
 
-**Enterprise Linux.** *Red Hat Enterprise Linux* (RHEL) is a commercial product: you pay for support and updates. The family tree around it matters:
+**Enterprise Linux.** *Red Hat Enterprise Linux* (RHEL) is a commercial product: you buy a **subscription** from Red Hat, and it pays for updates and support. The family tree around it matters:
 
 - **Fedora Linux** is the community distribution that tries new things first. RHEL is developed from it, so it sits upstream.
 - **CentOS Stream** sits between Fedora and RHEL. Its project describes it as the place where the next RHEL minor releases take shape, and it is developed in the open.
 - **AlmaLinux** and **Rocky Linux** are free, community-driven distributions that aim to be compatible with RHEL, so software built for RHEL runs on them. They are a free alternative when you don't need Red Hat's paid support.
 
-**SUSE-based.** *SUSE Linux Enterprise* (SLE) is SUSE's commercial product. *openSUSE Leap* is the free community release that shares its core with SLE; *openSUSE Tumbleweed* is the free rolling release with the newest software.
+**SUSE-based.** *SUSE Linux Enterprise* (SLE) is SUSE's commercial product. *openSUSE Leap* is the free community release that shares its core with SLE; *openSUSE Tumbleweed* is the free rolling release with the newest software. SUSE systems are known for **YaST**, SUSE's own tool for installing and configuring a system (disks, users, software, network) in one place.
 
 **Alpine Linux.** A tiny, security-minded distribution. It uses *musl* instead of the usual GNU C library and *BusyBox* for its basic tools, and its own package manager `apk`. A container image based on it can be very small, so it is popular in containers.
 
@@ -105,6 +107,8 @@ How the families use them (checked against each project's own pages, which are l
 - **openSUSE Leap** is a fixed-version release, and **Tumbleweed** is a rolling release. Tumbleweed snapshots only go out after they pass automated testing.
 - **Alpine** has stable branches (named like `v3.x`), a new one about every six months. Its `main` repository gets about two years of support; its `community` repository is supported until the next stable release. **edge** is the rolling branch that new releases are cut from. It has its own `main` and `community`, plus a `testing` repository that exists only there.
 
+Once a stable release is out, it enters a **maintenance** phase: the package versions stay frozen, and only security and bug fixes arrive. That is why a stable server rarely surprises you after an update.
+
 So "stable" does not mean "never crashes". It means "doesn't change much". Stable and LTS releases trade new features for predictability, and rolling releases do the opposite.
 
 </ExamOnly>
@@ -112,6 +116,8 @@ So "stable" does not mean "never crashes". It means "doesn't change much". Stabl
 ### Android and Linux
 
 **Android** runs on top of the **Linux kernel**: the Android project builds its kernels from upstream Linux long-term-support kernels, plus extra patches. But its userspace is not the GNU/Linux you know. Apps run in Android's own runtime, and there is no `apt` and usually no ordinary shell for the user. So Android is a Linux-kernel system, but you wouldn't call it a Linux distribution in the desktop sense.
+
+There is a second catch. The base system, the **Android Open Source Project** (AOSP), is open source. But a phone sold in a shop usually carries Google's own layer on top: the Play Store, Google's services and Google's apps. Those parts are **proprietary**, and device makers license them separately. So Android as shipped is not fully open source, even though its kernel is.
 
 <ExamOnly exam="010-160">
 
@@ -191,7 +197,7 @@ no apk
 ## Exam traps
 
 <Callout title="Linux is the kernel">
-  <p>"Linux" in the strict sense is the kernel only. A distribution = kernel + userspace + package manager + release policy. Android uses the Linux kernel, but not the GNU userspace of a typical distribution.</p>
+  <p>"Linux" in the strict sense is the kernel only. A distribution = kernel + userspace + package manager + release policy. Android uses the Linux kernel, but not the GNU userspace of a typical distribution. Its open source base (AOSP) gets Google's proprietary Play Store and services added on most phones.</p>
 </Callout>
 
 <Callout title="Know the families and their tools">

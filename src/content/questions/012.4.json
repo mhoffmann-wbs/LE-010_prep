@@ -524,5 +524,379 @@
       { "text": "boss10.png", "correct": true, "rationale": "`boss?.png` removes only names with one character after `boss`, so `boss10.png` stays." }
     ],
     "explanation": "The `?` matches exactly one character, so `boss1.png` and `boss2.png` are deleted and the two-digit `boss10.png` survives."
+  },
+  {
+    "id": "012.4-035",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": [
+      "012.4.1"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Mira copies the `backup` folder into `old`, which already exists. What does `ls old` print?",
+    "command": "cd art; mkdir old; cp readme.md backup; cp -r backup old; ls old",
+    "output": "backup",
+    "mode": "choice",
+    "fixture": "basics-art",
+    "options": [
+      {
+        "text": "readme.md",
+        "correct": false,
+        "rationale": "That would be the content of `old/backup`, one level deeper."
+      },
+      {
+        "text": "backup",
+        "correct": true,
+        "rationale": "The copy lands inside the existing directory under its own name."
+      },
+      {
+        "text": "backup  readme.md",
+        "correct": false,
+        "rationale": "`readme.md` is inside `old/backup`, not directly in `old`."
+      },
+      {
+        "text": "old",
+        "correct": false,
+        "rationale": "A directory is not listed inside itself."
+      }
+    ],
+    "explanation": "`old` exists, so `cp -r` puts the copy inside it as `old/backup`. The file `readme.md` is one level further down."
+  },
+  {
+    "id": "012.4-036",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": [
+      "012.4.1"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "This time the destination `fresh` does not exist yet. Type what `ls fresh` prints.",
+    "command": "cd art; cp readme.md backup; cp -r backup fresh; ls fresh",
+    "output": "readme.md",
+    "mode": "type",
+    "fixture": "basics-art",
+    "explanation": "When the target of `cp -r` doesn't exist, the copy takes that name, so `fresh` holds `readme.md` itself and no `backup` folder."
+  },
+  {
+    "id": "012.4-037",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": [
+      "012.4.1"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Jonas writes a note twice. Type what `cat todo.txt` prints.",
+    "command": "cd art; echo \"Ada was here\" > todo.txt; echo \"second\" > todo.txt; cat todo.txt",
+    "output": "second",
+    "mode": "type",
+    "fixture": "basics-art",
+    "explanation": "The first `>` creates `todo.txt`. The second one replaces its content, so only the second line is left."
+  },
+  {
+    "id": "012.4-038",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": [
+      "012.4.3"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Which names does this pattern produce? Type what the command prints.",
+    "command": "cd art; echo hero[[:digit:]].png",
+    "output": "hero1.png hero2.png hero3.png",
+    "mode": "type",
+    "fixture": "basics-art",
+    "explanation": "`[[:digit:]]` matches exactly one digit, so each numbered hero sprite matches."
+  },
+  {
+    "id": "012.4-039",
+    "objectiveId": "012.4",
+    "kind": "output",
+    "areas": [
+      "012.4.3"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Ada lists every PNG that does not start with `b` or `h`. What does this print?",
+    "command": "cd art; echo [^bh]*.png",
+    "output": "slime.png",
+    "mode": "choice",
+    "fixture": "basics-art",
+    "options": [
+      {
+        "text": "boss1.png boss2.png boss10.png",
+        "correct": false,
+        "rationale": "These start with `b`, which the bracket excludes."
+      },
+      {
+        "text": "hero1.png hero2.png hero3.png slime.png",
+        "correct": false,
+        "rationale": "The `h` names are excluded as well."
+      },
+      {
+        "text": "slime.png",
+        "correct": true,
+        "rationale": "Only the one file that begins with neither letter."
+      },
+      {
+        "text": "[^bh]*.png",
+        "correct": false,
+        "rationale": "The pattern matches an existing file, so the shell replaces it."
+      }
+    ],
+    "explanation": "`[^bh]` means one character that is not `b` or `h`, just like `[!bh]`. Only `slime.png` begins with something else."
+  },
+  {
+    "id": "012.4-040",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": [
+      "012.4.3"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Which pattern matches a file name that starts with an upper-case letter?",
+    "options": [
+      {
+        "text": "`[[:upper:]]*`",
+        "correct": true,
+        "rationale": "Correct: the class `[:upper:]` stands for upper-case letters."
+      },
+      {
+        "text": "`[:upper:]*`",
+        "correct": false,
+        "rationale": "Without the outer pair of brackets, this is an ordinary bracket list of the characters `:`, `u`, `p`, `e` and `r`."
+      },
+      {
+        "text": "`?[A-Z]`",
+        "correct": false,
+        "rationale": "This matches any two-character name whose second character is a capital."
+      },
+      {
+        "text": "`*[[:digit:]]`",
+        "correct": false,
+        "rationale": "This matches names that end in a digit."
+      }
+    ],
+    "explanation": "A character class is written inside a bracket expression: `[[:upper:]]`. The stars and question marks around it say how many other characters may follow."
+  },
+  {
+    "id": "012.4-041",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": [
+      "012.4.3"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Which of these patterns is equivalent to `[!0-9]`?",
+    "options": [
+      {
+        "text": "`[0-9]`",
+        "correct": false,
+        "rationale": "This is the opposite: one digit."
+      },
+      {
+        "text": "`[^0-9]`",
+        "correct": true,
+        "rationale": "Correct: Bash accepts both `!` and `^` to negate a bracket expression."
+      },
+      {
+        "text": "`[~0-9]`",
+        "correct": false,
+        "rationale": "The tilde has no such meaning in a bracket."
+      },
+      {
+        "text": "`!`",
+        "correct": false,
+        "rationale": "A bare exclamation mark is just a character, and in an interactive shell it starts history expansion."
+      }
+    ],
+    "explanation": "Both `[!...]` and `[^...]` match one character that is not in the set."
+  },
+  {
+    "id": "012.4-042",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": [
+      "012.4.3"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Mira wants every file whose name starts with `a`, `b`, `x`, `y` or `z`. Which bracket expression covers all of those in one pattern?",
+    "options": [
+      {
+        "text": "`[ab-xyz]*`",
+        "correct": false,
+        "rationale": "This range runs from `b` to `x` and so also covers `c` to `w`."
+      },
+      {
+        "text": "`[a-b]*[x-z]`",
+        "correct": false,
+        "rationale": "This describes a name that starts with `a` or `b` and ends in `x`, `y` or `z`."
+      },
+      {
+        "text": "`[a-bx-z]*`",
+        "correct": true,
+        "rationale": "Correct: two ranges can sit side by side in one bracket."
+      },
+      {
+        "text": "`[ab][xyz]*`",
+        "correct": false,
+        "rationale": "This needs two letters, one from each list, at the start."
+      }
+    ],
+    "explanation": "A bracket can hold any mix of single characters and ranges, such as `[a-bx-z]`."
+  },
+  {
+    "id": "012.4-043",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": [
+      "012.4.1"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Jonas runs `echo draft > todo.txt` and `todo.txt` already holds three lines. What happens?",
+    "options": [
+      {
+        "text": "The old lines are replaced by the word `draft`",
+        "correct": true,
+        "rationale": "Correct: `>` truncates an existing file before writing."
+      },
+      {
+        "text": "`draft` is added after the three lines",
+        "correct": false,
+        "rationale": "Appending needs `>>`."
+      },
+      {
+        "text": "The shell asks whether to overwrite the file",
+        "correct": false,
+        "rationale": "Bash does not ask unless a special option is set."
+      },
+      {
+        "text": "The command fails because the file already exists",
+        "correct": false,
+        "rationale": "The file is simply opened and emptied."
+      }
+    ],
+    "explanation": "`>` creates the file if needed and silently overwrites it otherwise; `>>` appends."
+  },
+  {
+    "id": "012.4-044",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": [
+      "012.4.1"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Ada wants `rm` to ask for confirmation for every file and every directory it removes inside `old`. Which command does that?",
+    "options": [
+      {
+        "text": "`rm -rf old`",
+        "correct": false,
+        "rationale": "`-f` makes it quiet and never asks."
+      },
+      {
+        "text": "`rm -ri old`",
+        "correct": true,
+        "rationale": "Correct: `-r` goes into the directory and `-i` asks before each removal."
+      },
+      {
+        "text": "`rmdir -i old`",
+        "correct": false,
+        "rationale": "`rmdir` has no such option and only removes empty directories."
+      },
+      {
+        "text": "`rm -i old`",
+        "correct": false,
+        "rationale": "Without `-r`, `rm` just refuses to remove a directory."
+      }
+    ],
+    "explanation": "Combine `-r` for the recursion with `-i` for the questions."
+  },
+  {
+    "id": "012.4-045",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": [
+      "012.4.1"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "What does `cp -iv hero1.png hero2.png` do when `hero2.png` already exists?",
+    "options": [
+      {
+        "text": "It asks before overwriting and reports what it copied",
+        "correct": true,
+        "rationale": "Correct: `-i` asks, `-v` prints each action."
+      },
+      {
+        "text": "It silently overwrites and prints nothing",
+        "correct": false,
+        "rationale": "That is a plain `cp`."
+      },
+      {
+        "text": "It renames the old `hero2.png` to `hero2.png~`",
+        "correct": false,
+        "rationale": "That needs a backup option like `--backup`."
+      },
+      {
+        "text": "It always refuses to copy over an existing file",
+        "correct": false,
+        "rationale": "Without a question the existing file would be kept, but `-i` gives you the choice."
+      }
+    ],
+    "explanation": "`-i` is the safety question, `-v` the progress messages. `mv -i` works the same way."
+  },
+  {
+    "id": "012.4-046",
+    "objectiveId": "012.4",
+    "kind": "single",
+    "areas": [
+      "012.4.1"
+    ],
+    "terms": [
+      "012.4.t1"
+    ],
+    "stem": "Mira pipes `find . -name \"*.png\"` to a file for a checklist, and the order differs from what she expected. Why?",
+    "options": [
+      {
+        "text": "`find` prints entries in directory order, which isn't guaranteed to be sorted",
+        "correct": true,
+        "rationale": "Correct: add `| sort` when the order matters."
+      },
+      {
+        "text": "`find` sorts by modification time unless told otherwise",
+        "correct": false,
+        "rationale": "It does no sorting at all."
+      },
+      {
+        "text": "`find` always lists upper-case names first",
+        "correct": false,
+        "rationale": "Case isn't used for ordering."
+      },
+      {
+        "text": "Pipes reverse the order of the lines",
+        "correct": false,
+        "rationale": "A pipe passes lines on as they are."
+      }
+    ],
+    "explanation": "Directory order depends on the filesystem. `sort` gives a stable alphabetical list."
   }
 ]

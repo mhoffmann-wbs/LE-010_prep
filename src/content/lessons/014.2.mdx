@@ -1,6 +1,6 @@
 export const meta = {
   objectiveId: '014.2',
-  updated: '2026-11-26',
+  updated: '2026-11-27',
   tldr: 'A computer is a motherboard with a processor (x86 or ARM), memory, storage, network cards and peripherals, fed by a power supply. The kernel talks to hardware through drivers (kernel modules, see `lsmod`) and shows devices as files: `/dev/sda` or `/dev/nvme0n1` for disks, `/dev/null`, `/dev/zero` and `/dev/urandom` for pseudo-devices. `/boot` holds the kernel and `/sys` describes the hardware.',
   areasCovered: ['014.2.1', '014.2.2'],
   termsCovered: ['014.2.t1', '014.2.t2', '014.2.t3', '014.2.t4', '014.2.t5', '014.2.t6', '014.2.t7', '014.2.vt1', '014.2.vt2', '014.2.vt3'],
@@ -24,8 +24,9 @@ The parts you should be able to name:
 | Part | What it does |
 |---|---|
 | **Motherboard** | The main circuit board. Everything plugs into it or sits on it. |
-| **Processor** (CPU) | Runs the instructions. Two families matter: **x86** (Intel and AMD, in most PCs, laptops and servers; 64-bit variant `x86_64`) and **ARM** (phones, tablets, Apple's chips, many servers and the Raspberry Pi). A program built for one family does not run on the other. |
-| **Memory** (RAM) | Fast, temporary storage for running programs. Its contents are lost at power-off. |
+| **Processor** (CPU) | Runs the instructions. Two families matter: **x86** (Intel and AMD, in most PCs, laptops and servers; 64-bit variant `x86_64`) and **ARM** (phones, tablets, Apple's chips, many servers and the Raspberry Pi). A program built for one family does not run on the other. A processor has one or more **cores**, each of which can run a program at the same time. |
+| **Memory** (RAM) | Fast, temporary storage for running programs. Its contents are lost at power-off. When it runs short, the kernel can move rarely used data to **swap space**, a partition or file on the disk. That frees RAM but is much slower. `free -m` shows RAM and swap in megabytes ([lesson 014.3](/learn/014.3)). |
+| **Graphics card** (GPU) | Draws the picture for the monitor and speeds up 3D and video work. It can be a separate card or built into the processor. |
 | **Storage** | Keeps data permanently: a **hard disk drive** (spinning, cheap), a **solid state disk** (SSD, flash, fast) or an NVMe drive. |
 | **Power supply** | Turns mains power into the voltages the parts need. |
 | **Optical drive** | Reads and writes CD, DVD or Blu-ray discs. Rare today, but still a device. |
@@ -41,9 +42,23 @@ uname -m
 i686
 ```
 
+Names to recognise: `i386`, `i686` or just "x86" mean 32-bit x86, while `x86_64` and `amd64` are two names for the 64-bit version. A 32-bit system can address at most 4 GiB of memory, one reason why servers and PCs moved to 64 bits. `aarch64` is 64-bit ARM. Count the processors (cores) the kernel sees:
+
+```bash
+grep -c ^processor /proc/cpuinfo
+```
+
+```output
+1
+```
+
 That `i686` is a 32-bit x86 CPU, which is what the browser emulator can run. A real laptop prints `x86_64`, and a Raspberry Pi prints `aarch64`.
 
 ## Walkthrough
+
+### Firmware: BIOS and UEFI
+
+When you press the power button, the first code that runs is the **firmware** on the motherboard. It tests the hardware, then finds a boot loader on a disk and hands over to it, and the boot loader loads the kernel from `/boot`. The old firmware is the **BIOS**. Its replacement is **UEFI**, found in nearly every modern PC: it starts faster, handles big disks and offers Secure Boot, which only lets signed boot loaders run. Both show a setup screen at power-on where you choose the boot order, for example to boot from a USB stick.
 
 ### Network interface cards
 
@@ -57,7 +72,7 @@ ls /sys/class/net
 lo
 ```
 
-This practice VM has no network card, only `lo`, the **loopback** interface a computer uses to talk to itself.
+This practice VM has no network card, only `lo`, the **loopback** interface a computer uses to talk to itself. A WiFi card also has a network name (the **SSID**) to join, and Ethernet comes in speeds such as 1 Gbit/s.
 
 ### Block storage and partitions
 
@@ -71,6 +86,8 @@ A disk is a **block device**: it is read and written in blocks, at any position.
 | `/dev/nvme0n1p2` | the second partition on that NVMe drive |
 | `/dev/sr0` | the first optical drive |
 
+A hard disk drive has spinning platters, so it is cheap and large but slow to find data. An SSD has no moving parts and is much faster. An SSD can connect through the older **SATA** interface (it shows up as `sda`) or directly to the motherboard's PCIe bus as an **NVMe** drive, which is faster still. A new partition is empty: before the system can store files on it, it needs a **filesystem**. On a typical install, one partition is the root filesystem `/`, and sometimes `/boot` or `/home` get partitions of their own. **LVM** (the logical volume manager) is an optional layer that lets you resize such volumes later.
+
 The `sd` stands for "SCSI disk", an old name that stuck. Disks get their letter in the order the kernel finds them, so a USB stick plugged in later can become `/dev/sdb`. This practice VM has no such disk, so a test shows nothing:
 
 ```bash
@@ -83,6 +100,24 @@ ls -d /dev/sd* /dev/nvme* 2>/dev/null | wc -l
 
 On a real machine `lsblk` lists the disks and partitions, and `df -h` shows how full the mounted ones are.
 
+### Listing hardware
+
+Four commands answer "what is in this machine?":
+
+| Command | Lists |
+|---|---|
+| `lscpu` | the processor: architecture, cores, speed (the same data as `/proc/cpuinfo`, in a tidier form) |
+| `lspci` | devices on the PCI bus: graphics card, network card, storage controller |
+| `lsusb` | devices on the USB bus: keyboard, mouse, webcam, USB sticks |
+| `lsblk` | block devices: disks and partitions |
+
+```bash static
+lspci | grep -i network
+lsusb
+```
+
+The practice guest has no PCI or USB bus to show, so run these on a real machine.
+
 ### Device files
 
 In a listing of `/dev`, a file's first character shows the kind. A `b` is a **block device** (disks) and a `c` is a **character device** (a terminal, a keyboard, a serial port: data goes one byte at a time):
@@ -94,6 +129,17 @@ stat -c "%n is a %F" /dev/null /dev/tty
 ```output
 /dev/null is a character special file
 /dev/tty is a character special file
+```
+
+In a long listing, a device file has two numbers where a file's size would be. They are the **major number** (which driver handles the device) and the **minor number** (which device of that driver). The same device always has the same pair:
+
+```bash
+ls -l /dev/null /dev/zero | awk '{print $1, $5, $6, $10}'
+```
+
+```output
+crw-rw-rw- 1, 3 /dev/null
+crw-rw-rw- 1, 5 /dev/zero
 ```
 
 Device files don't hold data on a disk. They are doors to the kernel, so that programs can use `cat`, `>` and the other file tools on hardware. Some are **pseudo-devices**: no hardware behind them, only kernel code.
