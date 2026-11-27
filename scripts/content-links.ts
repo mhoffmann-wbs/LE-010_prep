@@ -3,10 +3,13 @@
 // test. Run: npm run content:links
 import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
-import { SOURCES } from '../src/content/blueprint.ts'
+import { OBJECTIVES, SOURCES, learningMaterialsLessons } from '../src/content/blueprint.ts'
 
 const root = join(import.meta.dirname, '../src/content')
-const urls = new Set<string>(Object.values(SOURCES).filter((v) => v.startsWith('https://')))
+const urls = new Set<string>([
+  ...Object.values(SOURCES).filter((v) => v.startsWith('https://')),
+  ...OBJECTIVES.flatMap(learningMaterialsLessons),
+])
 
 // Every https URL in content files (blueprint comments, questions, lessons, simulators). Captured
 // transcripts are skipped: URLs in them are what the commands printed, not sources.

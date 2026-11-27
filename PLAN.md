@@ -31,7 +31,7 @@ The previous exam, 010-160 (objectives v1.6), can be booked until April 2027. Th
 | Mock exam | 40 items in 60 minutes, one per weight point. The report shows a scaled-score estimate against 500 on the 200–800 scale. |
 | Terminal | **Real Linux in the browser**: the v86 x86 emulator boots a minimal **Debian 12 (bookworm) i386** userland from a saved-state snapshot. It is self-hosted and loaded lazily, like PCEP's Pyodide (§5). |
 | Hard-to-emulate topics | systemd, journalctl, ssh/scp, ip/ss, useradd and dmesg are taught with **simulators driven by recorded transcripts** from a real Debian 13 system. Outputs are captured, never invented (§6a). There are no local labs. |
-| LPI materials | Every lesson is original and links to the LPI Learning Materials as further reading. learning.lpi.org refuses automated fetches (HTTP 403), so lessons link to the 010-200 index page; per-lesson deep links wait until someone checks the URL pattern in a browser. |
+| LPI materials | Every lesson is original and links to the LPI Learning Materials as further reading. learning.lpi.org refuses automated fetches (HTTP 403), so the URL pattern was checked in a browser (2026-11-27): each lesson page links its objective's lessons (`…/010-200/013/013.3/013.3_01/`; 013.3 has two). |
 | Stack | Vite, React, TypeScript, Tailwind v4, React Router, Zod, MDX, Vitest with RTL, oxlint, v86 and xterm.js. It's a static SPA: progress lives in `localStorage` and can be exported and imported. |
 
 ## 2. Exam facts the app must mirror
@@ -135,7 +135,7 @@ Learners pick their exam on the home page (it can be changed on the progress pag
   - The state is 12.5 MB with zstd -19.
   - The terminal is ready 0.3–0.4 s after the state downloads. The first page load fetches about 14.7 MB: the state plus the 2 MB `v86.wasm`.
   - The rootfs is 203 MB in about 12,300 files. Files are fetched only when the guest reads them, so the size matters only for the Pages limit of 1 GB.
-  - Phone memory is not measured yet; measure it on a real device in the phase 8 mobile pass.
+  - Phone memory is not measured yet (§9).
   - The fallback stays Alpine i386 with GNU `coreutils`, `bash`, `grep`, `findutils` and `tar` replacing the BusyBox applets.
 
 ### 5b. Runtime
@@ -236,9 +236,9 @@ Scripts:
    - `content:verify` runs every claim in v86 under Node and writes `verified.json`; `verify.test.ts` checks claims against it offline, and CI reruns everything after rebuilding the guest. `fill` items gained `verify`, and output items `fixture` and `user`.
    - Lesson cells (`bash` cells you can edit and run, `static` fences, `output` blocks and `<Predict>`), tested through the real MDX pipeline and checked in Chrome: about 1 s per run.
    - `vm:smoke` checks the runner. The Docker-vs-v86 spot check was dropped once verification moved into v86 (§5c).
-3. **Lessons and the 010-160 track** (done 2026-11-26; per-lesson LPI deep links still open):
+3. **Lessons and the 010-160 track** (done 2026-11-26):
    - The exam-track switch (§3b): v1.6 data in the blueprint, `itemInExam`, progress v2 with `track`, track-aware practice, mock, readiness and labels.
-   - 19 lessons with 252 verified snippet claims (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`), with `<ExamOnly>` blocks for each exam's own material. Each cites its sources and links to the LPI Learning Materials; per-lesson deep links wait until the URL pattern is checked in a browser (§1).
+   - 19 lessons with 252 verified snippet claims (`## Big idea`, `## Walkthrough`, `## At TuxPixel`, `## Predict the output`, `## Exam traps`, `## Try it`), with `<ExamOnly>` blocks for each exam's own material. Each cites its sources and links to its lessons in the LPI Learning Materials (§1).
    - `vm:run` to try a command in the guest while writing.
 4. **Question bank** (done 2026-11-26):
    - 666 items (target 600): every objective at or over target, and every area at 5 or more and every term tested, on both exams. Concept objectives overshoot so each exam's own lines count on that exam.
@@ -257,7 +257,29 @@ Scripts:
    - `transcripts:capture`: Debian 13 containers with systemd, on documentation-range addresses with a studio DNS server, driven by expect on an 80-column pty, with a small terminal renderer for progress bars. Five transcripts: services (systemctl, journalctl, syslog, dmesg), ssh (keys, host keys, ssh-copy-id, scp, bad key permissions), network (ip, ss, resolv.conf, hosts, resolvectl, host, ping, and net-tools for 010-160), users (useradd, passwd, groupadd, usermod, su, sudo, w, who, last, wtmpdb last) and packages (apt, dpkg, dnf, rpm, yum, zypper, apk).
    - Five transcript simulators replay them in scenes, with questions whose evidence a test finds in the captured output. The capture confirmed that `last` on Debian 13 is a link to wtmpdb and `yum` on AlmaLinux 10 a link to dnf.
    - Checked in headless Chrome at 1280 and 360 px. That found a fieldset overflow in `ItemView` that also affected practice and mock.
-8. **Guides and polish** (done 2026-11-27; phone memory on a real device still open, §5a):
+8. **Guides and polish** (done 2026-11-27; phone memory on a real device still open, §9):
    - `/guides/:slug`, ported from AIF: a cheat sheet (one part per topic, every lesson linked, `<ExamOnly>` blocks per exam, headings and lesson links numbered for the learner's track) and an exam-day guide (format of both exams, pacing, reading questions, price, booking with an LPI ID through Pearson VUE or OnVUE, ID, rescheduling and results). Its facts come from LPI's pages, checked 2026-11-27. LPI's pages publish no retake policy, wrong-answer penalty or extra time for non-native speakers, so the guide claims none, and its language line defers to Pearson VUE because LPI's pages disagree.
    - The terminal: a plain-text mirror of the screen and scrollback ("Show terminal text", wrapped rows joined), and Shift+Esc to leave it, since Tab belongs to bash. xterm's screen-reader mode was already on.
    - Mobile pass at 360 px and an accessibility sweep (control names, labels, alt text, heading order) over every page in headless Chrome: nothing scrolls sideways, and wide tables and terminal output scroll inside their own box.
+
+## 9. Open points
+
+Collected 2026-11-27, after phase 8. Each one needs a person, a real device or a browser. None of them blocks a release.
+
+1. **Phone memory** (§5a). The state holds the guest's whole 128 MB of RAM, and v86 and xterm come on top. It has only been measured on a Mac.
+   - Next: open `/terminal` and one exercise on a mid-range Android phone and on an iPhone, and watch memory in remote debugging. If a tab gets killed, try a smaller `VM_MEMORY_MB` and rebuild the state.
+2. **Flashcard and drill commands aren't verified** (§5c). §5c planned to run them in the guest "later", but `collectRunnables()` covers only items, `fill` answers, lesson snippets and exercises. Cards state their commands in prose.
+   - Next: decide whether to verify the runnable ones (e.g. through a `verify` field on cards) or drop the plan line.
+3. **Exam-day facts LPI doesn't settle.** The guide claims only what LPI's pages state, and these points are missing:
+   - Pearson VUE's LPI and OnVUE pages (`home.pearsonvue.com/lpi`) failed to load (TLS certificate error), so OnVUE's ID rules and system test aren't checked.
+   - Languages: the overview page says English with translations coming, the online-testing page lists five languages, and the FAQ says the OnVUE interface is English only. The guide tells learners to check when they book.
+   - The country-to-price-tier mapping appears only in the pricing page's country picker.
+   - LPI publishes no retake policy, no rule on wrong or blank answers, no extra time for non-native speakers, and no release date for 010-200.
+   - Next: check each one in a browser and with Pearson VUE (or ask info@lpi.org), then update `exam-day.mdx` and its `updated` date.
+4. **Source links that can't be checked automatically.** On 2026-11-27, `content:links` found 207 of 228 links OK. The failures:
+   - `man.openbsd.org` times out: 7 links in `015.1.mdx`, `sims/ssh.json` and `questions/015.1.json`.
+   - opensuse.org, raspberrypi.com, the Alpine wiki, moodle.org and kodi.tv answer bots with HTTP 403. They're cited in lessons 011.1, 011.2, 011.4 and 014.2, the `distros` and `packages` sims, and items in 011.1 and 011.2.
+   - `vue.com/lpi` fails in Node, which rejects its certificate chain, but curl loads it. The Debian release-notes link failed once and loaded on retry.
+   - Next: open the failing links in a browser. If `man.openbsd.org` is really gone, cite another man-page site (e.g. manpages.debian.org). Make `content:links` accept sites known to block bots.
+5. **No test with a real screen reader yet.** The terminal's screen-reader mode, the text mirror and Shift+Esc were checked with a DOM audit and simulated keys in headless Chrome only.
+   - Next: try `/terminal` and one exercise with VoiceOver (macOS and iOS) and NVDA (Windows).

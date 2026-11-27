@@ -11,6 +11,7 @@ import {
   estimateScaledScore,
   inExam,
   itemInExam,
+  learningMaterialsLessons,
   linesFor,
   mockQuota,
   questionTarget,
@@ -32,6 +33,16 @@ describe('blueprint', () => {
     expect(TOPICS.map((t) => topicWeight(t.id))).toEqual([7, 9, 9, 8, 7])
     expect(OBJECTIVES.flatMap((o) => linesFor(o, 'areas', '010-200'))).toHaveLength(63)
     expect(OBJECTIVES.flatMap((o) => linesFor(o, 'terms', '010-200'))).toHaveLength(102)
+  })
+
+  it('links each objective to its LPI Learning Materials lessons', () => {
+    const byId = Object.fromEntries(OBJECTIVES.map((o) => [o.id, learningMaterialsLessons(o)]))
+    expect(byId['011.1']).toEqual(['https://learning.lpi.org/en/learning-materials/010-200/011/011.1/011.1_01/'])
+    expect(byId['013.3']).toEqual([
+      'https://learning.lpi.org/en/learning-materials/010-200/013/013.3/013.3_01/',
+      'https://learning.lpi.org/en/learning-materials/010-200/013/013.3/013.3_02/',
+    ])
+    expect(Object.values(byId).flat()).toHaveLength(20)
   })
 
   it('maps objectives v1.6 one to one, in order: 1.1–5.4', () => {

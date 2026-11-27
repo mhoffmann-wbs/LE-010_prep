@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import { Inline } from '../components/Inline'
-import { EXAM_FORMAT, EXAM_IDS, OBJECTIVES, OBJECTIVE_BY_ID, SOURCES, TOPICS, itemInExam, linesFor, objectiveLabel, objectiveName, objectivesOf, topicName } from '../content/blueprint'
+import { EXAM_FORMAT, EXAM_IDS, OBJECTIVES, OBJECTIVE_BY_ID, SOURCES, TOPICS, itemInExam, learningMaterialsLessons, linesFor, objectiveLabel, objectiveName, objectivesOf, topicName } from '../content/blueprint'
 import { ITEMS } from '../content/bank'
 import { DRILL_DECKS } from '../content/drills'
 import { SIMS } from '../content/sims'
@@ -152,12 +152,15 @@ function LessonView({ objectiveId }: { objectiveId: string }) {
                 </a>
               </li>
             ))}
-            <li>
-              <a href={SOURCES.learningMaterialsUrl} target="_blank" rel="noreferrer" className="text-brand-dark underline">
-                LPI Learning Materials for {SOURCES.examCode}
-              </a>{' '}
-              (free; look for objective {objective.id})
-            </li>
+            {learningMaterialsLessons(objective).map((url, i, all) => (
+              <li key={url}>
+                <a href={url} target="_blank" rel="noreferrer" className="text-brand-dark underline">
+                  LPI Learning Materials for {SOURCES.examCode}: {objective.id}
+                  {all.length > 1 && `, lesson ${i + 1} of ${all.length}`}
+                </a>{' '}
+                (free)
+              </li>
+            ))}
           </ul>
         </div>
       </section>

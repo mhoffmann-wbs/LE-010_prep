@@ -561,6 +561,13 @@ export const TERM_BY_ID: ReadonlyMap<string, Term> = new Map(OBJECTIVES.flatMap(
 
 export const objectivesOf = (topicId: string) => OBJECTIVES.filter((o) => o.topicId === topicId)
 
+/** Lessons per objective in the LPI Learning Materials for 010-200, where it isn't one (checked in a browser 2026-11-27). */
+const LPI_LESSON_COUNT: Record<string, number> = { '013.3': 2 }
+
+/** The objective's lessons in the LPI Learning Materials for 010-200, e.g. …/010-200/013/013.3/013.3_01/. */
+export const learningMaterialsLessons = (o: Objective) =>
+  Array.from({ length: LPI_LESSON_COUNT[o.id] ?? 1 }, (_, i) => `${SOURCES.learningMaterialsUrl}${o.topicId}/${o.id}/${o.id}_0${i + 1}/`)
+
 /** Whether an area or term is on an exam. */
 export const inExam = (line: { exams?: ExamId[] }, exam: ExamId) => !line.exams || line.exams.includes(exam)
 
